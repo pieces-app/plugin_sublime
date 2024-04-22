@@ -1,0 +1,6 @@
+[
+        {
+                "caption": "Pieces: Ask copilot",
+                "command": "pieces_ask_stream"
+        }
+]
