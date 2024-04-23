@@ -1,11 +1,9 @@
 import sublime
 import sublime_plugin
-# from pieces.api import get_health
+from pieces.api import get_health
 
 
 
-class PiecesEventListener(sublime_plugin.EventListener):
-    pass
 class PiecesEventListener(sublime_plugin.EventListener):
     def on_pre_command(self, view, command_name, args):
         # List of commands to check
@@ -15,9 +13,7 @@ class PiecesEventListener(sublime_plugin.EventListener):
             sublime.message_dialog("The pieces os server is not running")
             # Cancel the command by replacing it with a no-op
             return ('noop',)
-        else:
-            print("GOOD")
-
+        
     def check_condition(self):
         if get_health() == "ok":
             return True
