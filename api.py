@@ -18,7 +18,10 @@ def get_version() -> Optional[str]:
 def get_health():
     try:
         health = pos_client.WellKnownApi(config.api_client).get_well_known_version()
-        return health
+        if healt == "ok":
+            return True
+        else:
+            return False
     except: # There is a problem in the startup
         return False
 

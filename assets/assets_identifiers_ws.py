@@ -6,6 +6,10 @@ from pieces import config
 import threading
 
 class AssetsIdentifiersWS:
+    def __new__(cls,*args,**kwargs):
+        if not hasattr(cls, 'instance'):
+            cls.instance = super(AssetsIdentifiersWS, cls).__new__(cls)
+        return cls.instance
     def __init__(self, on_message_callback):
         self.ws = None
         self.is_connected = False

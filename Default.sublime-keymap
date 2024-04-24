@@ -1,6 +1,17 @@
 [
     {
-        "keys": ["escape"], 
-        "command": "pieces_show_markdown"
+        "keys": ["primary+e"], 
+        "command": "pieces_handle_markdown",
+        "args": {"mode": "edit"}
     },
+    {
+        "keys": ["primary+c"], 
+        "command": "pieces_handle_markdown",
+        "args": {"mode": "copy"}
+    },
+    {
+        "keys": ["primary+s"], 
+        "command": "pieces_handle_markdown",
+        "args": {"mode": "save"}
+    }
 ]

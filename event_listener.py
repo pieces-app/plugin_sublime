@@ -15,7 +15,7 @@ class PiecesEventListener(sublime_plugin.EventListener):
             return ('noop',)
         
     def check_condition(self):
-        if get_health() == "ok":
+        if get_health():
             return True
         return False
 

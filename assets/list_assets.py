@@ -2,17 +2,15 @@ import sublime_plugin
 import sublime
 import mdpopups
 import re
+from typing import Dict
 
 from pieces_os_client import *
 from pieces import config
 
-from . import assets_identifiers_ws
-
-max_assets = 10
 
 
 
-assets_snapshot = {}
+
 assets_identifiers_snapshot = []
 
 # saved_code_blocks = {}
@@ -21,14 +19,14 @@ sheets_md = {}
 
 
 class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
-	
+	max_assets = 10
+	sheets_md = {}
 	def run(self,pieces_asset_id):
 		if pieces_asset_id == "LOAD":
-			global max_assets
-			max_assets += 10
+			PiecesListAssetsCommand.max_assets += 10
 			return self.window.run_command("pieces_list_assets")
 
-		global sheets_md
+
 		api_instance = AssetApi(config.api_client)
 		api_response = api_instance.asset_specific_asset_export(pieces_asset_id, "MD")
 		
@@ -38,14 +36,20 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 
 		sheet = mdpopups.new_html_sheet(self.window,api_response.name,markdown_text_table,css = ".div_wrapper {margin-left:2rem}",wrapper_class="div_wrapper")
 		
-		sheets_md[sheet.id()] = {"md":markdown_text,"name":api_response.name}
-		# global saved_code_blocks
-		# sheet_id = sheet.id()
-		# code_block_pattern = r'(```[\s\S]*?\n```)'
+		
+		sheet_id = sheet.id()
+		code_block_pattern = r'(```[\s\S]*?\n```)'
 
 
-		# # Find all code blocks
-		# code_blocks = re.findall(code_block_pattern, markdown_text)
+		# Find all code blocks
+		code_block = re.findall(code_block_pattern, markdown_text)
+		try:
+			iterable = AssetSnapshot.assets_snapshot[pieces_asset_id].formats.iterable
+			sorted_iterable = sorted(iterable, key=lambda x: x.updated.value, reverse=True)
+			language = sorted_iterable[0].analysis.code.language
+		except:
+			language = None
+		PiecesListAssetsCommand.sheets_md[sheet_id] = {"code":"\n".join(code_block[0].split("\n")[1:-1]),"name":api_response.name,"language":language,"id":pieces_asset_id}
 
 		# Add "Copy this Python code:" before each code block
 		# for idx,block in enumerate(code_blocks):
@@ -66,55 +70,89 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 
 
 
-class PiecesShowMarkdownCommand(sublime_plugin.WindowCommand):
-	def run(self):
-		global sheets_md
+class PiecesHandleMarkdownCommand(sublime_plugin.WindowCommand):
+	views_to_handler = {}
+	def run(self,mode):
 		sheet = self.window.active_sheet()
-		if not sheet:
+		sheet_details = None
+		if sheet:
+			sheet_details = PiecesListAssetsCommand.sheets_md.get(sheet.id())
+		
+		if mode == "save":
+			self.handle_save()
+		
+		if not sheet_details:
+			if mode == "copy":
+				self.window.run_command("copy")
 			return
-		sheet_details = sheets_md.get(sheet.id())
-		if sheet_details:
-			# Create a new file
-			view = self.window.new_file(syntax = 'Packages/Markdown/Markdown.sublime-syntax')
-			# Insert the text
-			view.run_command('insert', {'characters': sheet_details["md"]})
-			# Set the name
-			view.set_name(sheet_details["name"]+".md")
-			# Set the file to read-only
-			view.set_read_only(True)
-			# Sets the scratch property on the buffer. When a modified scratch buffer is closed, it will be closed without prompting to save.
-			view.set_scratch(True)
-				
+			
+		self.code = sheet_details["code"]
+		self.language = sheet_details["language"]
+		self.name = sheet_details["name"]
+		self.asset_id = sheet_details["id"]
+
+		if mode == "copy":
+			self.handle_copy()
+		elif mode == "edit":
+			self.handle_edit()
 
 
-# class PiecesAddCodeCommand(sublime_plugin.WindowCommand):
-# 	def run(self,id,action):
-# 		global saved_code_blocks
 
-# 		code = saved_code_blocks[id]
-# 		if action == "copy":
-# 			sublime.set_clipboard(code)
-# 			sublime.message_dialog("Copied code successfully")
-# 		elif action == "insert":
-# 			pass
+	def handle_save(self):
+		view = self.window.active_view()
+		if view:
+			asset_id = PiecesHandleMarkdownCommand.views_to_handler.get(view.id())
+			if asset_id:
+				asset = AssetSnapshot.get_asset_snapshot(asset_id)
+				format_api = FormatApi(config.api_client)
+				original = format_api.format_snapshot(asset.original.id, transferable=True)
+				if original.classification.generic == ClassificationGenericEnum.IMAGE:
+					sublime.error_message("Could not edit an image")
+					return
+				data = view.substr(sublime.Region(0, view.size()))
+				if original.fragment.string.raw:
+					original.fragment.string.raw = data
+				elif original.file.string.raw:
+					original.file.string.raw = data
+				format_api.format_update_value(transferable=False, format=original)
+				PiecesListAssetsCommand().run(pieces_asset_id=asset_id)
+				view.close()
+			else:
+				self.window.run_command("save")
+
+	def handle_copy(self):
+		sublime.set_clipboard(self.code)
+	def handle_edit(self):
+		# Create a new file
+		view = self.window.new_file(syntax = f'Packages/{self.language}/{self.language}.sublime-syntax')
+		# Insert the text
+		view.run_command('insert', {'characters': self.code})
+		# Set the name
+		view.set_name(self.name)
+		# Set it to avoid the saving dialog 
+		view.set_scratch(True)
+		# Set the view to handle the save operation
+		PiecesHandleMarkdownCommand.views_to_handler[view.id()] = self.asset_id
+
+
 
 
 
 class PiecesAssetIdInputHandler(sublime_plugin.ListInputHandler):
 	def list_items(self):
-		global max_assets,assets_identifiers_snapshot
+		global assets_identifiers_snapshot
 		assets_list = []
-		for asset_id in assets_identifiers_snapshot[:max_assets]:
-			asset = get_asset_snapshot(asset_id)
-			name = asset.get("name","New snippet")
+		for asset_id in assets_identifiers_snapshot[:PiecesListAssetsCommand.max_assets]:
+			asset = AssetSnapshot.get_asset_snapshot(asset_id)
+			name = asset.name if asset.name else "New asset"
 			try:
 				appedned = False
-				annotations = asset.get("annotations").get("iterable")
-				sorted(annotations, key=lambda x: x.get("updated").get("value"), reverse=True)
+				annotations = asset.annotations.iterable
+				annotations = sorted(annotations, key=lambda x: x.updated.value, reverse=True)
 				for annotation in annotations:
-					if annotation.get("type") == "DESCRIPTION":
+					if annotation.type == "DESCRIPTION":
 						appedned = True
-						assets_list.append(sublime.ListInputItem(text=name, value=asset_id,details=annotation.get("text")))
+						assets_list.append(sublime.ListInputItem(text=name, value=asset_id,details=annotation.text))
 						break
 				if not appedned:
 					raise Exception()
@@ -131,7 +169,6 @@ class PiecesAssetIdInputHandler(sublime_plugin.ListInputHandler):
 
 
 
-
 def assets_snapshot_callback(ids_json):
 	global assets_identifiers_snapshot
 
@@ -142,16 +179,17 @@ def assets_snapshot_callback(ids_json):
 
 
 
-
-def get_asset_snapshot(id):
-	global assets_snapshot
-	if id not in assets_snapshot.keys():
-		api_instance = AssetApi(config.api_client)
-		asset = api_instance.asset_snapshot(id).to_dict()
-		assets_snapshot[id] = asset
-		return asset
-	else:
-		return assets_snapshot[id]
+class AssetSnapshot():
+	assets_snapshot:Dict[str,Asset] = {}
+	@classmethod
+	def get_asset_snapshot(cls,id):
+		if id not in cls.assets_snapshot.keys():
+			api_instance = AssetApi(config.api_client)
+			asset = api_instance.asset_snapshot(id)
+			cls.assets_snapshot[id] = asset
+			return asset
+		else:
+			return cls.assets_snapshot[id]
 
 
 
@@ -160,31 +198,31 @@ def get_asset_snapshot(id):
 
 
 def tabulate_from_markdown(md_text):
-    # Split the markdown text into lines
-    lines = md_text.split('\n')
-    
-    # Filter out lines that contain '|', and join them back into a string
-    table_md = "\n".join(line for line in lines if '|' in line)
-    
-    # Split the markdown table into lines, and then into cells
-    # Also, remove leading/trailing whitespace from each cell
-    data = [[cell.strip() for cell in line.split("|")[1:-1]] for line in table_md.strip().split("\n")]
-    
-    headers = "<div>"
-    for header in data[0]:
-    	if header:
-    		headers += "<span><h1>" + header + "</h1></span>"
+	# Split the markdown text into lines
+	lines = md_text.split('\n')
+
+	# Filter out lines that contain '|', and join them back into a string
+	table_md = "\n".join(line for line in lines if '|' in line)
+
+	# Split the markdown table into lines, and then into cells
+	# Also, remove leading/trailing whitespace from each cell
+	data = [[cell.strip() for cell in line.split("|")[1:-1]] for line in table_md.strip().split("\n")]
+
+	headers = "<div>"
+	for header in data[0]:
+		if header:
+			headers += "<span><h1>" + header + "</h1></span>"
 
     # Generate HTML string
-    html_text = f"{headers}</div><br><div>"
-    for row in data[2:]:
-        html_text += "<div>"
-        for idx,cell in enumerate(row):
-        	if idx == 0:
-        		cell += ": " 
-        	html_text += "<span>" + cell + "</span>"
-        html_text += "<br><br></div>"
-    html_text += "</div>"
-    
-    
-    return md_text.replace(table_md,html_text)
+	html_text = f"{headers}</div><br><div>"
+	for row in data[2:]:
+		html_text += "<div>"
+		for idx,cell in enumerate(row):
+			if idx == 0:
+				cell += ": " 
+			html_text += "<span>" + cell + "</span>"
+		html_text += "<br><br></div>"
+	html_text += "</div>"
+
+
+	return md_text.replace(table_md,html_text)

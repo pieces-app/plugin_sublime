@@ -1,2 +1,2 @@
-from .list_assets import PiecesListAssetsCommand, assets_snapshot_callback,PiecesShowMarkdownCommand
+from .list_assets import PiecesListAssetsCommand, assets_snapshot_callback,PiecesHandleMarkdownCommand
 from .assets_identifiers_ws import AssetsIdentifiersWS
