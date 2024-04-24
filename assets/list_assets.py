@@ -9,8 +9,6 @@ from pieces import config
 
 
 
-
-
 assets_identifiers_snapshot = []
 
 # saved_code_blocks = {}
@@ -115,8 +113,7 @@ class PiecesHandleMarkdownCommand(sublime_plugin.WindowCommand):
 				elif original.file.string.raw:
 					original.file.string.raw = data
 				format_api.format_update_value(transferable=False, format=original)
-				PiecesListAssetsCommand().run(pieces_asset_id=asset_id)
-				view.close()
+				view.close(on_close=lambda x:PiecesListAssetsCommand().run(pieces_asset_id=asset_id))
 			else:
 				self.window.run_command("save")
 
