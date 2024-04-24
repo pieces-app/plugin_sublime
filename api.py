@@ -1,9 +1,9 @@
 from typing import Optional
 import sublime
 from pieces import __version__
-from pieces.config import pos_client
+import pieces_os_client as pos_client
 from pieces import config
-
+import time
 application = None
 
 def get_version() -> Optional[str]:

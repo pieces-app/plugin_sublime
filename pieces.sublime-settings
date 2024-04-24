@@ -1,15 +1,3 @@
 {
-	// "host": "http:localhost/1000",
-	"model":"GPT-3.5-turbo Chat Model" 
-					//  'GPT-4 Chat Model', 
-				   //  'CodeLlama GPU Chat Model',
-				   //  'GPT-3.5-turbo Chat Model',
-				   //  'Phi-2 CPU Chat Model', 'GPT-4 Preview Chat Model', 
-				   //  'Codey (PaLM2) Chat Model', 'Llama2 GPU Chat Model', 
-				   //  '(Gemini) Chat Model', 'Code Classification Model',
-				   //  'GPT-3.5-turbo-16k Chat Model', 
-				   //  'Phi-2 GPU Chat Model', 'Mixtral GPU Chat Model', 
-				   //  'NeuralHermes-2.5-Mistral-7B CPU Chat Model', 
-				   //  'NeuralHermes-2.5-Mistral-7B GPU Chat Model', 
-				   //  '(PaLM2) Chat Model', 'Llama2 CPU Chat Model'
+	// "host": "http:localhost/1000"
 }
