@@ -5,27 +5,19 @@ import re
 from typing import Dict
 
 from pieces_os_client import *
-from pieces import config
+from pieces.settings import PiecesSettings
 
 
-
-assets_identifiers_snapshot = []
-
-# saved_code_blocks = {}
-
-sheets_md = {}
 
 
 class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
-	max_assets = 10
 	sheets_md = {}
 	def run(self,pieces_asset_id):
 		if pieces_asset_id == "LOAD":
-			PiecesListAssetsCommand.max_assets += 10
 			return self.window.run_command("pieces_list_assets")
 
 
-		api_instance = AssetApi(config.api_client)
+		api_instance = AssetApi(PiecesSettings.api_client)
 		api_response = api_instance.asset_specific_asset_export(pieces_asset_id, "MD")
 		
 		markdown_text = api_response.raw.string.raw
@@ -49,16 +41,6 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 			language = None
 		PiecesListAssetsCommand.sheets_md[sheet_id] = {"code":"\n".join(code_block[0].split("\n")[1:-1]),"name":api_response.name,"language":language,"id":pieces_asset_id}
 
-		# Add "Copy this Python code:" before each code block
-		# for idx,block in enumerate(code_blocks):
-		# 	code_block_id = f'{sheet_id}/{idx}'
-		# 	saved_code_blocks[code_block_id] = block
-		# 	{"id":f"{code_block_id}","action":"copy"}
-		# 	url = sublime.command_url("pieces_add_code")
-		# 	div = f'<div style="display:inline-block;"><a href="{url}">copy</a></div>\n'
-		# 	markdown_text = markdown_text.replace(block,div + block)
-
-		# return mdpopups.update_html_sheet(sheet,markdown_text)
 
 	def input(self,args):
 		return PiecesAssetIdInputHandler()
@@ -102,7 +84,7 @@ class PiecesHandleMarkdownCommand(sublime_plugin.WindowCommand):
 			asset_id = PiecesHandleMarkdownCommand.views_to_handler.get(view.id())
 			if asset_id:
 				asset = AssetSnapshot.get_asset_snapshot(asset_id)
-				format_api = FormatApi(config.api_client)
+				format_api = FormatApi(PiecesSettings.api_client)
 				original = format_api.format_snapshot(asset.original.id, transferable=True)
 				if original.classification.generic == ClassificationGenericEnum.IMAGE:
 					sublime.error_message("Could not edit an image")
@@ -113,7 +95,7 @@ class PiecesHandleMarkdownCommand(sublime_plugin.WindowCommand):
 				elif original.file.string.raw:
 					original.file.string.raw = data
 				format_api.format_update_value(transferable=False, format=original)
-				view.close(on_close=lambda x:PiecesListAssetsCommand().run(pieces_asset_id=asset_id))
+				view.close(on_close=lambda x:PiecesListAssetsCommand(self.window).run(pieces_asset_id=asset_id))
 			else:
 				self.window.run_command("save")
 
@@ -137,9 +119,8 @@ class PiecesHandleMarkdownCommand(sublime_plugin.WindowCommand):
 
 class PiecesAssetIdInputHandler(sublime_plugin.ListInputHandler):
 	def list_items(self):
-		global assets_identifiers_snapshot
 		assets_list = []
-		for asset_id in assets_identifiers_snapshot[:PiecesListAssetsCommand.max_assets]:
+		for asset_id in AssetSnapshot.assets_identifiers_snapshot:
 			asset = AssetSnapshot.get_asset_snapshot(asset_id)
 			name = asset.name if asset.name else "New asset"
 			try:
@@ -157,36 +138,57 @@ class PiecesAssetIdInputHandler(sublime_plugin.ListInputHandler):
 				assets_list.append(sublime.ListInputItem(text=name, value=asset_id))
 
 
-		assets_list.append(sublime.ListInputItem(text="Load more assets", value="LOAD",details="load 10 more assets"))
 		return assets_list
 
 	def placeholder(self):
 		return "Choose an asset"
 
 
-
-
-def assets_snapshot_callback(ids_json):
-	global assets_identifiers_snapshot
-
-	assets_identifiers_snapshot.extend([item['asset']['id'] for item in ids_json.get('iterable',[])])
-
-    # Return the list of ids
-	return assets_identifiers_snapshot
-
-
-
 class AssetSnapshot():
+	assets_identifiers_snapshot = []
 	assets_snapshot:Dict[str,Asset] = {}
+
+	
 	@classmethod
-	def get_asset_snapshot(cls,id):
+	def get_asset_snapshot(cls, id):
+		"""
+		Retrieves the asset snapshot from the cache.
+
+		Args:
+			cls: The class object.
+			id: The ID of the asset.
+
+		Returns:
+			The asset snapshot if it exists in the cache, otherwise it updates the asset ID and returns the updated asset.
+
+		"""
 		if id not in cls.assets_snapshot.keys():
-			api_instance = AssetApi(config.api_client)
-			asset = api_instance.asset_snapshot(id)
-			cls.assets_snapshot[id] = asset
+			asset = cls.update_asset_id(id)
 			return asset
 		else:
 			return cls.assets_snapshot[id]
+
+
+	@classmethod
+	def update_asset_id(cls,id):
+		try:
+			api_instance = AssetApi(PiecesSettings.api_client)
+			asset = api_instance.asset_snapshot(id)
+			cls.assets_snapshot[id] = asset
+			return asset
+		except:
+			if id in cls.assets_identifiers_snapshot:
+				cls.assets_identifiers_snapshot.remove(id)
+		
+	@classmethod
+	def assets_snapshot_callback(cls,ids:StreamedIdentifiers):
+		for item in ids.iterable:
+			id = item.asset.id
+			if id not in cls.assets_identifiers_snapshot:
+				cls.assets_identifiers_snapshot.append(id)
+			cls.update_asset_id(id)
+		# Return the list of ids
+		return cls.assets_identifiers_snapshot
 
 
 

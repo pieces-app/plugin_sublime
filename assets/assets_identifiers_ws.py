@@ -1,8 +1,7 @@
-import json
 import asyncio
 import pieces_os_client as pos_client
 import websockets
-from pieces import config 
+from pieces.settings import PiecesSettings
 import threading
 
 class AssetsIdentifiersWS:
@@ -31,11 +30,11 @@ class AssetsIdentifiersWS:
 
     async def open_websocket(self):
         """Opens a websocket connection"""
-        self.ws = await websockets.connect(config.ASSETS_IDENTIFIERS_WS_URL)
+        self.ws = await websockets.connect(PiecesSettings.ASSETS_IDENTIFIERS_WS_URL)
         self.is_connected = True
         try:
             async for message in self.ws:
-                self.on_message_callback(json.loads(message))
+                self.on_message_callback(pos_client.StreamedIdentifiers.from_json(message))
         except websockets.exceptions.ConnectionClosed:
             self.is_connected = False
             
