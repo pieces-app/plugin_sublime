@@ -18,7 +18,6 @@ def get_version() -> Optional[str]:
 def get_health():
     try:
         health = pos_client.WellKnownApi(PiecesSettings.api_client).get_well_known_health()
-        print(health)
         return health == "ok"
     except: # There is a problem in the startup
         return False

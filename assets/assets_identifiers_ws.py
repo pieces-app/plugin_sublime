@@ -39,16 +39,6 @@ class AssetsIdentifiersWS:
             self.is_connected = False
             
 
-    # async def send_json(self, json):
-    #     """Send a message over the websocket."""
-    #     try:
-    #         await self.ws.send(json)
-    #     except websockets.exceptions.ConnectionClosed as e:
-    #         print(f"Error sending message: {e}")
-    #         self.is_connected = False
-    #         await self.open_websocket()
-    #         await self.send_json(json)
-
     async def close_websocket_connection(self):
         """Close the websocket connection."""
         if self.ws and self.is_connected:

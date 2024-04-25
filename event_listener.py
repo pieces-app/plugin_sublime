@@ -6,6 +6,7 @@ from pieces.api import get_health
 
 class PiecesEventListener(sublime_plugin.EventListener):
     def on_window_command(self, view, command_name, args):
+        
         # List of commands to check
         commands_to_check = ['pieces_list_assets']
         if command_name in commands_to_check:
