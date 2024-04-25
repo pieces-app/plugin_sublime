@@ -51,6 +51,7 @@ class PiecesHandleMarkdownCommand(sublime_plugin.WindowCommand):
 	views_to_handler = {}
 	def run(self,mode):
 		sheet = self.window.active_sheet()
+		self.sheet = sheet
 		sheet_details = None
 		if sheet:
 			sheet_details = PiecesListAssetsCommand.sheets_md.get(sheet.id())
@@ -92,7 +93,7 @@ class PiecesHandleMarkdownCommand(sublime_plugin.WindowCommand):
 				elif original.file.string.raw:
 					original.file.string.raw = data
 				format_api.format_update_value(transferable=False, format=original)
-				view.close(on_close=lambda x:self.window.run_command("pieces_list_assets",{pieces_asset_id:asset_id}))
+				self.sheet.close(lambda x: view.close(on_close=lambda x:self.window.run_command("pieces_list_assets",{"pieces_asset_id":asset_id})))
 			else:
 				self.window.run_command("save")
 
@@ -171,7 +172,8 @@ class AssetSnapshot():
 		api_instance = AssetApi(PiecesSettings.api_client)
 		asset = api_instance.asset_snapshot(id)
 		cls.assets_snapshot[id] = asset
-		return asset		
+		return asset
+
 	@classmethod
 	def assets_snapshot_callback(cls,ids:StreamedIdentifiers):
 		for item in ids.iterable:
