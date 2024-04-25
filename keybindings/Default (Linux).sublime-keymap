@@ -1,16 +1,16 @@
 [
     {
-        "keys": ["primary+e"], 
+        "keys": ["ctrl+e"], 
         "command": "pieces_handle_markdown",
         "args": {"mode": "edit"}
     },
     {
-        "keys": ["primary+c"], 
+        "keys": ["ctrl+c"], 
         "command": "pieces_handle_markdown",
         "args": {"mode": "copy"}
     },
     {
-        "keys": ["primary+s"], 
+        "keys": ["ctrl+s"], 
         "command": "pieces_handle_markdown",
         "args": {"mode": "save"}
     }

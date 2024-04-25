@@ -1,0 +1,17 @@
+[
+    {
+        "keys": ["command+e"], 
+        "command": "pieces_handle_markdown",
+        "args": {"mode": "edit"}
+    },
+    {
+        "keys": ["command+c"], 
+        "command": "pieces_handle_markdown",
+        "args": {"mode": "copy"}
+    },
+    {
+        "keys": ["command+s"], 
+        "command": "pieces_handle_markdown",
+        "args": {"mode": "save"}
+    }
+]

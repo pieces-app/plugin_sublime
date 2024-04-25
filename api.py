@@ -29,7 +29,7 @@ def open_pieces_os() -> Optional[str]:
     if version:
         return version
 	# sublime.platform() ->  Literal['osx', 'linux', 'windows']
-    pl = sublime.platform()
+    pl = sublime.platform().lower()
     if pl == "windows":
         subprocess.Popen(["start", "os_server"], shell=True)
     elif pl == "linux":
