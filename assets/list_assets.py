@@ -3,6 +3,8 @@ import sublime
 import mdpopups
 import re
 from typing import Dict
+import threading
+import queue
 
 from pieces_os_client import *
 from pieces.settings import PiecesSettings
@@ -81,7 +83,7 @@ class PiecesHandleMarkdownCommand(sublime_plugin.WindowCommand):
 		if view:
 			asset_id = PiecesHandleMarkdownCommand.views_to_handler.get(view.id())
 			if asset_id:
-				asset = AssetSnapshot.get_asset_snapshot(asset_id)
+				asset = AssetSnapshot.assets_snapshot[asset_id]
 				format_api = FormatApi(PiecesSettings.api_client)
 				original = format_api.format_snapshot(asset.original.id, transferable=True)
 				if original.classification.generic == ClassificationGenericEnum.IMAGE:
@@ -118,8 +120,8 @@ class PiecesHandleMarkdownCommand(sublime_plugin.WindowCommand):
 class PiecesAssetIdInputHandler(sublime_plugin.ListInputHandler):
 	def list_items(self):
 		assets_list = []
-		for asset_id in AssetSnapshot.assets_identifiers_snapshot:
-			asset = AssetSnapshot.get_asset_snapshot(asset_id)
+		for asset_id in AssetSnapshot.loaded_assets_identifiers_snapshot:
+			asset = AssetSnapshot.assets_snapshot[asset_id]
 			name = asset.name if asset.name else "New asset"
 			try:
 				appedned = False
@@ -142,47 +144,48 @@ class PiecesAssetIdInputHandler(sublime_plugin.ListInputHandler):
 		return "Choose an asset"
 
 
-class AssetSnapshot():
-	assets_identifiers_snapshot = []
-	assets_snapshot:Dict[str,Asset] = {}
 
-	
-	@classmethod
-	def get_asset_snapshot(cls, id):
-		"""
-		Retrieves the asset snapshot from the cache.
-
-		Args:
-			cls: The class object.
-			id: The ID of the asset.
-
-		Returns:
-			The asset snapshot if it exists in the cache, otherwise it updates the asset ID and returns the updated asset.
-
-		"""
-		if id not in cls.assets_snapshot.keys():
-			asset = cls.update_asset_id(id)
-			return asset
-		else:
-			return cls.assets_snapshot[id]
+class AssetSnapshot:
+	assets_identifiers_snapshot = [] # List of all the assets id that the user have
+	assets_snapshot:Dict[str,Asset] = {}  # List of the asset object that is already loaded
+	loaded_assets_identifiers_snapshot = [] # List of the loaded ids that is in the assets_snpashot 
+	asset_queue = queue.Queue() # Queue for asset_ids to be processed
+	block = True # to wait for the queue to recevive the first asset id
 
 
 	@classmethod
-	def update_asset_id(cls,id):
+	def worker(cls):
+		try:
+			while True:
+				asset_id = cls.asset_queue.get(block=cls.block)
+				cls.update_asset_id(asset_id)
+				cls.asset_queue.task_done()
+		except queue.Empty: # queue is empty and the block is false
+			if cls.block:
+				cls.worker() # if there is more assets to load
+			return # End the worker
+
+
+
+	@classmethod
+	def update_asset_id(cls,asset_id):
 		api_instance = AssetApi(PiecesSettings.api_client)
-		asset = api_instance.asset_snapshot(id)
-		cls.assets_snapshot[id] = asset
-		return asset
+		asset = api_instance.asset_snapshot(asset_id)
+		cls.assets_snapshot[asset_id] = asset
+		if asset_id not in cls.loaded_assets_identifiers_snapshot:
+			cls.loaded_assets_identifiers_snapshot.append(asset_id) # Display only the loaded assets
 
 	@classmethod
 	def assets_snapshot_callback(cls,ids:StreamedIdentifiers):
+		# Start the worker thread if it's not running
+		cls.block = True
+		threading.Thread(target=cls.worker).start()
 		for item in ids.iterable:
-			id = item.asset.id
-			if id not in cls.assets_identifiers_snapshot:
-				cls.assets_identifiers_snapshot.append(id)
-			cls.update_asset_id(id)
-		# Return the list of ids
-		return cls.assets_identifiers_snapshot
+			asset_id = item.asset.id
+			if asset_id not in cls.assets_identifiers_snapshot:
+				cls.assets_identifiers_snapshot.append(asset_id)
+			cls.asset_queue.put(asset_id) # Add asset_id to the queue
+		cls.block = False # Remove the block to end the thread
 
 
 
