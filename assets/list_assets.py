@@ -13,9 +13,6 @@ from pieces.settings import PiecesSettings
 class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 	sheets_md = {}
 	def run(self,pieces_asset_id):
-		if pieces_asset_id == "LOAD":
-			return self.window.run_command("pieces_list_assets")
-
 
 		api_instance = AssetApi(PiecesSettings.api_client)
 		api_response = api_instance.asset_specific_asset_export(pieces_asset_id, "MD")
@@ -95,7 +92,7 @@ class PiecesHandleMarkdownCommand(sublime_plugin.WindowCommand):
 				elif original.file.string.raw:
 					original.file.string.raw = data
 				format_api.format_update_value(transferable=False, format=original)
-				view.close(on_close=lambda x:PiecesListAssetsCommand(self.window).run(pieces_asset_id=asset_id))
+				view.close(on_close=lambda x:self.window.run_command("pieces_list_assets",{pieces_asset_id:asset_id}))
 			else:
 				self.window.run_command("save")
 
@@ -171,15 +168,10 @@ class AssetSnapshot():
 
 	@classmethod
 	def update_asset_id(cls,id):
-		try:
-			api_instance = AssetApi(PiecesSettings.api_client)
-			asset = api_instance.asset_snapshot(id)
-			cls.assets_snapshot[id] = asset
-			return asset
-		except:
-			if id in cls.assets_identifiers_snapshot:
-				cls.assets_identifiers_snapshot.remove(id)
-		
+		api_instance = AssetApi(PiecesSettings.api_client)
+		asset = api_instance.asset_snapshot(id)
+		cls.assets_snapshot[id] = asset
+		return asset		
 	@classmethod
 	def assets_snapshot_callback(cls,ids:StreamedIdentifiers):
 		for item in ids.iterable:
