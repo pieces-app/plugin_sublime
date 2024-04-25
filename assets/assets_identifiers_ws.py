@@ -30,6 +30,8 @@ class AssetsIdentifiersWS:
 
     async def open_websocket(self):
         """Opens a websocket connection"""
+        if self.is_connected: # connect only once
+            return
         self.ws = await websockets.connect(PiecesSettings.ASSETS_IDENTIFIERS_WS_URL)
         self.is_connected = True
         try:

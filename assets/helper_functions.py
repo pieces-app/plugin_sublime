@@ -2,8 +2,10 @@ import queue
 from typing import Dict
 import threading
 from pieces_os_client import Asset, AssetApi,StreamedIdentifiers
+import sublime
 
 from pieces.settings import PiecesSettings
+
 
 class AssetSnapshot:
 	assets_identifiers_snapshot = [] # List of all the assets id that the user have
@@ -11,6 +13,7 @@ class AssetSnapshot:
 	loaded_assets_identifiers_snapshot = [] # List of the loaded ids that is in the assets_snpashot 
 	asset_queue = queue.Queue() # Queue for asset_ids to be processed
 	block = True # to wait for the queue to recevive the first asset id
+	asset_set = set()  # Set for asset_ids in the queue
 
 
 	@classmethod
@@ -20,6 +23,7 @@ class AssetSnapshot:
 				asset_id = cls.asset_queue.get(block=cls.block)
 				cls.update_asset_id(asset_id)
 				cls.asset_queue.task_done()
+				cls.asset_set.remove(asset_id)  # Remove asset_id from the set
 		except queue.Empty: # queue is empty and the block is false
 			if cls.block:
 				cls.worker() # if there is more assets to load
@@ -44,7 +48,9 @@ class AssetSnapshot:
 			asset_id = item.asset.id
 			if asset_id not in cls.assets_identifiers_snapshot:
 				cls.assets_identifiers_snapshot.append(asset_id)
-			cls.asset_queue.put(asset_id) # Add asset_id to the queue
+			if asset_id not in cls.asset_set:
+				cls.asset_queue.put(asset_id)  # Add asset_id to the queue
+				cls.asset_set.add(asset_id)  # Add asset_id to the set
 		cls.block = False # Remove the block to end the thread
 
 
