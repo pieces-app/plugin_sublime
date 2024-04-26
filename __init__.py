@@ -46,7 +46,7 @@ def download_lib(path):
 
 if download_lib(lib_path):
     print("Pieces is downloading some dependencies")
-    sublime.set_timeout_async(lambda:download_github_repo('https://github.com/Bishoy-at-pieces/sublime-dependencies', lib_path), 0)
+    sublime.set_timeout_async(lambda:download_github_repo('https://github.com/pieces-app/sublime-dependencies', lib_path), 0)
 
 
 __version__ = "0.1"

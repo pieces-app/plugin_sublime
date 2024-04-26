@@ -20,7 +20,7 @@ class AssetSnapshot:
 	def worker(cls):
 		try:
 			while True:
-				asset_id = cls.asset_queue.get(block=cls.block)
+				asset_id = cls.asset_queue.get(block=cls.block,timeout=5)
 				cls.update_asset_id(asset_id)
 				cls.asset_queue.task_done()
 				cls.asset_set.remove(asset_id)  # Remove asset_id from the set
