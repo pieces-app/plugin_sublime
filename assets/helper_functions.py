@@ -43,7 +43,7 @@ class AssetSnapshot:
 	def assets_snapshot_callback(cls,ids:StreamedIdentifiers):
 		# Start the worker thread if it's not running
 		cls.block = True
-		threading.Thread(target=cls.worker).start()
+		sublime.set_timeout_async(cls.worker)
 		for item in ids.iterable:
 			asset_id = item.asset.id
 			if asset_id not in cls.assets_identifiers_snapshot:
