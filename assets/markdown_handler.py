@@ -60,7 +60,10 @@ class PiecesHandleMarkdownCommand(sublime_plugin.WindowCommand):
 		sublime.set_clipboard(self.code)
 	def handle_edit(self):
 		# Create a new file
-		view = self.window.new_file(syntax = f'Packages/{self.language}/{self.language}.sublime-syntax')
+		view = self.window.new_file()
+		if self.language:
+			view.assign_syntax(syntax = f'Packages/{self.language}/{self.language}.sublime-syntax')
+
 		# Insert the text
 		view.run_command('insert', {'characters': self.code})
 		# Set the name
@@ -69,5 +72,8 @@ class PiecesHandleMarkdownCommand(sublime_plugin.WindowCommand):
 		view.set_scratch(True)
 		# Set the view to handle the save operation
 		PiecesHandleMarkdownCommand.views_to_handler[view.id()] = self.asset_id
+		# Close the sheet
+		self.sheet.close()
+
 
 
