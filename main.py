@@ -6,6 +6,7 @@ import sublime
 
 # load the commands
 from pieces.assets import *
+from pieces.ask import *
 
 
 def startup():
