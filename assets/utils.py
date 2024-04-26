@@ -49,8 +49,14 @@ class AssetSnapshot:
 			if asset_id not in cls.assets_identifiers_snapshot:
 				cls.assets_identifiers_snapshot.append(asset_id)
 			if asset_id not in cls.asset_set:
-				cls.asset_queue.put(asset_id)  # Add asset_id to the queue
-				cls.asset_set.add(asset_id)  # Add asset_id to the set
+				if item.deleted:
+					# Asset deleted
+					cls.assets_identifiers_snapshot.remove(asset_id)
+					cls.loaded_assets_identifiers_snapshot.remove(asset_id)
+					cls.assets_snapshot.pop(asset_id)
+				else:
+					cls.asset_queue.put(asset_id)  # Add asset_id to the queue
+					cls.asset_set.add(asset_id)  # Add asset_id to the set
 		cls.block = False # Remove the block to end the thread
 
 

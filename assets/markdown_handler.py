@@ -1,7 +1,7 @@
 import sublime_plugin
 import sublime
 from .list_assets import PiecesListAssetsCommand
-from .helper_functions import AssetSnapshot
+from .utils import AssetSnapshot
 from pieces_os_client import *
 
 from pieces.settings import PiecesSettings
