@@ -1,1 +1,1 @@
-from .commands import PiecesAskQuestionCommand
+from .commands import PiecesAskQuestionCommand,ReplaceSelectionCommand

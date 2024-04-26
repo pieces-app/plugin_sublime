@@ -7,12 +7,7 @@
 			{
 				"caption": "Save to pieces",
 				"command": "pieces_create_asset",
-			},
-			{ "caption" : "-" },
-			{
-				"caption": "Pieces Refactor",
-				"command": "pieces_ask_question",
-			},
+			}
 		]
 	}
 ]
