@@ -13,5 +13,9 @@
         "keys": ["ctrl+s"], 
         "command": "pieces_handle_markdown",
         "args": {"mode": "save"}
+    },
+    {
+        "keys":["delete"],
+        "command":"pieces_delete_asset"
     }
 ]

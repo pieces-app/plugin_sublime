@@ -8,7 +8,7 @@ class PiecesEventListener(sublime_plugin.EventListener):
     def on_window_command(self, view, command_name, args):
         
         # List of commands to check
-        commands_to_check = ['pieces_list_assets']
+        commands_to_check = ['pieces_list_assets',"pieces_delete_asset"]
         self.check(command_name,commands_to_check)
         
     def on_text_command(self,view,command_name,args):
