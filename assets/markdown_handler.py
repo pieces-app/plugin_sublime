@@ -73,7 +73,7 @@ class PiecesHandleMarkdownCommand(sublime_plugin.WindowCommand):
 					view.assign_syntax(syntax = syntax)
 					break
 		# Insert the text
-		view.run_command('insert', {'characters': self.code})
+		view.run_command('append', {'characters': self.code})
 		# Set the name
 		view.set_name(self.name)
 		# Set it to avoid the saving dialog 
