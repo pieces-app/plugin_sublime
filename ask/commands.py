@@ -7,12 +7,12 @@ from difflib import Differ
 from .prompts import *
 import mdpopups
 import time
-
 LIST_ITEMS = [
-	("Ask for bugs fix",BUGS_PROMPT),
-	("Ask for possible bugs", POSSIBLE_BUGS_PROMPT),
-	("Write Cleaner code", CLEANER_CODE_PROMPT),
-	("Add a doc string to this function",DOC_STRING_PROMPT)
+	("Fix a bug",BUGS_PROMPT),
+	("Find a possible bug", POSSIBLE_BUGS_PROMPT),
+	("Write cleaner code", CLEANER_CODE_PROMPT),
+	("Add a doc string to this function",DOC_STRING_PROMPT),
+	("Add comments to the code",ADD_COMMENTS_PROMPT)
 ] # TODO: Add more suff 
 
 

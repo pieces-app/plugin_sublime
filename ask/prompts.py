@@ -18,4 +18,11 @@ Generate a doc string to that code
 Here is the code: {code}
 """
 
+
+ADD_COMMENTS_PROMPT="""
+Add some comments to that code to be much more easier to read
+Here is the code: {code}
+"""
+
+
 description_needed_commands = [BUGS_PROMPT]
