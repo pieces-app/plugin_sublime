@@ -26,7 +26,8 @@ class PiecesEventListener(sublime_plugin.EventListener):
 	def on_pre_close(self,view):
 		asset_id = PiecesHandleMarkdownCommand.views_to_handle.get(view.id())
 		if asset_id:
-			if sublime.ok_cancel_dialog("Do you want to this snippet to pieces?", ok_title='Save', title='Save snippet'):
-				view.window().run_command("pieces_handle_markdown",{"mode": "save"})
-			else:
-				view.window().run_command("pieces_list_assets",{"pieces_asset_id":asset_id})
+			if view.is_dirty(): # There is unsaved changes
+				if sublime.ok_cancel_dialog("Do you want to this snippet to pieces?", ok_title='Save', title='Save snippet'):
+					view.window().run_command("pieces_handle_markdown",{"mode": "save"})
+					return
+			view.window().run_command("pieces_list_assets",{"pieces_asset_id":asset_id})

@@ -31,9 +31,7 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 		# Find all code blocks
 		code_block = re.findall(code_block_pattern, markdown_text)
 		try:
-			iterable = AssetSnapshot.assets_snapshot[pieces_asset_id].formats.iterable
-			sorted_iterable = sorted(iterable, key=lambda x: x.updated.value, reverse=True)
-			language = sorted_iterable[0].analysis.code.language
+			language = AssetSnapshot.assets_snapshot[pieces_asset_id].original.reference.classification.specific
 		except:
 			language = None
 		PiecesListAssetsCommand.sheets_md[sheet_id] = {"code":"\n".join(code_block[0].split("\n")[1:-1]),"name":api_response.name,"language":language,"id":pieces_asset_id}

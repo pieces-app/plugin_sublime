@@ -5,6 +5,8 @@ from .utils import AssetSnapshot
 from pieces_os_client import *
 
 from pieces.settings import PiecesSettings
+from .ext_map import file_map
+
 
 class PiecesHandleMarkdownCommand(sublime_plugin.WindowCommand):
 	views_to_handle = {}
@@ -65,19 +67,15 @@ class PiecesHandleMarkdownCommand(sublime_plugin.WindowCommand):
 	def handle_edit(self):
 		# Create a new file
 		view = self.window.new_file()
+		
 		if self.language:
-			syntax_file = f'{self.language}.sublime-syntax'
-			available_syntaxes = sublime.find_resources("*.sublime-syntax")
-			for syntax in available_syntaxes:
-				if syntax_file in syntax:
-					view.assign_syntax(syntax = syntax)
-					break
+			syntax = file_map.get(self.language)
+			if syntax:
+				view.assign_syntax(syntax = syntax)
 		# Insert the text
 		view.run_command('append', {'characters': self.code})
 		# Set the name
 		view.set_name(self.name)
-		# Set it to avoid the saving dialog 
-		view.set_scratch(True)
 		# Set the view to handle the save operation
 		PiecesHandleMarkdownCommand.views_to_handle[view.id()] = self.asset_id
 		# Close the sheet
