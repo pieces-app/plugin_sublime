@@ -7,7 +7,7 @@ from pieces_os_client import *
 from pieces.settings import PiecesSettings
 
 class PiecesHandleMarkdownCommand(sublime_plugin.WindowCommand):
-	views_to_handler = {}
+	views_to_handle = {}
 	def run(self,mode):
 		sheet = self.window.active_sheet()
 		self.sheet = sheet
@@ -20,9 +20,11 @@ class PiecesHandleMarkdownCommand(sublime_plugin.WindowCommand):
 		
 		if not sheet_details:
 			if mode == "copy":
-				self.window.run_command("copy")
+				self.window.run_command("copy") # Default copy command
+			if mode == "delete":
+				self.window.run_command("right_delete") # Default delete key
 			return
-			
+
 		self.code = sheet_details["code"]
 		self.language = sheet_details["language"]
 		self.name = sheet_details["name"]
@@ -32,13 +34,15 @@ class PiecesHandleMarkdownCommand(sublime_plugin.WindowCommand):
 			self.handle_copy()
 		elif mode == "edit":
 			self.handle_edit()
+		elif mode == "delete":
+			self.window.run_command("pieces_delete_asset")
 
 
 
 	def handle_save(self):
 		view = self.window.active_view()
 		if view:
-			asset_id = PiecesHandleMarkdownCommand.views_to_handler.get(view.id())
+			asset_id = PiecesHandleMarkdownCommand.views_to_handle.get(view.id())
 			if asset_id:
 				asset = AssetSnapshot.assets_snapshot[asset_id]
 				format_api = FormatApi(PiecesSettings.api_client)

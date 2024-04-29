@@ -1,21 +1,22 @@
 [
-    {
-        "keys": ["command+e"], 
-        "command": "pieces_handle_markdown",
-        "args": {"mode": "edit"}
-    },
-    {
-        "keys": ["command+c"], 
-        "command": "pieces_handle_markdown",
-        "args": {"mode": "copy"}
-    },
-    {
-        "keys": ["command+s"], 
-        "command": "pieces_handle_markdown",
-        "args": {"mode": "save"}
-    },
-    {
-        "keys":["delete"],
-        "command":"pieces_delete_asset"
-    }
+	{
+		"keys": ["command+e"], 
+		"command": "pieces_handle_markdown",
+		"args": {"mode": "edit"}
+	},
+	{
+		"keys": ["command+c"], 
+		"command": "pieces_handle_markdown",
+		"args": {"mode": "copy"}
+	},
+	{
+		"keys": ["command+s"], 
+		"command": "pieces_handle_markdown",
+		"args": {"mode": "save"}
+	},
+	{
+		"keys":["delete"],
+		"command":"pieces_handle_markdown",
+		"args": {"mode": "delete"}
+	}
 ]

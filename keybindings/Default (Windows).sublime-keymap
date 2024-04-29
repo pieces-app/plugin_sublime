@@ -16,6 +16,7 @@
     },
     {
         "keys":["delete"],
-        "command":"pieces_delete_asset"
+        "command":"pieces_handle_markdown",
+        "args": {"mode": "delete"}
     }
 ]
