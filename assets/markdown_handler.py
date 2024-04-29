@@ -66,8 +66,12 @@ class PiecesHandleMarkdownCommand(sublime_plugin.WindowCommand):
 		# Create a new file
 		view = self.window.new_file()
 		if self.language:
-			view.assign_syntax(syntax = f'Packages/{self.language}/{self.language}.sublime-syntax')
-
+			syntax_file = f'{self.language}.sublime-syntax'
+			available_syntaxes = sublime.find_resources("*.sublime-syntax")
+			for syntax in available_syntaxes:
+				if syntax_file in syntax:
+					view.assign_syntax(syntax = syntax)
+					break
 		# Insert the text
 		view.run_command('insert', {'characters': self.code})
 		# Set the name
@@ -75,7 +79,7 @@ class PiecesHandleMarkdownCommand(sublime_plugin.WindowCommand):
 		# Set it to avoid the saving dialog 
 		view.set_scratch(True)
 		# Set the view to handle the save operation
-		PiecesHandleMarkdownCommand.views_to_handler[view.id()] = self.asset_id
+		PiecesHandleMarkdownCommand.views_to_handle[view.id()] = self.asset_id
 		# Close the sheet
 		self.sheet.close()
 
