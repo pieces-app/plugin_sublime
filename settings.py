@@ -65,6 +65,7 @@ class PiecesSettings:
 	def get_models_ids(cls) -> Dict[str, Dict[str, Union[str, int]]]:
 		if cls.models:
 			return models
+		# TODO: uncomment this when the sdks get updated
 		# api_instance = pos_client.ModelsApi(api_client)
 
 		# api_response = api_instance.models_snapshot()

@@ -64,6 +64,7 @@ class PiecesAskQuestionCommand(sublime_plugin.TextCommand):
 				model = PiecesSettings.model_id,
 				relevant = pos_client.RelevantQGPTSeeds(
 					iterable = [
+					# TODO: Add the snippet as a context
 					#     pos_client.RelevantQGPTSeed(
 					#         seed = pos_client.Seed(
 					#             type="SEEDED_ASSET",
@@ -140,7 +141,7 @@ class ReplaceSelectionCommand(sublime_plugin.TextCommand):
         # Replace the current selection with the provided code
         self.view.replace(edit, region, code)
 
-
+# TODO: Add better git diff algo rather than the Diff().compare
 # class SnippetDifferences:
 # 	def __init__(self, previous_state: list, current_state: list):
 # 		self.previous_state = previous_state

@@ -8,6 +8,19 @@ class PiecesCreateAssetCommand(sublime_plugin.TextCommand):
 		# Get the all the selected text
 		selection_data = "\n".join([self.view.substr(selection) for selection in self.view.sel()])
 		
+
+		# Getting the metadata
+		try:
+			ext = self.view.file_name().split(".")[-1]
+
+			if ext in pos_client.ClassificationSpecificEnum:
+				metadata = pos_client.FragmentMetadata(ext=ext)
+			else:
+				raise Exception
+		except:
+			metadata = none
+
+
 		if not data:
 			if selection_data.strip("\n"):
 				data = selection_data
@@ -21,10 +34,11 @@ class PiecesCreateAssetCommand(sublime_plugin.TextCommand):
 				application=PiecesSettings.get_application(),
 					format=pos_client.SeededFormat(
 							fragment=pos_client.SeededFragment(
-								string=pos_client.TransferableString(raw=data)
+								string=pos_client.TransferableString(raw=data),
+								metadata=metadata
 							)
 						),
-					metadata=None  
+					metadata=None
 				),
 			type="SEEDED_ASSET"
 		)
