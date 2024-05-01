@@ -1,13 +1,15 @@
 import sublime_plugin
 import sublime
 from .list_assets import PiecesListAssetsCommand
-from .helper_functions import AssetSnapshot
+from .utils import AssetSnapshot
 from pieces_os_client import *
 
 from pieces.settings import PiecesSettings
+from .ext_map import file_map
+
 
 class PiecesHandleMarkdownCommand(sublime_plugin.WindowCommand):
-	views_to_handler = {}
+	views_to_handle = {}
 	def run(self,mode):
 		sheet = self.window.active_sheet()
 		self.sheet = sheet
@@ -20,9 +22,11 @@ class PiecesHandleMarkdownCommand(sublime_plugin.WindowCommand):
 		
 		if not sheet_details:
 			if mode == "copy":
-				self.window.run_command("copy")
+				self.window.run_command("copy") # Default copy command
+			if mode == "delete":
+				self.window.run_command("right_delete") # Default delete key
 			return
-			
+
 		self.code = sheet_details["code"]
 		self.language = sheet_details["language"]
 		self.name = sheet_details["name"]
@@ -32,13 +36,15 @@ class PiecesHandleMarkdownCommand(sublime_plugin.WindowCommand):
 			self.handle_copy()
 		elif mode == "edit":
 			self.handle_edit()
+		elif mode == "delete":
+			self.window.run_command("pieces_delete_asset")
 
 
 
 	def handle_save(self):
 		view = self.window.active_view()
 		if view:
-			asset_id = PiecesHandleMarkdownCommand.views_to_handler.get(view.id())
+			asset_id = PiecesHandleMarkdownCommand.views_to_handle.get(view.id())
 			if asset_id:
 				asset = AssetSnapshot.assets_snapshot[asset_id]
 				format_api = FormatApi(PiecesSettings.api_client)
@@ -60,14 +66,20 @@ class PiecesHandleMarkdownCommand(sublime_plugin.WindowCommand):
 		sublime.set_clipboard(self.code)
 	def handle_edit(self):
 		# Create a new file
-		view = self.window.new_file(syntax = f'Packages/{self.language}/{self.language}.sublime-syntax')
+		view = self.window.new_file()
+		
+		if self.language:
+			syntax = file_map.get(self.language)
+			if syntax:
+				view.assign_syntax(syntax = syntax)
 		# Insert the text
-		view.run_command('insert', {'characters': self.code})
+		view.run_command('append', {'characters': self.code})
 		# Set the name
 		view.set_name(self.name)
-		# Set it to avoid the saving dialog 
-		view.set_scratch(True)
 		# Set the view to handle the save operation
-		PiecesHandleMarkdownCommand.views_to_handler[view.id()] = self.asset_id
+		PiecesHandleMarkdownCommand.views_to_handle[view.id()] = self.asset_id
+		# Close the sheet
+		self.sheet.close()
+
 
 

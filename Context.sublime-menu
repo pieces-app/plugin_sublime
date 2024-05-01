@@ -1,0 +1,13 @@
+[
+	{
+		"id": "pieces",
+		"caption":"Pieces",
+		"children":
+		[
+			{
+				"caption": "Save to pieces",
+				"command": "pieces_create_asset",
+			}
+		]
+	}
+]

@@ -8,7 +8,7 @@ from pieces.settings import PiecesSettings
 
 
 class AssetSnapshot:
-	assets_identifiers_snapshot = [] # List of all the assets id that the user have
+	assets_identifiers_snapshot = [] # List of all the assets id that the user have #TODO REMOVE AND USE THE ASSETS_SNAPSHOT
 	assets_snapshot:Dict[str,Asset] = {}  # List of the asset object that is already loaded
 	loaded_assets_identifiers_snapshot = [] # List of the loaded ids that is in the assets_snpashot 
 	asset_queue = queue.Queue() # Queue for asset_ids to be processed
@@ -21,9 +21,9 @@ class AssetSnapshot:
 		try:
 			while True:
 				asset_id = cls.asset_queue.get(block=cls.block,timeout=5)
+				cls.asset_set.remove(asset_id)  # Remove asset_id from the set
 				cls.update_asset_id(asset_id)
 				cls.asset_queue.task_done()
-				cls.asset_set.remove(asset_id)  # Remove asset_id from the set
 		except queue.Empty: # queue is empty and the block is false
 			if cls.block:
 				cls.worker() # if there is more assets to load
@@ -49,8 +49,14 @@ class AssetSnapshot:
 			if asset_id not in cls.assets_identifiers_snapshot:
 				cls.assets_identifiers_snapshot.append(asset_id)
 			if asset_id not in cls.asset_set:
-				cls.asset_queue.put(asset_id)  # Add asset_id to the queue
-				cls.asset_set.add(asset_id)  # Add asset_id to the set
+				if item.deleted:
+					# Asset deleted
+					cls.assets_identifiers_snapshot.remove(asset_id)
+					cls.loaded_assets_identifiers_snapshot.remove(asset_id)
+					cls.assets_snapshot.pop(asset_id)
+				else:
+					cls.asset_queue.put(asset_id)  # Add asset_id to the queue
+					cls.asset_set.add(asset_id)  # Add asset_id to the set
 		cls.block = False # Remove the block to end the thread
 
 

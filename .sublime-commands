@@ -1,6 +1,10 @@
 [
-        {
-                "caption": "Pieces: Open an asset",
-                "command": "pieces_list_assets"
-        }
+	{
+		"caption": "Pieces: Open an asset",
+		"command": "pieces_list_assets"
+	},
+	{
+		"caption": "Pieces: Ask Copilot",
+		"command": "pieces_ask_question"
+	},
 ]
