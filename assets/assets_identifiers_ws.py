@@ -9,7 +9,7 @@ class AssetsIdentifiersWS:
         if not hasattr(cls, 'instance'):
             cls.instance = super(AssetsIdentifiersWS, cls).__new__(cls)
         return cls.instance
-    def __init__(self, on_message_callback):
+    def __init__(self, on_message_callback=None):
         self.ws = None
         self.is_connected = False
         self.on_message_callback = on_message_callback

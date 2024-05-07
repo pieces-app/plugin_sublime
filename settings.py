@@ -9,39 +9,64 @@ from pieces import __version__
 
 
 class PiecesSettings:
+	# Initialize class variables
 	application = None
 	models = None
+	host = ""
+	model_name = ""
+
+	# Load the settings from 'pieces.sublime-settings' file using Sublime Text API
+	settings = sublime.load_settings('pieces.sublime-settings')
+
 	@classmethod
-	def on_settings_change(cls):
-		settings = sublime.load_settings('pieces.sublime-settings')
-		
-		# Host
-		cls.host = settings.get('host')
+	def host_init(cls):
+		"""
+		Initialize the host URL for the API connection.
+
+		This method sets the host URL based on the configuration settings. If the host URL is not provided in the settings, it defaults to a specific URL based on the platform. 
+		It then creates the WebSocket base URL and defines the WebSocket URLs for different API endpoints.
+		"""
+		cls.host = cls.settings.get('host')
 		if not cls.host:
 			if 'linux' == sublime.platform():
 				cls.host = "http://localhost:5323"
 			else:
 				cls.host = "http://localhost:1000"
 
-
 		ws_base_url = cls.host.replace('http','ws')
-
-		# WEBSOCKET_URL = ws_base_url + "/qgpt/stream"
 
 		cls.ASSETS_IDENTIFIERS_WS_URL = ws_base_url + "/assets/stream/identifiers"
 
-		# Defining the host is optional and defaults to http://localhost:1000
-		# See configuration.py for a list of all supported configuration parameters.
 		configuration = pos_client.Configuration(host=cls.host)
 
-
-		# Initialize the ApiClient globally
 		cls.api_client = pos_client.ApiClient(configuration)
 
+
+
+	@classmethod
+	def models_init(cls):
+		"""
+		Initialize the model ID for the class using the specified settings.
+
+		This method retrieves the available models, sets the model ID based on the settings provided,
+		and defaults to a specific model ("GPT-3.5-turbo Chat Model") if the specified model is not found.
+		"""
+
 		models = cls.get_models_ids()
-		cls.model_id = models.get(settings.get("model"),None)
+		cls.model_name = cls.settings.get("model")
+		cls.model_id = models.get(cls.model_name,None)
+
 		if not cls.model_id:
 			cls.model_id = models["GPT-3.5-turbo Chat Model"]
+
+
+	@classmethod
+	def on_settings_change(cls):
+		if cls.host != settings.get('host'):
+			cls.host_init()
+		if cls.model_name != settings.get("model"):
+			cls.models_init()
+		
 
 
 
