@@ -8,6 +8,7 @@ import asyncio
 # load the commands
 from pieces.assets import *
 from pieces.ask import *
+from pieces.auth import *
 
 
 def startup():
