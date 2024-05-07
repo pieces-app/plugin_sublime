@@ -9,11 +9,11 @@ from pieces import __version__
 
 
 class PiecesSettings:
-    # Initialize class variables
-    application = None
-    models = None
-    # Load the settings from 'pieces.sublime-settings' file using Sublime Text API
-    settings = sublime.load_settings('pieces.sublime-settings')
+	# Initialize class variables
+	application = None
+	models = None
+	# Load the settings from 'pieces.sublime-settings' file using Sublime Text API
+	settings = sublime.load_settings('pieces.sublime-settings')
 
 	@classmethod
 	def host_init(cls):

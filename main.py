@@ -3,6 +3,7 @@ from pieces.api import open_pieces_os
 from pieces.settings import PiecesSettings
 
 import sublime
+import asyncio
 
 # load the commands
 from pieces.assets import *
@@ -33,6 +34,9 @@ def plugin_loaded():
 	PiecesSettings.host_init() # Intilize the hosts url
 	sublime.set_timeout_async(startup,0)
 	
+
+def plugin_unloaded():
+	asyncio.run(AssetsIdentifiersWS().close_websocket_connection())
 	
 
 	
