@@ -55,6 +55,7 @@ class PiecesSettings:
 		models = cls.get_models_ids()
 		cls.model_name = cls.settings.get("model")
 		cls.model_id = models.get(cls.model_name,None)
+
 		if not cls.model_id:
 			cls.model_id = models["GPT-3.5-turbo Chat Model"]
 
@@ -63,7 +64,7 @@ class PiecesSettings:
 	def on_settings_change(cls):
 		if cls.host != settings.get('host'):
 			cls.host_init()
-		if cls.model_name != settings.get("model")
+		if cls.model_name != settings.get("model"):
 			cls.models_init()
 		
 
