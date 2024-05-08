@@ -31,3 +31,20 @@ Need the copilot to comment, fix a bug, or add a doc string? Simply go to the co
 You can log in and out of your Pieces account using the `Pieces: Login` or `Pieces: Logout` command in your command palette. An output panel is available to check your cloud status and login status.
 
 
+### Connect
+
+#### Join our [Discord Community](https://discord.gg/getpieces)
+
+Become a part of our Discord community to stay updated and engage in discussions about our features.
+
+#### Feature Request
+
+Have an idea for a new feature? Feel free to submit your suggestions on our [GitHub page](https://github.com/pieces-app/plugin_sublime/issues).
+
+#### Tech Blogs
+
+Stay connected and up-to-date with our latest [blogs](https://code.pieces.app/blog).
+
+#### Plugins
+
+Explore our collection of awesome Pieces [plugins](https://code.pieces.app/plugins).
