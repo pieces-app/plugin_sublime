@@ -6,6 +6,7 @@ Please make sure you have the pieces os https://docs.pieces.app/installation-get
 
 
 Useful links:
-github: https://github.com/pieces-app/plugin_sublime
-website: https://pieces.app
-
+-------------
+Website: https://pieces.app
+Github: https://github.com/pieces-app/plugin_sublime
+Discord: https://discord.gg/getpieces
