@@ -25,9 +25,11 @@ class AuthUser:
 
 		if allocation:
 			allocation_html = f"<p>Cloud Status: <span style=color:green>•</span> Connected</p>"
-			if allocation.urls.vanity.url:
-				allocation_html += f"<p>Personal Domain: {allocation.urls.vanity.url}</p>"
-			
+			try:
+				if allocation.urls.vanity.url:
+					allocation_html += f"<p>Personal Domain: {allocation.urls.vanity.url}</p>"
+			except AttributeError:
+				pass
 		else:
 			allocation_html = "<p>Cloud Status: <span style=color:red>•</span> Disconnected</p>"
 		cls.phantom_set.update([])

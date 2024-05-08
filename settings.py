@@ -46,7 +46,6 @@ class PiecesSettings:
 
 
 
-
 	@classmethod
 	def models_init(cls):
 		"""
