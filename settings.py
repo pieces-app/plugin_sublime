@@ -37,9 +37,12 @@ class PiecesSettings:
 
 		cls.ASSETS_IDENTIFIERS_WS_URL = ws_base_url + "/assets/stream/identifiers"
 
+		cls.AUTH_WS_URL = ws_base_url + "/user/stream"
+
 		configuration = pos_client.Configuration(host=cls.host)
 
 		cls.api_client = pos_client.ApiClient(configuration)
+
 
 
 
