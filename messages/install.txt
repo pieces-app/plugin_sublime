@@ -1,0 +1,11 @@
+Welcome to Pieces sublime Plugin
+
+
+Please make sure you have the pieces os https://docs.pieces.app/installation-getting-started/what-am-i-installing
+
+
+
+Useful links:
+github: https://github.com/pieces-app/plugin_sublime
+website: https://pieces.app
+
