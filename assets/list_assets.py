@@ -49,7 +49,7 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 class PiecesAssetIdInputHandler(sublime_plugin.ListInputHandler):
 	def list_items(self):
 		assets_list = []
-		for asset_id in AssetSnapshot.loaded_assets_identifiers_snapshot:
+		for asset_id in AssetSnapshot.assets_snapshot.keys():
 			asset = AssetSnapshot.assets_snapshot[asset_id]
 			name = asset.name if asset.name else "New asset"
 			try:
