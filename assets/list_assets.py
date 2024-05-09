@@ -11,7 +11,7 @@ from pieces.settings import PiecesSettings
 
 
 class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
-	sheets_md = {}
+	sheets_md = {} # {Sheetid : {asset:property}}
 	def run(self,pieces_asset_id):
 
 		api_instance = AssetApi(PiecesSettings.api_client)
