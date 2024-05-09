@@ -4,7 +4,6 @@
 ##### <p align="center"> [Website](https://pieces.app/) • [Pieces OS Documentation](https://docs.pieces.app/) • [Pieces Sublime github repository](https://github.com/pieces-app/plugin_sublime)
 </p>
 
-<iframe src="https://drive.google.com/file/d/1bumlWnWm8wRsOFAEdrMBw-hBU6DnHdBD/preview"></iframe>
 
 ## Getting Started
 
