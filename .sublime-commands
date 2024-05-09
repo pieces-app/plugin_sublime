@@ -6,5 +6,13 @@
 	{
 		"caption": "Pieces: Ask Copilot",
 		"command": "pieces_ask_question"
-	}
+	},
+	{
+		"caption": "Pieces: Login",
+		"command": "pieces_login"
+	},
+	{
+		"caption": "Pieces: Logout",
+		"command": "pieces_logout"
+	},
 ]

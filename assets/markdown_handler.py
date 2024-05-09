@@ -9,7 +9,8 @@ from .ext_map import file_map
 
 
 class PiecesHandleMarkdownCommand(sublime_plugin.WindowCommand):
-	views_to_handle = {}
+	views_to_handle = {} # {Edit view id : asset_id}
+	saved_asset_view = [] # Store the asset id to avoid the prompt save message used in the event listener
 	def run(self,mode):
 		sheet = self.window.active_sheet()
 		self.sheet = sheet
@@ -58,6 +59,7 @@ class PiecesHandleMarkdownCommand(sublime_plugin.WindowCommand):
 				elif original.file.string.raw:
 					original.file.string.raw = data
 				format_api.format_update_value(transferable=False, format=original)
+				PiecesHandleMarkdownCommand.saved_asset_view.append(view.id())
 				self.sheet.close(lambda x: view.close(on_close=lambda x:self.window.run_command("pieces_list_assets",{"pieces_asset_id":asset_id})))
 			else:
 				self.window.run_command("save")
@@ -76,6 +78,8 @@ class PiecesHandleMarkdownCommand(sublime_plugin.WindowCommand):
 		view.run_command('append', {'characters': self.code})
 		# Set the name
 		view.set_name(self.name)
+		# Set it to scratch to avoid the default saving menu
+		view.set_scratch(True)
 		# Set the view to handle the save operation
 		PiecesHandleMarkdownCommand.views_to_handle[view.id()] = self.asset_id
 		# Close the sheet
