@@ -1,10 +1,10 @@
 [
 	{
-		"caption": "Pieces: Open an asset",
+		"caption": "Pieces: Open Saved Material",
 		"command": "pieces_list_assets"
 	},
 	{
 		"caption": "Pieces: Ask Copilot",
 		"command": "pieces_ask_question"
-	},
+	}
 ]

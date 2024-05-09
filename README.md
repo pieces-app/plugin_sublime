@@ -8,20 +8,25 @@
 ## Getting Started
 
 Welcome to the Pieces Sublime Plugin.
-Pieces Sublime plugin robust plugin designed to manage your pieces snippets and interact seamlessly with the Pieces OS client.
-To get started, navigate to `Preferences > Package Settings > Pieces > Keybindings` to check out and modify the keybindings. If you wish to change the llm model you're using or the host, you can do so in the settings.
+The Pieces Sublime plugin is designed to manage your saved materials in Pieces right from within Sublime, and interact seamlessly with Pieces OS.client.
 
-### Open Asset Command
+To get started, Check the settings. If you wish to change the llm model you're using or the host, you can do so in the settings `Preferences > Package Settings > Pieces > Settings`.
 
-To open your assets, simply open your command palette and run `Pieces: Open an asset`. Then, select the asset you wish to open.
+### Open Saved Material
 
-#### Editor Mode
+To open your saved materials, simply open your command palette and run `Pieces: Open Saved Material`. Then, select the asset you wish to open.
 
-Enter the editor mode with `command/ctrl + e`. You can then modify your asset and save it using `command/ctrl + s`.
+#### Edit Saved Materials
 
-#### Copy an Asset
+To edit a saved material, you'll need to toggle into editor mode. You can do so by tapping `command/ctrl+e`. From there, you will be able to modify the contents of your material and save the changes using `command/ctrl + s`.
+
+#### Copy Saved Material
 
 If you're in an asset sheet, you can quickly copy the asset content without selecting it using `command/ctrl + c`.
+
+### Right click to add an asset
+
+To save a new snippet in Pieces, select the code you wish to save, right-click to open the context menu, and select `Pieces > Save to Pieces`.
 
 ### Copilot Ask
 
@@ -31,17 +36,13 @@ Need the copilot to comment, fix a bug, or add a doc string? Simply go to the co
 
 You can log in and out of your Pieces account using the `Pieces: Login` or `Pieces: Logout` command in your command palette. An output panel is available to check your cloud status and login status.
 
-### Right click to add an asset
-
-You can create a new asset to pieces select the text, right click then choose `pieces>save to pieces`.
-
-### Connect
+### Connect with the Pieces Community
 
 #### Join our [Discord Community](https://discord.gg/getpieces)
 
 Become a part of our Discord community to stay updated and engage in discussions about our features.
 
-#### Feature Request
+#### Submit a Feature Request or Feedback
 
 Have an idea for a new feature? Feel free to submit your suggestions on our [GitHub page](https://github.com/pieces-app/plugin_sublime/issues).
 
