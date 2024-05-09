@@ -8,9 +8,9 @@
 ## Getting Started
 
 Welcome to the Pieces Sublime Plugin.
-The Pieces Sublime plugin is designed to manage your saved materials in Pieces right from within Sublime, and interact seamlessly with Pieces OS.client.
+The Pieces Sublime plugin is designed to manage your saved materials in Pieces right from within Sublime, and interact seamlessly with Pieces OS.
 
-To get started, Check the settings. If you wish to change the llm model you're using or the host, you can do so in the settings `Preferences > Package Settings > Pieces > Settings`.
+To get started, check the settings. If you wish to change the llm model you're using or the host, you can do so in the settings `Preferences > Package Settings > Pieces > Settings`.
 
 ### Open Saved Material
 
@@ -22,7 +22,7 @@ To edit a saved material, you'll need to toggle into editor mode. You can do so 
 
 #### Copy Saved Material
 
-If you're in an asset sheet, you can quickly copy the asset content without selecting it using `command/ctrl + c`.
+If you're viewing a saved material, you can quickly copy the asset content without selecting it using `command/ctrl + c`.
 
 ### Right click to add an asset
 
@@ -53,3 +53,7 @@ Stay connected and up-to-date with our latest [blogs](https://code.pieces.app/bl
 #### Plugins
 
 Explore our collection of awesome Pieces [plugins](https://code.pieces.app/plugins).
+
+#### View Power Tips & Best Practices
+
+Don't forgot to check out our youtube channel for [Power Tips & Best Practices](https://youtube.com/@getpieces)
