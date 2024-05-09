@@ -31,6 +31,9 @@ Need the copilot to comment, fix a bug, or add a doc string? Simply go to the co
 
 You can log in and out of your Pieces account using the `Pieces: Login` or `Pieces: Logout` command in your command palette. An output panel is available to check your cloud status and login status.
 
+### Right click to add an asset
+
+You can create a new asset to pieces select the text, right click then choose `pieces>save to pieces`.
 
 ### Connect
 
