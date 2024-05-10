@@ -14,6 +14,6 @@ Get Pieces OS -> https://docs.pieces.app/installation-getting-started/what-am-i-
 Useful links:
 -------------
 Website: https://pieces.app
-Github: https://github.com/pieces-app/plugin_sublime
+GitHub: https://github.com/pieces-app/plugin_sublime
 Discord: https://discord.gg/getpieces
-Youtube: https://youtube.com/@getpieces
+YouTube: https://youtube.com/@getpieces

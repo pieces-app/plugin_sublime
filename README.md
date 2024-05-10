@@ -56,4 +56,4 @@ Explore our collection of awesome Pieces [plugins](https://code.pieces.app/plugi
 
 #### View Power Tips & Best Practices
 
-Don't forgot to check out our youtube channel for [Power Tips & Best Practices](https://youtube.com/@getpieces)
+Don't forget to check out our YouTube channel for [Power Tips & Best Practices](https://youtube.com/@getpieces)
