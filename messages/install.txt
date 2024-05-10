@@ -1,0 +1,19 @@
+Welcome to Pieces Sublime Plugin
+--------------------------------
+
+
+To get started, please make sure you have Pieces OS installed, running, and up-to-date.
+Pieces OS is the centralized storage agent that works on-device, 
+unifying various developer tools (including the Pieces for Developers Desktop App) to proactively capture and enrich useful materials, streamline collaboration,
+and solve complex problems through a contextual understanding of your unique workflow.
+
+Get Pieces OS -> https://docs.pieces.app/installation-getting-started/what-am-i-installing
+
+
+
+Useful links:
+-------------
+Website: https://pieces.app
+GitHub: https://github.com/pieces-app/plugin_sublime
+Discord: https://discord.gg/getpieces
+YouTube: https://youtube.com/@getpieces
