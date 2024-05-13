@@ -49,6 +49,7 @@ def plugin_loaded():
 
 def plugin_unloaded():
 	asyncio.run(AssetsIdentifiersWS().close_websocket_connection())
-	
+	asyncio.run(AuthWebsocket().close_websocket_connection())
+
 
 	
