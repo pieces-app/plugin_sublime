@@ -13,10 +13,11 @@ class AuthUser:
 		if not user:
 			cls.login_page()
 		else:
-			cls.logout_page(user.email,user.name,user.allocation,cls.connect)
+			cls.logout_page(user.email,user.name,user.allocation)
 			if cls.connect:
 				AllocationsApi(PiecesSettings.api_client).allocations_connect_new_cloud(user)
 				cls.connect = False # Rest the connect variable
+
 
 
 	@classmethod
@@ -27,7 +28,7 @@ class AuthUser:
 		cls.phantom_set.update([phantom])
 
 	@classmethod
-	def logout_page(cls,email,username,allocation,connect):
+	def logout_page(cls,email,username,allocation):
 		if allocation:
 			allocation_html = f"<p>Cloud Status: <span style=color:green>•</span> Connected</p>"
 			try:
@@ -36,7 +37,7 @@ class AuthUser:
 			except AttributeError:
 				pass
 		else:
-			if connect:
+			if cls.connect:
 				allocation_html = "<p>Cloud Status: <span style=color:yellow>•</span> Connecting</p>"
 			else:
 				allocation_html = "<p>Cloud Status: <span style=color:red>•</span> Disconnected</p>"
