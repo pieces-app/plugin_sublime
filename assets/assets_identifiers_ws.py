@@ -1,5 +1,6 @@
 from pieces_os_client import StreamedIdentifiers
 import websockets
+import threading
 
 from pieces.settings import PiecesSettings
 from pieces.base_websocket import BaseWebsocket
@@ -18,6 +19,6 @@ class AssetsIdentifiersWS(BaseWebsocket):
 		self.is_connected = True
 		try:
 			async for message in self.ws:
-				self.on_message_callback(StreamedIdentifiers.from_json(message))
+				threading.Thread(target = self.on_message_callback, args = (StreamedIdentifiers.from_json(message),)).start()
 		except websockets.exceptions.ConnectionClosed:
 			self.is_connected = False
