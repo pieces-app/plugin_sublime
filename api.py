@@ -31,7 +31,7 @@ def get_health():
 
 
 
-def open_pieces_os(cls) -> Optional[str]:
+def open_pieces_os() -> Optional[str]:
 	"""Open pieces os and return its version"""
 	version = get_version()
 	if version:
@@ -47,11 +47,11 @@ def open_pieces_os(cls) -> Optional[str]:
 			subprocess.run(["xdg-open","pieces://launch"])
 
 		for _ in range(2):
-			version = cls.get_version()
+			version = get_version()
 			if version:
 				return version
 			time.sleep(2) # wait for the server to open
-		return cls.get_version() # pieces os version
+		return get_version() # pieces os version
 
 
 def get_user():
