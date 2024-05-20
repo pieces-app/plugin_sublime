@@ -106,3 +106,12 @@ class PiecesSettings:
 		response = json.loads(response)["iterable"]
 		models = {model["name"]:model["id"] for model in response if model["cloud"] or model.get("downloaded",False)}
 		return models
+
+	@classmethod
+	def create_auth_output_panel(cls):
+		window = sublime.active_window()
+		cls.output_panel = window.create_output_panel("Pieces Auth")
+		cls.output_panel.settings().set("line_numbers", False)  # Disable line numbers
+		cls.output_panel.settings().set("gutter", False)
+		cls.output_panel.set_read_only(True)
+

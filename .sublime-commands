@@ -15,4 +15,12 @@
 		"caption": "Pieces: Logout",
 		"command": "pieces_logout"
 	},
+	{
+		"caption": "Pieces: Disconnect your cloud",
+		"command": "pieces_allocation_disconnect"
+	},
+	{
+		"caption": "Pieces: Connect your cloud",
+		"command": "pieces_allocation_connect"
+	}
 ]
