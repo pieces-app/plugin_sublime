@@ -51,20 +51,20 @@ class SearchTypeInputHandler(sublime_plugin.ListInputHandler):
 		return "Choose the type of searching."
 
 class PiecesSearchCommand(sublime_plugin.WindowCommand):
+	asset_api = AssetsApi(PiecesSettings.api_client)
+	search_api = SearchApi(PiecesSettings.api_client)
+
 	def run(self,search_type,query,pieces_asset_id=None):
 		return self.window.run_command("pieces_list_assets",args={"pieces_asset_id":pieces_asset_id})
 
 	@staticmethod
 	def search(search_type,query)-> list:
 		if search_type == 'assets':
-			api_instance = AssetsApi(PiecesSettings.api_client)
-			results = api_instance.assets_search_assets(query=query, transferables=False)
+			results = PiecesSearchCommand.asset_api.assets_search_assets(query=query, transferables=False)
 		elif search_type == 'ncs':
-			api_instance = SearchApi(PiecesSettings.api_client)
-			results = api_instance.neural_code_search(query=query)
+			results = PiecesSearchCommand.search_api.neural_code_search(query=query)
 		elif search_type == 'fts':
-			api_instance = SearchApi(PiecesSettings.api_client)
-			results = api_instance.full_text_search(query=query)
+			results = PiecesSearchCommand.search_api.full_text_search(query=query)
 			# Check and extract asset IDs from the results
 		if results:
 			# Extract the iterable which contains the search results
