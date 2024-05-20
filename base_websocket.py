@@ -14,19 +14,18 @@ class BaseWebsocket:
 		self.loop = asyncio.new_event_loop()
 
 		# Run the event loop in a new thread
-		self.thread = threading.Thread(target=self.start_event_loop, args=(self.loop,))
+		self.thread = threading.Thread(target=self.loop.run_forever)
 		self.thread.start()
 
 		# Open the websocket connection
 		asyncio.run_coroutine_threadsafe(self.open_websocket(), self.loop)
 
-	def start_event_loop(self, loop):
-		asyncio.set_event_loop(loop)
-		loop.run_forever()
+	async def open_websocket(self):
+		"""Open the websocket connection."""
+		pass
 
 	async def close_websocket_connection(self):
 		"""Close the websocket connection."""
 		if self.ws and self.is_connected:
 			await self.ws.close()
 			self.is_connected = False
-
