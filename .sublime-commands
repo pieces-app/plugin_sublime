@@ -15,4 +15,8 @@
 		"caption": "Pieces: Logout",
 		"command": "pieces_logout"
 	},
+	{
+		"caption": "Pieces: Search",
+		"command": "pieces_search"
+	},
 ]
