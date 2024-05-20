@@ -48,7 +48,7 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 
 class PiecesAssetIdInputHandler(sublime_plugin.ListInputHandler):
 	def list_items(self):
-		return get_assets_list(self.AssetSnapshot.assets_snapshot)
+		return self.get_assets_list(AssetSnapshot.assets_snapshot)
 
 	def get_assets_list(self,assets_snapshot):
 		assets_list = []
