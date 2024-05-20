@@ -65,9 +65,9 @@ class PiecesSettings:
 
 	@classmethod
 	def on_settings_change(cls):
-		if cls.host != settings.get('host'):
+		if cls.host != cls.settings.get('host'):
 			cls.host_init()
-		if cls.model_name != settings.get("model"):
+		if cls.model_name != cls.settings.get("model"):
 			cls.models_init()
 		
 
