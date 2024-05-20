@@ -28,9 +28,7 @@ class PiecesLogoutCommand(sublime_plugin.WindowCommand):
 class PiecesAllocationConnectCommand(sublime_plugin.WindowCommand):
 	def run(self):
 		user = AuthUser.user_profile
-		print(user)
 		if user: # User logged in
-			print("USER")
 			AuthUser.logout_page(user.email,user.name,None,True)
 			AllocationsApi(PiecesSettings.api_client).allocations_connect_new_cloud(user,async_req=True)
 
