@@ -65,9 +65,9 @@ class PiecesSettings:
 
 	@classmethod
 	def on_settings_change(cls):
-		if cls.host != settings.get('host'):
+		if cls.host != cls.settings.get('host'):
 			cls.host_init()
-		if cls.model_name != settings.get("model"):
+		if cls.model_name != cls.settings.get("model"):
 			cls.models_init()
 		
 
@@ -93,19 +93,15 @@ class PiecesSettings:
 	def get_models_ids(cls) -> Dict[str, Dict[str, Union[str, int]]]:
 		if cls.models:
 			return models
-		# TODO: uncomment this when the sdks get updated
-		# api_instance = pos_client.ModelsApi(api_client)
 
-		# api_response = api_instance.models_snapshot()
-		# models = {model.name: {"uuid":model.id,"word_limit":model.max_tokens.input} for model in api_response.iterable if model.cloud or model.downloading} # getting the models that are available in the cloud or is downloaded
+		api_instance = pos_client.ModelsApi(cls.api_client)
+
+		api_response = api_instance.models_snapshot()
+		models = {model.name: {"uuid":model.id} for model in api_response.iterable if model.cloud or model.downloaded} # getting the models that are available in the cloud or is downloaded
 
 
-
-		# call the api until the sdks updated
-		response = urllib.request.urlopen(f'{cls.host}/models').read()
-		response = json.loads(response)["iterable"]
-		models = {model["name"]:model["id"] for model in response if model["cloud"] or model.get("downloaded",False)}
 		return models
+
 
 	@classmethod
 	def create_auth_output_panel(cls):

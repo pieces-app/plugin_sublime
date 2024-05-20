@@ -39,19 +39,18 @@ def open_pieces_os() -> Optional[str]:
 	# sublime.platform() ->  Literal['osx', 'linux', 'windows']
 	pl = sublime.platform().lower()
 	if pl == "windows":
-		subprocess.Popen(["start", "os_server"], shell=True)
-	elif pl == "linux":
-		subprocess.Popen(["os_server"])
+		subprocess.run(["start", "pieces://launch"], shell=True)
 	elif pl == "osx":
-		subprocess.Popen(["open", "os_server"])
-	# Check pieces every 2 seconds if it is opened
-	for _ in range(4):
-		time.sleep(2) # wait for the server to open
+		subprocess.run(["open","pieces://launch"])
+	elif pl == "linux":
+		subprocess.run(["xdg-open","pieces://launch"])
+
+	for _ in range(2):
 		version = get_version()
 		if version:
 			return version
+		time.sleep(2) # wait for the server to open
 	return get_version() # pieces os version
-
 
 
 def get_user():
