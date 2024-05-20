@@ -48,9 +48,12 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 
 class PiecesAssetIdInputHandler(sublime_plugin.ListInputHandler):
 	def list_items(self):
+		return get_assets_list(self.AssetSnapshot.assets_snapshot)
+
+	def get_assets_list(self,assets_snapshot):
 		assets_list = []
-		for asset_id in AssetSnapshot.assets_snapshot.keys():
-			asset = AssetSnapshot.assets_snapshot[asset_id]
+		for asset_id in assets_snapshot.keys():
+			asset = assets_snapshot[asset_id]
 			name = asset.name if asset.name else "New asset"
 			try:
 				appedned = False
