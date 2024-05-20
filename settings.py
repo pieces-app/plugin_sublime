@@ -101,3 +101,13 @@ class PiecesSettings:
 
 
 		return models
+
+
+	@classmethod
+	def create_auth_output_panel(cls):
+		window = sublime.active_window()
+		cls.output_panel = window.create_output_panel("Pieces Auth")
+		cls.output_panel.settings().set("line_numbers", False)  # Disable line numbers
+		cls.output_panel.settings().set("gutter", False)
+		cls.output_panel.set_read_only(True)
+

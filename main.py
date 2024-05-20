@@ -33,13 +33,7 @@ def startup():
 	AssetsIdentifiersWS(AssetSnapshot.assets_snapshot_callback) # Load the assets ws at the startup
 	
 	# User Weboscket
-	window = sublime.active_window()
-	output_panel = window.create_output_panel("Pieces Auth")
-	output_panel.settings().set("line_numbers", False)  # Disable line numbers
-	output_panel.settings().set("gutter", False)
-	output_panel.set_read_only(True)
-	AuthUser.output_panel = output_panel
-	AuthUser.phantom_set = sublime.PhantomSet(output_panel, "pieces_auth")
+	PiecesSettings.create_auth_output_panel()
 	AuthWebsocket(AuthUser.on_user_callback) # Load the stream user websocket
 
 def plugin_loaded():
@@ -49,6 +43,7 @@ def plugin_loaded():
 
 def plugin_unloaded():
 	asyncio.run(AssetsIdentifiersWS().close_websocket_connection())
-	
+	asyncio.run(AuthWebsocket().close_websocket_connection())
+
 
 	
