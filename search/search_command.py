@@ -33,10 +33,7 @@ class QueryInputHandler(sublime_plugin.TextInputHandler):
 			sublime.active_window().active_view().set_status('Pieces Search', 'No matches found.')
 			return
 
-		if len(result) == 1: # There is only one match just run the command
-			PiecesSearchCommand.pieces_asset_id = list(result.keys())[0]
-		else:
-			return PiecesAssetIdExtendInputHandler(result) # get a choose menu of the assets found
+		return PiecesAssetIdExtendInputHandler(result) # get a choose menu of the assets found
 
 
 
@@ -55,10 +52,7 @@ class SearchTypeInputHandler(sublime_plugin.ListInputHandler):
 
 class PiecesSearchCommand(sublime_plugin.WindowCommand):
 	def run(self,search_type,query,pieces_asset_id=None):
-		if pieces_asset_id or PiecesSearchCommand.pieces_asset_id:
-			if PiecesSearchCommand.pieces_asset_id:
-				pieces_asset_id = PiecesSearchCommand.pieces_asset_id
-			return self.window.run_command("pieces_list_assets",args={"pieces_asset_id":pieces_asset_id})
+		return self.window.run_command("pieces_list_assets",args={"pieces_asset_id":pieces_asset_id})
 
 	@staticmethod
 	def search(search_type,query)-> list:
