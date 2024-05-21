@@ -162,5 +162,5 @@ def plugin_loaded(): # Call the download github on the plugin load to avoid dupl
 	if check:
 		PiecesDependencies.unload_pieces_plugins() # Unload all the plugins
 		print("Pieces is downloading some dependencies")
-		sublime.set_timeout_async(lambda:PiecesDependencies.download_github_repo('https://github.com/pieces-app/sublime-dependencies', "1.0.2" ,PiecesDependencies.lib_path), 0)
+		sublime.set_timeout_async(lambda:PiecesDependencies.download_github_repo('https://github.com/pieces-app/sublime-dependencies', "1.0.3" ,PiecesDependencies.lib_path), 0)
 		
