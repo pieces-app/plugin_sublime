@@ -14,13 +14,16 @@ from pieces.auth import *
 def startup():
 	pieces_version = open_pieces_os()
 
+
 	if not pieces_version:
 		return print("Couldn't start pieces os\nPlease run pieces os and restart the editor to ensure everything is running properly")
 
+	if version_check():
+		return
 	# USER = get_user()
 	# USER_IMAGE_URL = USER.picture
 
-	print(f"Pieces os version: {pieces_version}\nPlugin version: {__version__}")
+	print_version_details(pieces_os_version, __version__)
 
 	settings = sublime.load_settings('pieces.sublime-settings')
 
