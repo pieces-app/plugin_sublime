@@ -46,6 +46,10 @@ class PiecesDependencies:
 		{
 			"dependency":"typing_extensions.py",
 			"version":"unknown"
+		},
+		{
+			"dependency":"semver",
+			"version":"3.0.2"
 		}] # Need to be changed each release
 
 
