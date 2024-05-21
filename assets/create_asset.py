@@ -1,6 +1,7 @@
 from pieces.settings import PiecesSettings
 import pieces_os_client as pos_client
 import sublime_plugin
+import sublime
 
 
 class PiecesCreateAssetCommand(sublime_plugin.TextCommand):
@@ -16,8 +17,8 @@ class PiecesCreateAssetCommand(sublime_plugin.TextCommand):
 			if ext in pos_client.ClassificationSpecificEnum:
 				metadata = pos_client.FragmentMetadata(ext=ext)
 			else:
-				raise Exception
-		except:
+				raise IndexError
+		except IndexError:
 			metadata = none
 
 
@@ -26,7 +27,7 @@ class PiecesCreateAssetCommand(sublime_plugin.TextCommand):
 				data = selection_data
 			else:
 				return # No data 
-		assets_api = pos_client.AssetsApi(PiecesSettings.api_client)
+		
 
 		# Construct a Seed
 		seed = pos_client.Seed(
@@ -43,6 +44,19 @@ class PiecesCreateAssetCommand(sublime_plugin.TextCommand):
 			type="SEEDED_ASSET"
 		)
 
+		
+
 		# Creating the new asset using the assets API
-		created_asset = assets_api.assets_create_new_asset(transferables=False, seed=seed)
-		self.view.window().run_command("pieces_list_assets",{"pieces_asset_id":created_asset.id})
+		sublime.set_timeout_async(lambda : self.run_create_async(self.view,seed) ,0)
+		
+
+	@staticmethod
+	def run_create_async(view,seed):
+		view.set_status('Pieces Creating', 'Creating an asset')
+		assets_api = pos_client.AssetsApi(PiecesSettings.api_client)
+
+		created_asset_id = assets_api.assets_create_new_asset(transferables=False, seed=seed).id
+		
+		view.window().run_command("pieces_list_assets",{"pieces_asset_id":created_asset_id})
+		view.erase_status('Pieces Creating')
+
