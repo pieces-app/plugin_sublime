@@ -52,7 +52,8 @@ class SearchTypeInputHandler(sublime_plugin.ListInputHandler):
 
 class PiecesSearchCommand(sublime_plugin.WindowCommand):
 	def run(self,search_type,query,pieces_asset_id=None):
-		return self.window.run_command("pieces_list_assets",args={"pieces_asset_id":pieces_asset_id})
+		if pieces_asset_id:
+			return self.window.run_command("pieces_list_assets",args={"pieces_asset_id":pieces_asset_id})
 
 	@staticmethod
 	def search(search_type,query)-> list:
