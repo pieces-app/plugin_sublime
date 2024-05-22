@@ -77,6 +77,11 @@ jobs:
       - name: List what is in here
         run: ls -la
 
+      - uses: actions/upload-artifact@v3
+        with:
+          name: staging_version
+          path: Pieces.sublime-package
+
   ### Pushing the built packages to GCP and GitHub
 #  push-build:
 #    runs-on: ubuntu-latest
