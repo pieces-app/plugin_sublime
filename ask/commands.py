@@ -98,7 +98,7 @@ class PiecesAskQuestionCommand(sublime_plugin.TextCommand):
 		if match:
 			self.code = match.group(1)
 			self.code_html = self.get_differences(selected_text.splitlines(),self.code.splitlines())
-			link = "<a href=insert>✅ Accept</a> | <a href=insert style='color:red'>❌ Reject</a>"
+			link = "<a href=insert>✅ Accept</a> | <a href=dismiss style='color:red'>❌ Reject</a>"
 			html = f"<div style='display:inline-block'>{link}</div>{self.code_html}"
 
 			# Calculate the length of the code_html
