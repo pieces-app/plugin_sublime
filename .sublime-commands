@@ -16,11 +16,11 @@
 		"command": "pieces_logout"
 	},
 	{
-		"caption": "Pieces: Disconnect your cloud",
+		"caption": "Pieces: Disconnect Personal Cloud",
 		"command": "pieces_allocation_disconnect"
 	},
 	{
-		"caption": "Pieces: Connect your cloud",
+		"caption": "Pieces: Connect Personal Cloud",
 		"command": "pieces_allocation_connect"
 	}
 ]
