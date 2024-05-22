@@ -1,5 +1,5 @@
 from pieces import __version__
-from pieces.api import open_pieces_os
+from pieces.api import open_pieces_os,print_version_details,version_check
 from pieces.settings import PiecesSettings
 
 import sublime
