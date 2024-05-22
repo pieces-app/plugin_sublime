@@ -67,8 +67,8 @@ Experiencing an issue or have feedback for the Pieces team? No worries, we've go
 
 - Download the [package control](https://packagecontrol.io/installation)
 - Open your command palette. You can use the shortcut key combination `Ctrl+Shift+P` on Windows and `Cmd+Shift+P` on OSX.
-- search for `Package Control: Install Package`  
-- Search for Pieces and select it
+- Search for `Package Control: Install Package`  
+- Search for Pieces and select it.
 > IMPORTANT: When you first download the package, it will download and install some required dependencies. As a result, you might need to restart Sublime after installing.
 
 ### Pre-releases:
