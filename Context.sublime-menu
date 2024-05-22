@@ -9,7 +9,7 @@
 				"command": "pieces_create_asset",
 			},
 			{
-				"caption": "Pieces: Ask Copilot",
+				"caption": "Ask Copilot",
 				"command": "pieces_ask_question"
 			}
 		]
