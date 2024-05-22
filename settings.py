@@ -14,9 +14,41 @@ class PiecesSettings:
 	models = None
 	host = ""
 	model_name = ""
+	api_client = None
+	_is_loaded = False # is the plugin loaded
 
 	# Load the settings from 'pieces.sublime-settings' file using Sublime Text API
 	settings = sublime.load_settings('Pieces.sublime-settings')
+
+
+	@property
+	def is_loaded(self):
+		sublime.set_timeout_async(self.get_health,0)
+		return self._is_loaded
+
+
+
+	@is_loaded.setter
+	def is_loaded(self,is_loaded):
+		self._is_loaded = is_loaded
+
+
+
+	def get_health(self):
+		"""
+		Retrieves the health status from the WellKnownApi and returns True if the health is 'ok', otherwise returns False.
+
+		Returns:
+		bool: True if the health status is 'ok', False otherwise.
+		"""
+		try:
+			health = pos_client.WellKnownApi(self.api_client).get_well_known_health()
+			health = health == "ok"
+			self._is_loaded = health
+			return health
+		except:
+			return False
+
 
 	@classmethod
 	def host_init(cls):
