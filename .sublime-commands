@@ -22,5 +22,9 @@
 	{
 		"caption": "Pieces: Connect your cloud",
 		"command": "pieces_allocation_connect"
+	},
+	{
+		"caption": "Pieces: Get support",
+		"command": "pieces_support"
 	}
 ]
