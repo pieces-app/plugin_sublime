@@ -13,7 +13,9 @@ from pieces.settings import PiecesSettings
 class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 	sheets_md = {} # {Sheetid : {asset:property}}
 	def run(self,pieces_asset_id):
+		sublime.set_timeout_async(lambda:self.run_async(pieces_asset_id),0)
 
+	def run_async(self,pieces_asset_id):
 		api_instance = AssetApi(PiecesSettings.api_client)
 		api_response = api_instance.asset_specific_asset_export(pieces_asset_id, "MD")
 		
@@ -40,7 +42,8 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 	def input(self,args):
 		return PiecesAssetIdInputHandler()
 
-
+	def is_enabled(self):
+		return PiecesSettings().is_loaded
 
 
 
