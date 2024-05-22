@@ -21,6 +21,8 @@ class QueryInputHandler(sublime_plugin.TextInputHandler):
 		return "Enter a query"
 
 	def preview(self,text):
+		if not text:
+			return
 		result = PiecesSearchCommand.search(SearchTypeInputHandler.search_type,query = text)
 		if result:
 			names_html = [f"<li>{asset.name}</li>" for id,asset in result.items()]
@@ -34,7 +36,9 @@ class QueryInputHandler(sublime_plugin.TextInputHandler):
 			return
 
 		return PiecesAssetIdExtendInputHandler(result) # get a choose menu of the assets found
-
+	
+	def is_enabled(self):
+		return PiecesSettings().is_loaded
 
 
 class SearchTypeInputHandler(sublime_plugin.ListInputHandler):
