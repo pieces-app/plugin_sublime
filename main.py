@@ -23,7 +23,7 @@ def startup():
 			PiecesSettings.is_loaded = True
 			PiecesSettings.models_init()  # initilize the models
 
-	  print_version_details(pieces_os_version, __version__)
+	print_version_details(pieces_os_version, __version__)
 
 
 	settings = sublime.load_settings('pieces.sublime-settings')
