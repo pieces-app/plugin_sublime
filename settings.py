@@ -33,8 +33,8 @@ class PiecesSettings:
 		self._is_loaded = is_loaded
 
 
-
-	def get_health(self):
+	@classmethod
+	def get_health(cls):
 		"""
 		Retrieves the health status from the WellKnownApi and returns True if the health is 'ok', otherwise returns False.
 
@@ -42,9 +42,9 @@ class PiecesSettings:
 		bool: True if the health status is 'ok', False otherwise.
 		"""
 		try:
-			health = pos_client.WellKnownApi(self.api_client).get_well_known_health()
+			health = pos_client.WellKnownApi(cls.api_client).get_well_known_health()
 			health = health == "ok"
-			self._is_loaded = health
+			cls._is_loaded = health
 			return health
 		except:
 			return False
@@ -122,14 +122,14 @@ class PiecesSettings:
 		return cls.application
 
 	@classmethod
-	def get_models_ids(cls) -> Dict[str, Dict[str, Union[str, int]]]:
+	def get_models_ids(cls) -> Dict[str, Dict[str, str]]:
 		if cls.models:
 			return models
 
 		api_instance = pos_client.ModelsApi(cls.api_client)
 
 		api_response = api_instance.models_snapshot()
-		models = {model.name: {"uuid":model.id} for model in api_response.iterable if model.cloud or model.downloaded} # getting the models that are available in the cloud or is downloaded
+		models = {model.name: model.id for model in api_response.iterable if model.cloud or model.downloaded} # getting the models that are available in the cloud or is downloaded
 
 
 		return models
