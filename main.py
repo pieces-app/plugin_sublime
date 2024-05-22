@@ -26,7 +26,7 @@ def startup():
 			print_version_details(pieces_version, __version__)
 
 
-	settings = sublime.load_settings('pieces.sublime-settings')
+	settings = sublime.load_settings('Pieces.sublime-settings')
 
 	settings.add_on_change("PIECES_SETTINGS",PiecesSettings.on_settings_change)
 	

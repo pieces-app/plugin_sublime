@@ -37,8 +37,7 @@ class QueryInputHandler(sublime_plugin.TextInputHandler):
 
 		return PiecesAssetIdExtendInputHandler(result) # get a choose menu of the assets found
 	
-	def is_enabled(self):
-		return PiecesSettings().is_loaded
+
 
 
 class SearchTypeInputHandler(sublime_plugin.ListInputHandler):
@@ -88,6 +87,8 @@ class PiecesSearchCommand(sublime_plugin.WindowCommand):
 				if combined_ids:
 					return {id:AssetSnapshot.assets_snapshot.get(id) for id in combined_ids if AssetSnapshot.assets_snapshot.get(id)}
 
+	def is_enabled(self):
+		return PiecesSettings().is_loaded
 
 	def input(self,args):
 		return SearchTypeInputHandler()

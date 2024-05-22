@@ -18,7 +18,7 @@ class PiecesSettings:
 	_is_loaded = False # is the plugin loaded
 
 	# Load the settings from 'pieces.sublime-settings' file using Sublime Text API
-	settings = sublime.load_settings('pieces.sublime-settings')
+	settings = sublime.load_settings('Pieces.sublime-settings')
 
 
 	@property
