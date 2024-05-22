@@ -73,4 +73,4 @@ def version_check():
 	return True
 
 def print_version_details(pieces_os_version, __version__):
-	print(f"Pieces os version: {pieces_version}\nPlugin version: {__version__}")
+	print(f"Pieces os version: {pieces_os_version}\nPlugin version: {__version__}")

@@ -16,6 +16,10 @@
 		"command": "pieces_logout"
 	},
 	{
+		"caption": "Pieces: Search",
+		"command": "pieces_search"
+	},
+	{
 		"caption": "Pieces: Disconnect your cloud",
 		"command": "pieces_allocation_disconnect"
 	},
