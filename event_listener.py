@@ -1,28 +1,32 @@
 import sublime
 import sublime_plugin
-from pieces.api import get_health
 
-from pieces.assets.markdown_handler import PiecesHandleMarkdownCommand
-from pieces.assets.list_assets import PiecesListAssetsCommand
+from .assets.markdown_handler import PiecesHandleMarkdownCommand
+from .assets.list_assets import PiecesListAssetsCommand
+from .settings import PiecesSettings
+from .base_websocket import BaseWebsocket
 
 
 class PiecesEventListener(sublime_plugin.EventListener):
-	def on_window_command(self, view, command_name, args):
-		
-		# List of commands to check
-		commands_to_check = ['pieces_list_assets',"pieces_delete_asset","pieces_logout","pieces_login"]
-		self.check(command_name,commands_to_check)
+	commands_to_exclude = ["pieces_handle_markdown","pieces_reload","pieces_support"]
+
+	def on_window_command(self, window, command_name, args):
+		self.check(command_name)
 		
 	def on_text_command(self,view,command_name,args):
-		commands_to_check = ['pieces_create_asset',"pieces_ask_question"]
-		self.check(command_name,commands_to_check)
+		self.check(command_name)
 
-	def check(self,command_name,commands_to_check):
-		if command_name in commands_to_check:
-			if not get_health():
+	def check(self,command_name):
+		if command_name.startswith("pieces_") and command_name not in PiecesEventListener.commands_to_exclude: # Check any command 
+			health = PiecesSettings.get_health()
+			if not health:
+				PiecesSettings.is_loaded = False
 				sublime.message_dialog("The pieces os server is not running")
 				return False
 		return None
+	
+
+
 	def on_pre_close(self,view):
 		asset_id = PiecesHandleMarkdownCommand.views_to_handle.get(view.id())
 		if asset_id:

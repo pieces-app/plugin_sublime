@@ -5,7 +5,7 @@ import re
 
 from .utils import tabulate_from_markdown,AssetSnapshot
 from pieces_os_client import *
-from pieces.settings import PiecesSettings
+from ..settings import PiecesSettings
 
 
 
@@ -13,7 +13,9 @@ from pieces.settings import PiecesSettings
 class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 	sheets_md = {} # {Sheetid : {asset:property}}
 	def run(self,pieces_asset_id):
+		sublime.set_timeout_async(lambda:self.run_async(pieces_asset_id),0)
 
+	def run_async(self,pieces_asset_id):
 		api_instance = AssetApi(PiecesSettings.api_client)
 		api_response = api_instance.asset_specific_asset_export(pieces_asset_id, "MD")
 		
@@ -40,7 +42,8 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 	def input(self,args):
 		return PiecesAssetIdInputHandler()
 
-
+	def is_enabled(self):
+		return PiecesSettings().is_loaded
 
 
 
@@ -48,9 +51,12 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 
 class PiecesAssetIdInputHandler(sublime_plugin.ListInputHandler):
 	def list_items(self):
+		return self.get_assets_list(AssetSnapshot.assets_snapshot)
+
+	def get_assets_list(self,assets_snapshot):
 		assets_list = []
-		for asset_id in AssetSnapshot.assets_snapshot.keys():
-			asset = AssetSnapshot.assets_snapshot[asset_id]
+		for asset_id in assets_snapshot.keys():
+			asset = assets_snapshot[asset_id]
 			name = asset.name if asset.name else "New asset"
 			try:
 				appedned = False

@@ -2,8 +2,8 @@ from pieces_os_client import StreamedIdentifiers
 import websockets
 import threading
 
-from pieces.settings import PiecesSettings
-from pieces.base_websocket import BaseWebsocket
+from ..settings import PiecesSettings
+from ..base_websocket import BaseWebsocket
 
 class AssetsIdentifiersWS(BaseWebsocket):
 	def __new__(cls,*args,**kwargs):

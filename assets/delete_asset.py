@@ -1,5 +1,5 @@
 from pieces_os_client import AssetsApi
-from pieces.settings import PiecesSettings
+from ..settings import PiecesSettings
 from .list_assets import PiecesListAssetsCommand
 import sublime
 import sublime_plugin
@@ -25,3 +25,5 @@ class PiecesDeleteAssetCommand(sublime_plugin.WindowCommand):
 			delete_instance.assets_delete_asset(asset_id)
 			if sheet:
 				sheet.close()
+	def is_enabled(self):
+		return PiecesSettings().is_loaded

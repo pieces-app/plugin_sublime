@@ -16,11 +16,23 @@
 		"command": "pieces_logout"
 	},
 	{
+		"caption": "Pieces: Search",
+		"command": "pieces_search"
+	},
+	{
 		"caption": "Pieces: Disconnect your cloud",
 		"command": "pieces_allocation_disconnect"
 	},
 	{
 		"caption": "Pieces: Connect your cloud",
 		"command": "pieces_allocation_connect"
+	},
+	{
+		"caption": "Pieces: Get Support",
+		"command": "pieces_support"
+	},
+	{
+		"caption": "Pieces: Reload the plugin",
+		"command": "pieces_reload"
 	}
 ]
