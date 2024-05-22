@@ -17,7 +17,7 @@
                                 "caption": "Settings",
                                 "command": "edit_settings", "args":
                                 {
-                                    "base_file": "${packages}/pieces/pieces.sublime-settings",
+                                    "base_file": "${packages}/Pieces/Pieces.sublime-settings",
                                     "default": "${packages}/User/Default.sublime-settings"
                                 }
                             },
@@ -25,7 +25,7 @@
                                 "caption": "Key Bindings",
                                 "command": "edit_settings", "args":
                                 {
-                                    "base_file": "${packages}/pieces/keybindings/Default ($platform).sublime-keymap",
+                                    "base_file": "${packages}/Pieces/keybindings/Default ($platform).sublime-keymap",
                                     "default": "${packages} /User/Default ($platform).sublime-keymap"
                                 }
                             }
