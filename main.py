@@ -23,6 +23,7 @@ def startup():
 		if version_check():
 			PiecesSettings.is_loaded = True
 			PiecesSettings.models_init()  # initilize the models
+			PiecesSettings.get_application()
 			print_version_details(pieces_version, __version__)
 
 
