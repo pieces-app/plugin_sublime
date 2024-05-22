@@ -35,15 +35,15 @@ jobs:
         run: echo "VERSION=$(echo $GITHUB_REF | cut -d / -f 3)" >> $GITHUB_OUTPUT
 
       ### Generating our staging version number if we are not production
-#      - name: Get staging version
-#        shell: bash
-#        id: staging_version
-#        run: echo "STAGING_VERSION=$(/bin/bash staging_versioning.sh)" >> $GITHUB_OUTPUT
-#        if: inputs.deploy == false
+      #      - name: Get staging version
+      #        shell: bash
+      #        id: staging_version
+      #        run: echo "STAGING_VERSION=$(/bin/bash staging_versioning.sh)" >> $GITHUB_OUTPUT
+      #        if: inputs.deploy == false
 
 
       ### Setting the version in the pyproject.toml for unix builds
-#      - name: Set Version Shell Script
+      #      - name: Set Version Shell Script
       #        run: |
       #          if [[ ${{ steps.get_version.outputs.VERSION }} =~ [0-9]+.[0-9]+.[0-9]+$ ]]
       #          then
@@ -59,11 +59,11 @@ jobs:
       #          fi
 
       ### Uploading our staging version text file to be pulled down later
-#      - uses: actions/upload-artifact@v3
-#        with:
-#          name: staging_version
-#          path: "*.txt"
-#        if: inputs.deploy == false
+      #      - uses: actions/upload-artifact@v3
+      #        with:
+      #          name: staging_version
+      #          path: "*.txt"
+      #        if: inputs.deploy == false
 
       # Compress repository contents into Pieces.sublime-package
       - name: Compress Repository
@@ -71,6 +71,7 @@ jobs:
           sudo rsync -av --iconv=utf-8 --progress ./* ./Pieces --exclude .gitignore --exclude .github --exclude .git --exclude artifacts
           sudo cp ./.python-version Pieces/.python-version
           sudo iconv -t utf-8 Pieces/.python-version
+          cd Pieces
           sudo python3 package.py Packing
 
       - name: List what is in here
