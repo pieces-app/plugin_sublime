@@ -12,7 +12,7 @@ from pieces_os_client import SearchApi,AssetsApi
 
 class QueryInputHandler(sublime_plugin.TextInputHandler):
 	def placeholder(self):
-		return "Enter a quick description of the bug itself or useful error message"
+		return "Enter a search query"
 
 	def validate(self, text):
 		return len(text) > 0
