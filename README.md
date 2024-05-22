@@ -36,7 +36,45 @@ Need the copilot to comment, fix a bug, or add a doc string? Simply go to the co
 
 You can log in and out of your Pieces account using the `Pieces: Login` or `Pieces: Logout` command in your command palette. An output panel is available to check your cloud status and login status.
 
-### Connect with the Pieces Community
+### Connect/Disconnect your cloud
+
+You can connect and disconnect from your cloud using  `Pieces: Connect your cloud` or `Pieces: Disconnect your cloud` command in your command palette.(Login required!)
+
+### Search
+
+You can search a saved material using `Pieces: Search`.
+
+### Reload
+
+Run `Pieces: Reload the plugin` if you can't see any command in your command palette. Just make sure that **Pieces OS** is running
+
+### Support 
+
+Got stuck? No worries, Simply go to the command palette and run `Pieces: Get Support`. you will find some very awsome resources where you can connect with use
+You can choose the best suited for you and the link will be automatically opened in the browser.
+
+## How to install?
+
+### Stable build (Recommended):
+
+- Download the [package control](https://packagecontrol.io/installation)
+- Open your command palette and search for `Package Control: Install Package`  
+- Seach for Pieces and Choose it
+- **IMPORTANT: When you first download the package it will download some dependencies, so you might need to restart sublime after downloading**
+
+### Pre-releases:
+
+You can download and checkout some new beta features before releasing.
+
+- Download the `Pieces.sublime-package` from [releases](https://github.com/pieces-app/plugin_sublime/releases) on GitHub 
+- Add `Pieces.sublime-package` to the Installed Packages directory.
+	- **Windows**: %APPDATA%\Sublime Text\Installed Packages
+	- **MacOS**: ~/Library/Application Support/Sublime Text/Installed Packages
+	- **Linux**: ~/.config/sublime-text/Installed Packages
+- Open Sublime and enjoy the package
+
+
+## Connect with the Pieces Community
 
 #### Join our [Discord Community](https://discord.gg/getpieces)
 
