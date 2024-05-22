@@ -9,6 +9,7 @@ import asyncio
 from pieces.assets import *
 from pieces.ask import *
 from pieces.auth import *
+from pieces.search import *
 from pieces.misc import *
 
 
