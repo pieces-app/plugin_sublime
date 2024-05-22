@@ -24,7 +24,7 @@
 		"command": "pieces_allocation_connect"
 	},
 	{
-		"caption": "Pieces: Get support",
+		"caption": "Pieces: Get Support",
 		"command": "pieces_support"
 	}
 ]

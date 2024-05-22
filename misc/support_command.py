@@ -5,19 +5,19 @@ import webbrowser
 
 support_resources = [
 	{
-		"text":"Open a github issue",
+		"text":"Open a GitHub Issue",
 		"value":"https://github.com/pieces-app/plugin_sublime/issues",
-		"details":"Create a github issue on github | https://github.com/pieces-app/plugin_sublime/issues"
+		"details":"Create an issue on our GitHub | https://github.com/pieces-app/plugin_sublime/issues"
 	},
 	{
-		"text":"Get support on our website",
+		"text":"Get Support",
 		"value":"https://docs.pieces.app/support",
-		"details":"Checkout our website | https://docs.pieces.app/support"
+		"details":"Visit our website | https://docs.pieces.app/support"
 	},
 	{
-		"text":"Join our discord server",
+		"text":"Join our Discord Server",
 		"value":"https://discord.gg/getpieces",
-		"details":"Join our discord server | https://discord.gg/getpieces"
+		"details":"Chat with the Pieces team and our community of developers around the world | https://discord.gg/getpieces"
 	}
 ]
 
