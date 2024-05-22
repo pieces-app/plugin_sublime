@@ -33,6 +33,9 @@ class QuestionInputHandler(sublime_plugin.ListInputHandler):
 
 
 class PiecesAskQuestionCommand(sublime_plugin.TextCommand):
+	def is_enabled(self):
+		return PiecesSettings().is_loaded
+
 
 	def run(self,edit, question, description=None):
 		sublime.set_timeout_async(lambda:self.run_async(edit,question,description),0)

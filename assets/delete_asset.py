@@ -25,3 +25,5 @@ class PiecesDeleteAssetCommand(sublime_plugin.WindowCommand):
 			delete_instance.assets_delete_asset(asset_id)
 			if sheet:
 				sheet.close()
+	def is_enabled(self):
+		return PiecesSettings().is_loaded

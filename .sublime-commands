@@ -22,5 +22,9 @@
 	{
 		"caption": "Pieces: Connect your cloud",
 		"command": "pieces_allocation_connect"
+	},
+	{
+		"caption": "Pieces: Reload the plugin",
+		"command": "pieces_reload"
 	}
 ]

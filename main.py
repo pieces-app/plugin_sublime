@@ -9,24 +9,24 @@ import asyncio
 from pieces.assets import *
 from pieces.ask import *
 from pieces.auth import *
+from pieces.misc import *
 
 
 def startup():
 	pieces_version = open_pieces_os()
 
 	if not pieces_version:
-		return print("Couldn't start pieces os\nPlease run pieces os and restart the editor to ensure everything is running properly")
-
-	# USER = get_user()
-	# USER_IMAGE_URL = USER.picture
-
-	print(f"Pieces os version: {pieces_version}\nPlugin version: {__version__}")
+		print("Couldn't start pieces os\nPlease run pieces os and restart the editor to ensure everything is running properly")
+	else:
+		print(f"Pieces os version: {pieces_version}\nPlugin version: {__version__}")
+		PiecesSettings.is_loaded = True
+		PiecesSettings.models_init()  # initilize the models
 
 	settings = sublime.load_settings('pieces.sublime-settings')
 
 	settings.add_on_change("PIECES_SETTINGS",PiecesSettings.on_settings_change)
 	
-	PiecesSettings.models_init()  # initilize the models
+	
 
 	# WEBSOCKETS:
 	# Assets Identifiers Websocket

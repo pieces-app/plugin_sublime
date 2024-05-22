@@ -46,3 +46,6 @@ class PiecesCreateAssetCommand(sublime_plugin.TextCommand):
 		# Creating the new asset using the assets API
 		created_asset = assets_api.assets_create_new_asset(transferables=False, seed=seed)
 		self.view.window().run_command("pieces_list_assets",{"pieces_asset_id":created_asset.id})
+
+	def is_enabled(self):
+		return PiecesSettings().is_loaded

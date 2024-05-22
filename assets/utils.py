@@ -44,7 +44,10 @@ class AssetSnapshot:
 			if asset_id not in cls.asset_set:
 				if item.deleted:
 					# Asset deleted
-					cls.assets_snapshot.pop(asset_id)
+					try:
+						cls.assets_snapshot.pop(asset_id)
+					except KeyError:
+						pass
 				else:
 					cls.asset_queue.put(asset_id)  # Add asset_id to the queue
 					cls.asset_set.add(asset_id)  # Add asset_id to the set
