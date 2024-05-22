@@ -1,7 +1,7 @@
 import sublime_plugin
 import sublime
 
-from pieces.settings import PiecesSettings
+from ..settings import PiecesSettings
 from .auth_user import AuthUser
 
 from pieces_os_client import OSApi,AllocationsApi,UserApi

@@ -1,9 +1,9 @@
 import sublime_plugin
 import sublime
 
-from pieces.settings import PiecesSettings
-from pieces.assets.utils import AssetSnapshot
-from pieces.assets.list_assets import PiecesAssetIdInputHandler
+from ..settings import PiecesSettings
+from ..assets.utils import AssetSnapshot
+from ..assets.list_assets import PiecesAssetIdInputHandler
 
 from pieces_os_client import SearchApi,AssetsApi
 

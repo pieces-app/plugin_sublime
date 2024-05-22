@@ -1,16 +1,16 @@
-from pieces import __version__
-from pieces.api import open_pieces_os,print_version_details,version_check
-from pieces.settings import PiecesSettings
+from . import __version__
+from .api import open_pieces_os,print_version_details,version_check
+from .settings import PiecesSettings
 
 import sublime
 import asyncio
 
 # load the commands
-from pieces.assets import *
-from pieces.ask import *
-from pieces.auth import *
-from pieces.search import *
-from pieces.misc import *
+from .assets import *
+from .ask import *
+from .auth import *
+from .search import *
+from .misc import *
 
 
 def startup():

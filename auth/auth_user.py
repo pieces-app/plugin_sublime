@@ -1,5 +1,5 @@
 from pieces_os_client import UserProfile
-from pieces.settings import PiecesSettings
+from ..settings import PiecesSettings
 import sublime
 
 

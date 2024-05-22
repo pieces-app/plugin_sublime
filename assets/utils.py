@@ -4,7 +4,7 @@ import threading
 from pieces_os_client import Asset, AssetApi,StreamedIdentifiers
 import sublime
 
-from pieces.settings import PiecesSettings
+from ..settings import PiecesSettings
 
 
 class AssetSnapshot:

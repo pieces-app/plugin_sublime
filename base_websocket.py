@@ -1,6 +1,6 @@
 import asyncio
 import websockets
-from pieces.settings import PiecesSettings
+from .settings import PiecesSettings
 import threading
 
 

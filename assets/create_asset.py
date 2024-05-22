@@ -1,4 +1,4 @@
-from pieces.settings import PiecesSettings
+from ..settings import PiecesSettings
 import pieces_os_client as pos_client
 import sublime_plugin
 import sublime

@@ -1,12 +1,13 @@
 import sublime
 import sublime_plugin
 import pieces_os_client as pos_client
-from pieces.settings import PiecesSettings
 import re
 from difflib import Differ 
-from .prompts import *
 import mdpopups
 import time
+
+from ..settings import PiecesSettings
+from .prompts import *
 LIST_ITEMS = [
 	("Fix a bug",BUGS_PROMPT),
 	("Find a possible bug", POSSIBLE_BUGS_PROMPT),

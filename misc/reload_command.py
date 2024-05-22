@@ -1,5 +1,5 @@
-from pieces.settings import PiecesSettings
-from pieces.base_websocket import BaseWebsocket
+from ..settings import PiecesSettings
+from ..base_websocket import BaseWebsocket
 import sublime
 import sublime_plugin
 
