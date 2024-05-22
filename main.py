@@ -16,11 +16,12 @@ def startup():
 	pieces_version = open_pieces_os()
 
 
-	if not pieces_version or version_check():
+	if not pieces_version:
 		print("Couldn't start pieces os\nPlease run pieces os and restart the editor to ensure everything is running properly")
 	else:
-		PiecesSettings.is_loaded = True
-		PiecesSettings.models_init()  # initilize the models
+		if version_check():
+			PiecesSettings.is_loaded = True
+			PiecesSettings.models_init()  # initilize the models
 
 	  print_version_details(pieces_os_version, __version__)
 
