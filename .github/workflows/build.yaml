@@ -79,7 +79,6 @@ jobs:
 
       - uses: actions/upload-artifact@v3
         with:
-          name: staging_version
           path: Pieces.sublime-package
 
   ### Pushing the built packages to GCP and GitHub
