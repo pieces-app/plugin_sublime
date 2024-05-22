@@ -1,12 +1,13 @@
 import sublime
 import sublime_plugin
 import pieces_os_client as pos_client
-from pieces.settings import PiecesSettings
 import re
 from difflib import Differ 
-from .prompts import *
 import mdpopups
 import time
+
+from ..settings import PiecesSettings
+from .prompts import *
 LIST_ITEMS = [
 	("Fix a bug",BUGS_PROMPT),
 	("Find a possible bug", POSSIBLE_BUGS_PROMPT),
@@ -33,6 +34,9 @@ class QuestionInputHandler(sublime_plugin.ListInputHandler):
 
 
 class PiecesAskQuestionCommand(sublime_plugin.TextCommand):
+	def is_enabled(self):
+		return PiecesSettings().is_loaded
+
 
 	def run(self,edit, question, description=None):
 		sublime.set_timeout_async(lambda:self.run_async(edit,question,description),0)

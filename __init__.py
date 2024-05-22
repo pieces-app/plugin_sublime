@@ -12,8 +12,8 @@ __version__ = "0.1"
 
 class PiecesDependencies:
 	downloading = True
-	pieces_plugins = ["pieces.api","pieces.base_websocket","pieces.event_listener",
-					"pieces.settings","pieces.main"]
+	pieces_plugins = ["Pieces.api","Pieces.base_websocket","Pieces.event_listener",
+					"Pieces.settings","Pieces.main"]
 	repo_dependencies = [
 		{
 			"dependency":"aenum",

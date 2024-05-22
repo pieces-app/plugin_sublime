@@ -16,11 +16,19 @@
 		"command": "pieces_logout"
 	},
 	{
-		"caption": "Pieces: Disconnect Personal Cloud",
+
 		"command": "pieces_allocation_disconnect"
 	},
 	{
 		"caption": "Pieces: Connect Personal Cloud",
 		"command": "pieces_allocation_connect"
+	},
+	{
+		"caption": "Pieces: Get Support",
+		"command": "pieces_support"
+	},
+	{
+		"caption": "Pieces: Reload the plugin",
+		"command": "pieces_reload"
 	}
 ]

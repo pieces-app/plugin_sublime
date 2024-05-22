@@ -1,4 +1,4 @@
-from pieces.settings import PiecesSettings
+from ..settings import PiecesSettings
 import pieces_os_client as pos_client
 import sublime_plugin
 import sublime
@@ -48,6 +48,7 @@ class PiecesCreateAssetCommand(sublime_plugin.TextCommand):
 
 		# Creating the new asset using the assets API
 		sublime.set_timeout_async(lambda : self.run_create_async(self.view,seed) ,0)
+
 		
 
 	@staticmethod
@@ -60,3 +61,6 @@ class PiecesCreateAssetCommand(sublime_plugin.TextCommand):
 		view.window().run_command("pieces_list_assets",{"pieces_asset_id":created_asset_id})
 		view.erase_status('Pieces Creating')
 
+
+	def is_enabled(self):
+		return PiecesSettings().is_loaded

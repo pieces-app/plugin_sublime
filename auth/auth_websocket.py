@@ -1,5 +1,5 @@
-from pieces.base_websocket import BaseWebsocket
-from pieces.settings import PiecesSettings
+from ..base_websocket import BaseWebsocket
+from ..settings import PiecesSettings
 from pieces_os_client import UserProfile
 
 import websockets

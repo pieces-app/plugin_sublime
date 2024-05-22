@@ -1,10 +1,10 @@
 from typing import Optional
 import sublime
 import pieces_os_client as pos_client
-from pieces.settings import PiecesSettings
+from .settings import PiecesSettings
 import time
 import subprocess
-from pieces import __version__
+from . import __version__
 import semver
 
 
@@ -18,20 +18,6 @@ def get_version() -> Optional[str]:
 		return version
 	except: # There is a problem in the startup
 		return None
-
-
-def get_health():
-	"""
-	Retrieves the health status from the WellKnownApi and returns True if the health is 'ok', otherwise returns False.
-
-	Returns:
-	bool: True if the health status is 'ok', False otherwise.
-	"""
-	try:
-		health = pos_client.WellKnownApi(PiecesSettings.api_client).get_well_known_health()
-		return health == "ok"
-	except Exception as e:
-		return False
 
 
 
@@ -87,4 +73,4 @@ def version_check():
 	return True
 
 def print_version_details(pieces_os_version, __version__):
-	print(f"Pieces os version: {pieces_version}\nPlugin version: {__version__}")
+	print(f"Pieces os version: {pieces_os_version}\nPlugin version: {__version__}")
