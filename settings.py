@@ -16,7 +16,7 @@ class PiecesSettings:
 	model_name = ""
 
 	# Load the settings from 'pieces.sublime-settings' file using Sublime Text API
-	settings = sublime.load_settings('pieces.sublime-settings')
+	settings = sublime.load_settings('Pieces.sublime-settings')
 
 	@classmethod
 	def host_init(cls):
