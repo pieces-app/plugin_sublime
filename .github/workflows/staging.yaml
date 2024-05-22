@@ -1,0 +1,16 @@
+name: Staging
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yaml
+    with:
+      deploy: false
+    secrets:
+      access_token: ${{ secrets.GITHUB_TOKEN }}
+      ssh_private_key: ${{ secrets.PIECES_GITHUB_SSH }}
+      credentials_json: ${{ secrets.GCP_CREDENTIALS }}
