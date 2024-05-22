@@ -36,31 +36,40 @@ Need the copilot to comment, fix a bug, or add a doc string? Simply go to the co
 
 You can log in and out of your Pieces account using the `Pieces: Login` or `Pieces: Logout` command in your command palette. An output panel is available to check your cloud status and login status.
 
-### Connect/Disconnect your cloud
+### Connect or Disconnect your Personal Pieces Cloud
 
-You can connect and disconnect from your cloud using  `Pieces: Connect your cloud` or `Pieces: Disconnect your cloud` command in your command palette.(Login required!)
+You can connect and disconnect from your cloud using  `Pieces: Connect Personal Cloud` or `Pieces: Disconnect Personal Cloud` command in your command palette.
+Note: In order you use these commands, you must have an account connected to Pieces.
 
-### Search
+### Find your Saved Materials
 
 You can search a saved material using `Pieces: Search`.
 
-### Reload
+There are three main types of seaching:
 
-Run `Pieces: Reload the plugin` if you can't see any command in your command palette. Just make sure that **Pieces OS** is running
+- **Fuzzy Search**: Fuzzy Search is a technique used to find matches that are likely to be relevant, even if they are not exact matches. It is particularly useful for handling typos, misspellings, and variations in data.
 
-### Support 
+- **Full Text Search**: Full Text Search is a technique used to search for documents or records that contain the exact sequence of words in the search query. It indexes all the words in a document to enable fast and efficient searching.
 
-Got stuck? No worries, Simply go to the command palette and run `Pieces: Get Support`. you will find some very awsome resources where you can connect with use
-You can choose the best suited for you and the link will be automatically opened in the browser.
+- **Neural Code Search**: Neural Code Search is a technique that leverages neural networks and machine learning to improve the search and retrieval of code snippets. It allows you to use natural language to describe what you are looking for, capturing the semantics and context of the code to provide more accurate and relevant results.
+
+### Reload the Plugin
+
+If you're experiencing an issue or something isn't working properly, try reloading the plugin using the command `Pieces: Reload Plugin` in your command palette. Don't forget to make sure Pieces OS is running.
+
+### Get Support or Share Feedback
+
+Experiencing an issue or have feedback for the Pieces team? No worries, we've got you covered. Simply open the command palette and run `Pieces: Get Support`. From here, you will find resources where you can connect with the Pieces team.
 
 ## How to install?
 
 ### Stable build (Recommended):
 
 - Download the [package control](https://packagecontrol.io/installation)
-- Open your command palette and search for `Package Control: Install Package`  
-- Seach for Pieces and Choose it
-- **IMPORTANT: When you first download the package it will download some dependencies, so you might need to restart sublime after downloading**
+- Open your command palette. You can use the shortcut key combination `Ctrl+Shift+P` on Windows and `Cmd+Shift+P` on OSX.
+- search for `Package Control: Install Package`  
+- Search for Pieces and select it
+> IMPORTANT: When you first download the package, it will download and install some required dependencies. As a result, you might need to restart Sublime after installing.
 
 ### Pre-releases:
 
@@ -69,7 +78,7 @@ You can download and checkout some new beta features before releasing.
 - Download the `Pieces.sublime-package` from [releases](https://github.com/pieces-app/plugin_sublime/releases) on GitHub 
 - Add `Pieces.sublime-package` to the Installed Packages directory.
 	- **Windows**: %APPDATA%\Sublime Text\Installed Packages
-	- **MacOS**: ~/Library/Application Support/Sublime Text/Installed Packages
+	- **MacOS**: ~/Library/Application Support/Sublime Text 3/Installed Packages
 	- **Linux**: ~/.config/sublime-text/Installed Packages
 - Open Sublime and enjoy the package
 
