@@ -30,7 +30,7 @@ To save a new snippet in Pieces, select the code you wish to save, right-click t
 
 ### Copilot Ask
 
-Need the copilot to comment, fix a bug, or add a doc string? Simply go to the command palette and run `Pieces: Ask Copilot`.
+Need the copilot to comment, fix a bug, or add a doc string?Select the text right-click to open the context menu, and select `Pieces > Ask Copilot`.
 
 ### Login/Logout
 
