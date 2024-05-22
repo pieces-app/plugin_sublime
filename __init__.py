@@ -7,7 +7,7 @@ import sublime
 import importlib
 import sublime_plugin
 import sys
-from _version import __version__
+from ._version import __version__
 
 class PiecesDependencies:
 	downloading = True
