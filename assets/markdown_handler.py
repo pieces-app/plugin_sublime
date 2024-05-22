@@ -1,10 +1,10 @@
 import sublime_plugin
 import sublime
-from .list_assets import PiecesListAssetsCommand
-from .utils import AssetSnapshot
 from pieces_os_client import *
 
-from pieces.settings import PiecesSettings
+from .list_assets import PiecesListAssetsCommand
+from .utils import AssetSnapshot
+from ..settings import PiecesSettings
 from .ext_map import file_map
 
 

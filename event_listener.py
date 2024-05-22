@@ -1,10 +1,10 @@
 import sublime
 import sublime_plugin
 
-from pieces.assets.markdown_handler import PiecesHandleMarkdownCommand
-from pieces.assets.list_assets import PiecesListAssetsCommand
-from pieces.settings import PiecesSettings
-from pieces.base_websocket import BaseWebsocket
+from .assets.markdown_handler import PiecesHandleMarkdownCommand
+from .assets.list_assets import PiecesListAssetsCommand
+from .settings import PiecesSettings
+from .base_websocket import BaseWebsocket
 
 
 class PiecesEventListener(sublime_plugin.EventListener):

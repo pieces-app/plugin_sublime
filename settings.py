@@ -4,7 +4,7 @@ from typing import Optional,Dict,Union
 import urllib
 import json
 
-from pieces import __version__
+from . import __version__
 
 
 

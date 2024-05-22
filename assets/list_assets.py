@@ -5,7 +5,7 @@ import re
 
 from .utils import tabulate_from_markdown,AssetSnapshot
 from pieces_os_client import *
-from pieces.settings import PiecesSettings
+from ..settings import PiecesSettings
 
 
 

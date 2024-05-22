@@ -1,5 +1,5 @@
 from pieces_os_client import AssetsApi
-from pieces.settings import PiecesSettings
+from ..settings import PiecesSettings
 from .list_assets import PiecesListAssetsCommand
 import sublime
 import sublime_plugin

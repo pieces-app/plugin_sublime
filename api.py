@@ -1,10 +1,10 @@
 from typing import Optional
 import sublime
 import pieces_os_client as pos_client
-from pieces.settings import PiecesSettings
+from .settings import PiecesSettings
 import time
 import subprocess
-from pieces import __version__
+from . import __version__
 import semver
 
 
