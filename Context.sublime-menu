@@ -7,6 +7,10 @@
 			{
 				"caption": "Save to pieces",
 				"command": "pieces_create_asset",
+			},
+			{
+				"caption": "Pieces: Ask Copilot",
+				"command": "pieces_ask_question"
 			}
 		]
 	}

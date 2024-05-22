@@ -49,9 +49,9 @@ class PiecesAskQuestionCommand(sublime_plugin.TextCommand):
 		self.selection = self.view.sel()[0]
 		selected_text = self.view.substr(self.selection)
 		
-		if "." in self.view.file_name():
+		try:
 			self.langauge = self.view.file_name().split(".")[-1]
-		else: 
+		except:
 			self.langauge = "txt"
 
 		if not selected_text:
