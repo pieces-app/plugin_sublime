@@ -122,7 +122,7 @@ class PiecesSettings:
 		return cls.application
 
 	@classmethod
-	def get_models_ids(cls) -> Dict[str, Dict[str, str]]:
+	def get_models_ids(cls) -> Dict[str, str]:
 		if cls.models:
 			return models
 
