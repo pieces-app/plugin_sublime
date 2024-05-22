@@ -55,7 +55,8 @@ class PiecesAskQuestionCommand(sublime_plugin.TextCommand):
 			self.langauge = "txt"
 
 		if not selected_text:
-			return # TODO show error
+			sublime.error_message("Please select a text to ask about!")
+			return 
 
 		if question in description_needed_commands:
 			query = question.format(description=description,code=selected_text)
