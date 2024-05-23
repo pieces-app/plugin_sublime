@@ -53,7 +53,7 @@ jobs:
                 sed -i 's/__version__ = .*/__version__ = "${STAGING_VERSION}"/' _version.py
           fi
 
-      # Compress repository contents into Pieces.sublime-package
+      ### Compress repository contents into Pieces.sublime-package
       - name: Compress Repository
         run: |
           sudo rsync -av --iconv=utf-8 --progress ./* ./Pieces --exclude .gitignore --exclude .github --exclude .git --exclude artifacts
@@ -61,6 +61,12 @@ jobs:
           sudo iconv -t utf-8 Pieces/.python-version
           cd Pieces
           sudo python3 package.py Packing
+
+      ### Writing our staging version to a file to be pulled in the last step to update our json in the cloud
+      - name: Write staging version to file
+        shell: bash
+        run: echo "${{ steps.staging_version.outputs.STAGING_VERSION }}" > staging_version$GITHUB_RUN_NUMBER.txt
+        if: ${{ inputs.deploy == false && inputs.beta == false }}
 
       ### Uploading our staging version text file to be pulled down later
       - uses: actions/upload-artifact@v3
