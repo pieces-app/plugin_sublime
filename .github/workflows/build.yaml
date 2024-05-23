@@ -46,11 +46,11 @@ jobs:
                 export RELEASE_VERSION='${{ steps.get_version.outputs.VERSION }}'
                 RELEASE_VERSION="${RELEASE_VERSION#v}"
                 echo $RELEASE_VERSION
-                sed -i 's/__version__ = .*/__version__ = "${RELEASE_VERSION}"/' _version.py
+                sed -i 's/__version__ = .*/__version__ = \"${RELEASE_VERSION}\"/' _version.py
           else
                 echo "This is not a tagged build"
                 export STAGING_VERSION='${{ steps.staging_version.outputs.STAGING_VERSION }}'
-                sed -i 's/__version__ = .*/__version__ = "${STAGING_VERSION}"/' _version.py
+                sed -i "s/__version__ = .*/__version__ = \"${STAGING_VERSION}\"/" _version.py
           fi
 
       ### Compress repository contents into Pieces.sublime-package
