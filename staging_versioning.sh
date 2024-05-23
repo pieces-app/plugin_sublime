@@ -2,13 +2,13 @@
 #-------------------------------- Getting the Version Data -------------------------
 
 # Get PROD JSON With GET Request
-prod_json="$(curl https://storage.googleapis.com/app-releases-production/pieces_cli/production/latest-single.json -H "Accept: application/json")"
+prod_json="$(curl https://storage.googleapis.com/app-releases-production/plugin_sublime/production/latest-single.json -H "Accept: application/json")"
 
 # Get First PROD JSON Object in an array, and get the "tag" value
 prod_tag=$(echo "$prod_json" | jq '.tag')
 
 # Get STAGING JSON With GET Request
-staging_json="$(curl https://storage.googleapis.com/app-releases-staging/pieces_cli/staging/latest-single.json -H "Accept: application/json")"
+staging_json="$(curl https://storage.googleapis.com/app-releases-staging/plugin_sublime/staging/latest-single.json -H "Accept: application/json")"
 
 # Get First JSON Object in an array, and get the "tag" value
 staging_tag=$(echo "$staging_json" | jq '.tag')
