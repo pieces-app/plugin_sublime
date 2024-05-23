@@ -4,10 +4,6 @@
 		"command": "pieces_list_assets"
 	},
 	{
-		"caption": "Pieces: Ask Copilot",
-		"command": "pieces_ask_question"
-	},
-	{
 		"caption": "Pieces: Login",
 		"command": "pieces_login"
 	},

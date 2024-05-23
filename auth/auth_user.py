@@ -23,7 +23,6 @@ class AuthUser:
 	@classmethod
 	def on_user_callback(cls,user:UserProfile=None):
 		phantom_set = cls.get_phantom_set()
-		phantom_set.update([]) # Clear the output panel
 		sublime.active_window().focus_view(PiecesSettings.output_panel)
 		cls.user_profile = user
 		if not user:
@@ -36,6 +35,7 @@ class AuthUser:
 		phantom_set = cls.get_phantom_set()
 		phantom_content = '<a href="subl:pieces_login"><b>Connect to your account</b></a>'
 		phantom = sublime.Phantom(sublime.Region(0, 500), phantom_content, sublime.LAYOUT_INLINE)
+		phantom_set.update([]) # Clear the output panel
 		phantom_set.update([phantom])
 
 	@classmethod
@@ -63,4 +63,5 @@ class AuthUser:
 				allocation_html = DISCONNECTED_HTML
 		phantom_content = f"<p>Username: {username}</p><p>Email: {email}</p>{allocation_html}<a href='subl:pieces_logout'>Logout</a>"
 		phantom = sublime.Phantom(sublime.Region(0, 500), phantom_content, sublime.LAYOUT_INLINE)
+		phantom_set.update([]) # Clear the output panel
 		phantom_set.update([phantom])

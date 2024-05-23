@@ -7,6 +7,32 @@
 			{
 				"caption": "Save to pieces",
 				"command": "pieces_create_asset",
+			},
+			{
+				"id": "pieces-ask",
+				"caption": "Ask Copilot",
+				"children":[
+					{
+						"caption": "Fix a bug",
+						"command": "pieces_ask_question",
+						"args":{"question":"bug"}
+					},
+					{
+						"caption": "Refactor",
+						"command": "pieces_ask_question",
+						"args":{"question":"refactor"}
+					},
+					{
+						"caption":"Add a doc string to this function",
+						"command": "pieces_ask_question",
+						"args":{"question":"docstring"}
+					},
+					{
+						"caption": "Add comments to the code",
+						"command": "pieces_ask_question",
+						"args":{"question":"comment"}
+					}
+				]
 			}
 		]
 	}
