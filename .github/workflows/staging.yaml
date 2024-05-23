@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - staging_versioning
 
 jobs:
   build:
@@ -11,6 +12,4 @@ jobs:
     with:
       deploy: false
     secrets:
-      access_token: ${{ secrets.GITHUB_TOKEN }}
-      ssh_private_key: ${{ secrets.PIECES_GITHUB_SSH }}
       credentials_json: ${{ secrets.GCP_CREDENTIALS }}
