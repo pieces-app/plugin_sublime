@@ -30,7 +30,7 @@ To save a new snippet in Pieces, select the code you wish to save, right-click t
 
 ### Copilot Ask
 
-Need the copilot to comment, fix a bug, or add a doc string?Select the text right-click to open the context menu, and select `Pieces > Ask Copilot`.
+Need the Copilot to comment, fix a bug, or add a doc string? Select some code, right-click to open the context menu, and select Pieces > Ask Copilot.
 
 ### Login/Logout
 
@@ -38,7 +38,7 @@ You can log in and out of your Pieces account using the `Pieces: Login` or `Piec
 
 ### Connect or Disconnect your Personal Pieces Cloud
 
-You can connect and disconnect from your cloud using  `Pieces: Connect Personal Cloud` or `Pieces: Disconnect Personal Cloud` command in your command palette.
+You can connect and disconnect from your cloud using `Pieces: Connect Personal Cloud` or `Pieces: Disconnect Personal Cloud` command in your command palette.
 Note: In order you use these commands, you must have an account connected to Pieces.
 
 ### Find your Saved Materials
@@ -66,7 +66,7 @@ Experiencing an issue or have feedback for the Pieces team? No worries, we've go
 ### Stable build (Recommended):
 
 - Download the [package control](https://packagecontrol.io/installation)
-- Open your command palette. You can use the shortcut key combination `Ctrl+Shift+P` on Windows and `Cmd+Shift+P` on OSX.
+- Open your command palette. You can use the shortcut key combination `Ctrl+Shift+P` on Windows and `Cmd+Shift+P` on MacOS.
 - Search for `Package Control: Install Package`  
 - Search for Pieces and select it.
 > IMPORTANT: When you first download the package, it will download and install some required dependencies. As a result, you might need to restart Sublime after installing.

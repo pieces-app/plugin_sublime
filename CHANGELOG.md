@@ -3,8 +3,8 @@
 ## May 22th, 2024
 
 - Added a support command, "Pieces: Get Support", to access our public support GitHub repository or connect with the Pieces team.
-- Add Reload Command to reload the websockets,the hosts and the models
-- Add search Command ncs,fts,fizzy
+- Added a reload command, "Pieces: Reload Plugin", to reload WebSockets, hosts, and data models.
+- Added a search command, "Pieces: Search", to enable you to find your saved materials using a mode of your choice, such as Neural Code Search (NCS), Full Text Search (FTS), or Fuzzy search.
 
 ## May 20th, 2024
 
