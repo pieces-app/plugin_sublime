@@ -8,27 +8,11 @@ import time
 
 from ..settings import PiecesSettings
 from .prompts import *
-LIST_ITEMS = [
-	("Fix a bug",BUGS_PROMPT),
-	("Find a possible bug", POSSIBLE_BUGS_PROMPT),
-	("Write cleaner code", CLEANER_CODE_PROMPT),
-	("Add a doc string to this function",DOC_STRING_PROMPT),
-	("Add comments to the code",ADD_COMMENTS_PROMPT)
-] # TODO: Add more suff 
 
-
-class DescriptionInputHandler(sublime_plugin.TextInputHandler):
-	def placeholder(self):
-		return "Enter a quick description of the bug itself or useful error message"
-	def validate(self, text):
-		return len(text) > 0
-
-class QuestionInputHandler(sublime_plugin.ListInputHandler):
-	def list_items(self):
-		return LIST_ITEMS
-	def next_input(self,args):
-		if args in description_needed_commands:
-			return DescriptionInputHandler()
+prompt_map = {"bug":BUGS_PROMPT,
+"refactor": CLEANER_CODE_PROMPT,
+"docstring":DOC_STRING_PROMPT,
+"comment":ADD_COMMENTS_PROMPT}
 
 
 
@@ -38,31 +22,39 @@ class PiecesAskQuestionCommand(sublime_plugin.TextCommand):
 		return PiecesSettings().is_loaded
 
 
-	def run(self,edit, question, description=None):
-		sublime.set_timeout_async(lambda:self.run_async(edit,question,description),0)
+	def run(self,edit, question):
+		sublime.set_timeout_async(lambda:self.run_async(edit,question),0)
 
-		self.view.set_status('Pieces Refactoring', 'Copilot is thinking...')
+		
 		
 
-	def run_async(self,edit, question, description):
+	def run_async(self,edit,question):
+		self.question = prompt_map[question]
+		
+		self.view.set_status('Pieces Refactoring', 'Copilot is thinking...')
 		# Get the current selection
 		self.selection = self.view.sel()[0]
-		selected_text = self.view.substr(self.selection)
+		self.selected_text = self.view.substr(self.selection)
 		
 		try:
 			self.langauge = self.view.file_name().split(".")[-1]
 		except:
 			self.langauge = "txt"
 
-		if not selected_text:
+		if not self.selected_text:
 			sublime.error_message("Please select a text to ask about!")
 			return 
 
 		if question in description_needed_commands:
-			query = question.format(description=description,code=selected_text)
+			description = sublime.active_window().show_input_panel("", "", self.on_done, None, None)
 		else:
-			query = question.format(code=selected_text)
+			self.on_done()
+
+	def on_done(self,description=None):
+		query = self.question.format(description=description,code=self.selected_text) if description else self.question.format(description=description,code=self.selected_text)
+		
 		self.view.set_status('Pieces Refactoring', 'Copilot analyzing...')
+
 		res = pos_client.QGPTApi(PiecesSettings.api_client).question(
 			pos_client.QGPTQuestionInput(
 				query = query,
@@ -98,7 +90,7 @@ class PiecesAskQuestionCommand(sublime_plugin.TextCommand):
 		match = re.search(pattern, response_code, re.DOTALL)
 		if match:
 			self.code = match.group(1)
-			self.code_html = self.get_differences(selected_text.splitlines(),self.code.splitlines())
+			self.code_html = self.get_differences(self.selected_text.splitlines(),self.code.splitlines())
 			link = "<a href=insert>✅ Accept</a> | <a href=dismiss style='color:red'>❌ Reject</a>"
 			html = f"<div style='display:inline-block'>{link}</div>{self.code_html}"
 
@@ -121,9 +113,7 @@ class PiecesAskQuestionCommand(sublime_plugin.TextCommand):
 		elif href == "dismiss":
 			mdpopups.erase_phantom_by_id(self.view,self.phantom)
 
-			
-	def input(self,args):
-		return QuestionInputHandler()
+		
 
 
 	def get_differences(self,s1:list,s2:list):
@@ -145,6 +135,7 @@ class ReplaceSelectionCommand(sublime_plugin.TextCommand):
 
         # Replace the current selection with the provided code
         self.view.replace(edit, region, code)
+
 
 # TODO: Add better git diff algo rather than the Diff().compare
 # class SnippetDifferences:
