@@ -8,10 +8,6 @@ on:
         required: true
         default: false
     secrets:
-      access_token:
-        required: true
-      plugin_sublime:
-        required: true
       credentials_json:
         required: false
 
@@ -152,7 +148,7 @@ jobs:
               echo $updated_staging_json | jq 'reverse' > latest.json
               jq -n --arg number "$GITHUB_RUN_NUMBER" --arg channel "$CHANNEL" --arg branch "${{ steps.get_version.outputs.VERSION }}" --arg tag "$VERSION" --arg sha1 "${{ github.sha }}" '{channel: $channel, number: $number, branch: $branch, tag: $tag, sha1: $sha1}' > latest-single.json
           fi
-          gsutil -h "Cache-Control: max-age=0" cp **.tar.gz gs://$BUCKET/plugin_sublime/$GITHUB_RUN_NUMBER/Pieces.sublime-package
+          gsutil -h "Cache-Control: max-age=0" cp Pieces.sublime-package gs://$BUCKET/plugin_sublime/$GITHUB_RUN_NUMBER/Pieces.sublime-package
           gsutil -h "Cache-Control: max-age=0" cp latest-single.json gs://$BUCKET/plugin_sublime/$CHANNEL/latest-single.json
           gsutil -h "Cache-Control: max-age=0" cp latest.json gs://$BUCKET/plugin_sublime/$CHANNEL/latest.json
           echo "releasetag=$VERSION" >> $GITHUB_ENV
