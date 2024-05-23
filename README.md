@@ -75,6 +75,7 @@ Experiencing an issue or have feedback for the Pieces team? No worries, we've go
 
 You can download and checkout some new beta features before releasing.
 
+- Make sure you have downloaded the [package control](https://packagecontrol.io/installation)
 - Download the `Pieces.sublime-package` from [releases](https://github.com/pieces-app/plugin_sublime/releases) on GitHub 
 - Add `Pieces.sublime-package` to the Installed Packages directory.
 	- **Windows**: %APPDATA%\Sublime Text\Installed Packages
