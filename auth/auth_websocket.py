@@ -2,6 +2,7 @@ from ..base_websocket import BaseWebsocket
 from ..settings import PiecesSettings
 from pieces_os_client import UserProfile
 import threading
+import json
 
 
 class AuthWebsocket(BaseWebsocket):
@@ -15,5 +16,8 @@ class AuthWebsocket(BaseWebsocket):
 		return PiecesSettings.AUTH_WS_URL
 
 	def on_message(self,ws, message):
-		self.on_message_callback(UserProfile.from_json(message))
+		try:
+			self.on_message_callback(UserProfile.from_json(message))
+		except json.decoder.JSONDecodeError:
+			self.on_message_callback(None) # User logged out!
 
