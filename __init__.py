@@ -36,8 +36,8 @@ class PiecesDependencies:
 			"version":"2.2.1"
 		},
 		{
-			"dependency":"websockets",
-			"version":"12.0"
+			"dependency":"websocket",
+			"version":"1.8.0"
 		},
 		{
 			"dependency":"six.py",
@@ -165,6 +165,6 @@ else:
 def plugin_loaded(): # Call the download github on the plugin load to avoid duplicated calls
 	if check:
 		PiecesDependencies.unload_pieces_plugins() # Unload all the plugins
-		print("Pieces is downloading some dependencies")
-		sublime.set_timeout_async(lambda:PiecesDependencies.download_github_repo('https://github.com/pieces-app/sublime-dependencies', "1.0.3" ,PiecesDependencies.lib_path), 0)
-		
+		sublime.active_window().status_message("Pieces is downloading some dependencies...")
+		sublime.set_timeout_async(lambda:PiecesDependencies.download_github_repo('https://github.com/pieces-app/sublime-dependencies', "1.0.4" ,PiecesDependencies.lib_path), 0)
+

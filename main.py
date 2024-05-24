@@ -11,7 +11,9 @@ from .ask import *
 from .auth import *
 from .search import *
 from .misc import *
+from .base_websocket import BaseWebsocket
 
+PiecesSettings.host_init() # Intilize the hosts url
 
 def startup():
 	pieces_version = open_pieces_os()
@@ -35,20 +37,19 @@ def startup():
 
 	# WEBSOCKETS:
 	# Assets Identifiers Websocket
-	AssetsIdentifiersWS(AssetSnapshot.assets_snapshot_callback) # Load the assets ws at the startup
+	AssetsIdentifiersWS(AssetSnapshot.assets_snapshot_callback).start() # Load the assets ws at the startup
 	
 	# User Weboscket
 	PiecesSettings.create_auth_output_panel()
-	AuthWebsocket(AuthUser.on_user_callback) # Load the stream user websocket
+	AuthWebsocket(AuthUser.on_user_callback).start() # Load the stream user websocket
+
 
 def plugin_loaded():
-	PiecesSettings.host_init() # Intilize the hosts url
 	sublime.set_timeout_async(startup,0)
 	
 
 def plugin_unloaded():
-	asyncio.run(AssetsIdentifiersWS().close_websocket_connection())
-	asyncio.run(AuthWebsocket().close_websocket_connection())
+	BaseWebsocket.close_all()
 
 
 	
