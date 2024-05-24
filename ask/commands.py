@@ -31,7 +31,6 @@ class PiecesAskQuestionCommand(sublime_plugin.TextCommand):
 	def run_async(self,edit,question):
 		self.question = prompt_map[question]
 		
-		self.view.set_status('Pieces Refactoring', 'Copilot is thinking...')
 		# Get the current selection
 		self.selection = self.view.sel()[0]
 		self.selected_text = self.view.substr(self.selection)
@@ -45,15 +44,23 @@ class PiecesAskQuestionCommand(sublime_plugin.TextCommand):
 			sublime.error_message("Please select a text to ask about!")
 			return 
 
-		if question in description_needed_commands:
-			description = sublime.active_window().show_input_panel("", "", self.on_done, None, None)
+		if self.question in description_needed_commands:
+			sublime.active_window().show_input_panel("Enter a description:", "", self.on_done, None, None)
 		else:
-			self.on_done()
+			self.on_done_async()
 
-	def on_done(self,description=None):
-		query = self.question.format(description=description,code=self.selected_text) if description else self.question.format(description=description,code=self.selected_text)
+
+
+	def on_done(self,description):
+		self.description = description
+		sublime.set_timeout_async(self.on_done_async,0)
+
+	def on_done_async(self):
+		self.view.set_status('Pieces Refactoring', 'Copilot is thinking...')
+
+		query = self.question.format(description=self.description,code=self.selected_text) if self.description else self.question.format(code=self.selected_text)
 		
-		self.view.set_status('Pieces Refactoring', 'Copilot analyzing...')
+
 
 		res = pos_client.QGPTApi(PiecesSettings.api_client).question(
 			pos_client.QGPTQuestionInput(
@@ -61,7 +68,7 @@ class PiecesAskQuestionCommand(sublime_plugin.TextCommand):
 				model = PiecesSettings.model_id,
 				relevant = pos_client.RelevantQGPTSeeds(
 					iterable = [
-					# TODO: Add the snippet as a context
+					# TODO: Use the pipeline prompts
 					#     pos_client.RelevantQGPTSeed(
 					#         seed = pos_client.Seed(
 					#             type="SEEDED_ASSET",
@@ -79,7 +86,8 @@ class PiecesAskQuestionCommand(sublime_plugin.TextCommand):
 				)
 			)
 		)
-		self.view.set_status('Pieces Refactoring', 'Copilot finalizing...')
+
+		self.view.set_status('Pieces Refactoring', 'Copilot analyzing...')
 		self.window  = self.view.window()
 		response_code = res.answers.iterable[0].text
 		
@@ -135,44 +143,5 @@ class ReplaceSelectionCommand(sublime_plugin.TextCommand):
 
         # Replace the current selection with the provided code
         self.view.replace(edit, region, code)
-
-
-# TODO: Add better git diff algo rather than the Diff().compare
-# class SnippetDifferences:
-# 	def __init__(self, previous_state: list, current_state: list):
-# 		self.previous_state = previous_state
-# 		self.current_state = current_state
-# 		self.output = ""
-
-# 	def get_differences(self):
-# 		while self.previous_state and self.current_state:
-
-# 			if self.previous_state[0] == self.current_state[0]:
-# 				# No changes to the lines
-# 				self.output += self.previous_state.pop(0)
-# 				self.current_state.pop(0)
-
-
-# 			elif self.previous_state[0] in self.current_state:
-# 				self.handle_line_added_or_modified()
-# 			else:
-# 				self.handle_line_removed()
-
-
-# 	def handle_line_added_or_modified(self):
-# 		current_idx = 0
-# 		while self.previous_state[current_idx] != self.current_state[0]:
-# 			matches = difflib.get_close_matches(s1[current_idx], s2)
-# 			if matches:
-# 				self.output += "m" + self.previous_state[current_idx]
-# 				self.previous_state.remove(matches)
-# 			else:
-# 				self.output += "+" + self.previous_state[current_idx]
-# 			self.current_state.pop(0)
-
-# 	def handle_line_removed(self):
-# 		self.output += "-" + self.previous_state.pop(0)
-# 		self.current_state.pop(0)
-
 
 
