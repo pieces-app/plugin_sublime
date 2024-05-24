@@ -18,8 +18,8 @@ class PiecesCreateAssetCommand(sublime_plugin.TextCommand):
 				metadata = pos_client.FragmentMetadata(ext=ext)
 			else:
 				raise IndexError
-		except IndexError:
-			metadata = none
+		except:
+			metadata = None
 
 
 		if not data:
