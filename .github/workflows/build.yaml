@@ -34,7 +34,7 @@ jobs:
       - name: Get staging version
         shell: bash
         id: staging_version
-        run: echo "STAGING_VERSION=$(/bin/bash staging_versioning.sh)" >> $GITHUB_OUTPUT
+        run: echo "STAGING_VERSION=$(/bin/bash .github/scripts/staging_versioning.sh)" >> $GITHUB_OUTPUT
         if: inputs.deploy == false
 
       ### Setting the version in the pyproject.toml for unix builds
