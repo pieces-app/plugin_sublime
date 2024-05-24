@@ -59,7 +59,7 @@ jobs:
           sudo cp ./.python-version Pieces/.python-version
           sudo iconv -t utf-8 Pieces/.python-version
           cd Pieces
-          sudo python3 package.py Packing
+          sudo python3 ./.github/scripts/package.py Packing
 
       ### Writing our staging version to a file to be pulled in the last step to update our json in the cloud
       - name: Write staging version to file
