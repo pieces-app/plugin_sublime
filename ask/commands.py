@@ -52,7 +52,7 @@ class PiecesAskQuestionCommand(sublime_plugin.TextCommand):
 
 
 	def on_done(self,description):
-		self.description = description....
+		self.description = description
 		sublime.set_timeout_async(self.on_done_async,0)
 
 	def on_done_async(self):
