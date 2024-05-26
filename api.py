@@ -66,7 +66,7 @@ def version_check():
 		print_version_details(pieces_os_version, __version__)
 		return False
 	elif os_version_parsed < min_version_parsed:
-		print("Please update your Pieces OS. It is not compatible with the current cli-agent version")
+		print("Please update your Pieces OS. It is not compatible with the current plugin version")
 		print()
 		print_version_details(pieces_os_version, __version__)
 		return False
