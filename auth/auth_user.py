@@ -10,15 +10,12 @@ CONNECTED_HTML = "<p>Cloud Status: <span style=color:green>•</span> Connected<
 
 class AuthUser:
 	user_profile = None # Cache the user
-	phantom_ids = []
 
 	@classmethod
 	def create_new_phantom(cls,html):
-		if cls.phantom_ids:
-			for phantom in cls.phantom_ids:
-				PiecesSettings.output_panel.erase_phantom_by_id(phantom)
-		cls.phantom_ids.append(PiecesSettings.output_panel.add_phantom("auth_phantom", 
-			sublime.Region(0, 0), html, sublime.LAYOUT_INLINE))
+		PiecesSettings.output_panel.erase_phantoms("auth_phantom") # Remove the old phantom
+		PiecesSettings.output_panel.add_phantom("auth_phantom", 
+			sublime.Region(0, 0), html, sublime.LAYOUT_INLINE)
 
 	@classmethod
 	def on_user_callback(cls,user:UserProfile=None):
