@@ -5,10 +5,12 @@ from .assets.markdown_handler import PiecesHandleMarkdownCommand
 from .assets.list_assets import PiecesListAssetsCommand
 from .settings import PiecesSettings
 from .base_websocket import BaseWebsocket
+from .misc import PiecesOnBoardingHandlerCommand
 
 
 class PiecesEventListener(sublime_plugin.EventListener):
-	commands_to_exclude = ["pieces_handle_markdown","pieces_reload","pieces_support"]
+	commands_to_exclude = ["pieces_handle_markdown","pieces_reload"
+							,"pieces_support","pieces_onboarding"]
 
 	def on_window_command(self, window, command_name, args):
 		self.check(command_name)
@@ -36,3 +38,11 @@ class PiecesEventListener(sublime_plugin.EventListener):
 					view.window().run_command("pieces_handle_markdown",{"mode": "save"})
 					return
 			view.window().run_command("pieces_list_assets",{"pieces_asset_id":asset_id})
+	
+	def on_activated(self,view):
+		if view in PiecesOnBoardingHandlerCommand.on_boarding_views:
+			view.run_command("pieces_on_boarding_handler",args={"mode":"reload"})
+	
+	def on_hover(self,view, point, hover_zone):
+		if view in PiecesOnBoardingHandlerCommand.on_boarding_views and hover_zone	== 1: # Text is selected
+			view.run_command("pieces_on_boarding_handler",args={"mode":"hover","point":point})
