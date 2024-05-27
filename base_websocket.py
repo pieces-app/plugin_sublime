@@ -50,7 +50,7 @@ class BaseWebsocket:
 			self.ws.close()
 			self.thread.join()
 			self.running = False
-
+	@classmethod
 	def close_all(cls):
 		for instance in instances:
 			instance.close()
@@ -63,6 +63,6 @@ class BaseWebsocket:
 
 	def reconnect(self):
 		"""Reconnect the websocket connection."""
-		if not self.is_connected:
+		if not self.running:
 			self.start()
 
