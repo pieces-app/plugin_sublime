@@ -16,9 +16,10 @@ class PiecesSettings:
 	model_name = ""
 	api_client = None
 	_is_loaded = False # is the plugin loaded
+	_color_scheme = None # default color scheme
 
-	# Load the settings from 'pieces.sublime-settings' file using Sublime Text API
-	settings = sublime.load_settings('Pieces.sublime-settings')
+	ONBOARDING_SYNTAX = "Packages/Pieces/syntax/Onboarding.sublime-syntax"
+	ONBOARDING_COLOR_SCHEME = "User/Pieces/Pieces.hidden-color-scheme"
 
 
 	@property
@@ -31,6 +32,7 @@ class PiecesSettings:
 	@is_loaded.setter
 	def is_loaded(self,is_loaded):
 		self._is_loaded = is_loaded
+
 
 
 	@classmethod
@@ -58,7 +60,7 @@ class PiecesSettings:
 		This method sets the host URL based on the configuration settings. If the host URL is not provided in the settings, it defaults to a specific URL based on the platform. 
 		It then creates the WebSocket base URL and defines the WebSocket URLs for different API endpoints.
 		"""
-		cls.host = cls.settings.get('host')
+		cls.host = cls.pieces_settings.get('host')
 		if not cls.host:
 			if 'linux' == sublime.platform():
 				cls.host = "http://localhost:5323"
@@ -88,7 +90,7 @@ class PiecesSettings:
 		"""
 
 		models = cls.get_models_ids()
-		cls.model_name = cls.settings.get("model")
+		cls.model_name = cls.pieces_settings.get("model")
 		cls.model_id = models.get(cls.model_name,None)
 
 		if not cls.model_id:
@@ -97,9 +99,9 @@ class PiecesSettings:
 
 	@classmethod
 	def on_settings_change(cls):
-		if cls.host != cls.settings.get('host'):
+		if cls.host != cls.pieces_settings.get('host'):
 			cls.host_init()
-		if cls.model_name != cls.settings.get("model"):
+		if cls.model_name != cls.pieces_settings.get("model"):
 			cls.models_init()
 		
 
@@ -142,4 +144,10 @@ class PiecesSettings:
 		cls.output_panel.settings().set("line_numbers", False)  # Disable line numbers
 		cls.output_panel.settings().set("gutter", False)
 		cls.output_panel.set_read_only(True)
+
+
+		
+	# Load the settings from 'Pieces.sublime-settings' file using Sublime Text API
+	pieces_settings = sublime.load_settings('Pieces.sublime-settings')
+	pieces_settings.add_on_change("PIECES_SETTINGS",on_settings_change)
 
