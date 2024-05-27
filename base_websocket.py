@@ -50,7 +50,7 @@ class BaseWebsocket:
 			self.ws.close()
 			self.thread.join()
 			self.running = False
-
+	@classmethod
 	def close_all(cls):
 		for instance in instances:
 			instance.close()
