@@ -1,0 +1,4 @@
+from .generate_color_scheme import ColorSchemeGenerator
+from .onboarding_command import PiecesOnboardingCommand
+from .onboarding_handler import PiecesOnBoardingHandlerCommand
+	

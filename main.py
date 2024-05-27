@@ -22,18 +22,17 @@ def startup():
 	if not pieces_version:
 		print("Couldn't start pieces os\nPlease run pieces os and restart the editor to ensure everything is running properly")
 	else:
-		if version_check():
+		if version_check()[0]:
 			PiecesSettings.is_loaded = True
 			PiecesSettings.models_init()  # initilize the models
 			PiecesSettings.get_application()
 			print_version_details(pieces_version, __version__)
 
 
-	settings = sublime.load_settings('Pieces.sublime-settings')
-
-	settings.add_on_change("PIECES_SETTINGS",PiecesSettings.on_settings_change)
-	
-	
+	# Preferences settings
+	preferences_settings = sublime.load_settings('Preferences.sublime-settings')
+	preferences_settings.add_on_change("PREFERENCES_SETTINGS",ColorSchemeGenerator.generate_color_scheme)
+	ColorSchemeGenerator.generate_color_scheme()
 
 	# WEBSOCKETS:
 	# Assets Identifiers Websocket
