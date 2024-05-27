@@ -31,5 +31,9 @@
 	{
 		"caption": "Pieces: Reload Plugin",
 		"command": "pieces_reload"
+	},
+	{
+		"caption": "Pieces: Launch Onboarding",
+		"command": "pieces_onboarding"
 	}
 ]
