@@ -1,0 +1,37 @@
+%YAML 1.2
+---
+name: Onboarding
+scope: source.onboarding
+hidden: true
+
+contexts:
+  main:
+    - match: '\[Success\]'
+      push: success
+    - match: '\[Failed\]'
+      push: fail
+    - match: '\[In Progress\]'
+      push: progress
+
+  success:
+    - meta_scope: pieces.onboarding.success
+    - match: '\n'
+      pop: true
+    - match: '.+'
+      scope: pieces.onboarding.success
+
+  fail:
+    - meta_scope: pieces.onboarding.fail
+    - match: '\n'
+      pop: true
+    - match: '.+'
+      scope: pieces.onboarding.fail
+
+
+  progress:
+    - meta_scope: pieces.onboarding.progress
+    - match: '\n'
+      pop: true
+    - match: '.+'
+      scope: pieces.onboarding.progress
+
