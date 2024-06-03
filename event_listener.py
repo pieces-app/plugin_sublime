@@ -40,9 +40,5 @@ class PiecesEventListener(sublime_plugin.EventListener):
 			view.window().run_command("pieces_list_assets",{"pieces_asset_id":asset_id})
 	
 	def on_activated(self,view):
-		if view in PiecesOnBoardingHandlerCommand.on_boarding_views:
-			view.run_command("pieces_on_boarding_handler",args={"mode":"reload"})
-	
-	def on_hover(self,view, point, hover_zone):
-		if view in PiecesOnBoardingHandlerCommand.on_boarding_views and hover_zone	== 1: # Text is selected
-			view.run_command("pieces_on_boarding_handler",args={"mode":"hover","point":point})
+		if view.settings().to_dict().get("pieces_onboarding",False):
+			view.run_command("pieces_on_boarding_handler")
