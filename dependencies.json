@@ -3,7 +3,8 @@
 
     "*": {
         "*": [
-            "mdpopups"
+            "mdpopups",
+            "websocket-client"
         ]
 
     }
