@@ -12,7 +12,7 @@ class AssetSnapshot:
 	asset_queue = queue.Queue() # Queue for asset_ids to be processed
 	block = True # to wait for the queue to recevive the first asset id
 	asset_set = set()  # Set for asset_ids in the queue
-
+	first_shot = True # First time to open the websocket or not
 
 	@classmethod
 	def worker(cls):
@@ -34,6 +34,8 @@ class AssetSnapshot:
 		api_instance = AssetApi(PiecesSettings.api_client)
 		asset = api_instance.asset_snapshot(asset_id)
 		cls.assets_snapshot[asset_id] = asset
+
+
 	@classmethod
 	def assets_snapshot_callback(cls,ids:StreamedIdentifiers):
 		# Start the worker thread if it's not running
@@ -49,8 +51,11 @@ class AssetSnapshot:
 					except KeyError:
 						pass
 				else:
+					if asset_id not in cls.assets_snapshot and not cls.first_shot:
+						cls.assets_snapshot = {asset_id:None,**cls.assets_snapshot}
 					cls.asset_queue.put(asset_id)  # Add asset_id to the queue
 					cls.asset_set.add(asset_id)  # Add asset_id to the set
+		cls.first_shot = False
 		cls.block = False # Remove the block to end the thread
 
 
