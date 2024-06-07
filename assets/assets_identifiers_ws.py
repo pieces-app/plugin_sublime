@@ -1,5 +1,6 @@
-from pieces_os_client import StreamedIdentifiers
+from pieces_os_client import StreamedIdentifiers,StreamedIdentifier,ReferencedAsset,AssetsApi
 import threading
+import sublime
 
 from ..settings import PiecesSettings
 from ..base_websocket import BaseWebsocket
@@ -17,3 +18,17 @@ class AssetsIdentifiersWS(BaseWebsocket):
 	def on_message(self,ws, message):
 		self.on_message_callback(StreamedIdentifiers.from_json(message))
 
+	def on_error(self,ws,error):
+		if type(error) == OSError:
+			iterable = AssetsApi(PiecesSettings.api_client).assets_identifiers_snapshot().iterable
+			streamed_idetifiers = StreamedIdentifiers(
+				iterable = [
+					StreamedIdentifier(asset = ReferencedAsset(id = asset.id)) for asset in iterable
+				]
+			)
+			self.on_message_callback(streamed_idetifiers)
+			sublime.message_dialog(
+				"Warning: The Pieces package is unable to connect to the websocket.\n"
+				"As a result, assets and certain functionalities will not be updated in real-time."
+			)
+		print(error)
