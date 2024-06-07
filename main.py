@@ -3,7 +3,6 @@ from .api import open_pieces_os,print_version_details,version_check
 from .settings import PiecesSettings
 
 import sublime
-import asyncio
 
 # load the commands
 from .assets import *
@@ -40,8 +39,7 @@ def startup():
 	
 	# User Weboscket
 	PiecesSettings.create_auth_output_panel()
-	AuthWebsocket(AuthUser.on_user_callback).start() # Load the stream user websocket
-
+	AuthWebsocket(AuthUser.on_user_callback).start() # Load the stream user websocket		
 
 def plugin_loaded():
 	sublime.set_timeout_async(startup,0)

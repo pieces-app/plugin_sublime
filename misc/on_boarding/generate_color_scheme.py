@@ -73,15 +73,9 @@ class ColorSchemeGenerator:
 		globals_,variables = cls.load_resource(resource_str,color_scheme)
 
 		path = os.path.join(
-			sublime.packages_path(),
-			PiecesSettings.ONBOARDING_COLOR_SCHEME
+			PiecesSettings.PIECES_USER_DIRECTORY,
+			PiecesSettings.ONBOARDING_COLOR_SCHEME.split("/")[-1] # The name of the color scheme
 		)
-
-		directory = os.path.dirname(path)
-		
-		if not os.path.exists(directory):
-			os.makedirs(directory)
-		
 
 		with open(path, 'w') as f: 
 			json.dump(cls.get_color_scheme(globals_,variables), f,indent=4)

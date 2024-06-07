@@ -3,6 +3,7 @@ import sublime
 from typing import Optional,Dict,Union
 import urllib
 import json
+import os
 
 from . import __version__
 
@@ -20,7 +21,11 @@ class PiecesSettings:
 
 	ONBOARDING_SYNTAX = "Packages/Pieces/syntax/Onboarding.sublime-syntax"
 	ONBOARDING_COLOR_SCHEME = "User/Pieces/Pieces.hidden-color-scheme"
-
+	PIECES_USER_DIRECTORY = os.path.join(sublime.packages_path(),"User","Pieces")
+	
+	# Create the pieces directory to store the data if it does not exists
+	if not os.path.exists(PIECES_USER_DIRECTORY):
+		os.makedirs(PIECES_USER_DIRECTORY)
 
 	@property
 	def is_loaded(self):

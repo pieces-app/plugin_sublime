@@ -1,13 +1,13 @@
 import sublime_plugin
 import sublime
-import textwrap
 import re
 import time
+import os
+import json
 
 from ...settings import PiecesSettings
 from ...api import version_check,open_pieces_os
 from ... import PiecesDependencies
-
 
 
 
@@ -20,6 +20,7 @@ class PiecesOnBoardingHandlerCommand(sublime_plugin.TextCommand):
 		"pieces_os_status":"[Loading] Checking Pieces OS",
 	} # Maps a function name to the status to be displayed when it is loading
 
+	ONBOARDING_SETTINGS_PATH = os.path.join(PiecesSettings.PIECES_USER_DIRECTORY, "onboarding_settings.json")
 
 	def run(self,_):
 		self.reload()
@@ -77,8 +78,10 @@ class PiecesOnBoardingHandlerCommand(sublime_plugin.TextCommand):
 			return "[In Progress] Downloading some dependencies"
 		return "[Success] Downloaded some dependencies successfully"
 
-	@staticmethod
-	def create_command_status():
+	def create_command_status(self):
+		settings = self.get_onboarding_settings()
+		if settings.get("create_asset"):
+			return '[Success] Asset created successfully'
 		return '[In Progress] Create your first<a href="create_asset">asset</a>'
 
 	def append_view(self, text):
@@ -143,5 +146,25 @@ class PiecesOnBoardingHandlerCommand(sublime_plugin.TextCommand):
 			new_file = self.view.window().new_file(syntax="Packages/Python/Python.sublime-syntax")
 			new_file.run_command("append",{"characters":"print('I love Pieces')"})
 			new_file.run_command("select_all")
+			new_file.set_name("Create your first asset!")
 			new_file.set_scratch(True)
 			new_file.show_popup("Right click to open your context menu Then go to 'Pieces > Save to Pieces'")
+	
+	@classmethod
+	def get_onboarding_settings(cls):
+		if not os.path.exists(cls.ONBOARDING_SETTINGS_PATH):
+			return {}
+		with open(cls.ONBOARDING_SETTINGS_PATH,"r") as f:
+			return json.load(f)
+	
+	@classmethod
+	def add_onboarding_settings(cls, **kwargs):
+		# Load existing settings
+		data = cls.get_onboarding_settings()
+		
+		# Update the settings with the new kwargs
+		data.update(kwargs)
+		
+
+		with open(cls.ONBOARDING_SETTINGS_PATH, "w") as f:
+			json.dump(data, f, indent=4)

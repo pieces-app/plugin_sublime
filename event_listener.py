@@ -17,6 +17,8 @@ class PiecesEventListener(sublime_plugin.EventListener):
 		
 	def on_text_command(self,view,command_name,args):
 		self.check(command_name)
+		if command_name == "pieces_create_asset":
+			PiecesOnBoardingHandlerCommand.add_onboarding_settings(create_asset=True)
 
 	def check(self,command_name):
 		if command_name.startswith("pieces_") and command_name not in PiecesEventListener.commands_to_exclude: # Check any command 
