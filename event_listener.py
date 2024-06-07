@@ -4,7 +4,6 @@ import sublime_plugin
 from .assets.markdown_handler import PiecesHandleMarkdownCommand
 from .assets.list_assets import PiecesListAssetsCommand
 from .settings import PiecesSettings
-from .base_websocket import BaseWebsocket
 from .misc import PiecesOnBoardingHandlerCommand
 
 
@@ -12,13 +11,19 @@ class PiecesEventListener(sublime_plugin.EventListener):
 	commands_to_exclude = ["pieces_handle_markdown","pieces_reload"
 							,"pieces_support","pieces_onboarding"]
 
+	onboarding_commands_dict = {
+		"pieces_search":"create_asset",
+		"pieces_serach":"search"
+	}
+
 	def on_window_command(self, window, command_name, args):
 		self.check(command_name)
+		self.check_onboarding(command_name)
 		
 	def on_text_command(self,view,command_name,args):
 		self.check(command_name)
-		if command_name == "pieces_create_asset":
-			PiecesOnBoardingHandlerCommand.add_onboarding_settings(create_asset=True)
+		self.check_onboarding(command_name)
+			
 
 	def check(self,command_name):
 		if command_name.startswith("pieces_") and command_name not in PiecesEventListener.commands_to_exclude: # Check any command 
@@ -29,7 +34,10 @@ class PiecesEventListener(sublime_plugin.EventListener):
 				return False
 		return None
 	
-
+	def check_onboarding(self,command_name):
+		if command_name not in self.onboarding_commands_dict:
+			return
+		PiecesOnBoardingHandlerCommand.add_onboarding_settings(**{self.onboarding_commands_dict[command_name] : True})
 
 	def on_pre_close(self,view):
 		asset_id = PiecesHandleMarkdownCommand.views_to_handle.get(view.id())

@@ -27,7 +27,7 @@ class PiecesOnBoardingHandlerCommand(sublime_plugin.TextCommand):
 
 
 	def reload(self):
-		text = f"{self.pieces_os_status()}\n{self.dependencies_status()}\n{self.create_command_status()}"
+		text = f"{self.pieces_os_status()}\n{self.dependencies_status()}\n{self.create_command_status()}\n{self.search_command_status()}"
 		# set read only false
 		self.view.set_read_only(False)
 		# Erase the entire region
@@ -81,8 +81,15 @@ class PiecesOnBoardingHandlerCommand(sublime_plugin.TextCommand):
 	def create_command_status(self):
 		settings = self.get_onboarding_settings()
 		if settings.get("create_asset"):
-			return '[Success] Asset created successfully'
+			return '[Success] Asset created successfully!'
 		return '[In Progress] Create your first<a href="create_asset">asset</a>'
+
+	def search_command_status(self):
+		settings = self.get_onboarding_settings()
+		if settings.get("search"):
+			return '[Success] You searched an asset!'
+		return '[In Progress]<a href="search">Search</a>an asset'
+
 
 	def append_view(self, text):
 		"""This will replace any "a" tag by a phantom in the same place"""
@@ -149,7 +156,14 @@ class PiecesOnBoardingHandlerCommand(sublime_plugin.TextCommand):
 			new_file.set_name("Create your first asset!")
 			new_file.set_scratch(True)
 			new_file.show_popup("Right click to open your context menu Then go to 'Pieces > Save to Pieces'")
-	
+		
+		elif href == "search":
+			self.view.window().run_command("show_overlay",{"overlay": "command_palette"})
+			clipboard = sublime.get_clipboard()
+			sublime.set_clipboard("Pieces: Search")
+			self.view.window().run_command("paste")
+			sublime.set_clipboard(clipboard) # To avoid overighting the user clipboard
+
 	@classmethod
 	def get_onboarding_settings(cls):
 		if not os.path.exists(cls.ONBOARDING_SETTINGS_PATH):
