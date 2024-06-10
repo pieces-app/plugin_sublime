@@ -3,7 +3,8 @@
 
     "*": {
         "*": [
-            "mdpopups"
+            "mdpopups",
+            "typing_extensions"
         ]
 
     }
