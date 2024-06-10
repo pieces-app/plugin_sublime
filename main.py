@@ -3,7 +3,6 @@ from .api import open_pieces_os,print_version_details,version_check
 from .settings import PiecesSettings
 
 import sublime
-import asyncio
 
 # load the commands
 from .assets import *
@@ -13,9 +12,9 @@ from .search import *
 from .misc import *
 from .base_websocket import BaseWebsocket
 
-PiecesSettings.host_init() # Intilize the hosts url
 
-def startup():
+
+def startup(settings_model):
 	pieces_version = open_pieces_os()
 
 
@@ -24,15 +23,11 @@ def startup():
 	else:
 		if version_check():
 			PiecesSettings.is_loaded = True
-			PiecesSettings.models_init()  # initilize the models
 			PiecesSettings.get_application()
 			print_version_details(pieces_version, __version__)
 
-
-	settings = sublime.load_settings('Pieces.sublime-settings')
-
-	settings.add_on_change("PIECES_SETTINGS",PiecesSettings.on_settings_change)
-	
+			
+			PiecesSettings.models_init(settings_model) # Intilize the models
 	
 
 	# WEBSOCKETS:
@@ -45,7 +40,15 @@ def startup():
 
 
 def plugin_loaded():
-	sublime.set_timeout_async(startup,0)
+	global settings # Set it to global to use 
+
+	settings = sublime.load_settings('Pieces.sublime-settings')
+	host = settings.get("host")
+	model = settings.get('model')
+	settings.add_on_change("PIECES_SETTINGS",PiecesSettings.on_settings_change)
+	PiecesSettings.host_init(host) # Intilize the hosts url
+	
+	sublime.set_timeout_async(lambda : startup(model) ,0)
 	
 
 def plugin_unloaded():

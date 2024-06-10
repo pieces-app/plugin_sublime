@@ -1,5 +1,5 @@
 {
-	// "host": "http:localhost/1000"
+	"host": "",
 	"model":"GPT-3.5-turbo Chat Model" 
 			//  "GPT-4o Chat Model", 
 			//  "GPT-4 Chat Model", 
