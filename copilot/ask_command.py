@@ -43,7 +43,7 @@ class PiecesEnterResponse(sublime_plugin.TextCommand):
 
 	def run(self,edit):
 		PiecesAskStreamCommand.gpt_view.set_read_only(True)
-		AskStreamWS().send_message(
+		AskStreamWS(PiecesAskStreamCommand.on_message_callback).send_message(
 			QGPTStreamInput(
 				question=QGPTQuestionInput(
 					query = self.view.substr(Region(self.end_response,self.view.size())),

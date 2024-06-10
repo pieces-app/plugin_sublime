@@ -39,7 +39,6 @@ class PiecesEventListener(sublime_plugin.EventListener):
 
 
 	def on_query_context(self,view,key, operator, operand, match_all):
-		print(key)
 		if key != "PIECES_GPT_VIEW":
 			return None
 		return view.settings().get("PIECES_GPT_VIEW")
