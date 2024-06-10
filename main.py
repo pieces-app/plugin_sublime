@@ -45,7 +45,7 @@ def startup():
 	AuthWebsocket(AuthUser.on_user_callback).start() # Load the stream user websocket
 
 	# Ask Stream Websocket
-	AskStreamWS(AskStreamCommand.on_message_callback).start()
+	AskStreamWS(PiecesAskStreamCommand.on_message_callback).start()
 
 
 def plugin_loaded():

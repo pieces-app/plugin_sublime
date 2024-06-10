@@ -1,4 +1,4 @@
-from pieces_os_client import QGPTStreamOutput
+from pieces_os_client import QGPTStreamOutput,QGPTStreamInput
 
 from ..settings import PiecesSettings
 from ..base_websocket import BaseWebsocket
@@ -16,3 +16,9 @@ class AskStreamWS(BaseWebsocket):
 	def on_message(self,ws, message):
 		self.on_message_callback(QGPTStreamOutput.from_json(message))
 
+	
+	def send_message(self,message:QGPTStreamInput):
+		if not self.running:
+			self.start()
+			
+		self.ws.send(message.to_json())

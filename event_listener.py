@@ -36,3 +36,11 @@ class PiecesEventListener(sublime_plugin.EventListener):
 					view.window().run_command("pieces_handle_markdown",{"mode": "save"})
 					return
 			view.window().run_command("pieces_list_assets",{"pieces_asset_id":asset_id})
+
+
+	def on_query_context(self,view,key, operator, operand, match_all):
+		print(key)
+		if key != "PIECES_GPT_VIEW":
+			return None
+		return view.settings().get("PIECES_GPT_VIEW")
+		

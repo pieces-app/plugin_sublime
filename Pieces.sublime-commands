@@ -31,5 +31,9 @@
 	{
 		"caption": "Pieces: Reload Plugin",
 		"command": "pieces_reload"
+	},
+	{
+		"caption": "Pieces: Ask",
+		"command": "pieces_ask_stream"
 	}
 ]
