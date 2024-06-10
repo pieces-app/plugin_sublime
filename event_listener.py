@@ -55,3 +55,7 @@ class PiecesEventListener(sublime_plugin.EventListener):
 			if view.settings().get("PIECES_GPT_VIEW"):
 				copilot.gpt_view = view # Set the old views
 
+class PiecesViewEventListener(sublime_plugin.ViewEventListener):
+	def on_close(self):
+		if self.view.settings().get("PIECES_GPT_VIEW"):
+			copilot.gpt_view = None
