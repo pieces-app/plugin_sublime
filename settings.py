@@ -1,8 +1,6 @@
 import pieces_os_client as pos_client
 import sublime
-from typing import Optional,Dict,Union
-import urllib
-import json
+from typing import Dict
 
 from . import __version__
 
@@ -59,6 +57,9 @@ class PiecesSettings:
 		It then creates the WebSocket base URL and defines the WebSocket URLs for different API endpoints.
 		"""
 		cls.host = cls.settings.get('host')
+		if not isinstance(cls.host,str):
+			return sublime.error_message("Invalid host")
+
 		if not cls.host:
 			if 'linux' == sublime.platform():
 				cls.host = "http://localhost:5323"
@@ -89,7 +90,7 @@ class PiecesSettings:
 
 		models = cls.get_models_ids()
 		cls.model_name = cls.settings.get("model")
-		cls.model_id = models.get(cls.model_name,None)
+		cls.model_id = models.get(str(cls.model_name))
 
 		if not cls.model_id:
 			cls.model_id = models["GPT-3.5-turbo Chat Model"]
@@ -124,15 +125,15 @@ class PiecesSettings:
 	@classmethod
 	def get_models_ids(cls) -> Dict[str, str]:
 		if cls.models:
-			return models
+			return cls.models
 
 		api_instance = pos_client.ModelsApi(cls.api_client)
 
 		api_response = api_instance.models_snapshot()
-		models = {model.name: model.id for model in api_response.iterable if model.cloud or model.downloaded} # getting the models that are available in the cloud or is downloaded
+		cls.models = {model.name: model.id for model in api_response.iterable if model.cloud or model.downloaded} # getting the models that are available in the cloud or is downloaded
 
 
-		return models
+		return cls.models
 
 
 	@classmethod
