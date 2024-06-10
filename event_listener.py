@@ -5,6 +5,7 @@ from .assets.markdown_handler import PiecesHandleMarkdownCommand
 from .assets.list_assets import PiecesListAssetsCommand
 from .settings import PiecesSettings
 from .base_websocket import BaseWebsocket
+from .copilot.ask_command import copilot
 
 
 class PiecesEventListener(sublime_plugin.EventListener):
@@ -39,7 +40,18 @@ class PiecesEventListener(sublime_plugin.EventListener):
 
 
 	def on_query_context(self,view,key, operator, operand, match_all):
-		if key != "PIECES_GPT_VIEW":
-			return None
-		return view.settings().get("PIECES_GPT_VIEW")
-		
+		if key == "PIECES_GPT_VIEW":
+			return view.settings().get("PIECES_GPT_VIEW")
+
+		elif key == "pieces_copilot":
+			if view.settings().get("PIECES_GPT_VIEW"):
+				copilot.select_end
+				return not copilot.can_type
+			else: 
+				return False
+
+	def on_init(self,views):
+		for view in views:
+			if view.settings().get("PIECES_GPT_VIEW"):
+				copilot.gpt_view = view # Set the old views
+
