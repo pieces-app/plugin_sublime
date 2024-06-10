@@ -63,3 +63,5 @@ class BaseWebsocket:
 		if not self.running:
 			self.start()
 
+	def __str__(self):
+		return getattr(self,"url","BASESOCKET")
