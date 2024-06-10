@@ -71,6 +71,8 @@ class PiecesSettings:
 
 		cls.AUTH_WS_URL = ws_base_url + "/user/stream"
 
+		cls.ASK_STREAM_WS_URL = ws_base_url + "/qgpt/stream"
+
 		configuration = pos_client.Configuration(host=cls.host)
 
 		cls.api_client = pos_client.ApiClient(configuration)
