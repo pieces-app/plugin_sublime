@@ -62,9 +62,9 @@ class PiecesSettings:
 
 		if not cls.host:
 			if 'linux' == sublime.platform():
-				cls.host = "http://localhost:5323"
+				cls.host = "http://127.0.0.1:5323"
 			else:
-				cls.host = "http://localhost:1000"
+				cls.host = "http://127.0.0.1:1000"
 
 		ws_base_url = cls.host.replace('http','ws')
 
