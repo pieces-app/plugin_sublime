@@ -14,9 +14,6 @@ class BaseWebsocket:
 
 		BaseWebsocket.instances.append(self)
 
-	@property
-	def url(self):
-		return None
 
 	def on_message(self, ws,message):
 		pass
@@ -35,9 +32,9 @@ class BaseWebsocket:
 			self.url,
 			on_message=self.on_message,
 			on_error=self.on_error,
-			on_close=self.on_close
+			on_close=self.on_close,
+			on_open=self.on_open
 		)
-		self.ws.on_open = self.on_open
 		self.ws.run_forever()
 
 	def start(self):
@@ -52,7 +49,7 @@ class BaseWebsocket:
 			self.running = False
 	@classmethod
 	def close_all(cls):
-		for instance in instances:
+		for instance in cls.instances:
 			instance.close()
 
 	@classmethod
@@ -66,3 +63,5 @@ class BaseWebsocket:
 		if not self.running:
 			self.start()
 
+	def __str__(self):
+		return getattr(self,"url",self.instances)

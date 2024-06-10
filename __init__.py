@@ -1,4 +1,4 @@
-import urllib.request
+import urllib.request,urllib.error
 import zipfile
 import io
 import os
@@ -43,10 +43,6 @@ class PiecesDependencies:
 			"version":"1.16.0"
 		},
 		{
-			"dependency":"typing_extensions.py",
-			"version":"unknown"
-		},
-		{
 			"dependency":"semver",
 			"version":"3.0.2"
 		}] # Need to be changed each release
@@ -61,8 +57,15 @@ class PiecesDependencies:
 			url += '/'
 
 		url += f'releases/download/{version}/dependencies.zip'
-
-		response = urllib.request.urlopen(url)
+		try:
+			response = urllib.request.urlopen(url)
+		except urllib.error.URLError:
+			sublime.error_message(
+					"Error: Pieces was unable to download the necessary dependencies. "
+					"Please check your internet connection and try again. If the problem persists, "
+					"Consider checking the support command to get support"
+				)
+			return
 		z = zipfile.ZipFile(io.BytesIO(response.read()))
 
 		# Create a temporary directory to extract files to
@@ -86,7 +89,7 @@ class PiecesDependencies:
 		# Remove the temporary directory
 		shutil.rmtree(temp_dir)
 
-		print("Successfully downloaded the pieces dependency")
+		sublime.message_dialog("Warning: To ensure all features in Pieces works correctly, Please restart Sublime")
 
 		cls.reload_dependency() # Reload everything!
 		cls.downloading = False
@@ -105,7 +108,7 @@ class PiecesDependencies:
 		
 		for plugin in cls.pieces_plugins:
 			sublime_plugin.reload_plugin(plugin)
-		print("It is recommended to reload sublime since there are some dependencies downloaded")
+		
 
 	@staticmethod
 	def get_dependency_version(dependency):
@@ -165,5 +168,5 @@ def plugin_loaded(): # Call the download github on the plugin load to avoid dupl
 	if check:
 		PiecesDependencies.unload_pieces_plugins() # Unload all the plugins
 		sublime.active_window().status_message("Pieces is downloading some dependencies...")
-		sublime.set_timeout_async(lambda:PiecesDependencies.download_github_repo('https://github.com/pieces-app/sublime-dependencies', "1.0.6" ,PiecesDependencies.lib_path), 0)
-
+		sublime.set_timeout_async(lambda:PiecesDependencies.download_github_repo('https://github.com/pieces-app/sublime-dependencies', "1.0.7" ,PiecesDependencies.lib_path), 0)
+			
