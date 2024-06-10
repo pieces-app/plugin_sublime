@@ -11,6 +11,7 @@ from .ask import *
 from .auth import *
 from .search import *
 from .misc import *
+from .copilot import *
 from .base_websocket import BaseWebsocket
 
 PiecesSettings.host_init() # Intilize the hosts url
@@ -42,6 +43,9 @@ def startup():
 	# User Weboscket
 	PiecesSettings.create_auth_output_panel()
 	AuthWebsocket(AuthUser.on_user_callback).start() # Load the stream user websocket
+
+	# Ask Stream Websocket
+	AskStreamWS(AskStreamCommand.on_message_callback).start()
 
 
 def plugin_loaded():
