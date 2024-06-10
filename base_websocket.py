@@ -64,4 +64,4 @@ class BaseWebsocket:
 			self.start()
 
 	def __str__(self):
-		return getattr(self,"url","BASESOCKET")
+		return getattr(self,"url",self.instances)
