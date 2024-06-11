@@ -15,6 +15,7 @@ class PiecesSettings:
 	api_client = None
 	_is_loaded = False # is the plugin loaded
 
+	on_model_change_callbacks = [] # If the model change a function should be runned
 
 
 
@@ -92,7 +93,9 @@ class PiecesSettings:
 
 		if not cls.model_id:
 			cls.model_id = models["GPT-3.5-turbo Chat Model"]
-
+		print(cls.on_model_change_callbacks)
+		for func in cls.on_model_change_callbacks:
+			func()
 
 	@classmethod
 	def on_settings_change(cls,all = False):

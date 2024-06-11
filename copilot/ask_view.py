@@ -6,28 +6,30 @@ from ..settings import PiecesSettings
 from sublime import Region
 
 class CopilotViewManager:
-	_gpt_view = None # current view for the ask stream
-	_conversation_id = None	
 	can_type = True
 	
 	@property
 	def gpt_view(self) -> sublime.View:
-		
-		if not self._gpt_view:
+		if not getattr(CopilotViewManager, "_gpt_view",None):
 			CopilotViewManager._gpt_view = sublime.active_window().new_file(syntax="Packages/Markdown/Markdown.sublime-syntax")	
 			CopilotViewManager.can_type = True
-			self._gpt_view.settings().set("PIECES_GPT_VIEW",True) # Label the view as gpt view
-			self._gpt_view.settings().set("end_response",0) # End reponse charater
-			self._gpt_view.set_scratch(True)
-			self._gpt_view.set_name("Pieces Copilot")
-			self._gpt_view.set_status("MODEL",PiecesSettings.model_name)
+			CopilotViewManager._gpt_view.settings().set("PIECES_GPT_VIEW",True) # Label the view as gpt view
+			CopilotViewManager._gpt_view.settings().set("end_response",0) # End reponse charater
+			CopilotViewManager._gpt_view.set_scratch(True)
+			CopilotViewManager._gpt_view.set_name("Pieces Copilot")
 			self.show_cursor
-		return self._gpt_view
+			self.update_status_bar()
+		return CopilotViewManager._gpt_view
 		
 
 	@gpt_view.setter
 	def gpt_view(self,view):
-		self._gpt_view = view
+		CopilotViewManager._gpt_view = view
+
+
+	def update_status_bar(self):
+		if getattr(self,"_gpt_view",None):
+			self._gpt_view.set_status("MODEL",f"LLM Model: {PiecesSettings.model_name.replace('Chat Model','')}")
 
 	@property
 	def show_cursor(self):
@@ -53,7 +55,15 @@ class CopilotViewManager:
 			self.gpt_view.settings().set("end_response",self.gpt_view.size()) # Update the size
 			self.show_cursor
 			CopilotViewManager.can_type = True
-			self._conversation_id = message.conversation
+			self.conversation_id = message.conversation
+	
+	@property
+	def conversation_id(self):
+		return self.gpt_view.settings().get("conversation_id")
+
+	@conversation_id.setter
+	def conversation_id(self,id):
+		self.gpt_view.settings().set("conversation_id",id)
 
 	@property
 	def select_end(self) -> None:
@@ -75,7 +85,7 @@ class CopilotViewManager:
 					application=PiecesSettings.get_application().id,
 					model = PiecesSettings.model_id
 				),
-				conversation = self._conversation_id,
+				conversation = self.conversation_id,
 				
 			))
 	
@@ -85,4 +95,3 @@ class CopilotViewManager:
 			CopilotViewManager._ask_websocket = AskStreamWS(self.on_message_callback)
 		return self._ask_websocket
 
-	

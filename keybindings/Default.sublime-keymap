@@ -16,7 +16,7 @@
     { "keys": ["shift+insert"], "command": "noop","context": [{"key": "pieces_copilot"}]},
     { "keys": ["shift+tab"], "command": "noop", "context": [{"key": "pieces_copilot"}]},
     { "keys": ["shift+backspace"], "command": "noop","context": [{"key": "pieces_copilot"}]},
-
+    { "keys": ["ctrl+backspace"], "command": "noop","context": [{"key": "pieces_copilot"}]},
 
     // Basic keys
     { "keys": ["A"], "command": "noop", "context": [{"key": "pieces_copilot"}]},

@@ -1,7 +1,7 @@
 from . import __version__
 from .api import open_pieces_os,print_version_details,version_check
 from .settings import PiecesSettings
-
+from .copilot.ask_command import copilot
 import sublime
 
 # load the commands
@@ -50,6 +50,9 @@ def plugin_loaded():
 	settings.add_on_change("PIECES_SETTINGS",PiecesSettings.on_settings_change)
 	PiecesSettings.host_init(host) # Intilize the hosts url
 	
+	# callbacks needed onchange settings
+	PiecesSettings.on_model_change_callbacks.append(copilot.update_status_bar)
+
 	sublime.set_timeout_async(lambda : startup(model) ,0)
 	
 
