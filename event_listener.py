@@ -48,7 +48,6 @@ class PiecesEventListener(sublime_plugin.EventListener):
 			## False -> Means operation can be done
 
 			if view.settings().get("PIECES_GPT_VIEW"):
-				print(copilot.end_response, view.sel()[0].begin())
 				if not copilot.can_type:
 					return True # If we can't type then don't accpet operations
 
