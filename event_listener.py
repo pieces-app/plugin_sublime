@@ -43,10 +43,28 @@ class PiecesEventListener(sublime_plugin.EventListener):
 		if key == "PIECES_GPT_VIEW":
 			return view.settings().get("PIECES_GPT_VIEW")
 
-		elif key == "pieces_copilot":
+		elif key == "pieces_copilot_add" or key == "pieces_copilot_remove":
+			## TRUE -> Means no operation will be done
+			## False -> Means operation can be done
+
 			if view.settings().get("PIECES_GPT_VIEW"):
-				copilot.select_end
-				return not copilot.can_type
+				print(copilot.end_response, view.sel()[0].begin())
+				if not copilot.can_type:
+					return True # If we can't type then don't accpet operations
+
+				# Set the selection at the begining if we are in the middle of a view
+				if copilot.end_response > view.sel()[0].begin():
+					copilot.select_end
+				
+
+				# Mange the remove to avoid removing the main reponse
+				if key == "pieces_copilot_remove" and copilot.end_response >= view.sel()[0].begin():
+					return True
+
+				elif key == "pieces_copilot_add" and copilot.end_response > view.sel()[0].begin():
+					return True
+					
+				return False # All cheks is done you can enter what you want!
 			else: 
 				return False
 
