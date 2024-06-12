@@ -33,7 +33,7 @@ def startup(settings_model):
 
 	# WEBSOCKETS:
 	# Assets Identifiers Websocket
-	AssetsIdentifiersWS(AssetSnapshot.assets_snapshot_callback).start() # Load the assets ws at the startup
+	AssetsIdentifiersWS(AssetSnapshot.streamed_identifiers_callback).start() # Load the assets ws at the startup
 	
 	# User Weboscket
 	PiecesSettings.create_auth_output_panel()

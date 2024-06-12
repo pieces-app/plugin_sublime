@@ -33,7 +33,7 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 		# Find all code blocks
 		code_block = re.findall(code_block_pattern, markdown_text)
 		try:
-			language = AssetSnapshot.assets_snapshot[pieces_asset_id].original.reference.classification.specific
+			language = identifiers_snapshot[pieces_asset_id].original.reference.classification.specific
 		except:
 			language = None
 		PiecesListAssetsCommand.sheets_md[sheet_id] = {"code":"\n".join(code_block[0].split("\n")[1:-1]),"name":api_response.name,"language":language,"id":pieces_asset_id}
@@ -51,7 +51,7 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 
 class PiecesAssetIdInputHandler(sublime_plugin.ListInputHandler):
 	def list_items(self):
-		return self.get_assets_list(AssetSnapshot.assets_snapshot)
+		return self.get_assets_list(identifiers_snapshot)
 
 	def get_assets_list(self,assets_snapshot):
 		assets_list = []

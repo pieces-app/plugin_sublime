@@ -47,7 +47,7 @@ class PiecesHandleMarkdownCommand(sublime_plugin.WindowCommand):
 		if view:
 			asset_id = PiecesHandleMarkdownCommand.views_to_handle.get(view.id())
 			if asset_id:
-				asset = AssetSnapshot.assets_snapshot[asset_id]
+				asset = identifiers_snapshot[asset_id]
 				format_api = FormatApi(PiecesSettings.api_client)
 				original = format_api.format_snapshot(asset.original.id, transferable=True)
 				if original.classification.generic == ClassificationGenericEnum.IMAGE:
