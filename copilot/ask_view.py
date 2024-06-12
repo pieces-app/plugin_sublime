@@ -11,8 +11,8 @@ PHANTOM_A_TAG_STYLE = "padding: 4px;background-color: var(--accent); border-radi
 
 PHANTOM_CONTENT = f"""
 <div style="padding-right:2px">
-	<a style="{PHANTOM_A_TAG_STYLE}" href ="save_{{0}}">Save</a>
-	<a style="{PHANTOM_A_TAG_STYLE}" href="copy_{{0}}">Copy</a>
+	<a style="{PHANTOM_A_TAG_STYLE}" href ="save_{{id}}">{{save}}</a>
+	<a style="{PHANTOM_A_TAG_STYLE}" href="copy_{{id}}">{{copy}}</a>
 </div>
 """
 
@@ -33,7 +33,7 @@ class CopilotViewManager:
 			# Phantom intilization 
 			self.last_edit_phantom = 0
 			self.phantom_set = sublime.PhantomSet(CopilotViewManager._gpt_view, "Pieces_Phantoms")
-			self.code_blocks_dict = {} # id: code
+			self.phantom_details_dict = {} # id: {"code":code,"region":region}
 
 
 			# Others
@@ -79,7 +79,7 @@ class CopilotViewManager:
 			self.show_cursor
 			CopilotViewManager.can_type = True
 			self.conversation_id = message.conversation
-			self.add_code_phantoms() # Generate the code phantoms
+		self.add_code_phantoms() # Generate the code phantoms	
 	@property
 	def conversation_id(self):
 		return self.gpt_view.settings().get("conversation_id")
@@ -129,35 +129,46 @@ class CopilotViewManager:
 		# Regular expression to find code blocks in Markdown
 		code_block_pattern = re.compile(r'```.*?\n(.*?)```', re.DOTALL)
 		matches = code_block_pattern.finditer(content)
-		
-		
-		phantoms = []
+
+		if not matches:
+			return # No matches found in this region
 
 		for match in matches:
-			id = str(len(self.code_blocks_dict))
+			id = str(len(self.phantom_details_dict))
 			# Create a phantom at the end of each code block
-			self.code_blocks_dict[id] = match.group(1)
-			end_point = match.end()
-			phantom = sublime.Phantom(
-				sublime.Region(end_point+self.last_edit_phantom, end_point+self.last_edit_phantom),
-				PHANTOM_CONTENT.format(id),
-				sublime.LAYOUT_BELOW,
-				on_navigate=self.on_nav
-			)
-			phantoms.append(phantom)
 
-		self.phantom_set.update(phantoms)
+			
+			end_point = match.end()
+			region = sublime.Region(end_point+self.last_edit_phantom, end_point+self.last_edit_phantom)
+			self.phantom_details_dict[id] = {"code":match.group(1),"region":region}
+			self.update_phantom_set(region,id)
 
 		self.last_edit_phantom = view.size()
 
 	def on_nav(self,href:str):
 		command,id = href.split("_")
-		code = self.code_blocks_dict[id]
-
+		code = self.phantom_details_dict[id]["code"]
+		region = self.phantom_details_dict[id]["region"]
 		if command == "save":
 			self.gpt_view.run_command("pieces_create_asset",{"data":code})
+			self.update_phantom_set(region,id,"Saving")
+			sublime.set_timeout_async(lambda:self.update_phantom_set(region,id,"Saved"),5000)
+
 		elif command == "copy":
 			sublime.set_clipboard(code)
+			self.update_phantom_set(region,id,copy="Copied")
+			sublime.set_timeout_async(lambda:self.update_phantom_set(region,id,copy="Copy"),5000)
+
+	
+	def update_phantom_set(self,region,id,save="Save",copy="Copy"):
+		# Change the text 
+		phantom = sublime.Phantom(
+				region,
+				PHANTOM_CONTENT.format(id = id,copy=copy,save=save),
+				sublime.LAYOUT_BELOW,
+				on_navigate=self.on_nav
+			)
+		self.phantom_set.update([phantom])
 
 
 	def render_conversation(self,conversation_id):
