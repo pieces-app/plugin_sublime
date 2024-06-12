@@ -31,5 +31,9 @@
 	{
 		"caption": "Pieces: Reload Plugin",
 		"command": "pieces_reload"
-	}
+	},
+	{
+		"caption": "Pieces: Open Pieces OS",
+		"command": "pieces_open_pieces"
+	},
 ]
