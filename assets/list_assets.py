@@ -16,8 +16,14 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 		sublime.set_timeout_async(lambda:self.run_async(pieces_asset_id),0)
 
 	def run_async(self,pieces_asset_id):
+		if not pieces_asset_id:
+			return
 		api_instance = AssetApi(PiecesSettings.api_client)
-		api_response = api_instance.asset_specific_asset_export(pieces_asset_id, "MD")
+		try:
+			api_response = api_instance.asset_specific_asset_export(pieces_asset_id, "MD")
+		except:
+			AssetSnapshot.assets_snapshot.pop(pieces_asset_id)
+			return sublime.error_message("Asset Not Found")
 		
 		markdown_text = api_response.raw.string.raw
 
