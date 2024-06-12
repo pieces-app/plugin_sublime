@@ -69,13 +69,12 @@ class PiecesSettings:
 			else:
 				cls.host = "http://127.0.0.1:1000"
 
+		# Websocket urls
 		ws_base_url = cls.host.replace('http','ws')
-
 		cls.ASSETS_IDENTIFIERS_WS_URL = ws_base_url + "/assets/stream/identifiers"
-
 		cls.AUTH_WS_URL = ws_base_url + "/user/stream"
-
 		cls.ASK_STREAM_WS_URL = ws_base_url + "/qgpt/stream"
+		cls.CONVERSATION_WS_URL = ws_base_url + "/conversations/stream/identifiers"
 
 		configuration = pos_client.Configuration(host=cls.host)
 

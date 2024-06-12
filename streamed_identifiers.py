@@ -42,30 +42,38 @@ class StreamedIdentifiersCache:
         cls.api_call = api_call
         cls.block = True  # to wait for the queue to receive the first id
         cls.first_shot = True  # First time to open the websocket or not
-        cls.lock = threading.Lock()  # Lock for thread safety
-        cls.worker_thread = threading.Thread(target=cls.worker, daemon=True)
-        cls.worker_thread.start()
+
+
+    @classmethod
+    def sort_first_shot(cls):
+        """
+            Sorting algrothim in the first shot
+        """
+        pass
 
     @classmethod
     def worker(cls):
         while True:
             try:
                 id = cls.identifiers_queue.get(block=cls.block, timeout=5)
-                with cls.lock:
-                    cls.identifiers_set.remove(id)  # Remove the id from the set
+                cls.identifiers_set.remove(id)  # Remove the id from the set
                 cls.update_identifier(id)
                 cls.identifiers_queue.task_done()
             except queue.Empty:  # queue is empty and the block is false
                 if cls.block:
                     continue  # if there are more ids to load
+                
+                if cls.first_shot:
+                    cls.first_shot = False
+                    cls.sort_first_shot()
+                
                 return  # End the worker
 
     @classmethod
-    def update_identifier(cls, id: str):
+    def update_identifier(cls, identifier: str):
         try:
-            id_value = cls.api_call(id)
-            with cls.lock:
-                cls.identifiers_snapshot[id] = id_value
+            id_value = cls.api_call(identifier)
+            cls.identifiers_snapshot[identifier] = id_value
             return id_value
         except:
             return None
@@ -76,17 +84,16 @@ class StreamedIdentifiersCache:
         cls.block = True
         sublime.set_timeout_async(cls.worker)
         for item in ids.iterable:
-            reference_item = getattr(item, "asset", item.conversation)  # Get either the conversation or the asset
-            id = reference_item.id
-            with cls.lock:
-                if id not in cls.identifiers_set:
-                    if item.deleted:
-                        # Asset deleted
-                        cls.identifiers_snapshot.pop(id, None)
-                    else:
-                        if id not in cls.identifiers_snapshot and not cls.first_shot:
-                            cls.identifiers_snapshot = {id: None, **cls.identifiers_snapshot}
-                        cls.identifiers_queue.put(id)  # Add id to the queue
-                        cls.identifiers_set.add(id)  # Add id to the set
-        cls.first_shot = False
+            reference_id = item.asset.id if item.asset else item.conversation.id  # Get either the conversation or the asset
+
+            if reference_id not in cls.identifiers_set:
+                if item.deleted:
+                    # Asset deleted
+                    cls.identifiers_snapshot.pop(reference_id, None)
+                else:
+                    if reference_id not in cls.identifiers_snapshot and not cls.first_shot:
+                        cls.identifiers_snapshot = {reference_id: None, **cls.identifiers_snapshot}
+                    cls.identifiers_queue.put(reference_id)  # Add id to the queue
+                    cls.identifiers_set.add(reference_id)  # Add id to the set
+
         cls.block = False  # Remove the block to end the thread

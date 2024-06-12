@@ -39,6 +39,8 @@ def startup(settings_model):
 	PiecesSettings.create_auth_output_panel()
 	AuthWebsocket(AuthUser.on_user_callback).start() # Load the stream user websocket
 
+	# Conversation Websocket
+	ConversationWS(ConversationsSnapshot.streamed_identifiers_callback).start()
 
 
 def plugin_loaded():
