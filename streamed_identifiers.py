@@ -16,9 +16,10 @@ class StreamedIdentifiersCache:
 	def __init_subclass__(cls, api_call,**kwargs):
 		super().__init_subclass__(**kwargs)
 		cls.identifiers_snapshot: Dict[str, T] = {}  # Map id:return from the api_call
-		cls.identifiers_queue = queue.Queue()  # Queue for asset_ids to be processed
-		cls.identifiers_set = set()  # Set for asset_ids in the queue
-		cls.block = True  # to wait for the queue to receive the first asset id
+		cls.identifiers_queue = queue.Queue()  # Queue for ids to be processed
+		cls.identifiers_set = set()  # Set for ids in the queue
+		cls.api_call = api_call
+		cls.block = True  # to wait for the queue to receive the first id
 		cls.first_shot = True  # First time to open the websocket or not
 
 
@@ -32,7 +33,7 @@ class StreamedIdentifiersCache:
 				cls.identifiers_queue.task_done()
 		except queue.Empty: # queue is empty and the block is false
 			if cls.block:
-				cls.worker() # if there is more assets to load
+				cls.worker() # if there is more ids to load
 			return # End the worker
 
 	
@@ -48,19 +49,19 @@ class StreamedIdentifiersCache:
 		cls.block = True
 		sublime.set_timeout_async(cls.worker)
 		for item in ids.iterable:
-			asset_id = item.asset.id
-			if asset_id not in cls.identifiers_set:
+			reference_item = getattr(item,"asset",item.conversation) # Get either the conversation or the asset
+			if id not in cls.identifiers_set:
 				if item.deleted:
 					# Asset deleted
 					try:
-						cls.assets_snapshot.pop(asset_id)
+						cls.identifiers_snapshot.pop(id)
 					except KeyError:
 						pass
 				else:
-					if asset_id not in cls.assets_snapshot and not cls.first_shot:
-						cls.assets_snapshot = {asset_id:None,**cls.assets_snapshot}
-					cls.identifiers_queue.put(asset_id)  # Add asset_id to the queue
-					cls.identifiers_set.add(asset_id)  # Add asset_id to the set
+					if id not in cls.identifiers_snapshot and not cls.first_shot:
+						cls.identifiers_snapshot = {id:None,**cls.identifiers_snapshot}
+					cls.identifiers_queue.put(id)  # Add id to the queue
+					cls.identifiers_set.add(id)  # Add id to the set
 		cls.first_shot = False
 		cls.block = False # Remove the block to end the thread
 
