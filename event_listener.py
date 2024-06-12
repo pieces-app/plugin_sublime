@@ -72,7 +72,15 @@ class PiecesEventListener(sublime_plugin.EventListener):
 	def on_init(self,views):
 		for view in views:
 			if view.settings().get("PIECES_GPT_VIEW"):
-				copilot.gpt_view = view # Set the old views
+				# Update the conversation to be real-time
+				# Close the old view and rerender the conversation
+				conversation = view.settings().get("conversation_id")
+				if conversation:
+					view.close(lambda x: copilot.render_conversation(conversation))
+				
+				
+				
+
 
 class PiecesViewEventListener(sublime_plugin.ViewEventListener):
 	def on_close(self):

@@ -79,7 +79,7 @@ class CopilotViewManager:
 			self.show_cursor
 			CopilotViewManager.can_type = True
 			self.conversation_id = message.conversation
-		self.add_code_phantoms() # Generate the code phantoms	
+			self.add_code_phantoms() # Generate the code phantoms	
 	@property
 	def conversation_id(self):
 		return self.gpt_view.settings().get("conversation_id")
@@ -98,13 +98,16 @@ class CopilotViewManager:
 			self.gpt_view.run_command("append",{"characters":"\n"})
 
 	def ask(self,relevant=RelevantQGPTSeeds(iterable=[])):
+		query = self.gpt_view.substr(Region(self.end_response,self.gpt_view.size()))
+		if not query:
+			return
 		CopilotViewManager.can_type = False
 		self.select_end # got to the end of the text to enter the new lines
 		self.new_line()
 		self.ask_websocket.send_message(
 			QGPTStreamInput(
 				question=QGPTQuestionInput(
-					query = self.gpt_view.substr(Region(self.end_response,self.gpt_view.size())),
+					query=query,
 					relevant = relevant,
 					application=PiecesSettings.get_application().id,
 					model = PiecesSettings.model_id
@@ -130,8 +133,6 @@ class CopilotViewManager:
 		code_block_pattern = re.compile(r'```.*?\n(.*?)```', re.DOTALL)
 		matches = code_block_pattern.finditer(content)
 
-		if not matches:
-			return # No matches found in this region
 
 		for match in matches:
 			id = str(len(self.phantom_details_dict))
@@ -196,16 +197,14 @@ class CopilotViewManager:
 				continue
 			message = message_api.message_specific_message_snapshot(message=key)
 			if message.role == "USER":
-				if not first_message:
-					self.new_line()
-				first_message = False
-
 				self.show_cursor
-				
-
+			
 			if message.fragment.string:
 				self.gpt_view.run_command("append",{"characters":message.fragment.string.raw})
 
+			if not first_message:
+				self.new_line()
+			first_message = False
 
 		self.new_line()
 		self.show_cursor
