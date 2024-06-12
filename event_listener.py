@@ -12,8 +12,9 @@ class PiecesEventListener(sublime_plugin.EventListener):
 							,"pieces_support","pieces_onboarding"]
 
 	onboarding_commands_dict = {
-		"pieces_search":"create_asset",
-		"pieces_serach":"search"
+		"pieces_create_asset":"create_asset",
+		"pieces_list_assets":"open",
+		"pieces_ask_question":"ask_question"
 	}
 
 	def on_window_command(self, window, command_name, args):

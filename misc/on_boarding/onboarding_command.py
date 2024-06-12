@@ -2,12 +2,12 @@ import sublime_plugin
 
 from ...settings import PiecesSettings
 from .onboarding_handler import PiecesOnBoardingHandlerCommand
+
 class PiecesOnboardingCommand(sublime_plugin.WindowCommand):
-	
 	def run(self):
 		self.view = self.window.new_file(syntax = PiecesSettings.ONBOARDING_SYNTAX)
 		# Set the name
-		self.view.set_name("Welcome to Pieces!")
+		self.view.set_name("Welcome to Pieces 🎉🎉!")
 		# Set it to scratch to avoid the default saving menu
 		self.view.set_scratch(True)
 		# set the color scheme

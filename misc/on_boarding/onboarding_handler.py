@@ -27,7 +27,10 @@ class PiecesOnBoardingHandlerCommand(sublime_plugin.TextCommand):
 
 
 	def reload(self):
-		text = f"{self.pieces_os_status()}\n{self.dependencies_status()}\n{self.create_command_status()}\n{self.search_command_status()}"
+		text = "\n".join(
+			[self.pieces_os_status(),self.dependencies_status(),
+			self.create_command_status(),self.open_asset_command_status(),self.ask_question_command_status()]
+		)
 		# set read only false
 		self.view.set_read_only(False)
 		# Erase the entire region
@@ -38,7 +41,7 @@ class PiecesOnBoardingHandlerCommand(sublime_plugin.TextCommand):
 		
 		# Set readonly
 		self.view.set_read_only(True)
-	
+		
 
 	def _lazy_load(func):
 		def wrapper(self,*args, **kwargs):
@@ -84,12 +87,17 @@ class PiecesOnBoardingHandlerCommand(sublime_plugin.TextCommand):
 			return '[Success] Asset created successfully!'
 		return '[In Progress] Create your first<a href="create_asset">asset</a>'
 
-	def search_command_status(self):
+	def open_asset_command_status(self):
 		settings = self.get_onboarding_settings()
-		if settings.get("search"):
-			return '[Success] You searched an asset!'
-		return '[In Progress]<a href="search">Search</a>an asset'
+		if settings.get("open"):
+			return '[Success] You opened an asset'
+		return '[In Progress] <a href="open">Open</a>an asset'
 
+	def ask_question_command_status(self):
+		settings = self.get_onboarding_settings()
+		if settings.get("ask_question"):
+			return '[Success] Bug solved!'
+		return '[In Progress] <a href="ask_question">Ask</a>for help and bug fixes'
 
 	def append_view(self, text):
 		"""This will replace any "a" tag by a phantom in the same place"""
@@ -115,30 +123,29 @@ class PiecesOnBoardingHandlerCommand(sublime_plugin.TextCommand):
 
 			# Calculate the position in the new text without the anchor tags
 			adjusted_start_pos = start_pos - offset
-			adjusted_end_pos = adjusted_start_pos + len(anchor_text)
+			adjusted_end_pos = adjusted_start_pos
 
 			# Add phantom
 			phantoms.append({"region": sublime.Region(adjusted_start_pos, adjusted_end_pos), "html": phantom_html})
 
-			# Append the text before the match and the anchor text (without tags) to the new text
+			# Append the text before the match to the new text
 			new_text += text[last_end:start_pos]
 			last_end = end_pos
 
 			# Update the offset to account for the removed anchor tags
-			offset += len(match.group(0)) - len(anchor_text)
+			offset += len(match.group(0))
 
+		self.view.erase_phantoms("pieces_phantom")
 		# Append the remaining text after the last match
 		new_text += text[last_end:]
 
-		self.view.erase_phantoms("pieces")
 		# Append the modified text to the view
 		self.view.run_command('append', {'characters': new_text})
 
 		# Add phantoms after append command
 		for phantom in phantoms:
-			self.view.add_phantom("pieces", phantom["region"], phantom["html"], sublime.LAYOUT_INLINE, on_navigate=self.on_nav)
-
-
+			self.view.add_phantom("pieces_phantom",phantom["region"], phantom["html"], sublime.LAYOUT_INLINE, on_navigate=self.on_nav)
+	
 	def on_nav(self,href):
 		if href == "open_pieces":
 			def run_async():
@@ -153,16 +160,19 @@ class PiecesOnBoardingHandlerCommand(sublime_plugin.TextCommand):
 			new_file = self.view.window().new_file(syntax="Packages/Python/Python.sublime-syntax")
 			new_file.run_command("append",{"characters":"print('I love Pieces')"})
 			new_file.run_command("select_all")
-			new_file.set_name("Create your first asset!")
+			new_file.set_name("Create your first asset 🆕")
 			new_file.set_scratch(True)
 			new_file.show_popup("Right click to open your context menu Then go to 'Pieces > Save to Pieces'")
-		
-		elif href == "search":
-			self.view.window().run_command("show_overlay",{"overlay": "command_palette"})
-			clipboard = sublime.get_clipboard()
-			sublime.set_clipboard("Pieces: Search")
-			self.view.window().run_command("paste")
-			sublime.set_clipboard(clipboard) # To avoid overighting the user clipboard
+		elif href == "ask_question":
+			new_file = self.view.window().new_file(syntax="Packages/Python/Python.sublime-syntax")
+			new_file.run_command("append",{"characters":"I Love Pieces.upper()"})
+			new_file.run_command("select_all")
+			new_file.set_name("Ask for bug fix 🤔")
+			new_file.set_scratch(True)
+			new_file.show_popup("Right click to open your context menu Then go to 'Pieces > Ask Copilot > Fix Bug'")
+
+		elif href == "open":
+			self.view.window().run_command("pieces_list_assets")
 
 	@classmethod
 	def get_onboarding_settings(cls):
@@ -179,6 +189,10 @@ class PiecesOnBoardingHandlerCommand(sublime_plugin.TextCommand):
 		# Update the settings with the new kwargs
 		data.update(kwargs)
 		
-
+		print(data)
 		with open(cls.ONBOARDING_SETTINGS_PATH, "w") as f:
 			json.dump(data, f, indent=4)
+
+if not PiecesOnBoardingHandlerCommand.get_onboarding_settings().get("lunch_onboarding",False):
+	sublime.active_window().run_command("pieces_onboarding")
+	PiecesOnBoardingHandlerCommand.add_onboarding_settings(lunch_onboarding=True)
