@@ -1,6 +1,7 @@
 import pieces_os_client as pos_client
 import sublime
 from typing import Dict
+import os
 
 from . import __version__
 
@@ -14,9 +15,14 @@ class PiecesSettings:
 	model_name = ""
 	api_client = None
 	_is_loaded = False # is the plugin loaded
-
+	
 	on_model_change_callbacks = [] # If the model change a function should be runned
 
+	PIECES_USER_DIRECTORY = os.path.join(sublime.packages_path(),"User","Pieces")
+	
+	# Create the pieces directory to store the data if it does not exists
+	if not os.path.exists(PIECES_USER_DIRECTORY):
+		os.makedirs(PIECES_USER_DIRECTORY)
 
 
 	@property
@@ -93,7 +99,6 @@ class PiecesSettings:
 
 		if not cls.model_id:
 			cls.model_id = models["GPT-3.5-turbo Chat Model"]
-		print(cls.on_model_change_callbacks)
 		for func in cls.on_model_change_callbacks:
 			func()
 
