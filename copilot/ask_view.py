@@ -1,6 +1,7 @@
 import sublime
 from .ask_websocket import AskStreamWS
-from pieces_os_client import QGPTQuestionInput, QGPTStreamInput, RelevantQGPTSeeds,QGPTStreamOutput
+from .conversations import ConversationsSnapshot
+from pieces_os_client import ConversationMessageApi, QGPTQuestionInput, QGPTStreamInput, RelevantQGPTSeeds,QGPTStreamOutput
 from ..settings import PiecesSettings
 from sublime import Region
 import re
@@ -21,7 +22,6 @@ class CopilotViewManager:
 	@property
 	def gpt_view(self) -> sublime.View:
 		if not getattr(CopilotViewManager, "_gpt_view",None):
-
 			# File config and creation
 			CopilotViewManager._gpt_view = sublime.active_window().new_file(syntax="Packages/Markdown/Markdown.sublime-syntax")	
 			CopilotViewManager.can_type = True
@@ -31,8 +31,8 @@ class CopilotViewManager:
 			CopilotViewManager._gpt_view.set_name("Pieces Copilot")
 
 			# Phantom intilization 
-			self.phantom_set = sublime.PhantomSet(CopilotViewManager._gpt_view, "Pieces_Phantoms")
 			self.last_edit_phantom = 0
+			self.phantom_set = sublime.PhantomSet(CopilotViewManager._gpt_view, "Pieces_Phantoms")
 			self.code_blocks_dict = {} # id: code
 
 
@@ -55,13 +55,16 @@ class CopilotViewManager:
 	def show_cursor(self):
 		self.gpt_view.set_status("MODEL",PiecesSettings.model_name)
 		self.gpt_view.run_command("append",{"characters":">>> "})
-		self.gpt_view.settings().set("end_response",self.end_response+4)  # ">>> " 4 characters
+		self.end_response = self.end_response + 4  # ">>> " 4 characters
 		self.select_end
 	
 	@property
 	def end_response(self) -> int:
 		return self.gpt_view.settings().get("end_response")
 
+	@end_response.setter
+	def end_response(self,e):
+		self.gpt_view.settings().set("end_response",e)
 
 	def on_message_callback(self,message: QGPTStreamOutput):
 		if message.question:
@@ -72,7 +75,7 @@ class CopilotViewManager:
 		
 		if message.status == "COMPLETED":
 			self.new_line()
-			self.gpt_view.settings().set("end_response",self.gpt_view.size()) # Update the size
+			self.end_response = self.gpt_view.size() # Update the size
 			self.show_cursor
 			CopilotViewManager.can_type = True
 			self.conversation_id = message.conversation
@@ -136,7 +139,7 @@ class CopilotViewManager:
 			self.code_blocks_dict[id] = match.group(1)
 			end_point = match.end()
 			phantom = sublime.Phantom(
-				sublime.Region(end_point, end_point),
+				sublime.Region(end_point+self.last_edit_phantom, end_point+self.last_edit_phantom),
 				PHANTOM_CONTENT.format(id),
 				sublime.LAYOUT_BELOW,
 				on_navigate=self.on_nav
@@ -156,3 +159,44 @@ class CopilotViewManager:
 		elif command == "copy":
 			sublime.set_clipboard(code)
 
+
+	def render_conversation(self,conversation_id):
+		self.conversation_id = conversation_id # Set the conversation
+
+		# Clear everything!
+		self._gpt_view = None # clear the old _gpt_view
+
+		
+
+		if conversation_id:
+			conversation = ConversationsSnapshot.identifiers_snapshot.get(conversation_id)
+			if not conversation:
+				return sublime.error_message("Conversation not found") # Error conversation not found
+		else:
+			return # Nothing need to be rendered 
+		
+		self.gpt_view.run_command("select_all")
+		self.gpt_view.run_command("right_delete") # Clear the cursor created by default ">>>"
+		
+		message_api = ConversationMessageApi(PiecesSettings.api_client)
+		first_message = True
+		for key,val in conversation.messages.indices.items():
+			if val == -1: # message is deleted
+				continue
+			message = message_api.message_specific_message_snapshot(message=key)
+			if message.role == "USER":
+				if not first_message:
+					self.new_line()
+				first_message = False
+
+				self.show_cursor
+				
+
+			if message.fragment.string:
+				self.gpt_view.run_command("append",{"characters":message.fragment.string.raw})
+
+
+		self.new_line()
+		self.show_cursor
+		self.end_response = self.gpt_view.size()
+		self.add_code_phantoms()

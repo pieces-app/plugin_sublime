@@ -16,6 +16,8 @@ class PiecesEventListener(sublime_plugin.EventListener):
 		
 	def on_text_command(self,view,command_name,args):
 		self.check(command_name)
+		if command_name == "paste": # To avoid pasting in the middle of the view of the copilot
+			self.on_query_context(view,"pieces_copilot_add",True,sublime.OP_EQUAL,True)
 
 	def check(self,command_name):
 		if command_name.startswith("pieces_") and command_name not in PiecesEventListener.commands_to_exclude: # Check any command 
