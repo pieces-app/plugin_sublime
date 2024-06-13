@@ -18,17 +18,18 @@ PHANTOM_CONTENT = f"""
 
 class CopilotViewManager:
 	can_type = True
-	
+
 	@property
 	def gpt_view(self) -> sublime.View:
-		if not getattr(CopilotViewManager, "_gpt_view",None):
+		if not getattr(CopilotViewManager, "_gpt_view",None): # TODO: open the copilot in split view
 			# File config and creation
 			CopilotViewManager._gpt_view = sublime.active_window().new_file(syntax="Packages/Markdown/Markdown.sublime-syntax")	
 			CopilotViewManager.can_type = True
 			CopilotViewManager._gpt_view.settings().set("PIECES_GPT_VIEW",True) # Label the view as gpt view
 			CopilotViewManager._gpt_view.settings().set("end_response",0) # End reponse charater
+			CopilotViewManager._gpt_view.settings().set("line_numbers", False) # Remove lines
 			CopilotViewManager._gpt_view.set_scratch(True)
-			CopilotViewManager._gpt_view.set_name("Pieces Copilot")
+			CopilotViewManager._gpt_view.set_name(self.view_name)
 
 			# Phantom intilization 
 			self.last_edit_phantom = 0
@@ -37,10 +38,35 @@ class CopilotViewManager:
 
 
 			# Others
+			self.copilot_regions = []
 			self.show_cursor
 			self.update_status_bar()
+			self.render_copilot_image_phantom(CopilotViewManager._gpt_view)
+
+        
+			# Create a new group (split view)
+			sublime.active_window().run_command("set_layout", {
+			    "cols": [0.0, 0.5, 1.0],
+			    "rows": [0.0, 1.0],
+			    "cells": [[0, 0, 1, 1], [1, 0, 2, 1]]
+			})
+
+			# Move the active view to the new group
+			sublime.active_window().set_view_index(CopilotViewManager._gpt_view, 1, 0)
+
+			# Focus on the new group
+			sublime.active_window().focus_group(1)
 		return CopilotViewManager._gpt_view
 		
+	@property
+	def view_name(self):
+		return "Pieces: " + getattr(self,"_view_name","New Conversation")
+	
+	@view_name.setter
+	def view_name(self,v):
+		self._view_name = v
+		self.gpt_view.set_name(self.view_name)
+	
 
 	@gpt_view.setter
 	def gpt_view(self,view):
@@ -56,6 +82,18 @@ class CopilotViewManager:
 		self.gpt_view.set_status("MODEL",PiecesSettings.model_name)
 		self.gpt_view.run_command("append",{"characters":">>> "})
 		self.end_response = self.end_response + 4  # ">>> " 4 characters
+		ui = sublime.ui_info()["theme"]["style"]
+
+		self.copilot_regions.append(sublime.Region(self.gpt_view.size(), self.gpt_view.size()))
+
+		# Add the regions with the icon and appropriate flags
+		self.gpt_view.add_regions(
+			"pieces", 
+			self.copilot_regions, 
+			scope="text", 
+			icon=f"Packages/Pieces/copilot/images/copilot-icon-{ui}.png", 
+			flags=sublime.HIDDEN
+		)
 		self.select_end
 	
 	@property
@@ -161,7 +199,7 @@ class CopilotViewManager:
 			sublime.set_timeout_async(lambda:self.update_phantom_set(region,id,copy="Copy"),5000)
 
 	
-	def update_phantom_set(self,region,id,save="Save",copy="Copy"):
+	def update_phantom_set(self,region,id,save="Save",copy="Copy",reset = False):
 		# Change the text 
 		phantom = sublime.Phantom(
 				region,
@@ -169,15 +207,33 @@ class CopilotViewManager:
 				sublime.LAYOUT_BELOW,
 				on_navigate=self.on_nav
 			)
-		self.phantom_set.update([phantom])
+		
+		if not reset:
+			phantoms = [phantom for phantom in self.phantom_set.phantoms if phantom.region != region]
+			phantoms = [phantom,*phantoms]
+		else: 
+			phantoms = [phantom]
+		self.phantom_set.update(phantoms)
 
+	@staticmethod
+	def render_copilot_image_phantom(view:sublime.View):
+		pass
+		# ui = sublime.ui_info()["theme"]["style"]
+		# view.run_command("append",{"characters":"\n"})
+		# view.add_phantom(
+		# 	key="Pieces_image",
+		# 	region = sublime.Region(0,60),
+		# 	layout = sublime.LAYOUT_INLINE,
+		# 	content =f"<img width='1001px' height='211px' src='res://Packages/Pieces/copilot/images/pieces-copilot-{ui}.png' />"
+		# )
 
 	def render_conversation(self,conversation_id):
+		
 		self.conversation_id = conversation_id # Set the conversation
 
 		# Clear everything!
 		self._gpt_view = None # clear the old _gpt_view
-
+		self.phantom_set.update([]) # Clear old phantoms
 		
 
 		if conversation_id:
@@ -185,14 +241,17 @@ class CopilotViewManager:
 			if not conversation:
 				return sublime.error_message("Conversation not found") # Error conversation not found
 		else:
-			return # Nothing need to be rendered 
+			self.gpt_view # Nothing need to be rendered 
+			if hasattr(self,"_view_name"): delattr(self,"_view_name")
+			return 
 		
+		self.view_name = conversation.name
 		self.gpt_view.run_command("select_all")
 		self.gpt_view.run_command("right_delete") # Clear the cursor created by default ">>>"
-		
 		message_api = ConversationMessageApi(PiecesSettings.api_client)
-		first_message = True
+
 		for key,val in conversation.messages.indices.items():
+			self.select_end
 			if val == -1: # message is deleted
 				continue
 			message = message_api.message_specific_message_snapshot(message=key)
@@ -202,11 +261,8 @@ class CopilotViewManager:
 			if message.fragment.string:
 				self.gpt_view.run_command("append",{"characters":message.fragment.string.raw})
 
-			if not first_message:
-				self.new_line()
-			first_message = False
+			self.new_line()
 
-		self.new_line()
 		self.show_cursor
 		self.end_response = self.gpt_view.size()
 		self.add_code_phantoms()

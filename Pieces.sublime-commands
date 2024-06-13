@@ -33,7 +33,7 @@
 		"command": "pieces_reload"
 	},
 	{
-		"caption": "Pieces: Ask",
+		"caption": "Pieces: Copilot",
 		"command": "pieces_ask_stream"
 	}
 ]

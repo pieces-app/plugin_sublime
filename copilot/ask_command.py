@@ -9,17 +9,41 @@ copilot = CopilotViewManager()
 
 
 class PiecesAskStreamCommand(sublime_plugin.WindowCommand):
-	def run(self,pieces_conversation_id=None):
+	def run(self,pieces_choose_type,pieces_query=None,pieces_conversation_id=None):
 		copilot.ask_websocket.start()
-		self.window.focus_view(copilot.gpt_view)
 		copilot.render_conversation(pieces_conversation_id)
+		if pieces_query:
+			copilot.gpt_view.run_command("append",{"charaters":pieces_queryR})
+			copilot.gpt_view.run_command("pieces_enter_response")
 		return
 
 	def input(self,args):
-		return PiecesConversationIdInputHandler()
+		return PiecesChooseTypeInputHandler()
 
 	def is_enabled(self):
 		return PiecesSettings().is_loaded
+
+class PiecesChooseTypeInputHandler(sublime_plugin.ListInputHandler):
+	def list_items(self):
+		return [
+			("Create New Conversation", "new"),
+			# ("Search a Conversation", "search"),
+			("View Conversation List","view"),
+			("Ask a question","question")
+		]
+	def next_input(self, args):
+		t = args["pieces_choose_type"]
+		if t == "search":
+			return # TODO: Add searching via endpoint
+		elif t == "view":
+			return PiecesConversationIdInputHandler()
+		elif t == "question":
+			return PiecesQueryInputHandler()
+
+
+class PiecesQueryInputHandler(sublime_plugin.TextInputHandler):
+	def placeholder(self) -> str:
+		return "Enter a query to ask the copilot about"
 
 
 class PiecesEnterResponseCommand(sublime_plugin.TextCommand):
@@ -33,9 +57,7 @@ class PiecesEnterResponseCommand(sublime_plugin.TextCommand):
 
 class PiecesConversationIdInputHandler(sublime_plugin.ListInputHandler):
 	def list_items(self):
-		conversation_list = [
-			sublime.ListInputItem(text="Create New Conversation", value=None)
-		]
+		conversation_list = []
 		api = AnnotationApi(PiecesSettings.api_client)
 		for conversation in ConversationsSnapshot.identifiers_snapshot.values():
 			name = getattr(conversation,"name","New Conversation")
@@ -53,5 +75,5 @@ class PiecesConversationIdInputHandler(sublime_plugin.ListInputHandler):
 		return conversation_list
 
 	def placeholder(self):
-		return "Choose an asset"
+		return "Choose a conversation or start new one"
 

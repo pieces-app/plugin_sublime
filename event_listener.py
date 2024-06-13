@@ -76,7 +76,9 @@ class PiecesEventListener(sublime_plugin.EventListener):
 				# Close the old view and rerender the conversation
 				conversation = view.settings().get("conversation_id")
 				if conversation:
-					view.close(lambda x: copilot.render_conversation(conversation))
+					on_close = lambda x:copilot.render_conversation(conversation)
+					view.close(on_close,5000) # Wait a sec until the conversations is loaded
+					
 				
 				
 				
