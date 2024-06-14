@@ -4,7 +4,7 @@ import pieces_os_client as pos_client
 import re
 from difflib import Differ 
 import mdpopups
-import time
+from .diff import show_diff_popup
 
 from ..settings import PiecesSettings
 from .prompts import *
@@ -98,16 +98,8 @@ class PiecesAskQuestionCommand(sublime_plugin.TextCommand):
 		match = re.search(pattern, response_code, re.DOTALL)
 		if match:
 			self.code = match.group(1)
-			self.code_html = self.get_differences(self.selected_text.splitlines(),self.code.splitlines())
-			link = "<a href=insert>✅ Accept</a> | <a href=dismiss style='color:red'>❌ Reject</a>"
-			html = f"<div style='display:inline-block'>{link}</div>{self.code_html}"
-
-			# Calculate the length of the code_html
-			code_html_length = len(self.code_html)
-
-			# Create a phantom at the end of the current selection
-			phantom_region = sublime.Region(self.selection.begin(), self.selection.begin() + code_html_length)
-			self.phantom = mdpopups.add_phantom(self.view,"code_phantom", phantom_region, html, sublime.LAYOUT_INLINE,md=False,on_navigate=self.on_nav)
+			show_diff_popup(self.view, self.selected_text.splitlines(), self.code.splitlines(),on_nav=self.on_nav)
+			
 			self.is_done = True
 			self.view.erase_status('Pieces Refactoring')
 
@@ -115,11 +107,11 @@ class PiecesAskQuestionCommand(sublime_plugin.TextCommand):
 	def on_nav(self, href):
 		if href == "insert":
 			# Replace the selected text with the code
-			self.view.run_command("replace_selection", {"code": self.code, "selection": [self.selection.a, self.selection.b]})
+			self.view.run_command("pieces_replace_code_selection", {"code": self.code, "selection": [self.selection.a, self.selection.b]})
 			# Remove the phantom
-			mdpopups.erase_phantom_by_id(self.view,self.phantom)
+			self.view.hide_popup()
 		elif href == "dismiss":
-			mdpopups.erase_phantom_by_id(self.view,self.phantom)
+			self.view.hide_popup()
 
 		
 
@@ -136,12 +128,44 @@ class PiecesAskQuestionCommand(sublime_plugin.TextCommand):
 		return final_output
 
 
-class ReplaceSelectionCommand(sublime_plugin.TextCommand):
+class PiecesReplaceCodeSelectionCommand(sublime_plugin.TextCommand):
     def run(self, edit, code, selection):
         # Convert the selection into a Region
         region = sublime.Region(selection[0], selection[1])
 
-        # Replace the current selection with the provided code
-        self.view.replace(edit, region, code)
+        # Retrieve the settings for tabs vs. spaces and the number of spaces per tab
+        settings = self.view.settings()
+        use_spaces = settings.get('translate_tabs_to_spaces')
+        tab_size = settings.get('tab_size', 4)
 
+        # Get the current indentation level of the selected region
+        current_line_region = self.view.line(region.begin())
+        current_line_text = self.view.substr(current_line_region)
+        current_indentation = self._get_indentation(current_line_text, use_spaces, tab_size)
+
+        # Adjust the indentation of the replacement code
+        indented_code = self._adjust_indentation(code, current_indentation, use_spaces, tab_size)
+
+        # Replace the current selection with the indented code
+        self.view.replace(edit, region, indented_code)
+
+    def _get_indentation(self, line_text, use_spaces, tab_size):
+        """Calculate the indentation level of the given line."""
+        indentation = 0
+        for char in line_text:
+            if char == '\t':
+                indentation += tab_size
+            elif char == ' ':
+                indentation += 1
+            else:
+                break
+        return indentation
+
+    def _adjust_indentation(self, code, indentation, use_spaces, tab_size):
+        """Adjust the indentation of the given code."""
+        lines = code.split('\n')
+        indent_char = ' ' * tab_size if use_spaces else '\t'
+        indent_string = indent_char * (indentation // tab_size) + ' ' * (indentation % tab_size)
+        indented_lines = [indent_string + line if line.strip() else line for line in lines]
+        return '\n'.join(indented_lines)
 

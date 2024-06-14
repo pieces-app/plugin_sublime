@@ -21,7 +21,7 @@ class CopilotViewManager:
 
 	@property
 	def gpt_view(self) -> sublime.View:
-		if not getattr(CopilotViewManager, "_gpt_view",None): # TODO: open the copilot in split view
+		if not getattr(CopilotViewManager, "_gpt_view",None):
 			# File config and creation
 			CopilotViewManager._gpt_view = sublime.active_window().new_file(syntax="Packages/Markdown/Markdown.sublime-syntax")	
 			CopilotViewManager.can_type = True

@@ -77,7 +77,7 @@ class PiecesEventListener(sublime_plugin.EventListener):
 				conversation = view.settings().get("conversation_id")
 				if conversation:
 					on_close = lambda x:copilot.render_conversation(conversation)
-					view.close(on_close,5000) # Wait a sec until the conversations is loaded
+					view.close(on_close,10000) # Wait some sec until the conversations is loaded
 					
 				
 				

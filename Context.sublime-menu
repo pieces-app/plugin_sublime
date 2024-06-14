@@ -5,7 +5,7 @@
 		"children":
 		[
 			{
-				"caption": "Save to pieces",
+				"caption": "Save to Pieces",
 				"command": "pieces_create_asset",
 			},
 			{
