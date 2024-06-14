@@ -1,0 +1,27 @@
+/* Many thanks to gitgutter! */
+html.dark {
+    --popup-background: color(var(--background) blend(white 95%));
+    --pieces-toolbar-bg: color(var(--popup-background) blend(white 95%));
+}
+
+html.light {
+    --popup-background: color(var(--background) blend(black 95%));
+    --pieces-toolbar-bg: color(var(--popup-background) blend(black 91%));
+    --pieces-greenish: color(var(--greenish) blend(black 40%));
+    --pieces-redish: color(var(--redish) blend(black 40%));
+}
+
+.toolbar {
+    background-color: var(--pieces-toolbar-bg);
+    color: color(var(--foreground) blend(var(--pieces-toolbar-bg) 30%));
+    margin: 0;
+    padding: 0.0rem 0.4rem 0.2rem 0.4em;
+}
+.removed {
+    background-color: var(--pieces-redish);
+}
+.added{
+    background-color: var(--pieces-greenish);
+} 
+
+
