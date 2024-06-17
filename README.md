@@ -109,3 +109,13 @@ Explore our collection of awesome Pieces [plugins](https://code.pieces.app/plugi
 #### View Power Tips & Best Practices
 
 Don't forget to check out our YouTube channel for [Power Tips & Best Practices](https://youtube.com/@getpieces)
+
+
+
+
+### Privacy and Data Collection
+
+We take your privacy seriously. We are committed to ensuring that your data remains private and secure. To that end, we want to make it clear that:
+
+**We do not collect any user data.**
+
