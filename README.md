@@ -6,7 +6,7 @@
 
 # Important
 
-Please make sure you have [**Pieces OS**](https://docs.pieces.app/installation-getting-started/what-am-i-installing) installed to run the Pieces CLI tool.
+Please make sure you have [**Pieces OS**](https://docs.pieces.app/installation-getting-started/what-am-i-installing) installed to run the Package.
 
 
 ## Getting Started
