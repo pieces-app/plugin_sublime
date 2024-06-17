@@ -1,6 +1,5 @@
 import queue
 from typing import Dict
-import threading
 from pieces_os_client import Asset, AssetApi,StreamedIdentifiers
 import sublime
 
@@ -64,7 +63,7 @@ class AssetSnapshot:
 
 
 
-def tabulate_from_markdown(md_text):
+def tabulate_from_markdown(md_text,buttons):
 	# Split the markdown text into lines
 	lines = md_text.split('\n')
 
@@ -81,7 +80,7 @@ def tabulate_from_markdown(md_text):
 			headers += "<span><h1>" + header + "</h1></span>"
 
     # Generate HTML string
-	html_text = f"{headers}</div><br><div>"
+	html_text = f"{buttons}{headers}</div><br><div>"
 	for row in data[2:]:
 		html_text += "<div>"
 		for idx,cell in enumerate(row):
