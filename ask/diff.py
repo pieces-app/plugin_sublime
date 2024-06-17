@@ -182,7 +182,8 @@ def show_diff_popup(view, old_lines, new_lines, on_nav,**kwargs):
 		"flags":kwargs.get('flags', 0),
 		"on_navigate":on_nav
 	}
-
+	
+	view.hide_popup() # Remove any other popup in the view
 	mdpopups.show_popup(**popup_kwargs,on_hide=lambda:mdpopups.show_popup(**popup_kwargs))
 
 

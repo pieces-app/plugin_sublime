@@ -39,14 +39,15 @@ class PiecesAskQuestionCommand(sublime_plugin.TextCommand):
 		self.task = task
 		sublime.set_timeout_async(self.run_async,0)
 
-		
-		
+
+
 
 	def run_async(self):
 		# Get the current selection
 		self.selection = self.view.sel()[0]
+		# Modify the selection to whole line not part of it 
+		self.selection = sublime.Region(self.view.line(self.selection.begin()).begin(),self.selection.end()) 
 		self.selected_text = textwrap.dedent(self.view.substr(self.selection))
-		print(self.selected_text)
 
 		# Getting the langauge
 		try:
@@ -118,6 +119,7 @@ class PiecesAskQuestionCommand(sublime_plugin.TextCommand):
 		except:
 			self.view.set_status('Pieces Refactoring', 'Copilot error in getting the responses')
 			sublime.set_timeout(lambda:self.view.erase_status("Pieces Refactoring"),5000)
+			return
 		self.view.set_status('Pieces Refactoring', 'Copilot analyzing...')
 		self.window  = self.view.window()
 
