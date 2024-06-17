@@ -15,22 +15,17 @@
 					{
 						"caption": "Fix a bug",
 						"command": "pieces_ask_question",
-						"args":{"question":"bug"}
+						"args":{"task":"fix"}
 					},
 					{
-						"caption": "Refactor",
+						"caption": "Modify",
 						"command": "pieces_ask_question",
-						"args":{"question":"refactor"}
+						"args":{"task":"modify"}
 					},
 					{
-						"caption":"Add a doc string to this function",
+						"caption":"Add code comments",
 						"command": "pieces_ask_question",
-						"args":{"question":"docstring"}
-					},
-					{
-						"caption": "Add comments to the code",
-						"command": "pieces_ask_question",
-						"args":{"question":"comment"}
+						"args":{"task":"comment"}
 					}
 				]
 			}

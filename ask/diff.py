@@ -3,7 +3,6 @@
 	https://github.com/jisaacks/GitGutter/tree/master/modules/popup
 """
 import mdpopups
-from mdpopups.pygments import highlight
 import sublime
 
 class HtmlDiffer:
@@ -59,58 +58,79 @@ class HtmlDiffer:
 
 	def _highlight_chunk(self,_class,chunk,code_wrap):
 		highlighted_line = mdpopups.syntax_highlight(self.view, chunk, language=mdpopups.get_language_from_view(self.view) or '', allow_code_wrap=code_wrap)
-		highlighted_line = highlighted_line[28:-13]
+		highlighted_line = highlighted_line[28:-13] # Remove the pre,div begining classes
 		return f'<span class="{_class}">{highlighted_line}</span>'
 
 
 	def diff_lines(self, old_lines, new_lines):
 		"""
-		Create a diff map between two sets of lines.
+		Create a diff map between two sets of lines using Myers' diff algorithm.
 
 		:param old_lines: List of lines representing the old version.
 		:param new_lines: List of lines representing the new version.
 		:return: A list of tuples representing the diff map.
 		"""
-		# Create a 2D array to store the lengths of longest common subsequence
-		lcs = [[0] * (len(new_lines) + 1) for _ in range(len(old_lines) + 1)]
+		trace = self.build_trace(old_lines, new_lines)
+		return self.build_diff(trace, old_lines, new_lines)
 
-		# Fill the lcs array
-		for i in range(1, len(old_lines) + 1):
-			for j in range(1, len(new_lines) + 1):
-				if old_lines[i - 1] == new_lines[j - 1]:
-					lcs[i][j] = lcs[i - 1][j - 1] + 1
+	@staticmethod
+	def build_trace(old_lines, new_lines):
+		n, m = len(old_lines), len(new_lines)
+		max_d = n + m
+		v = [0] * (2 * max_d + 1)
+		trace = []
+
+		for d in range(max_d + 1):
+			trace.append(v[:])
+			for k in range(-d, d + 1, 2):
+				if k == -d or (k != d and v[k - 1] < v[k + 1]):
+					x = v[k + 1]
 				else:
-					lcs[i][j] = max(lcs[i - 1][j], lcs[i][j - 1])
+					x = v[k - 1] + 1
+				y = x - k
+				while x < n and y < m and old_lines[x] == new_lines[y]:
+					x += 1
+					y += 1
+				v[k] = x
+				if x >= n and y >= m:
+					trace.append(v[:])
+					return trace
 
-		# Backtrack to find the diff
-		i, j = len(old_lines), len(new_lines)
-		div_map = []
+	@staticmethod
+	def build_diff(trace, old_lines, new_lines):
+		n, m = len(old_lines), len(new_lines)
+		x, y = n, m
+		diff_map = []
 
-		while i > 0 and j > 0:
-			if old_lines[i - 1] == new_lines[j - 1]:
-				div_map.append((old_lines[i - 1], "unchanged"))
-				i -= 1
-				j -= 1
-			elif lcs[i - 1][j] >= lcs[i][j - 1]:
-				div_map.append((old_lines[i - 1], "removed"))
-				i -= 1
+		for d in range(len(trace) - 1, -1, -1):
+			v = trace[d]
+			k = x - y
+			if k == -d or (k != d and v[k - 1] < v[k + 1]):
+				prev_k = k + 1
 			else:
-				div_map.append((new_lines[j - 1], "added"))
-				j -= 1
+				prev_k = k - 1
+			prev_x = v[prev_k]
+			prev_y = prev_x - prev_k
+			while x > prev_x and y > prev_y:
+				diff_map.append((old_lines[x - 1], "unchanged"))
+				x -= 1
+				y -= 1
+			if x > prev_x:
+				diff_map.append((old_lines[x - 1], "removed"))
+				x -= 1
+			elif y > prev_y:
+				diff_map.append((new_lines[y - 1], "added"))
+				y -= 1
 
-		# Add remaining lines
-		while i > 0:
-			div_map.append((old_lines[i - 1], "removed"))
-			i -= 1
-		while j > 0:
-			div_map.append((new_lines[j - 1], "added"))
-			j -= 1
+		while x > 0:
+			diff_map.append((old_lines[x - 1], "removed"))
+			x -= 1
+		while y > 0:
+			diff_map.append((new_lines[y - 1], "added"))
+			y -= 1
 
-		# Reverse to get the correct order
-		div_map.reverse()
-		return div_map
-
-
+		diff_map.reverse()
+		return diff_map
 
 
 def show_diff_popup(view, old_lines, new_lines, on_nav,**kwargs):
@@ -146,57 +166,31 @@ def show_diff_popup(view, old_lines, new_lines, on_nav,**kwargs):
 		differ
 	)
 
-	popup_kwargs = {
-		'view': view,
-		'content': content,
-		'md': False,
-		'css': _load_popup_css()
-	}
-
 	popup_width = int(view.viewport_extent()[0])
 	if code_wrap:
 		line_length = view.settings().get('wrap_width', 0)
 		if line_length > 0:
 			popup_width = (line_length + 5) * view.em_width()
-	mdpopups.show_popup(location=location, max_width=popup_width, flags=kwargs.get('flags', 0), on_navigate=on_nav, **popup_kwargs)
 
+	popup_kwargs = {
+		'view': view,
+		'content': content,
+		'md': False,
+		'css': _load_popup_css(),
+		"location": location,
+		"max_width": popup_width,
+		"flags":kwargs.get('flags', 0),
+		"on_navigate":on_nav
+	}
+
+	mdpopups.show_popup(**popup_kwargs,on_hide=lambda:mdpopups.show_popup(**popup_kwargs))
 
 
 
 def _load_popup_css():
 	"""Load and join popup stylesheets."""
-	css_lines = []
-	for path in ('Packages/Pieces', 'Packages/User'):
-		try:
-			css_path = path + '/ask/index.css'
-			css_lines.append(sublime.load_resource(css_path))
-		except IOError:
-			pass
-	return ''.join(css_lines)
-
-
-def _get_min_indent(lines, tab_width=4):
-	"""Find the minimum count of indenting whitespaces in lines.
-
-	Arguments:
-		lines (tuple): The content to search the minimum indention for.
-		tab_width (int): The number of spaces expand tabs before searching for indention by.
-	"""
-	min_indent = 2**32
-	for line in lines:
-		i = 0
-		for c in line:
-			if c == ' ':
-				i += 1
-			elif c == '\t':
-				i += tab_width - (i % tab_width)
-			else:
-				break
-		if min_indent > i:
-			min_indent = i
-		if not min_indent:
-			break
-	return min_indent
+	css_path = 'Packages/Pieces/ask/index.css'
+	return sublime.load_resource(css_path)
 
 
 def _visible_text_point(view, row, col):
