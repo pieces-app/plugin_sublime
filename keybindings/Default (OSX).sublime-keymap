@@ -2,6 +2,7 @@
 	{
 		"keys": ["command+s"], 
 		"command": "pieces_handle_markdown",
-		"args": {"mode": "save"}
+		"args": {"mode": "save"},
+		"context": [{"key": "save_pieces_asset"}]
 	}
 ]

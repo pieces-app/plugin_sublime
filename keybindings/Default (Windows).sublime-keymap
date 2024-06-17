@@ -3,6 +3,6 @@
         "keys": ["ctrl+s"], 
         "command": "pieces_handle_markdown",
         "args": {"mode": "save"},
-         "context": [{"key": "save_pieces_asset"}]
+        "context": [{"key": "save_pieces_asset"}]
     }
 ]
