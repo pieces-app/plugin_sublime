@@ -1,4 +1,4 @@
-from pieces_os_client import AssetsApi
+from .._pieces_lib.pieces_os_client import AssetsApi
 from ..settings import PiecesSettings
 from .list_assets import PiecesListAssetsCommand
 import sublime

@@ -4,7 +4,7 @@ import mdpopups
 import re
 
 from .utils import tabulate_from_markdown,AssetSnapshot
-from pieces_os_client import *
+from .._pieces_lib.pieces_os_client import *
 from ..settings import PiecesSettings
 
 

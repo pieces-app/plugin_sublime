@@ -1,4 +1,4 @@
-from pieces_os_client import UserProfile
+from .._pieces_lib.pieces_os_client import UserProfile
 from ..settings import PiecesSettings
 import sublime
 

@@ -1,6 +1,6 @@
 import sublime
 import sublime_plugin
-import websocket
+from ._pieces_lib import websocket
 import threading
 
 class BaseWebsocket:
