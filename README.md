@@ -117,5 +117,5 @@ Don't forget to check out our YouTube channel for [Power Tips & Best Practices](
 
 We take your privacy seriously. We are committed to ensuring that your data remains private and secure. To that end, we want to make it clear that:
 
-**We do not collect any user data.**
+**We do not collect any client side telemetry.**
 
