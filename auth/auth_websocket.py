@@ -1,6 +1,6 @@
 from ..base_websocket import BaseWebsocket
 from ..settings import PiecesSettings
-from pieces_os_client import UserProfile,UserApi
+from .._pieces_lib.pieces_os_client import UserProfile,UserApi
 import threading
 import json
 

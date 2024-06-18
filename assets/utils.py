@@ -1,7 +1,7 @@
 import queue
 from typing import Dict
 import threading
-from pieces_os_client import Asset, AssetApi,StreamedIdentifiers
+from .._pieces_lib.pieces_os_client import Asset, AssetApi,StreamedIdentifiers
 import sublime
 
 from ..settings import PiecesSettings

@@ -4,7 +4,7 @@ import sublime
 from ..settings import PiecesSettings
 from .auth_user import AuthUser
 
-from pieces_os_client import OSApi,AllocationsApi,UserApi
+from .._pieces_lib.pieces_os_client import OSApi,AllocationsApi,UserApi
 
 
 class PiecesLoginCommand(sublime_plugin.WindowCommand):
