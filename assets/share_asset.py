@@ -37,7 +37,7 @@ class PiecesGenerateShareableLinkCommand(sublime_plugin.WindowCommand):
 		
 
 
-class PiecesShareAssetCommand(sublime_plugin.TextCommand):
-	def run(self,edit,data):
-		if not data:
-			data = "\n".join([self.view.substr(selection) for selection in self.view.sel()])
+# class PiecesShareAssetCommand(sublime_plugin.TextCommand):
+# 	def run(self,edit,data):
+# 		if not data:
+# 			data = "\n".join([self.view.substr(selection) for selection in self.view.sel()])
