@@ -8,9 +8,9 @@ from pieces_os_client import *
 from ..settings import PiecesSettings
 
 
-A_TAG_STYLE = "padding:2px 5px; margin-left:20px;background-color: var(--accent); border-radius: 6px;color: var(--foreground);text-align:center;text-decoration: None;display:inline"
+A_TAG_STYLE = "padding:2px 5px; background-color: var(--accent); border-radius: 6px;color: var(--foreground);text-align:center;text-decoration: None;display:inline"
 
-HTML_CODE_BUTTON_CONTENT = '<div style="margin-top:10px">{content}</div>'
+HTML_CODE_BUTTON_CONTENT = '<div style="margin-top:2px">{content}</div>'
 
 class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 	sheets_md = {} # {Sheetid : {code,name,langauge,id}}
@@ -68,7 +68,8 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 			href = ""
 			if not (button == "share" and asset_id in cls.shareable_link):
 				href = f'subl:pieces_handle_markdown {{"sheet_id":"{sheet_id}","mode":"{button}"}}'
-				kwargs["share"] = "Generating shareable link"
+			else:
+				kwargs["share"] = "Sharing"
 			
 			content += f"""<a style="{A_TAG_STYLE}" href='{href}'>{kwargs.get(button,button.title())}</a>&nbsp;"""
 		sublime.set_clipboard(HTML_CODE_BUTTON_CONTENT.format(content=content))
