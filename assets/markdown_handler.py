@@ -40,8 +40,8 @@ class PiecesHandleMarkdownCommand(sublime_plugin.WindowCommand):
 			self.window.run_command("pieces_save_asset",args={"asset_id":self.asset_id,"data":data})
 		elif mode == "share":
 			PiecesListAssetsCommand.shareable_link.append(self.asset_id)
-			self.window.run_command("pieces_generate_shareable_link",args={"asset_id":self.asset_id})
-			PiecesListAssetsCommand.update_sheet(self.sheet,self.asset_id)
+			self.window.run_command("pieces_share_asset",args={"asset_id":self.asset_id,"update_sheet":True})
+			
 
 	def handle_edit(self):
 		# Create a new file

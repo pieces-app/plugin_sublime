@@ -27,9 +27,6 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 		self.update_sheet(self.sheet,self.pieces_asset_id)
 		
 
-		
-		
-
 
 	@classmethod
 	def update_sheet(cls,sheet,asset_id,buttons_kwargs={}):

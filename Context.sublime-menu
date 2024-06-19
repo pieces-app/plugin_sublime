@@ -9,6 +9,10 @@
 				"command": "pieces_create_asset",
 			},
 			{
+				"caption": "Generate Shareable link",
+				"command": "pieces_generate_shareable_link",
+			},
+			{
 				"id": "pieces-ask",
 				"caption": "Ask Copilot",
 				"children":[

@@ -65,8 +65,7 @@ class AssetSnapshot:
 
 def tabulate_from_markdown(md_text,buttons):
 	# Split the markdown text into lines
-	lines = md_text.split('\n')
-
+	lines = md_text.splitlines()
 	# Filter out lines that contain '|', and join them back into a string
 	table_md = "\n".join(line for line in lines if '|' in line)
 

@@ -43,4 +43,4 @@ class PiecesEventListener(sublime_plugin.EventListener):
 	def on_query_context(self,view,key, operator, operand, match_all):
 		if view.settings().get("pieces_sheet_id") and key == "pieces_save_asset":
 			self.on_pre_close(view)
-			return False
+			return True
