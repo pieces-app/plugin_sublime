@@ -17,7 +17,6 @@ class AssetsIdentifiersWS(BaseWebsocket):
 
 	def on_message(self,ws, message):
 		self.on_message_callback(StreamedIdentifiers.from_json(message))
-		sublime.windows
 
 	def on_error(self,ws,error): # Some issues with the dns so we need to warn the user the websocket is not running
 		if type(error) == OSError:

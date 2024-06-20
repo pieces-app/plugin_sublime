@@ -8,12 +8,31 @@ from .ext_map import file_map
 
 class PiecesHandleMarkdownCommand(sublime_plugin.WindowCommand):
 	
-	def run(self,mode,sheet_id=None):
-		self.sheet_id = int(sheet_id)
+	def run(self,mode,sheet_id=None,data=None,close=True):
+		"""
+		Executes various operations on a sheet based on the specified mode.
+
+		Parameters:
+		mode (str): The operation mode. Can be one of the following:
+		    - "copy": Copies the sheet's code to the clipboard.
+		    - "edit": Initiates the edit process for the sheet.
+		    - "delete": Deletes the sheet.
+		    - "save": Saves the provided data to the sheet.
+		    - "share": Shares the sheet by generating a shareable link.
+		sheet_id (int, optional): The ID of the sheet to operate on. If not provided, it will be fetched from the active view's settings.
+		data (str, optional): The data to save to the sheet. Only used when mode is "save".
+		close (str,optional): Close the view after saving in the save mode?
+
+		Returns:
+		None
+		"""
 		
+		self.sheet_id = sheet_id
 		if not self.sheet_id:
 			self.sheet_id = self.window.active_view().settings().get("pieces_sheet_id")
-
+			del self.window.active_view().settings()["pieces_sheet_id"]
+		
+		self.sheet_id = int(self.sheet_id)
 		self.sheet = sublime.Sheet(self.sheet_id)
 
 		sheet_details = None
@@ -36,12 +55,19 @@ class PiecesHandleMarkdownCommand(sublime_plugin.WindowCommand):
 		elif mode == "delete":
 			self.window.run_command("pieces_delete_asset")
 		elif mode == "save":
-			data = self.window.active_view().substr(sublime.Region(0, self.window.active_view().size()))
+			view = self.window.active_view()
+			if not data:
+				data = view.substr(sublime.Region(0, self.window.active_view().size()))
 			self.window.run_command("pieces_save_asset",args={"asset_id":self.asset_id,"data":data})
+			
+			if close:
+				view.close(lambda x: self.window.run_command("pieces_list_assets",{"pieces_asset_id":self.asset_id}))
+			
 		elif mode == "share":
 			PiecesListAssetsCommand.shareable_link.append(self.asset_id)
 			self.window.run_command("pieces_share_asset",args={"asset_id":self.asset_id,"update_sheet":True})
-			
+	
+
 
 	def handle_edit(self):
 		# Create a new file
