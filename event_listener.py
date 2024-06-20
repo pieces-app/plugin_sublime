@@ -13,8 +13,6 @@ class PiecesEventListener(sublime_plugin.EventListener):
 		
 	def on_text_command(self,view,command_name,args):
 		self.check(command_name)
-		if command_name == "save":
-			return ("pieces_handle_markdown","save")
 
 	def check(self,command_name):
 		if command_name.startswith("pieces_") and command_name not in PiecesEventListener.commands_to_exclude: # Check any command 
