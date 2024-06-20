@@ -37,6 +37,11 @@ class CopilotViewManager:
 			self.phantom_details_dict = {} # id: {"code":code,"region":region}
 
 
+
+			# Failed regions
+			self.failed_regions = []
+			self.failed_phantom = sublime.PhantomSet(CopilotViewManager._gpt_view, "Pieces_Failed_Phantoms")
+
 			# Others
 			self.copilot_regions = []
 			self.show_cursor
@@ -114,10 +119,32 @@ class CopilotViewManager:
 		if message.status == "COMPLETED":
 			self.new_line()
 			self.end_response = self.gpt_view.size() # Update the size
-			self.show_cursor
-			CopilotViewManager.can_type = True
+			self.reset_view()
 			self.conversation_id = message.conversation
 			self.add_code_phantoms() # Generate the code phantoms	
+		elif message.status == "FAILED":
+			self.failed_regions.append(self.copilot_regions.pop())
+			self.show_failed()
+			self.reset_view()
+
+
+	def show_failed(self):
+		self.gpt_view.add_regions(
+			"pieces", 
+			self.failed_regions, 
+			scope="region.yellowish", 
+			icon=f"Packages/Pieces/copilot/images/warning.png", 
+			flags=sublime.HIDDEN
+		)
+		self.failed_phantom.update(
+			[sublime.Phantom(region,"Something went wrong",sublime.LAYOUT_BLOCK) for region in self.failed_regions] # TODO: Add retry
+		)
+
+
+	def reset_view(self):
+		self.show_cursor
+		CopilotViewManager.can_type = True
+
 	@property
 	def conversation_id(self):
 		return self.gpt_view.settings().get("conversation_id")
