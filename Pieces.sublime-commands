@@ -36,4 +36,8 @@
 		"caption": "Pieces: Open Pieces OS",
 		"command": "pieces_open_pieces"
 	},
+	{
+		"caption": "Pieces: About",
+		"command": "pieces_about"
+	},
 ]
