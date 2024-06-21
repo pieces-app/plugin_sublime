@@ -10,7 +10,7 @@ md_text = f"""
 ## Discover
 - [Plugins](https://code.pieces.app/plugins)
 
-## COMMUNITY
+## Community
 - [Become a beta tester](https://getpieces.typeform.com/to/XGGlUqEI?os=8c0a0a63-6fc6-43e3-a2c4-7690aefde52d)
 - [Pieces Blogs](https://code.pieces.app/blog)
 
@@ -25,7 +25,7 @@ md_text = f"""
 - [Discord](https://discord.gg/getpieces)
 - [Reddit](https://www.reddit.com/r/PiecesForDevelopers/)
 
-## VERSION
+## Version
 - Plugin Version: {__version__}
 - Pieces Version: {get_version() if get_version() else "Unknown"}
 """
