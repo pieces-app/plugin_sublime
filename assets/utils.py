@@ -1,6 +1,8 @@
 import queue
 from typing import Dict
-from pieces_os_client import Asset, AssetApi,StreamedIdentifiers
+import re
+
+from .._pieces_lib.pieces_os_client import Asset, AssetApi,StreamedIdentifiers
 import sublime
 
 from ..settings import PiecesSettings
@@ -62,24 +64,20 @@ class AssetSnapshot:
 
 
 
-
 def tabulate_from_markdown(md_text,buttons):
-	# Split the markdown text into lines
-	lines = md_text.splitlines()
-	# Filter out lines that contain '|', and join them back into a string
-	table_md = "\n".join(line for line in lines if '|' in line)
+	table_regex = re.compile(r'(\|.*\|(?:\n\|.*\|)+)')
+	match = table_regex.search(md_text)
+
+	if match:
+		table_md = match.group(1)
+	else: return md_text
 
 	# Split the markdown table into lines, and then into cells
 	# Also, remove leading/trailing whitespace from each cell
 	data = [[cell.strip() for cell in line.split("|")[1:-1]] for line in table_md.strip().split("\n")]
 
-	headers = "<div>"
-	for header in data[0]:
-		if header:
-			headers += "<span><h1>" + header + "</h1></span>"
-
     # Generate HTML string
-	html_text = f"{buttons}{headers}</div><br><div>"
+	html_text = f"{buttons}<h3>{data[0][0]}</h3><br><div>"
 	for row in data[2:]:
 		html_text += "<div>"
 		for idx,cell in enumerate(row):

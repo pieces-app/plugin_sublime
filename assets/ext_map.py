@@ -1,4 +1,4 @@
-from pieces_os_client import ClassificationSpecificEnum
+from .._pieces_lib.pieces_os_client import ClassificationSpecificEnum
 from typing import Optional
 
 file_map =  {ClassificationSpecificEnum.BAT: 'Packages/Batch File/Batch File.sublime-syntax',

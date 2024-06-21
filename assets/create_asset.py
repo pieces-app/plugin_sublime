@@ -1,5 +1,5 @@
 from ..settings import PiecesSettings
-import pieces_os_client as pos_client
+from .._pieces_lib import pieces_os_client as pos_client
 import sublime_plugin
 import sublime
 

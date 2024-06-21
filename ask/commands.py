@@ -1,6 +1,6 @@
 import sublime
 import sublime_plugin
-import pieces_os_client as pos_client
+from .._pieces_lib import pieces_os_client as pos_client
 import re
 from difflib import Differ 
 import mdpopups
@@ -53,6 +53,8 @@ class PiecesAskQuestionCommand(sublime_plugin.TextCommand):
 
 	def on_done(self,description):
 		self.description = description
+		if not self.description:
+			self.description = "No description provided"
 		sublime.set_timeout_async(self.on_done_async,0)
 
 	def on_done_async(self):

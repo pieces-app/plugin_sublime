@@ -1,6 +1,6 @@
 import sublime_plugin
 import sublime
-from pieces_os_client import *
+from .._pieces_lib.pieces_os_client import *
 
 from .list_assets import PiecesListAssetsCommand
 from .ext_map import file_map

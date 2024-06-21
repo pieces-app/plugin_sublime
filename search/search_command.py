@@ -5,7 +5,7 @@ from ..settings import PiecesSettings
 from ..assets.utils import AssetSnapshot
 from ..assets.list_assets import PiecesAssetIdInputHandler
 
-from pieces_os_client import SearchApi,AssetsApi
+from .._pieces_lib.pieces_os_client import SearchApi,AssetsApi
 
 
 
