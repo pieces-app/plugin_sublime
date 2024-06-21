@@ -6,7 +6,6 @@ from ..settings import PiecesSettings
 from sublime import Region
 import re
 
-
 PHANTOM_A_TAG_STYLE = "padding: 4px;background-color: var(--accent); border-radius: 6px;color: var(--foreground);text-decoration: None;text-align: center"
 
 PHANTOM_CONTENT = f"""
@@ -46,7 +45,7 @@ class CopilotViewManager:
 			self.copilot_regions = []
 			self.show_cursor
 			self.update_status_bar()
-			self.render_copilot_image_phantom(CopilotViewManager._gpt_view)
+			# self.render_copilot_image_phantom(CopilotViewManager._gpt_view)
 
         
 			# Create a new group (split view)
@@ -218,7 +217,7 @@ class CopilotViewManager:
 		if command == "save":
 			self.gpt_view.run_command("pieces_create_asset",{"data":code})
 			self.update_phantom_set(region,id,"Saving")
-			sublime.set_timeout_async(lambda:self.update_phantom_set(region,id,"Saved"),5000)
+			sublime.set_timeout_async(lambda:self.update_phantom_set(region,id,"Save"),5000) # TODO: Change it to a view button
 
 		elif command == "copy":
 			sublime.set_clipboard(code)
@@ -242,17 +241,7 @@ class CopilotViewManager:
 			phantoms = [phantom]
 		self.phantom_set.update(phantoms)
 
-	@staticmethod
-	def render_copilot_image_phantom(view:sublime.View):
-		pass
-		# ui = sublime.ui_info()["theme"]["style"]
-		# view.run_command("append",{"characters":"\n"})
-		# view.add_phantom(
-		# 	key="Pieces_image",
-		# 	region = sublime.Region(0,60),
-		# 	layout = sublime.LAYOUT_INLINE,
-		# 	content =f"<img width='1001px' height='211px' src='res://Packages/Pieces/copilot/images/pieces-copilot-{ui}.png' />"
-		# )
+
 
 	def render_conversation(self,conversation_id):
 		
@@ -281,7 +270,7 @@ class CopilotViewManager:
 			self.select_end
 			if val == -1: # message is deleted
 				continue
-			message = message_api.message_specific_message_snapshot(message=key)
+			message = message_api.message_specific_message_snapshot(message=key,transferables=True)
 			if message.role == "USER":
 				self.show_cursor
 			

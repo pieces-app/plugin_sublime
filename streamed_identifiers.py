@@ -26,9 +26,10 @@ import threading
 from typing import Dict, Union, Callable
 from pieces_os_client import Conversation, StreamedIdentifiers, Asset
 import sublime
+from abc import ABC,abstractmethod
 
 
-class StreamedIdentifiersCache:
+class StreamedIdentifiersCache(ABC):
     """
     This class is made for caching Streamed Identifiers.
     Please use this class only as a parent class.
@@ -44,8 +45,8 @@ class StreamedIdentifiersCache:
         cls.first_shot = True  # First time to open the websocket or not
 
 
-    @classmethod
-    def sort_first_shot(cls):
+    @abstractmethod
+    def sort_first_shot():
         """
             Sorting algrothim in the first shot
         """
