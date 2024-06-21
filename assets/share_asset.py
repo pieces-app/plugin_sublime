@@ -1,6 +1,6 @@
 import sublime_plugin
 import sublime
-from pieces_os_client import LinkifyApi,Linkify
+from .._pieces_lib.pieces_os_client import LinkifyApi,Linkify
 
 from .utils import AssetSnapshot
 from .list_assets import PiecesListAssetsCommand

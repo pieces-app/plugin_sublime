@@ -1,6 +1,6 @@
 import sublime
 import sublime_plugin
-from pieces_os_client import ClassificationGenericEnum,FormatApi
+from .._pieces_lib.pieces_os_client import ClassificationGenericEnum,FormatApi
 from .utils import AssetSnapshot
 from ..settings import PiecesSettings
 
