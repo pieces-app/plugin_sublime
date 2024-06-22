@@ -22,7 +22,7 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 		try:
 			api_response = api_instance.asset_specific_asset_export(pieces_asset_id, "MD")
 		except:
-			AssetSnapshot.assets_snapshot.pop(pieces_asset_id)
+			AssetSnapshot.identifiers_snapshot.pop(pieces_asset_id)
 			return sublime.error_message("Asset Not Found")
 		
 		markdown_text = api_response.raw.string.raw
