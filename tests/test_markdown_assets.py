@@ -6,7 +6,7 @@ from Pieces.assets.markdown_handler import PiecesHandleMarkdownCommand
 from Pieces.assets.utils import AssetSnapshot
 
 
-class TestListAssetsCommand(DeferrableTestCase):
+class TestMarkdownCommand(DeferrableTestCase):
 	def setUp(self):
 		self.test_text = "\n# This is added via the test in the sublime plugin"
 		self.window = sublime.active_window()

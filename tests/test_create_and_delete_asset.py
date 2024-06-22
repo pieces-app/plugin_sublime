@@ -4,7 +4,7 @@ import sublime
 from Pieces.assets.create_asset import PiecesCreateAssetCommand
 from Pieces.assets.utils import AssetSnapshot
 
-class TestListAssetsCommand(DeferrableTestCase):
+class TestCreateAndDeleteCommand(DeferrableTestCase):
 	def setUp(self):
 		self.window = sublime.active_window()
 		self.main_views = self.window.views(include_transient=True)
