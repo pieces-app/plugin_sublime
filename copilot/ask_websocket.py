@@ -1,4 +1,4 @@
-from pieces_os_client import QGPTStreamOutput,QGPTStreamInput
+from .._pieces_lib.pieces_os_client import QGPTStreamOutput,QGPTStreamInput
 from websocket import WebSocketConnectionClosedException
 
 from ..settings import PiecesSettings

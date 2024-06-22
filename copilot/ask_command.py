@@ -1,4 +1,4 @@
-from pieces_os_client import AnnotationApi
+from .._pieces_lib.pieces_os_client import AnnotationApi
 import sublime_plugin
 import sublime
 from .ask_view import CopilotViewManager

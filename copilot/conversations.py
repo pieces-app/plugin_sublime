@@ -1,6 +1,6 @@
 from ..streamed_identifiers import StreamedIdentifiersCache
 from ..settings import PiecesSettings
-from pieces_os_client import ConversationApi
+from .._pieces_lib.pieces_os_client import ConversationApi
 
 class ConversationsSnapshot(StreamedIdentifiersCache,
 	api_call=ConversationApi(PiecesSettings.api_client).conversation_get_specific_conversation):

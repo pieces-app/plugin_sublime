@@ -1,7 +1,7 @@
 import sublime
 from .ask_websocket import AskStreamWS
 from .conversations import ConversationsSnapshot
-from pieces_os_client import ConversationMessageApi, QGPTQuestionInput, QGPTStreamInput, RelevantQGPTSeeds,QGPTStreamOutput
+from .._pieces_lib.pieces_os_client import ConversationMessageApi, QGPTQuestionInput, QGPTStreamInput, RelevantQGPTSeeds,QGPTStreamOutput
 from ..settings import PiecesSettings
 from sublime import Region
 import re

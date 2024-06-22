@@ -1,4 +1,4 @@
-from pieces_os_client import StreamedIdentifiers
+from .._pieces_lib.pieces_os_client import StreamedIdentifiers
 
 from ..settings import PiecesSettings
 from ..base_websocket import BaseWebsocket
