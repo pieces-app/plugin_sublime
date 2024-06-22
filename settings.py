@@ -1,4 +1,4 @@
-import pieces_os_client as pos_client
+from ._pieces_lib import pieces_os_client as pos_client
 import sublime
 from typing import Dict
 import os

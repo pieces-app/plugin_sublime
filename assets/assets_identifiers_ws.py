@@ -1,4 +1,4 @@
-from pieces_os_client import StreamedIdentifiers,StreamedIdentifier,ReferencedAsset,AssetsApi
+from .._pieces_lib.pieces_os_client import StreamedIdentifiers,StreamedIdentifier,ReferencedAsset,AssetsApi
 import threading
 import sublime
 

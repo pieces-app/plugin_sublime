@@ -1,6 +1,6 @@
 import sublime
 import sublime_plugin
-import websocket
+from ._pieces_lib import websocket
 import threading
 from abc import ABC, abstractmethod
 
@@ -67,8 +67,8 @@ class BaseWebsocket(ABC):
 
 	def reconnect(self):
 		"""Reconnect the websocket connection."""
-		if not self.running:
-			self.start()
+		self.close()
+		self.start()
 
 	def __str__(self):
 		return getattr(self, "url", self.instances)

@@ -1,5 +1,9 @@
 # CHANGELOG
 # 1.0.0
+## June 12th, 2024
+
+- Add open Pieces OS command to quickly open Piece OS
+
 ## May 22th, 2024
 
 - Added a support command, "Pieces: Get Support", to access our public support GitHub repository or connect with the Pieces team.

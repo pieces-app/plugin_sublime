@@ -35,5 +35,9 @@
 	{
 		"caption": "Pieces: Copilot",
 		"command": "pieces_ask_stream"
-	}
+	},
+	{
+		"caption": "Pieces: Open Pieces OS",
+		"command": "pieces_open_pieces"
+	},
 ]
