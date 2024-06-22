@@ -13,7 +13,7 @@ class PiecesAskStreamCommand(sublime_plugin.WindowCommand):
 		copilot.ask_websocket.start()
 		copilot.render_conversation(pieces_conversation_id)
 		if pieces_query:
-			copilot.gpt_view.run_command("append",{"charaters":pieces_queryR})
+			copilot.gpt_view.run_command("append",{"charaters":pieces_query})
 			copilot.gpt_view.run_command("pieces_enter_response")
 		return
 
