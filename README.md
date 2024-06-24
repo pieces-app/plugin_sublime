@@ -9,32 +9,53 @@
 Please make sure you have [**Pieces OS**](https://docs.pieces.app/installation-getting-started/what-am-i-installing) installed to run the Package.
 
 
-## Getting Started
+## Getting Started with Pieces Sublime Plugin
 
-Welcome to the Pieces Sublime Plugin.
-The Pieces Sublime plugin is designed to manage your saved materials in Pieces right from within Sublime, and interact seamlessly with Pieces OS.
+Welcome to the **Pieces Sublime Plugin**!
 
-To get started, check the settings. If you wish to change the llm model you're using or the host, you can do so in the settings `Preferences > Package Settings > Pieces > Settings`.
+The Pieces Sublime plugin is your gateway to managing your saved materials in Pieces directly from within Sublime Text. Seamlessly interact with Pieces OS and enhance your workflow like never before.
+
+### Configuration
+
+Before diving in, let's ensure everything is set up to your liking. You can customize the LLM model or the host by navigating to:
+`Preferences > Package Settings > Pieces > Settings`.
+You can also open the settitngs from the command palette `Pieces: Open Settings`.
 
 ### Open Saved Material
 
-To open your saved materials, simply open your command palette and run `Pieces: Open Saved Material`. Then, select the asset you wish to open.
+Ready to access your saved materials? It's super easy! Just follow these steps:
 
-#### Edit Saved Materials
+1. Open your command palette (`Ctrl+Shift+P` or `Cmd+Shift+P`).
+2. Run the command: `Pieces: Open Saved Material`.
+3. Select the asset you wish to open from the list.
 
-To edit a saved material, you'll need to toggle into editor mode. You can do so by tapping `command/ctrl+e`. From there, you will be able to modify the contents of your material and save the changes using `command/ctrl + s`.
+Your material is now open and ready for you to use. Happy coding! 
 
-#### Copy Saved Material
 
-If you're viewing a saved material, you can quickly copy the asset content without selecting it using `command/ctrl + c`.
+### Edit Saved Materials
 
-### Right click to add an asset
+Want to make changes to your saved materials? Switch to editor mode by clicking the **Edit** button on your saved snippet. Modify the content as needed and save your changes with a simple `command/ctrl + s`. It's that easy!
 
-To save a new snippet in Pieces, select the code you wish to save, right-click to open the context menu, and select `Pieces > Save to Pieces`.
+### Shareable Link
+
+Ever wanted to share a code snippet effortlessly? Select the code, right-click to open the context menu, and choose `Pieces > Generate shareable link`. You can also share a saved material by opening it and clicking the **Share** button. Sharing has never been simpler!
+
+### Right Click to Add an Asset
+
+Saving a new snippet in Pieces is a breeze! Just select the code you want to save, right-click to open the context menu, and choose `Pieces > Save to Pieces`. Your code is now safely stored!
 
 ### Copilot Ask
 
-Need the Copilot to comment, fix a bug, or add a doc string? Select some code, right-click to open the context menu, and select Pieces > Ask Copilot.
+Need some help from Copilot? Whether it's commenting, fixing a bug, or adding a docstring, just select the code, right-click to open the context menu, and choose `Pieces > Ask Copilot`. Let Copilot do the heavy lifting for you!
+
+
+### Open a Copilot Conversation
+
+Ever wished for a personal coding assistant? Look no further! With Pieces Copilot, you can have an AI-powered assistant right at your fingertips. Simply open the command palette and select `Pieces: Copilot`. From there, you can ask anything whether it's for coding help, debugging, or even generating snippets to save to Pieces with some clicks.
+
+### Change the LLM Model
+
+Want to customize your Copilot experience? You can easily switch the LLM model to better suit your needs. Open the settings from your command palette by selecting `Pieces: Open Settings`. You can change some configuration and choose the model that works best for you. Tailor your Copilot to be the perfect coding companion!
 
 ### Login/Logout
 
@@ -109,8 +130,6 @@ Explore our collection of awesome Pieces [plugins](https://code.pieces.app/plugi
 #### View Power Tips & Best Practices
 
 Don't forget to check out our YouTube channel for [Power Tips & Best Practices](https://youtube.com/@getpieces)
-
-
 
 
 ### Privacy and Data Collection
