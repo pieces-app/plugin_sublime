@@ -15,11 +15,12 @@
     { "keys": ["tab"], "command": "noop", "context": [{"key": "pieces_copilot_add"}]},
     { "keys": ["space"], "command": "noop", "context": [{"key": "pieces_copilot_add"}]},
     { "keys": ["backspace"], "command": "noop", "context": [{"key": "pieces_copilot_remove"}]},
+    { "keys": ["delete"], "command": "noop", "context": [{"key": "pieces_copilot_remove"}]},
     { "keys": ["enter"], "command": "noop", "context": [{"key": "pieces_copilot_add"}]},
     { "keys": ["shift+insert"], "command": "noop","context": [{"key": "pieces_copilot_add"}]},
     { "keys": ["shift+tab"], "command": "noop", "context": [{"key": "pieces_copilot_add"}]},
     { "keys": ["shift+backspace"], "command": "noop","context": [{"key": "pieces_copilot_remove"}]},
-    { "keys": ["ctrl+backspace"], "command": "noop","context": [{"key": "pieces_copilot_remove"}]},
+    { "keys": ["primary+backspace"], "command": "noop","context": [{"key": "pieces_copilot_remove"}]},
 
     // Basic keys
     { "keys": ["A"], "command": "noop", "context": [{"key": "pieces_copilot_add"}]},
