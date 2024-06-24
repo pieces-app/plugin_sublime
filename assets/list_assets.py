@@ -42,7 +42,7 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 		# Find all code blocks
 		code_block = re.findall(code_block_pattern, markdown_text)[0]
 		
-		markdown_text_table = tabulate_from_markdown(markdown_text,buttons = cls.create_html_buttons(asset_id,sheet.id(),**buttons_kwargs))
+		markdown_text_table = tabulate_from_markdown(markdown_text,buttons = cls.create_html_buttons(sheet.id(),**buttons_kwargs))
 		
 		mdpopups.update_html_sheet(sheet,markdown_text_table,css = ".div_wrapper {margin-left:2rem}",wrapper_class="div_wrapper")
 
@@ -59,17 +59,21 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 
 	
 	@classmethod
-	def create_html_buttons(cls,asset_id,sheet_id,**kwargs):
+	def create_html_buttons(cls,sheet_id,**kwargs):
+		"""
+			Sheet ID: which these buttons gonna be generated
+			kwargs: Overwrite the buttons title and url
+			{button_name:{url:,title:}}
+		"""
+
 		content = ''
 		for button in ["copy","edit","share","delete"]:
-			href = ""
-			if not (button == "share" and asset_id in cls.shareable_link):
+			button_details = kwargs.get(button,{})
+			href = button_details.get("url")
+			if not href:
 				href = f'subl:pieces_handle_markdown {{"sheet_id":"{sheet_id}","mode":"{button}"}}'
-			else:
-				kwargs["share"] = "Sharing"
-			
-			content += f"""<a style="{A_TAG_STYLE}" href='{href}'>{kwargs.get(button,button.title())}</a>&nbsp;"""
-		sublime.set_clipboard(HTML_CODE_BUTTON_CONTENT.format(content=content))
+			content += f"""<a style="{A_TAG_STYLE}" href='{href}'>{button_details.get("title",button.title())}</a>&nbsp;"""
+	
 		return HTML_CODE_BUTTON_CONTENT.format(content=content)
 
 	def input(self,args):

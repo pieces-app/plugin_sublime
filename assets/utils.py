@@ -77,7 +77,7 @@ def tabulate_from_markdown(md_text,buttons):
 	data = [[cell.strip() for cell in line.split("|")[1:-1]] for line in table_md.strip().split("\n")]
 
     # Generate HTML string
-	html_text = f"{buttons}<h3>{data[0][0]}</h3><br><div>"
+	html_text = f"<div style='margin-bottom:3px'>{buttons}</div><h3>{data[0][0]}</h3><br><div>"
 	for row in data[2:]:
 		html_text += "<div>"
 		for idx,cell in enumerate(row):

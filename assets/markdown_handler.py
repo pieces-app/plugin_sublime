@@ -49,7 +49,7 @@ class PiecesHandleMarkdownCommand(sublime_plugin.WindowCommand):
 
 		if mode == "copy":
 			sublime.set_clipboard(self.code)
-			PiecesListAssetsCommand.update_sheet(self.sheet,self.asset_id,{"copy":"Copied"})
+			PiecesListAssetsCommand.update_sheet(self.sheet,self.asset_id,{"copy":{"title":"Copied"}})
 		elif mode == "edit":
 			self.handle_edit()
 		elif mode == "delete":
@@ -64,7 +64,6 @@ class PiecesHandleMarkdownCommand(sublime_plugin.WindowCommand):
 				view.close(lambda x: self.window.run_command("pieces_list_assets",{"pieces_asset_id":self.asset_id}))
 			
 		elif mode == "share":
-			PiecesListAssetsCommand.shareable_link.append(self.asset_id)
 			self.window.run_command("pieces_share_asset",args={"asset_id":self.asset_id,"update_sheet":True})
 	
 

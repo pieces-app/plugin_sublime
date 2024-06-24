@@ -12,6 +12,9 @@ from ..auth.auth_user import AuthUser
 class PiecesShareAssetCommand(sublime_plugin.WindowCommand):
 	def run(self,asset_id,update_sheet=False):
 		self.update_sheet = update_sheet
+		self.sheet = self.window.active_sheet()
+		if update_sheet:
+			PiecesListAssetsCommand.update_sheet(self.sheet,asset_id,{"share":{"title":"Sharing","url":"noop"}})
 		sublime.set_timeout_async(lambda:self.run_async(asset_id))
 
 	def run_async(self,asset_id=None,seed=None):
@@ -38,20 +41,23 @@ class PiecesShareAssetCommand(sublime_plugin.WindowCommand):
 				**kwargs
 				)
 			)
-		sheet = self.window.active_sheet()
+		
 		share = None
 		try:
 			share = self.thread.get(120)
-			if sheet:
-				if sheet.id() in PiecesListAssetsCommand.sheets_md:
-					PiecesListAssetsCommand.update_sheet(sheet,asset_id)
+			if self.sheet and self.update_sheet:
+				if self.sheet.id() in PiecesListAssetsCommand.sheets_md:
+					PiecesListAssetsCommand.update_sheet(self.sheet,asset_id,
+						{"share":
+							{"title":"Copy Generated Link",
+							"url":f'subl:pieces_copy_link  {{"content":"{share.iterable[0].link}", "asset_id":"{asset_id}"}}'}
+						})
+
 		except:	
 			pass
-		if asset_id and asset_id in PiecesListAssetsCommand.shareable_link:
-			PiecesListAssetsCommand.shareable_link.remove(asset_id)
 
 		if share: return share
-		if self.update_sheet: PiecesListAssetsCommand.update_sheet(sheet,asset_id)
+		
 
 class PiecesGenerateShareableLinkCommand(sublime_plugin.TextCommand):
 	def run(self,edit,data=None):
@@ -113,3 +119,10 @@ class PiecesGenerateShareableLinkCommand(sublime_plugin.TextCommand):
 			</body>""", 
 			location=-1,
 			on_navigate=on_nav)
+
+
+class PiecesCopyLinkCommand(sublime_plugin.WindowCommand):
+	def run(self,content,asset_id):
+		sublime.set_clipboard(content)
+		sheet = self.window.active_sheet()
+		PiecesListAssetsCommand.update_sheet(sheet,asset_id,buttons_kwargs={"share":{"title":"Copied"}})
