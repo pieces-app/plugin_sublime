@@ -16,8 +16,6 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 	sheets_md = {} # {Sheetid : {code,name,langauge,id}}
 	shareable_link = [] # asset_ids
 	def run(self,pieces_asset_id):
-		if not pieces_asset_id in AssetSnapshot.assets_snapshot:
-			return
 		self.pieces_asset_id = pieces_asset_id
 		sublime.set_timeout_async(self.run_async,0)
 
