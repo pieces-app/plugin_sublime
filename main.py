@@ -1,7 +1,7 @@
 from . import __version__
 from .api import open_pieces_os,print_version_details,version_check
 from .settings import PiecesSettings
-
+from .copilot.ask_command import copilot
 import sublime
 
 # load the commands
@@ -10,6 +10,7 @@ from .ask import *
 from .auth import *
 from .search import *
 from .misc import *
+from .copilot import *
 from .base_websocket import BaseWebsocket
 
 
@@ -32,11 +33,14 @@ def startup(settings_model):
 
 	# WEBSOCKETS:
 	# Assets Identifiers Websocket
-	AssetsIdentifiersWS(AssetSnapshot.assets_snapshot_callback).start() # Load the assets ws at the startup
+	AssetsIdentifiersWS(AssetSnapshot.streamed_identifiers_callback).start() # Load the assets ws at the startup
 	
 	# User Weboscket
 	PiecesSettings.create_auth_output_panel()
 	AuthWebsocket(AuthUser.on_user_callback).start() # Load the stream user websocket
+
+	# Conversation Websocket
+	ConversationWS(ConversationsSnapshot.streamed_identifiers_callback).start()
 
 
 def plugin_loaded():
@@ -48,6 +52,9 @@ def plugin_loaded():
 	settings.add_on_change("PIECES_SETTINGS",PiecesSettings.on_settings_change)
 	PiecesSettings.host_init(host) # Intilize the hosts url
 	
+	# callbacks needed onchange settings
+	PiecesSettings.on_model_change_callbacks.append(copilot.update_status_bar)
+
 	sublime.set_timeout_async(lambda : startup(model) ,0)
 	
 

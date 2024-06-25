@@ -31,8 +31,11 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 	@classmethod
 	def update_sheet(cls,sheet,asset_id,buttons_kwargs={}):
 		api_instance = AssetApi(PiecesSettings.api_client)
-		api_response = api_instance.asset_specific_asset_export(asset_id, "MD")
-		
+		try:
+			api_response = api_instance.asset_specific_asset_export(asset_id, "MD")
+		except:
+			AssetSnapshot.identifiers_snapshot.pop(asset_id)
+			return sublime.error_message("Asset Not Found")
 		
 		markdown_text = api_response.raw.string.raw
 
@@ -88,7 +91,7 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 
 class PiecesAssetIdInputHandler(sublime_plugin.ListInputHandler):
 	def list_items(self):
-		return self.get_assets_list(AssetSnapshot.assets_snapshot)
+		return self.get_assets_list(AssetSnapshot.identifiers_snapshot)
 
 	def get_assets_list(self,assets_snapshot):
 		assets_list = []
