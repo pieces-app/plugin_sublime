@@ -22,7 +22,7 @@ class PiecesShareAssetCommand(sublime_plugin.WindowCommand):
 			You need to either give the seed or the asset_id
 		"""
 		if asset_id:
-			kwargs = {"asset" : AssetSnapshot.assets_snapshot[asset_id]}
+			kwargs = {"asset" : AssetSnapshot.identifiers_snapshot[asset_id]}
 		else:
 			kwargs = {"seed" : seed}
 		user = AuthUser.user_profile

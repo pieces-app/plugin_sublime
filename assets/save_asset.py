@@ -8,7 +8,7 @@ from ..settings import PiecesSettings
 
 class PiecesSaveAssetCommand(sublime_plugin.WindowCommand):
 	def run(self,asset_id,data):
-		asset = AssetSnapshot.assets_snapshot[asset_id]
+		asset = AssetSnapshot.identifiers_snapshot[asset_id]
 		format_api = FormatApi(PiecesSettings.api_client)
 		original = format_api.format_snapshot(asset.original.id, transferable=True)
 		if original.classification.generic == ClassificationGenericEnum.IMAGE:

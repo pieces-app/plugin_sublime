@@ -53,7 +53,7 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 		except:
 			pass
 		try:
-			language = AssetSnapshot.assets_snapshot[asset_id].original.reference.classification.specific
+			language = AssetSnapshot.identifiers_snapshot[asset_id].original.reference.classification.specific
 		except:
 			language = None
 		cls.sheets_md[sheet.id()] = {"code":"\n".join(code_block.splitlines()[1:-1]),"name":api_response.name,"language":language,"id":asset_id}
