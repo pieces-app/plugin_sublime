@@ -37,6 +37,11 @@
 		"command": "pieces_open_pieces"
 	},
 	{
+
+		"caption": "Pieces: About",
+		"command": "pieces_about"
+	},
+  {
 		"caption": "Pieces: Open Pieces Settings",
 		"command": "edit_settings", 
 		"args":
