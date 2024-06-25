@@ -24,7 +24,7 @@ class TestListAssetsCommand(DeferrableTestCase):
 
 
 	def test_run_command(self):
-		self.command.run(list(AssetSnapshot.assets_snapshot.keys())[0]) # Open the first asset
+		self.command.run(list(AssetSnapshot.identifiers_snapshot.keys())[0]) # Open the first asset
 		yield 500 # wait for the command to run
 		sheet_id = list(PiecesListAssetsCommand.sheets_md.keys())[0]
 		# Make sure the correct asset is generate successfully
@@ -33,7 +33,7 @@ class TestListAssetsCommand(DeferrableTestCase):
 		# Checkout the extracted code
 		code = PiecesListAssetsCommand.sheets_md[sheet_id]["code"]
 		asset_id = PiecesListAssetsCommand.sheets_md[sheet_id]["id"]
-		raw = AssetSnapshot.assets_snapshot[asset_id].original.reference.fragment.string.raw
+		raw = AssetSnapshot.identifiers_snapshot[asset_id].original.reference.fragment.string.raw
 		self.assertEqual(code,raw)
 
 

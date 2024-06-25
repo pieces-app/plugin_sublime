@@ -14,7 +14,7 @@ class TestMarkdownCommand(DeferrableTestCase):
 		self.view = self.window.new_file()
 		self.command = PiecesHandleMarkdownCommand(self.window)
 		yield 3000 # Wait 3 sec for everythin to load (websockets)
-		self.asset_id = list(AssetSnapshot.assets_snapshot.keys())[0] # id to test on
+		self.asset_id = list(AssetSnapshot.identifiers_snapshot.keys())[0] # id to test on
 
 
 	def tearDown(self):
@@ -41,7 +41,7 @@ class TestMarkdownCommand(DeferrableTestCase):
 
 		yield 500 # Wait some until the changes recevied by the websocket
 
-		code = AssetSnapshot.assets_snapshot[self.asset_id].original.reference.fragment.string.raw
+		code = AssetSnapshot.identifiers_snapshot[self.asset_id].original.reference.fragment.string.raw
 
 		self.assertTrue(code.endswith(self.test_text)) # Make sure the code edited properly 
 

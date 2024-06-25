@@ -85,7 +85,8 @@ class PiecesSearchCommand(sublime_plugin.WindowCommand):
 
 				# Print the combined asset details
 				if combined_ids:
-					return {id:AssetSnapshot.assets_snapshot.get(id) for id in combined_ids if AssetSnapshot.assets_snapshot.get(id)}
+					identifiers_snapshot = AssetSnapshot.identifiers_snapshot
+					return {id:identifiers_snapshot.get(id) for id in combined_ids if identifiers_snapshot.get(id)}
 
 	def is_enabled(self):
 		return PiecesSettings().is_loaded

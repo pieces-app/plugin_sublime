@@ -22,7 +22,7 @@ class TestPiecesSearchCommand(DeferrableTestCase):
     
     def test_query_input_handler(self):
         SearchTypeInputHandler.search_type = "assets"
-        asset = list(AssetSnapshot.assets_snapshot.values())[0]
+        asset = list(AssetSnapshot.identifiers_snapshot.values())[0]
         search_query = asset.name
         input = QueryInputHandler().next_input({"search_type":SearchTypeInputHandler.search_type,"query":search_query})
         items = input.list_items()

@@ -24,8 +24,8 @@ class TestCreateAndDeleteCommand(DeferrableTestCase):
 		self.view.run_command("pieces_create_asset",args={"data":self.text_asset})
 		yield 1000
 
-		TestCreateAndDeleteCommand.asset_id = list(AssetSnapshot.assets_snapshot.keys())[0]
-		raw = AssetSnapshot.assets_snapshot[TestCreateAndDeleteCommand.asset_id].original.reference.fragment.string.raw
+		TestCreateAndDeleteCommand.asset_id = list(AssetSnapshot.identifiers_snapshot.keys())[0]
+		raw = AssetSnapshot.identifiers_snapshot[TestCreateAndDeleteCommand.asset_id].original.reference.fragment.string.raw
 
 		self.assertEqual(raw,self.text_asset)
 
@@ -33,4 +33,4 @@ class TestCreateAndDeleteCommand(DeferrableTestCase):
 	def test_delete_command(self,mock_ok_cancel):
 		self.window.run_command("pieces_delete_asset")
 		yield 500
-		self.assertIsNone(AssetSnapshot.assets_snapshot.get(TestCreateAndDeleteCommand.asset_id))
+		self.assertIsNone(AssetSnapshot.identifiers_snapshot.get(TestCreateAndDeleteCommand.asset_id))
