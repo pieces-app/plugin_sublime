@@ -19,7 +19,19 @@ The Pieces Sublime plugin is your gateway to managing your saved materials in Pi
 
 Before diving in, let's ensure everything is set up to your liking. You can customize the LLM model or the host by navigating to:
 `Preferences > Package Settings > Pieces > Settings`.
-You can also open the settitngs from the command palette `Pieces: Open Settings`.
+You can also open the settings from the command palette `Pieces: Open Settings`.
+
+### Right Click to Save to Pieces
+
+Saving a new snippet in Pieces is a breeze! Just select the code you want to save, right-click to open the context menu, and choose `Pieces > Save to Pieces`. Your code is now safely stored!
+
+### Engage with the Pieces Copilot
+
+Ever wished for a personal coding assistant? Look no further! With Pieces Copilot, you can have an AI-powered assistant right at your fingertips. Simply open the command palette and select `Pieces: Copilot`. From there, you can ask anything whether it's for coding help, debugging, or even generating snippets to save to Pieces with some clicks.
+
+### Copilot Ask
+
+Need some help from Copilot? Whether it's commenting, fixing a bug, or adding a docstring, just select the code, right-click to open the context menu, and choose `Pieces > Ask Copilot`. Let Copilot do the heavy lifting for you!
 
 ### Open Saved Material
 
@@ -31,7 +43,6 @@ Ready to access your saved materials? It's super easy! Just follow these steps:
 
 Your material is now open and ready for you to use. Happy coding! 
 
-
 ### Edit Saved Materials
 
 Want to make changes to your saved materials? Switch to editor mode by clicking the **Edit** button on your saved snippet. Modify the content as needed and save your changes with a simple `command/ctrl + s`. It's that easy!
@@ -39,19 +50,6 @@ Want to make changes to your saved materials? Switch to editor mode by clicking 
 ### Shareable Link
 
 Ever wanted to share a code snippet effortlessly? Select the code, right-click to open the context menu, and choose `Pieces > Generate shareable link`. You can also share a saved material by opening it and clicking the **Share** button. Sharing has never been simpler!
-
-### Right Click to Add an Asset
-
-Saving a new snippet in Pieces is a breeze! Just select the code you want to save, right-click to open the context menu, and choose `Pieces > Save to Pieces`. Your code is now safely stored!
-
-### Copilot Ask
-
-Need some help from Copilot? Whether it's commenting, fixing a bug, or adding a docstring, just select the code, right-click to open the context menu, and choose `Pieces > Ask Copilot`. Let Copilot do the heavy lifting for you!
-
-
-### Open a Copilot Conversation
-
-Ever wished for a personal coding assistant? Look no further! With Pieces Copilot, you can have an AI-powered assistant right at your fingertips. Simply open the command palette and select `Pieces: Copilot`. From there, you can ask anything whether it's for coding help, debugging, or even generating snippets to save to Pieces with some clicks.
 
 ### Change the LLM Model
 
