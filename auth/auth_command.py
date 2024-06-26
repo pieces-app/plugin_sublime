@@ -4,7 +4,7 @@ import sublime
 from ..settings import PiecesSettings
 from .auth_user import AuthUser
 
-from pieces_os_client import OSApi,AllocationsApi,UserApi
+from .._pieces_lib.pieces_os_client import OSApi,AllocationsApi,UserApi
 
 
 class PiecesLoginCommand(sublime_plugin.WindowCommand):
@@ -34,8 +34,8 @@ class PiecesAllocationConnectCommand(sublime_plugin.WindowCommand):
 	def run(self):
 		user = AuthUser.user_profile
 		if user: # User logged in
-			AuthUser.logout_page(user.email,user.name,None,True)
 			AllocationsApi(PiecesSettings.api_client).allocations_connect_new_cloud(user,async_req=True)
+			AuthUser.logout_page(user.email,user.name,None,True)
 
 	def is_enabled(self):
 		return PiecesSettings().is_loaded

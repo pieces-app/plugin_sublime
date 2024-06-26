@@ -35,5 +35,27 @@
 	{
 		"caption": "Pieces: Launch Onboarding",
 		"command": "pieces_onboarding"
+	},
+	{
+		"caption": "Pieces: Copilot",
+		"command": "pieces_ask_stream"
+	},
+	{
+		"caption": "Pieces: Open Pieces OS",
+		"command": "pieces_open_pieces"
+	},
+	{
+
+		"caption": "Pieces: About",
+		"command": "pieces_about"
+	},
+	{
+		"caption": "Pieces: Open Pieces Settings",
+		"command": "edit_settings", 
+		"args":
+            {
+                "base_file": "${packages}/Pieces/Pieces.sublime-settings",
+                "default": "${packages}/User/Default.sublime-settings"
+            }
 	}
 ]

@@ -1,8 +1,6 @@
-import pieces_os_client as pos_client
+from ._pieces_lib import pieces_os_client as pos_client
 import sublime
-from typing import Optional,Dict,Union
-import urllib
-import json
+from typing import Dict
 import os
 
 from . import __version__
@@ -21,6 +19,11 @@ class PiecesSettings:
 
 	ONBOARDING_SYNTAX = "Packages/Pieces/syntax/Onboarding.sublime-syntax"
 	ONBOARDING_COLOR_SCHEME = "User/Pieces/Pieces.hidden-color-scheme"
+
+	
+	on_model_change_callbacks = [] # If the model change a function should be runned
+
+
 	PIECES_USER_DIRECTORY = os.path.join(sublime.packages_path(),"User","Pieces")
 	
 	# Create the pieces directory to store the data if it does not exists
@@ -58,25 +61,26 @@ class PiecesSettings:
 
 
 	@classmethod
-	def host_init(cls):
+	def host_init(cls,host):
 		"""
 		Initialize the host URL for the API connection.
 
 		This method sets the host URL based on the configuration settings. If the host URL is not provided in the settings, it defaults to a specific URL based on the platform. 
 		It then creates the WebSocket base URL and defines the WebSocket URLs for different API endpoints.
 		"""
-		cls.host = cls.pieces_settings.get('host')
-		if not cls.host:
+		cls.host = host
+		if not host:
 			if 'linux' == sublime.platform():
-				cls.host = "http://localhost:5323"
+				cls.host = "http://127.0.0.1:5323"
 			else:
-				cls.host = "http://localhost:1000"
+				cls.host = "http://127.0.0.1:1000"
 
+		# Websocket urls
 		ws_base_url = cls.host.replace('http','ws')
-
 		cls.ASSETS_IDENTIFIERS_WS_URL = ws_base_url + "/assets/stream/identifiers"
-
 		cls.AUTH_WS_URL = ws_base_url + "/user/stream"
+		cls.ASK_STREAM_WS_URL = ws_base_url + "/qgpt/stream"
+		cls.CONVERSATION_WS_URL = ws_base_url + "/conversations/stream/identifiers"
 
 		configuration = pos_client.Configuration(host=cls.host)
 
@@ -86,7 +90,7 @@ class PiecesSettings:
 
 
 	@classmethod
-	def models_init(cls):
+	def models_init(cls,model):
 		"""
 		Initialize the model ID for the class using the specified settings.
 
@@ -95,19 +99,28 @@ class PiecesSettings:
 		"""
 
 		models = cls.get_models_ids()
-		cls.model_name = cls.pieces_settings.get("model")
-		cls.model_id = models.get(cls.model_name,None)
+		cls.model_name = model
+		cls.model_id = models.get(str(cls.model_name))
 
 		if not cls.model_id:
 			cls.model_id = models["GPT-3.5-turbo Chat Model"]
-
+		for func in cls.on_model_change_callbacks:
+			func()
 
 	@classmethod
-	def on_settings_change(cls):
-		if cls.host != cls.pieces_settings.get('host'):
-			cls.host_init()
-		if cls.model_name != cls.pieces_settings.get("model"):
-			cls.models_init()
+	def on_settings_change(cls,all = False):
+		"""
+			all parameter means to update everything not the changes
+		"""
+		settings = sublime.load_settings("Pieces.sublime-settings") # Reload the settings
+		host = settings.get('host')
+		model = settings.get("model")
+		if cls.host != host or all:
+			cls.host_init(host = host)
+			cls.models_init(model = model)
+
+		if cls.model_name != model or all:
+			cls.models_init(model = model)
 		
 
 
@@ -131,15 +144,15 @@ class PiecesSettings:
 	@classmethod
 	def get_models_ids(cls) -> Dict[str, str]:
 		if cls.models:
-			return models
+			return cls.models
 
 		api_instance = pos_client.ModelsApi(cls.api_client)
 
 		api_response = api_instance.models_snapshot()
-		models = {model.name: model.id for model in api_response.iterable if model.cloud or model.downloaded} # getting the models that are available in the cloud or is downloaded
+		cls.models = {model.name: model.id for model in api_response.iterable if model.cloud or model.downloaded} # getting the models that are available in the cloud or is downloaded
 
 
-		return models
+		return cls.models
 
 
 	@classmethod

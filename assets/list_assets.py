@@ -4,7 +4,7 @@ import mdpopups
 import re
 
 from .utils import tabulate_from_markdown,AssetSnapshot
-from pieces_os_client import *
+from .._pieces_lib.pieces_os_client import *
 from ..settings import PiecesSettings
 
 
@@ -16,8 +16,14 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 		sublime.set_timeout_async(lambda:self.run_async(pieces_asset_id),0)
 
 	def run_async(self,pieces_asset_id):
+		if not pieces_asset_id:
+			return
 		api_instance = AssetApi(PiecesSettings.api_client)
-		api_response = api_instance.asset_specific_asset_export(pieces_asset_id, "MD")
+		try:
+			api_response = api_instance.asset_specific_asset_export(pieces_asset_id, "MD")
+		except:
+			AssetSnapshot.identifiers_snapshot.pop(pieces_asset_id)
+			return sublime.error_message("Asset Not Found")
 		
 		markdown_text = api_response.raw.string.raw
 
@@ -33,7 +39,7 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 		# Find all code blocks
 		code_block = re.findall(code_block_pattern, markdown_text)
 		try:
-			language = AssetSnapshot.assets_snapshot[pieces_asset_id].original.reference.classification.specific
+			language = AssetSnapshot.identifiers_snapshot[pieces_asset_id].original.reference.classification.specific
 		except:
 			language = None
 		PiecesListAssetsCommand.sheets_md[sheet_id] = {"code":"\n".join(code_block[0].split("\n")[1:-1]),"name":api_response.name,"language":language,"id":pieces_asset_id}
@@ -51,7 +57,7 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 
 class PiecesAssetIdInputHandler(sublime_plugin.ListInputHandler):
 	def list_items(self):
-		return self.get_assets_list(AssetSnapshot.assets_snapshot)
+		return self.get_assets_list(AssetSnapshot.identifiers_snapshot)
 
 	def get_assets_list(self,assets_snapshot):
 		assets_list = []

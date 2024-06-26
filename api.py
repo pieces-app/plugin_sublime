@@ -1,12 +1,11 @@
 from typing import Optional
 import sublime
-import pieces_os_client as pos_client
+from ._pieces_lib import pieces_os_client as pos_client
 from .settings import PiecesSettings
 import time
 import subprocess
 from . import __version__
-import semver
-
+from ._pieces_lib import semver
 
 PIECES_OS_MIN_VERSION = "9.0.0"  # Minium version (9.0.0)
 PIECES_OS_MAX_VERSION = "10.0.0" # Maxium version (10.0.0)
@@ -66,7 +65,7 @@ def version_check():
 		print_version_details(pieces_os_version, __version__)
 		return False,"the Pieces Sublime Package"
 	elif os_version_parsed < min_version_parsed:
-		print("Please update your Pieces OS. It is not compatible with the current cli-agent version")
+		print("Please update your Pieces OS. It is not compatible with the current package version")
 		print()
 		print_version_details(pieces_os_version, __version__)
 		return False,"Pieces OS"
