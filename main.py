@@ -28,11 +28,6 @@ def startup(settings_model):
 			print_version_details(pieces_version, __version__)
 			PiecesSettings.models_init(settings_model) # Intilize the models
 
-	# Preferences settings
-	preferences_settings = sublime.load_settings('Preferences.sublime-settings')
-	preferences_settings.add_on_change("PREFERENCES_SETTINGS",ColorSchemeGenerator.generate_color_scheme)
-	ColorSchemeGenerator.generate_color_scheme()
-
 	# WEBSOCKETS:
 	# Assets Identifiers Websocket
 	AssetsIdentifiersWS(AssetSnapshot.streamed_identifiers_callback).start() # Load the assets ws at the startup
@@ -45,7 +40,10 @@ def startup(settings_model):
 	# Conversation Websocket
 	ConversationWS(ConversationsSnapshot.streamed_identifiers_callback).start()
 
-
+	# Lunch Onboarding if it is the first time
+	if not PiecesOnboardingCommand.get_onboarding_settings().get("lunch_onboarding",False):
+		sublime.active_window().run_command("pieces_onboarding")
+		PiecesOnboardingCommand.add_onboarding_settings(lunch_onboarding=True)
 
 def plugin_loaded():
 	global settings # Set it to global to use 
