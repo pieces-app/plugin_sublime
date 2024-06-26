@@ -300,4 +300,5 @@ class PiecesOnboardingCommandsCommand(sublime_plugin.WindowCommand):
 class PiecesResetOnboardingCommand(sublime_plugin.WindowCommand):
 	def run(self):
 		if sublime.yes_no_cancel_dialog("Are you sure you want to rest your onboarding progress"):
-			os.rmdir(PiecesOnboardingCommand.ONBOARDING_SETTINGS_PATH)
+			os.remove(PiecesOnboardingCommand.ONBOARDING_SETTINGS_PATH)
+			self.window.run_command("pieces_onboarding")
