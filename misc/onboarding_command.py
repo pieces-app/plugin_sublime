@@ -224,7 +224,7 @@ class PiecesOnboardingCommand(sublime_plugin.WindowCommand):
 		settings = self.get_onboarding_settings()
 		if settings.get("copilot"):
 			return green('Chatted with the copilot successfully!')
-		return """Looking for your personal Assistant? Ask it any question! Open the <a href="subl:pieces_ask_stream">copilot</a> and dive into an exciting conversation with it. Discover the possibilities!"""
+		return """Looking for your personal Assistant? Ask it any question! Open the <a href="subl:pieces_ask_stream">Copilot</a> and dive into an exciting conversation with it. Discover the possibilities!"""
 
 	def share_status(self):
 		settings = self.get_onboarding_settings()
