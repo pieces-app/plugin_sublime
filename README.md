@@ -24,14 +24,17 @@ You can also open the settings from the command palette `Pieces: Open Settings`.
 ### Right Click to Save to Pieces
 
 Saving a new snippet in Pieces is a breeze! Just select the code you want to save, right-click to open the context menu, and choose `Pieces > Save to Pieces`. Your code is now safely stored!
+![](https://storage.googleapis.com/pieces_multimedia/PROMOTIONAL/PIECES_FOR_DEVELOPERS/SUBLIME/create.gif)
 
 ### Engage with the Pieces Copilot
 
 Ever wished for a personal coding assistant? Look no further! With Pieces Copilot, you can have an AI-powered assistant right at your fingertips. Simply open the command palette and select `Pieces: Copilot`. From there, you can ask anything whether it's for coding help, debugging, or even generating snippets to save to Pieces with some clicks.
+![](https://storage.googleapis.com/pieces_multimedia/PROMOTIONAL/PIECES_FOR_DEVELOPERS/SUBLIME/ask%20stream.gif)
 
 ### Copilot Ask
 
 Need some help from Copilot? Whether it's commenting, fixing a bug, or adding a docstring, just select the code, right-click to open the context menu, and choose `Pieces > Ask Copilot`. Let Copilot do the heavy lifting for you!
+![](https://storage.googleapis.com/pieces_multimedia/PROMOTIONAL/PIECES_FOR_DEVELOPERS/SUBLIME/ask.gif)
 
 ### Open Saved Material
 
@@ -46,10 +49,12 @@ Your material is now open and ready for you to use. Happy coding!
 ### Edit Saved Materials
 
 Want to make changes to your saved materials? Switch to editor mode by clicking the **Edit** button on your saved snippet. Modify the content as needed and save your changes with a simple `command/ctrl + s`. It's that easy!
+![](https://storage.googleapis.com/pieces_multimedia/PROMOTIONAL/PIECES_FOR_DEVELOPERS/SUBLIME/open-edit_snippet.gif)
 
 ### Shareable Link
 
 Ever wanted to share a code snippet effortlessly? Select the code, right-click to open the context menu, and choose `Pieces > Generate shareable link`. You can also share a saved material by opening it and clicking the **Share** button. Sharing has never been simpler!
+![](https://storage.googleapis.com/pieces_multimedia/PROMOTIONAL/PIECES_FOR_DEVELOPERS/SUBLIME/share.gif)
 
 ### Change the LLM Model
 
@@ -75,6 +80,7 @@ There are three main types of seaching:
 - **Full Text Search**: Full Text Search is a technique used to search for documents or records that contain the exact sequence of words in the search query. It indexes all the words in a document to enable fast and efficient searching.
 
 - **Neural Code Search**: Neural Code Search is a technique that leverages neural networks and machine learning to improve the search and retrieval of code snippets. It allows you to use natural language to describe what you are looking for, capturing the semantics and context of the code to provide more accurate and relevant results.
+![](https://storage.googleapis.com/pieces_multimedia/PROMOTIONAL/PIECES_FOR_DEVELOPERS/SUBLIME/search.gif)
 
 ### Reload the Plugin
 
