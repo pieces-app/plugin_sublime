@@ -9,7 +9,7 @@
 Please make sure you have [**Pieces OS**](https://docs.pieces.app/installation-getting-started/what-am-i-installing) installed to run the Package.
 
 
-## Getting Started with Pieces Sublime Plugin
+## Getting Started with the Pieces Sublime Plugin
 
 Welcome to the **Pieces Sublime Plugin**!
 
@@ -35,11 +35,11 @@ Ever wished for a personal coding assistant? Look no further! With Pieces Copilo
 
 ### Copilot Ask
 
-Need some help from Copilot? Whether it's commenting, fixing a bug, or adding a docstring, just select the code, right-click to open the context menu, and choose `Pieces > Ask Copilot`. Let Copilot do the heavy lifting for you!
+Need some help from the Pieces Copilot? Whether it's commenting, fixing a bug, or adding a docstring, just select the code, right-click to open the context menu, and choose `Pieces > Ask Copilot`. Let Copilot do the heavy lifting for you!
 
 ![](https://storage.googleapis.com/pieces_multimedia/PROMOTIONAL/PIECES_FOR_DEVELOPERS/SUBLIME/ask.gif)
 
-### Open Saved Material
+### Open Saved Materials
 
 Ready to access your saved materials? It's super easy! Just follow these steps:
 
