@@ -1,4 +1,4 @@
-![Pieces Sublime Plugin](https://camo.githubusercontent.com/69c990240f877927146712d45be2f690085b9e45b4420736aa373917f8e0b2c8/68747470733a2f2f73746f726167652e676f6f676c65617069732e636f6d2f7069656365735f7374617469635f7265736f75726365732f7066645f77696b692f5049454345535f4d41494e5f4c4f474f5f57494b492e706e67)
+![Pieces Sublime Plugin](https://camo.githubusercon![Frame 12](https://github.com/Bishoy-at-pieces/plugin_sublime/assets/167128903/272cf4cc-60ff-4bd4-8701-3e3feb38a8b1)
 
 
 ##### <p align="center"> [Website](https://pieces.app/) • [Pieces OS Documentation](https://docs.pieces.app/) • [Pieces Sublime github repository](https://github.com/pieces-app/plugin_sublime)
