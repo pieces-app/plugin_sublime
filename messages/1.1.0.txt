@@ -1,0 +1,17 @@
+Version 1.1.0
+-------------
+
+New Features
+
+- Copilot Assistant: Your new AI-powered coding companion.
+- Open Settings Command: Easily access and your settings.
+- About Command: Quickly get information about the package.
+- Enhanced Rendering for Ask Command: Enjoy a smoother and more intuitive experience.
+- Right-Click to Generate Shareable Link**: Share your work effortlessly.
+- Buttons in the snippet sheet: Added 'Copy' 'Edit','Share' and 'Delete' buttons. 
+- New Onboarding Flow: Get started faster with our improved onboarding process.
+
+
+Removed
+
+- Deprecated Keybindings: Removed the `ctrl+c` `delete` and `ctrl+e` keybindings.
