@@ -8,7 +8,7 @@
 				"command": "pieces_create_asset",
 			},
 			{
-				"caption": "Generate Shareable link",
+				"caption": "Generate Shareable Link",
 				"command": "pieces_generate_shareable_link",
 			},
 			{

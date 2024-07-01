@@ -1,4 +1,3 @@
-/* Many thanks to gitgutter! */
 html.dark {
     --popup-background: color(var(--background) blend(white 95%));
     --pieces-toolbar-bg: color(var(--popup-background) blend(white 95%));

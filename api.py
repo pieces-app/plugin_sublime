@@ -63,13 +63,13 @@ def version_check():
 		print("Please update your Pieces Sublime Package is up-to-date. It is not compatible with the current Pieces OS version")
 		print()
 		print_version_details(pieces_os_version, __version__)
-		return False
+		return False,"the Pieces Sublime Package"
 	elif os_version_parsed < min_version_parsed:
 		print("Please update your Pieces OS. It is not compatible with the current package version")
 		print()
 		print_version_details(pieces_os_version, __version__)
-		return False
-	return True
+		return False,"Pieces OS"
+	return True,None
 
 def print_version_details(pieces_os_version, __version__):
 	print(f"Pieces os version: {pieces_os_version}\nPlugin version: {__version__}")

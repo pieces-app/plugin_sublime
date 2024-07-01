@@ -33,6 +33,10 @@
 		"command": "pieces_reload"
 	},
 	{
+		"caption": "Pieces: Launch Onboarding",
+		"command": "pieces_onboarding"
+	},
+	{
 		"caption": "Pieces: Copilot",
 		"command": "pieces_ask_stream"
 	},
