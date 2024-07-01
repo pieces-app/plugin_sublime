@@ -45,7 +45,7 @@ class HtmlDiffer:
 
 		for line, tag in div_map:
 			if tag != old_tag:
-				yield self._highlight_chunk(tag,text_chunk,code_wrap)
+				yield self._highlight_chunk(old_tag,text_chunk,code_wrap)
 				text_chunk = ""
 				old_tag = tag
 			text_chunk += line + "\n"
@@ -183,8 +183,9 @@ def show_diff_popup(view, old_lines, new_lines, on_nav,**kwargs):
 		"on_navigate":on_nav
 	}
 	
-	view.hide_popup() # Remove any other popup in the view
-	mdpopups.show_popup(**popup_kwargs,on_hide=lambda:mdpopups.show_popup(**popup_kwargs))
+	if view.is_popup_visible():
+		return mdpopups.update_popup(**popup_kwargs)
+	mdpopups.show_popup(**popup_kwargs)
 
 
 
