@@ -16,7 +16,8 @@ class PiecesEventListener(sublime_plugin.EventListener):
 		self.check(command_name)
 		if command_name == "paste": # To avoid pasting in the middle of the view of the copilot
 			self.on_query_context(view,"pieces_copilot_add",True,sublime.OP_EQUAL,True)
-
+		elif command_name == "cut":
+			self.on_query_context(view,"pieces_copilot_remove",True,sublime.OP_EQUAL,True)
 	def check(self,command_name):
 		if command_name.startswith("pieces_") and command_name not in PiecesEventListener.commands_to_exclude: # Check any command 
 			health = PiecesSettings.get_health()
