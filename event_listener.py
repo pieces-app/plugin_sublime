@@ -6,7 +6,6 @@ from .settings import PiecesSettings
 from .misc import PiecesOnboardingCommand
 from .copilot.ask_command import copilot
 
-
 class PiecesEventListener(sublime_plugin.EventListener):
 	commands_to_exclude = ["pieces_onboarding","pieces_reload","pieces_support"]
 
@@ -103,11 +102,8 @@ class PiecesEventListener(sublime_plugin.EventListener):
 				conversation = view.settings().get("conversation_id")
 				if conversation:
 					on_close = lambda x:copilot.render_conversation(conversation)
-					sublime.set_timeout(lambda: view.close(on_close),5000)# Wait some sec until the conversations is loaded
+					sublime.set_timeout(lambda: view.close(on_close),20000)# Wait some sec until the conversations is loaded
 					
-				
-				
-				
 
 
 class PiecesViewEventListener(sublime_plugin.ViewEventListener):
