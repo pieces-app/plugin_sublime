@@ -15,15 +15,20 @@ class PiecesSettings:
 	model_name = ""
 	api_client = None
 	_is_loaded = False # is the plugin loaded
+	_color_scheme = None # default color scheme
+
+	ONBOARDING_SYNTAX = "Packages/Pieces/syntax/Onboarding.sublime-syntax"
+	ONBOARDING_COLOR_SCHEME = "User/Pieces/Pieces.hidden-color-scheme"
+
 	
 	on_model_change_callbacks = [] # If the model change a function should be runned
+
 
 	PIECES_USER_DIRECTORY = os.path.join(sublime.packages_path(),"User","Pieces")
 	
 	# Create the pieces directory to store the data if it does not exists
 	if not os.path.exists(PIECES_USER_DIRECTORY):
 		os.makedirs(PIECES_USER_DIRECTORY)
-
 
 	@property
 	def is_loaded(self):
@@ -35,6 +40,7 @@ class PiecesSettings:
 	@is_loaded.setter
 	def is_loaded(self,is_loaded):
 		self._is_loaded = is_loaded
+
 
 
 	@classmethod
@@ -156,4 +162,10 @@ class PiecesSettings:
 		cls.output_panel.settings().set("line_numbers", False)  # Disable line numbers
 		cls.output_panel.settings().set("gutter", False)
 		cls.output_panel.set_read_only(True)
+
+
+		
+	# Load the settings from 'Pieces.sublime-settings' file using Sublime Text API
+	pieces_settings = sublime.load_settings('Pieces.sublime-settings')
+	pieces_settings.add_on_change("PIECES_SETTINGS",on_settings_change)
 
