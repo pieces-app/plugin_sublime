@@ -1,20 +1,19 @@
-from .._pieces_lib.pieces_os_client import AnnotationApi
+from .._pieces_lib.pieces_os_client import AnnotationApi,Seeds,FlattenedAssets
 import sublime_plugin
 import sublime
 from .ask_view import CopilotViewManager
 from .conversations import ConversationsSnapshot
 from ..settings import PiecesSettings
+from typing import Optional
 
 copilot = CopilotViewManager()
 
 
 class PiecesAskStreamCommand(sublime_plugin.WindowCommand):
 	def run(self,pieces_choose_type,pieces_query=None,pieces_conversation_id=None):
-		copilot.ask_websocket.start()
 		copilot.render_conversation(pieces_conversation_id)
 		if pieces_query:
-			copilot.gpt_view.run_command("append",{"charaters":pieces_query})
-			copilot.gpt_view.run_command("pieces_enter_response")
+			copilot.add_query(pieces_query)
 		return
 
 	def input(self,args):
@@ -47,12 +46,11 @@ class PiecesQueryInputHandler(sublime_plugin.TextInputHandler):
 
 
 class PiecesEnterResponseCommand(sublime_plugin.TextCommand):
-	def run(self,_):
+	def run(self,edit):
 		copilot.ask()
 
 	def is_enabled(self):
 		return PiecesSettings().is_loaded
-
 
 
 class PiecesConversationIdInputHandler(sublime_plugin.ListInputHandler):

@@ -1,10 +1,22 @@
 import sublime
+from sublime import Region
+from .images.context_image import ContextImage
 from .ask_websocket import AskStreamWS
 from .conversations import ConversationsSnapshot
-from .._pieces_lib.pieces_os_client import ConversationMessageApi, QGPTQuestionInput, QGPTStreamInput, RelevantQGPTSeeds,QGPTStreamOutput
+from .._pieces_lib.pieces_os_client import (ConversationMessageApi,
+											QGPTQuestionInput,
+											QGPTStreamInput,
+											RelevantQGPTSeeds,
+											QGPTStreamOutput,
+											QGPTRelevanceInput,
+											QGPTApi,
+											Asset,
+											Seed,
+											Seeds,
+											FlattenedAssets)
 from ..settings import PiecesSettings
-from sublime import Region
 import re
+from typing import Optional
 
 PHANTOM_A_TAG_STYLE = "padding: 4px;background-color: var(--accent); border-radius: 6px;color: var(--foreground);text-decoration: None;text-align: center"
 
@@ -41,6 +53,10 @@ class CopilotViewManager:
 			self.failed_regions = []
 			self.failed_phantom = sublime.PhantomSet(CopilotViewManager._gpt_view, "Pieces_Failed_Phantoms")
 
+
+			# Context Phantom
+			self.context_phantom = sublime.PhantomSet(CopilotViewManager._gpt_view, "Pieces_context")
+
 			# Others
 			self.copilot_regions = []
 			self.show_cursor
@@ -60,6 +76,10 @@ class CopilotViewManager:
 
 			# Focus on the new group
 			sublime.active_window().focus_group(1)
+
+			# Relevant
+			self._relevant = {}
+
 		return CopilotViewManager._gpt_view
 		
 	@property
@@ -85,10 +105,14 @@ class CopilotViewManager:
 	def show_cursor(self):
 		self.gpt_view.set_status("MODEL",PiecesSettings.model_name)
 		self.gpt_view.run_command("append",{"characters":">>> "})
-		self.end_response = self.end_response + 4  # ">>> " 4 characters
+		self.end_response += 4 # ">>> " 4 characters
+		region = sublime.Region(self.gpt_view.size(), self.gpt_view.size())
+		point_phantom = self.gpt_view.line(region.a).begin()
+		self.add_context_phantom(sublime.Region(point_phantom,point_phantom))
+
 		ui = sublime.ui_info()["theme"]["style"]
 
-		self.copilot_regions.append(sublime.Region(self.gpt_view.size(), self.gpt_view.size()))
+		self.copilot_regions.append(region)
 
 		# Add the regions with the icon and appropriate flags
 		self.gpt_view.add_regions(
@@ -100,6 +124,8 @@ class CopilotViewManager:
 		)
 		self.select_end
 	
+
+
 	@property
 	def end_response(self) -> int:
 		return self.gpt_view.settings().get("end_response")
@@ -139,6 +165,16 @@ class CopilotViewManager:
 			[sublime.Phantom(region,"Something went wrong",sublime.LAYOUT_BLOCK) for region in self.failed_regions] # TODO: Add retry
 		)
 
+	def add_context_phantom(self,region):
+		self.context_phantom_region = region
+		href = sublime.html_format_command("show_overlay", args={"overlay": "command_palette","text":"Pieces: Manage Conversation Context"})
+		ui = sublime.ui_info()["theme"]["style"]
+		image = getattr(ContextImage,ui)
+		self.context_phantom.update(
+			[sublime.Phantom(region,f"<a href='subl:{href}'>{image.format(style='width:20px;height:20px')}</a>",sublime.LAYOUT_INLINE)]
+		)
+	def remove_context_phantom(self):
+		self.context_phantom.update([])
 
 	def reset_view(self):
 		self.show_cursor
@@ -161,23 +197,61 @@ class CopilotViewManager:
 		for _ in range(lines):
 			self.gpt_view.run_command("append",{"characters":"\n"})
 
-	def ask(self,relevant=RelevantQGPTSeeds(iterable=[])):
+
+	def add_context(self, paths: Optional[list] = None, seed: Optional[Seed] = None, asset: Optional[Asset] = None):
+		if paths:
+			self._relevant["paths"] = self._relevant.get("paths", []) + paths
+		if seed:
+			seeds = self._relevant.get("seeds")
+			if seeds is None:
+				self._relevant["seeds"] = Seeds(iterable=[])
+			self._relevant["seeds"].iterable.append(seed)
+		if asset:
+			assets = self._relevant.get("assets",None)
+			if assets is None:
+				self._relevant["assets"] = FlattenedAssets(iterable=[])
+			self._relevant["assets"].iterable.append(asset)
+
+
+
+	@property
+	def relevant(self):
+		return self._relevant
+	@relevant.setter
+	def relevant(self,relevant):
+		self._relevant = relevant
+
+	def ask(self):
 		query = self.gpt_view.substr(Region(self.end_response,self.gpt_view.size()))
 		if not query:
 			return
 		CopilotViewManager.can_type = False
 		self.select_end # got to the end of the text to enter the new lines
 		self.new_line()
+		self.remove_context_phantom()
+		sublime.set_timeout_async(lambda: self.run_ask_async(query))
+
+	def run_ask_async(self,query):
+		if self._relevant:
+			relevance_input = QGPTApi(PiecesSettings.api_client).relevance(QGPTRelevanceInput(
+				query=query,
+				application=PiecesSettings.get_application().id,
+				model=PiecesSettings.model_id,
+				**self._relevant
+			)).relevant
+		else:
+			relevance_input = RelevantQGPTSeeds(iterable=[])
+		
+		
 		self.ask_websocket.send_message(
 			QGPTStreamInput(
 				question=QGPTQuestionInput(
 					query=query,
-					relevant = relevant,
+					relevant = relevance_input,
 					application=PiecesSettings.get_application().id,
 					model = PiecesSettings.model_id
 				),
 				conversation = self.conversation_id,
-				
 			))
 	
 	@property
@@ -282,3 +356,8 @@ class CopilotViewManager:
 		self.show_cursor
 		self.end_response = self.gpt_view.size()
 		self.add_code_phantoms()
+	
+	def add_query(self,query):
+		self.gpt_view.run_command("append",{"characters":query})
+		self.gpt_view.run_command("pieces_enter_response")
+

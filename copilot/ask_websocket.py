@@ -1,5 +1,5 @@
 from .._pieces_lib.pieces_os_client import QGPTStreamOutput,QGPTStreamInput
-from websocket import WebSocketConnectionClosedException
+from .._pieces_lib.websocket import WebSocketConnectionClosedException
 
 from ..settings import PiecesSettings
 from ..base_websocket import BaseWebsocket
@@ -24,5 +24,5 @@ class AskStreamWS(BaseWebsocket):
 				raise WebSocketConnectionClosedException()
 			self.ws.send(message.to_json())
 		except WebSocketConnectionClosedException:
-			self.start() # Start a new websocket since we are not connected to any
 			self.on_open = lambda ws: ws.send(message.to_json()) # Send the message on opening
+			self.start() # Start a new websocket since we are not connected to any

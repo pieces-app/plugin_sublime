@@ -53,5 +53,23 @@
                 "base_file": "${packages}/Pieces/Pieces.sublime-settings",
                 "default": "${packages}/User/Default.sublime-settings"
             }
+	},
+	{
+		"caption":"Pieces: Manage Conversation Context",
+		"command":"pieces_context_manager"
+	},
+	{
+		"caption":"Pieces: Ask about the current file",
+		"command":"pieces_ask_stream_about",
+		"args":{
+			"type":"file"
+		}
+	},
+	{
+		"caption":"Pieces: Ask about the current project",
+		"command":"pieces_ask_stream_about",
+		"args":{
+			"type":"folder"
+		}
 	}
 ]

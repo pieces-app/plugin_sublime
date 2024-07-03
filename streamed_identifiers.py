@@ -24,7 +24,7 @@ Example:
 import queue
 import threading
 from typing import Dict, Union, Callable
-from pieces_os_client import Conversation, StreamedIdentifiers, Asset
+from ._pieces_lib.pieces_os_client import Conversation, StreamedIdentifiers, Asset
 import sublime
 from abc import ABC,abstractmethod
 
