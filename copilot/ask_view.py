@@ -299,8 +299,9 @@ class CopilotViewManager:
 	def secondary_view(self):
 		return getattr(self,"_secondary_view",None) # Will be updated via event listeners
 	@secondary_view.setter
-	def secondary_view(self,s):
-		self._secendary_view = s if s != self._gpt_view else self.secondary_view
+	def secondary_view(self,view):
+		if not view.settings().get("PIECES_GPT_VIEW") and view in sublime.active_window().views():
+			self._secondary_view = view
 
 	def clear(self):
 		self.end_response = 0
@@ -308,6 +309,8 @@ class CopilotViewManager:
 		self.can_type = True
 		view = self._gpt_view
 		self._gpt_view = None
+		if not view:
+			return  
 		view.run_command("select_all")
 		view.run_command("delete")
 		self.gpt_view
