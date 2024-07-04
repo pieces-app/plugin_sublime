@@ -82,7 +82,7 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 		return PiecesAssetIdInputHandler()
 
 	def is_enabled(self):
-		return PiecesSettings().is_loaded and AssetsIdentifiersWS().running
+		return PiecesSettings().is_loaded and AssetsIdentifiersWS.is_running()
 
 
 
