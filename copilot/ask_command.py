@@ -13,8 +13,7 @@ class PiecesAskStreamCommand(sublime_plugin.WindowCommand):
 		copilot.ask_websocket.start()
 		copilot.render_conversation(pieces_conversation_id)
 		if pieces_query:
-			copilot.gpt_view.run_command("append",{"charaters":pieces_query})
-			copilot.gpt_view.run_command("pieces_enter_response")
+			copilot.add_query(pieces_query)
 		return
 
 	def input(self,args):
@@ -77,3 +76,9 @@ class PiecesConversationIdInputHandler(sublime_plugin.ListInputHandler):
 	def placeholder(self):
 		return "Choose a conversation or start new one"
 
+class PiecesInsertTextCommand(sublime_plugin.TextCommand):
+	def run(self,edit,text,point=None):
+		self.view.window().focus_view(self.view)
+		if not point:
+			point = self.view.sel()[0].begin()
+		self.view.insert(edit,point,text)

@@ -77,7 +77,9 @@ class PiecesGenerateShareableLinkCommand(sublime_plugin.TextCommand):
 		self.view.set_status("pieces_share",f"Link Generated {link}")
 
 		# self.show_dialog(link)
-		self.create_popup(self.view,link)
+   
+		# self.create_popup(self.view,link)
+		self.show_dialog(link)
 		sublime.set_timeout(lambda: self.view.erase_status("pieces_share"),4000)
 	
 

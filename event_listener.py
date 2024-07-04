@@ -5,9 +5,11 @@ from .assets.list_assets import PiecesListAssetsCommand
 from .settings import PiecesSettings
 from .misc import PiecesOnboardingCommand
 from .copilot.ask_command import copilot
-
+from .copilot.ask_view import CopilotViewManager
+from .copilot.conversation_websocket import ConversationWS
 
 class PiecesEventListener(sublime_plugin.EventListener):
+	secondary_view = None # Used in the ask to know the ssecondary view at insert
 	commands_to_exclude = ["pieces_onboarding","pieces_reload","pieces_support"]
 
 	onboarding_commands_dict = {
@@ -105,10 +107,10 @@ class PiecesEventListener(sublime_plugin.EventListener):
 				if conversation:
 					on_close = lambda x:copilot.render_conversation(conversation)
 					sublime.set_timeout(lambda: view.close(on_close),5000)# Wait some sec until the conversations is loaded
-					
-				
-				
-				
+	
+	@staticmethod
+	def on_deactivated(view):
+		copilot.secondary_view = view
 
 
 class PiecesViewEventListener(sublime_plugin.ViewEventListener):

@@ -1,3 +1,4 @@
-from .ask_command import PiecesAskStreamCommand,PiecesEnterResponseCommand
+from .ask_command import PiecesAskStreamCommand,PiecesEnterResponseCommand,PiecesInsertTextCommand
 from .conversation_websocket import ConversationWS
 from .conversations import ConversationsSnapshot
+from .explain import PiecesExplainCommand
