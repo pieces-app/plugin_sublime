@@ -1,3 +1,5 @@
+# [Pieces for Developers](https://pieces.app) | Sublime Plugin
+
 ![Pieces Sublime Plugin](https://github.com/Bishoy-at-pieces/plugin_sublime/assets/167128903/272cf4cc-60ff-4bd4-8701-3e3feb38a8b1)
 
 
@@ -8,13 +10,13 @@
 
 Please make sure you have [**Pieces OS**](https://docs.pieces.app/installation-getting-started/what-am-i-installing) installed to run the Package.
 
-
 ## Getting Started with the Pieces Sublime Plugin
 
 Welcome to the **Pieces Sublime Plugin**!
 
 The Pieces Sublime plugin is your gateway to managing your saved materials in Pieces directly from within Sublime Text. Seamlessly interact with Pieces OS and enhance your workflow like never before.
 
+## Features
 ### Configuration
 
 Before diving in, let's ensure everything is set up to your liking. You can customize the LLM model or the host by navigating to:
@@ -68,6 +70,8 @@ Want to customize your Copilot experience? You can easily switch the LLM model t
 ### Login/Logout
 
 You can log in and out of your Pieces account using the `Pieces: Login` or `Pieces: Logout` command in your command palette. An output panel is available to check your cloud status and login status.
+
+![](https://storage.googleapis.com/pieces_multimedia/PROMOTIONAL/PIECES_FOR_DEVELOPERS/SUBLIME/auth.gif)
 
 ### Connect or Disconnect your Personal Pieces Cloud
 
