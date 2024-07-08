@@ -57,5 +57,13 @@
                 "base_file": "${packages}/Pieces/Pieces.sublime-settings",
                 "default": "${packages}/User/Default.sublime-settings"
             }
+	},
+	{
+		"caption": "Pieces: Import Sublime Snippet",
+		"command":"pieces_import_asset"
+	},
+	{
+		"caption": "Pieces: Export Pieces Material",
+		"command":"pieces_export_asset_to_sublime"
 	}
 ]
