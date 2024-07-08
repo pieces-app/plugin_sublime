@@ -1,7 +1,7 @@
 from UnitTesting.unittesting import DeferrableTestCase
 import sublime
 from Pieces.assets.list_assets import PiecesListAssetsCommand
-from Pieces.assets.utils import AssetSnapshot
+from Pieces.assets.assets_snapshot import AssetSnapshot
 
 
 class TestListAssetsCommand(DeferrableTestCase):

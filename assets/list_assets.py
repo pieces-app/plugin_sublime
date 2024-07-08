@@ -1,9 +1,10 @@
+from typing import Optional
 import sublime_plugin
 import sublime
 import mdpopups
 import re
 
-from .utils import tabulate_from_markdown,AssetSnapshot
+from .assets_snapshot import AssetSnapshot
 from .._pieces_lib.pieces_os_client import *
 from ..settings import PiecesSettings
 
@@ -96,23 +97,45 @@ class PiecesAssetIdInputHandler(sublime_plugin.ListInputHandler):
 		for asset_id in assets_snapshot.keys():
 			asset = assets_snapshot[asset_id]
 			name = asset.name if asset.name else "New asset"
-			try:
-				appedned = False
-				annotations = asset.annotations.iterable
-				annotations = sorted(annotations, key=lambda x: x.updated.value, reverse=True)
-				for annotation in annotations:
-					if annotation.type == "DESCRIPTION":
-						appedned = True
-						assets_list.append(sublime.ListInputItem(text=name, value=asset_id,details=annotation.text))
-						break
-				if not appedned:
-					raise Exception()
-			except:
+			annotation = self.get_annotation(asset)
+			if annotation:
+				assets_list.append(sublime.ListInputItem(text=name, value=asset_id,details=annotation.text))
+			else:
 				assets_list.append(sublime.ListInputItem(text=name, value=asset_id))
-
-
 		return assets_list
-
+	@staticmethod
+	def get_annotation(asset) -> Optional[Annotation]:
+		annotations = asset.annotations.iterable
+		annotations = sorted(annotations, key=lambda x: x.updated.value, reverse=True)
+		for annotation in annotations:
+			if annotation.type == "DESCRIPTION":
+				return annotation
 	def placeholder(self):
 		return "Choose an asset"
 
+
+def tabulate_from_markdown(md_text,buttons):
+	table_regex = re.compile(r'(\|.*\|(?:\n\|.*\|)+)')
+	match = table_regex.search(md_text)
+
+	if match:
+		table_md = match.group(1)
+	else: return md_text
+
+	# Split the markdown table into lines, and then into cells
+	# Also, remove leading/trailing whitespace from each cell
+	data = [[cell.strip() for cell in line.split("|")[1:-1]] for line in table_md.strip().split("\n")]
+
+    # Generate HTML string
+	html_text = f"<div style='margin-bottom:3px'>{buttons}</div><h3>{data[0][0]}</h3><br><div>"
+	for row in data[2:]:
+		html_text += "<div>"
+		for idx,cell in enumerate(row):
+			if idx == 0:
+				cell += ": " 
+			html_text += "<span>" + cell + "</span>"
+		html_text += "<br><br></div>"
+	html_text += "</div>"
+
+
+	return md_text.replace(table_md,html_text)

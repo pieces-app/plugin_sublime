@@ -3,7 +3,7 @@ from unittest.mock import patch
 import sublime
 
 from Pieces.assets.create_asset import PiecesCreateAssetCommand
-from Pieces.assets.utils import AssetSnapshot
+from Pieces.assets.assets_snapshot import AssetSnapshot
 
 class TestCreateAndDeleteCommand(DeferrableTestCase):
 	def setUp(self):
