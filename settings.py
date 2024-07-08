@@ -26,6 +26,8 @@ class PiecesSettings:
 
 	PIECES_USER_DIRECTORY = os.path.join(sublime.packages_path(),"User","Pieces")
 	
+
+	autocomplete_snippet:bool = True 
 	# Create the pieces directory to store the data if it does not exists
 	if not os.path.exists(PIECES_USER_DIRECTORY):
 		os.makedirs(PIECES_USER_DIRECTORY)
@@ -112,7 +114,8 @@ class PiecesSettings:
 		"""
 			all parameter means to update everything not the changes
 		"""
-		settings = sublime.load_settings("Pieces.sublime-settings") # Reload the settings
+		settings = cls.get_settings()
+		cls.autocomplete_snippet = settings.get("snippet.autocomplete",True)
 		host = settings.get('host')
 		model = settings.get("model")
 		if cls.host != host or all:
@@ -121,8 +124,10 @@ class PiecesSettings:
 
 		if cls.model_name != model or all:
 			cls.models_init(model = model)
-		
 
+	@staticmethod
+	def get_settings():
+		return sublime.load_settings("Pieces.sublime-settings") # Reload the settings
 
 
 	@classmethod
@@ -168,4 +173,3 @@ class PiecesSettings:
 	# Load the settings from 'Pieces.sublime-settings' file using Sublime Text API
 	pieces_settings = sublime.load_settings('Pieces.sublime-settings')
 	pieces_settings.add_on_change("PIECES_SETTINGS",on_settings_change)
-
