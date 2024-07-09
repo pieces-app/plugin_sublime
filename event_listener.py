@@ -18,15 +18,15 @@ class PiecesEventListener(sublime_plugin.EventListener):
 		"pieces_ask_stream":"copilot",
 		"pieces_share_asset":"share"
 	}
-
+	def on_post_text_command(self,window,command_name,args):
+		self.check_onboarding(command_name)
+	def on_post_window_command(self,window,command_name,args):
+		self.check_onboarding(command_name)
 	def on_window_command(self, window, command_name, args):
 		self.check(command_name)
-		self.check_onboarding(command_name)
 		
 	def on_text_command(self,view,command_name,args):
 		self.check(command_name)
-
-		self.check_onboarding(command_name)
 
 		if command_name == "paste": # To avoid pasting in the middle of the view of the copilot
 			self.on_query_context(view,"pieces_copilot_add",True,sublime.OP_EQUAL,True)
