@@ -20,15 +20,15 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr
+from pydantic import BaseModel, Field, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 
 class QGPTTaskPipelineForCodeModification(BaseModel):
     """
     This task is for modifying a bit of code, IE modify this code to do xyz.  This is a class so that we can add optional properties in the future.  Note: the snippet && language that needs to be modified should be within the QGPTQuestionInput.relevant  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
-    instruction: Optional[StrictStr] = Field(None, description="This is the instruction that we will use to modify this snippet.")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
+    instruction: Optional[StrictStr] = Field(default=None, description="This is the instruction that we will use to modify this snippet.")
     __properties = ["schema", "instruction"]
 
     class Config:

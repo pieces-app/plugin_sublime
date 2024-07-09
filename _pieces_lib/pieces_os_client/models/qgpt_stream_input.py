@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictBool, StrictStr
+from pydantic import BaseModel, Field, StrictBool, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.qgpt_question_input import QGPTQuestionInput
 from Pieces._pieces_lib.pieces_os_client.models.qgpt_relevance_input import QGPTRelevanceInput
 
@@ -30,11 +30,11 @@ class QGPTStreamInput(BaseModel):
     """
     relevance: Optional[QGPTRelevanceInput] = None
     question: Optional[QGPTQuestionInput] = None
-    request: Optional[StrictStr] = Field(None, description="This is an optional Id you can use to identify the result from your request.")
-    conversation: Optional[StrictStr] = Field(None, description="This is the ID of a predefined persisted conversation, if this is not present we will create a new conversation for the input/output.(in the case of a question)")
-    stop: Optional[StrictBool] = Field(None, description="This will stop the output of the current LLM")
-    reset: Optional[StrictBool] = Field(None, description="This will fully reset all current Activity within the QGPT stream Flows.")
-    agent: Optional[StrictBool] = Field(None, description="This will let us know if we want to run the agent routing as well, this is default to true. However if set to false you will save on processing and you will recieve null for the agentRoutes class on the QGPTStreamOutput.")
+    request: Optional[StrictStr] = Field(default=None, description="This is an optional Id you can use to identify the result from your request.")
+    conversation: Optional[StrictStr] = Field(default=None, description="This is the ID of a predefined persisted conversation, if this is not present we will create a new conversation for the input/output.(in the case of a question)")
+    stop: Optional[StrictBool] = Field(default=None, description="This will stop the output of the current LLM")
+    reset: Optional[StrictBool] = Field(default=None, description="This will fully reset all current Activity within the QGPT stream Flows.")
+    agent: Optional[StrictBool] = Field(default=None, description="This will let us know if we want to run the agent routing as well, this is default to true. However if set to false you will save on processing and you will recieve null for the agentRoutes class on the QGPTStreamOutput.")
     __properties = ["relevance", "question", "request", "conversation", "stop", "reset", "agent"]
 
     class Config:

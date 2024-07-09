@@ -20,15 +20,15 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictBool, constr, validator
+from pydantic import BaseModel, Field, StrictBool, constr, validator
 
 class InteractedAssetInteractions(BaseModel):
     """
     InteractedAssetInteractions
     """
-    viewed: constr(strict=True) = Field(..., description="https://en.wikipedia.org/wiki/ISO_8601#Time_intervals")
-    touched: Optional[StrictBool] = Field(False, description="If the user touched or panned over the asset.")
-    scrolled: Optional[StrictBool] = Field(False, description="If the user scrolled over the asset.")
+    viewed: constr(strict=True) = Field(default=..., description="https://en.wikipedia.org/wiki/ISO_8601#Time_intervals")
+    touched: Optional[StrictBool] = Field(default=False, description="If the user touched or panned over the asset.")
+    scrolled: Optional[StrictBool] = Field(default=False, description="If the user scrolled over the asset.")
     __properties = ["viewed", "touched", "scrolled"]
 
     @validator('viewed')

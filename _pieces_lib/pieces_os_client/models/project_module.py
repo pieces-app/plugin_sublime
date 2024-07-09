@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field
+from pydantic import BaseModel, Field
 from Pieces._pieces_lib.pieces_os_client.models.anonymous_temporal_range import AnonymousTemporalRange
 from Pieces._pieces_lib.pieces_os_client.models.classifications import Classifications
 from Pieces._pieces_lib.pieces_os_client.models.document_contributors import DocumentContributors
@@ -30,7 +30,7 @@ class ProjectModule(BaseModel):
     """
     This is a representation of a Module or a Project  anchor: is the folder path of this repo/module  contributors: is a nice to have is all the contributors of this repo/module  range: is the amount of time this user has been working on this repo  classifications: if all the languages that are used within this repo/module  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     anchor: SeededAnchor = Field(...)
     range: Optional[AnonymousTemporalRange] = None
     contributors: Optional[DocumentContributors] = None

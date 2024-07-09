@@ -17,7 +17,7 @@ import copy
 import logging
 import multiprocessing
 import sys
-from Pieces._pieces_lib import urllib3
+import urllib3
 
 import http.client as httplib
 
@@ -412,7 +412,7 @@ class Configuration:
                "OS: {env}\n"\
                "Python Version: {pyversion}\n"\
                "Version of the API: 1.0\n"\
-               "SDK Package Version: 2.2.0".\
+               "SDK Package Version: 2.7.0".\
                format(env=sys.platform, pyversion=sys.version)
 
     def get_host_settings(self):

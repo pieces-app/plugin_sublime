@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field
+from pydantic import BaseModel, Field
 from Pieces._pieces_lib.pieces_os_client.models.application import Application
 from Pieces._pieces_lib.pieces_os_client.models.mechanism_enum import MechanismEnum
 from Pieces._pieces_lib.pieces_os_client.models.referenced_asset import ReferencedAsset

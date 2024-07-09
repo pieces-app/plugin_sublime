@@ -20,15 +20,15 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr
+from pydantic import BaseModel, Field, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 
 class TrackedAssetsEventSearchMetadata(BaseModel):
     """
     Metadata attached to a search event on an Asset  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
-    query: Optional[StrictStr] = Field(None, description="The search query itself")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
+    query: Optional[StrictStr] = Field(default=None, description="The search query itself")
     results: Optional[TrackedAssetsEventSearchMetadataResults] = None
     __properties = ["schema", "query", "results"]
 

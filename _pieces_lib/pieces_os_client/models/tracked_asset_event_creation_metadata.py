@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field
+from pydantic import BaseModel, Field
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.tracked_asset_event_creation_metadata_clipboard import TrackedAssetEventCreationMetadataClipboard
 from Pieces._pieces_lib.pieces_os_client.models.tracked_asset_event_creation_metadata_file import TrackedAssetEventCreationMetadataFile
@@ -29,7 +29,7 @@ class TrackedAssetEventCreationMetadata(BaseModel):
     """
     Metadata attached to a creation event on an Asset  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     clipboard: Optional[TrackedAssetEventCreationMetadataClipboard] = None
     file: Optional[TrackedAssetEventCreationMetadataFile] = None
     __properties = ["schema", "clipboard", "file"]

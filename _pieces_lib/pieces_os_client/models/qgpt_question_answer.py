@@ -20,15 +20,15 @@ import json
 
 
 from typing import Optional, Union
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, Field, StrictFloat, StrictInt, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 
 class QGPTQuestionAnswer(BaseModel):
     """
     This will be a simple model with a score and a text value that will represent the value returned for this answer.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
-    score: Union[StrictFloat, StrictInt] = Field(..., description="This is the score from 0-1 on how good this answer is.")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
+    score: Union[StrictFloat, StrictInt] = Field(default=..., description="This is the score from 0-1 on how good this answer is.")
     text: StrictStr = Field(...)
     __properties = ["schema", "score", "text"]
 

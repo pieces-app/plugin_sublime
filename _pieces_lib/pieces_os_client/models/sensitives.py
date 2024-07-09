@@ -20,7 +20,7 @@ import json
 
 
 from typing import List, Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, conlist
+from pydantic import BaseModel, Field, conlist
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.score import Score
 from Pieces._pieces_lib.pieces_os_client.models.sensitive import Sensitive
@@ -29,7 +29,7 @@ class Sensitives(BaseModel):
     """
     This is a model that represents many individual sensitive pieces of data.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     iterable: conlist(Sensitive) = Field(...)
     score: Optional[Score] = None
     __properties = ["schema", "iterable", "score"]

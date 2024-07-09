@@ -20,14 +20,14 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr, validator
+from pydantic import BaseModel, Field, StrictStr, validator
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 
 class SeededTrackedKeyboardEventIdentifierDescriptionPairs(BaseModel):
     """
     SeededTrackedKeyboardEventIdentifierDescriptionPairs
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     assets_list_refreshed: Optional[StrictStr] = None
     __properties = ["schema", "assets_list_refreshed"]
 

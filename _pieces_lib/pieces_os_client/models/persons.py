@@ -20,7 +20,7 @@ import json
 
 
 from typing import Dict, List, Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictInt, conlist
+from pydantic import BaseModel, Field, StrictInt, conlist
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.person import Person
 from Pieces._pieces_lib.pieces_os_client.models.score import Score
@@ -29,9 +29,9 @@ class Persons(BaseModel):
     """
     This is the plural of Person. will have top level meta about the person including an iterable of all the person.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     iterable: conlist(Person) = Field(...)
-    indices: Optional[Dict[str, StrictInt]] = Field(None, description="This is a Map<String, int> where the the key is an person id.")
+    indices: Optional[Dict[str, StrictInt]] = Field(default=None, description="This is a Map<String, int> where the the key is an person id.")
     score: Optional[Score] = None
     __properties = ["schema", "iterable", "indices", "score"]
 

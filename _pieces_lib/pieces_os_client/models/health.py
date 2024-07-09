@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field
+from pydantic import BaseModel, Field
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.os_health import OSHealth
 
@@ -28,7 +28,7 @@ class Health(BaseModel):
     """
     This is a health model used to determine the \"health\" of the os server and cloud server(Coming Soon). READONLY Model.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     os: OSHealth = Field(...)
     __properties = ["schema", "os"]
 

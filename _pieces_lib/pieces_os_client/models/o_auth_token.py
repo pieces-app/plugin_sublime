@@ -20,15 +20,15 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictInt, StrictStr, validator
+from pydantic import BaseModel, Field, StrictInt, StrictStr, validator
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 
 class OAuthToken(BaseModel):
     """
     A model representing a returnable response for a OAuthGroup Token  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
-    access_token: StrictStr = Field(..., description="The Access Token")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
+    access_token: StrictStr = Field(default=..., description="The Access Token")
     token_type: StrictStr = Field(...)
     expires_in: StrictInt = Field(...)
     scope: StrictStr = Field(...)

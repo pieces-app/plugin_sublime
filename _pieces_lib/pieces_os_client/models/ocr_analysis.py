@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr
+from pydantic import BaseModel, Field, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.model import Model
 
@@ -28,11 +28,11 @@ class OCRAnalysis(BaseModel):
     """
     This is the data collected during the ocr analysis of an image.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     id: StrictStr = Field(...)
     raw: Format = Field(...)
     hocr: Format = Field(...)
-    image: StrictStr = Field(..., description="this is a reference the the imageAnalysis.")
+    image: StrictStr = Field(default=..., description="this is a reference the the imageAnalysis.")
     model: Model = Field(...)
     __properties = ["schema", "id", "raw", "hocr", "image", "model"]
 

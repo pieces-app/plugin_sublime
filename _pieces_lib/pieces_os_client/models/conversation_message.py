@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr
+from pydantic import BaseModel, Field, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.conversation_message_sentiment_enum import ConversationMessageSentimentEnum
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.flattened_annotations import FlattenedAnnotations
@@ -35,7 +35,7 @@ class ConversationMessage(BaseModel):
     """
     This is a fully referenced ConversationMessage.  This has the minimum amount of properties to keep this light weight  (will consider additional properties in the future like people/tags/links xyz)  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     id: StrictStr = Field(...)
     created: GroupedTimestamp = Field(...)
     updated: GroupedTimestamp = Field(...)

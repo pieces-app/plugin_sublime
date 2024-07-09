@@ -20,17 +20,17 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr
+from pydantic import BaseModel, Field, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 
 class FlattenedImageAnalysis(BaseModel):
     """
     FlattenedImageAnalysis
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     id: StrictStr = Field(...)
     ocr: Optional[FlattenedOCRAnalysis] = None
-    analysis: StrictStr = Field(..., description="this is a reference to our (parent)analysis")
+    analysis: StrictStr = Field(default=..., description="this is a reference to our (parent)analysis")
     __properties = ["schema", "id", "ocr", "analysis"]
 
     class Config:

@@ -20,17 +20,17 @@ import json
 
 
 from typing import Dict, Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictInt, StrictStr
+from pydantic import BaseModel, Field, StrictInt, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 
 class LanguageServerProtocolCode(BaseModel):
     """
     NOTE: this can me a union type here.. (integer | string;) so we need to get a bit creative  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     code_integer: Optional[StrictInt] = None
     code_string: Optional[StrictStr] = None
-    raw_json: Optional[Dict[str, StrictStr]] = Field(None, description="This is a Map<String, String>, basically just a json object for additional data if int/string will not work")
+    raw_json: Optional[Dict[str, StrictStr]] = Field(default=None, description="This is a Map<String, String>, basically just a json object for additional data if int/string will not work")
     __properties = ["schema", "code_integer", "code_string", "raw_json"]
 
     class Config:

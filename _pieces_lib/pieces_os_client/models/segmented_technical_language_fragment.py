@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field
+from pydantic import BaseModel, Field
 from Pieces._pieces_lib.pieces_os_client.models.classification_generic_enum import ClassificationGenericEnum
 from Pieces._pieces_lib.pieces_os_client.models.classification_specific_enum import ClassificationSpecificEnum
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
@@ -30,7 +30,7 @@ class SegmentedTechnicalLanguageFragment(BaseModel):
     """
     This is the output iterable model for '/machine_learning/text/technical_language/parsers/segmentation'  specific is optional here, however you can pass in classify: true to get the specific classificaiton in the case the generic is code.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     generic: ClassificationGenericEnum = Field(...)
     specific: Optional[ClassificationSpecificEnum] = None
     fragment: FragmentFormat = Field(...)

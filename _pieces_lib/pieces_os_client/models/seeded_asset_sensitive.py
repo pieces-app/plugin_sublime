@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr
+from pydantic import BaseModel, Field, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.mechanism_enum import MechanismEnum
 from Pieces._pieces_lib.pieces_os_client.models.sensitive_category_enum import SensitiveCategoryEnum
@@ -31,8 +31,8 @@ class SeededAssetSensitive(BaseModel):
     """
     This is the seededAssetSensitive, this does not have an id yet as we will add it on the server side.  can optionally pass in our mechanism here, as the default will be manual unless specified.  This is different that hte SeededSensitive as this is pre-before the asset has been created.(but added when the asset is created.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
-    text: StrictStr = Field(..., description="this is the string representative of the sensative piece of data.")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
+    text: StrictStr = Field(default=..., description="this is the string representative of the sensative piece of data.")
     mechanism: Optional[MechanismEnum] = None
     category: SensitiveCategoryEnum = Field(...)
     severity: SensitiveSeverityEnum = Field(...)

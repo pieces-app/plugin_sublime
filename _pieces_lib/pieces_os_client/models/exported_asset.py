@@ -20,7 +20,7 @@ import json
 
 
 
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr
+from pydantic import BaseModel, Field, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.file_format import FileFormat
 from Pieces._pieces_lib.pieces_os_client.models.grouped_timestamp import GroupedTimestamp
 
@@ -28,8 +28,8 @@ class ExportedAsset(BaseModel):
     """
     This is a model for a minimum exported version of an asset.  # noqa: E501
     """
-    name: StrictStr = Field(..., description="this is the title of the asset ")
-    description: StrictStr = Field(..., description="this is the description of the asset")
+    name: StrictStr = Field(default=..., description="this is the title of the asset ")
+    description: StrictStr = Field(default=..., description="this is the description of the asset")
     created: GroupedTimestamp = Field(...)
     raw: FileFormat = Field(...)
     __properties = ["name", "description", "created", "raw"]

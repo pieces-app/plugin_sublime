@@ -20,14 +20,14 @@ import json
 
 
 
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictInt
+from pydantic import BaseModel, Field, StrictInt
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema_semantic_version_enum import EmbeddedModelSchemaSemanticVersionEnum
 
 class EmbeddedModelSchema(BaseModel):
     """
     This is a model that will keep track of all of our version related to our models. ie (1) the database migration and (2) the global semantic version of the api.  # noqa: E501
     """
-    migration: StrictInt = Field(..., description="this is the current database version that this model was used for.")
+    migration: StrictInt = Field(default=..., description="this is the current database version that this model was used for.")
     semantic: EmbeddedModelSchemaSemanticVersionEnum = Field(...)
     __properties = ["migration", "semantic"]
 

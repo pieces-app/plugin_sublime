@@ -20,7 +20,7 @@ import json
 
 
 from typing import List, Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, conlist
+from pydantic import BaseModel, Field, conlist
 from Pieces._pieces_lib.pieces_os_client.models.accessor import Accessor
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 
@@ -28,7 +28,7 @@ class Accessors(BaseModel):
     """
     Accessors
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     iterable: conlist(Accessor) = Field(...)
     __properties = ["schema", "iterable"]
 

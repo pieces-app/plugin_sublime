@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field
+from pydantic import BaseModel, Field
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.seeded_connector_asset import SeededConnectorAsset
 
@@ -28,7 +28,7 @@ class SeededConnectorCreation(BaseModel):
     """
     A encompasing creation object that can be utilized to create either an asset or a format.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     asset: Optional[SeededConnectorAsset] = None
     __properties = ["schema", "asset"]
 

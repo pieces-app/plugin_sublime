@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictBool, StrictStr
+from pydantic import BaseModel, Field, StrictBool, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.application_name_enum import ApplicationNameEnum
 from Pieces._pieces_lib.pieces_os_client.models.capabilities_enum import CapabilitiesEnum
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
@@ -31,13 +31,13 @@ class SeededTrackedApplication(BaseModel):
     """
     A Model to describe what application a format/analytics event originated - Specifically NOT requiring an ID  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     name: ApplicationNameEnum = Field(...)
-    version: StrictStr = Field(..., description="This is the specific version number 0.0.0")
+    version: StrictStr = Field(default=..., description="This is the specific version number 0.0.0")
     platform: PlatformEnum = Field(...)
     capabilities: Optional[CapabilitiesEnum] = None
     privacy: Optional[PrivacyEnum] = None
-    automatic_unload: Optional[StrictBool] = Field(None, alias="automaticUnload", description="This is a proper that will let us know if we will proactivity unload all of your machine learning models.by default this is false.")
+    automatic_unload: Optional[StrictBool] = Field(default=None, alias="automaticUnload", description="This is a proper that will let us know if we will proactivity unload all of your machine learning models.by default this is false.")
     __properties = ["schema", "name", "version", "platform", "capabilities", "privacy", "automaticUnload"]
 
     class Config:

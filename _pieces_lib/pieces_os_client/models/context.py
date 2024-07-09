@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr
+from pydantic import BaseModel, Field, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.application import Application
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.health import Health
@@ -30,8 +30,8 @@ class Context(BaseModel):
     """
     A Context that is returned from almost all calls to the ContextAPI  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
-    os: StrictStr = Field(..., description="This is th UUID of the OS that this context is currently connected to. This attempts to be the same as Segment's anonmyousId feild. It is attempted to be set at initial installation at Pieces/.identity/.os")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
+    os: StrictStr = Field(default=..., description="This is th UUID of the OS that this context is currently connected to. This attempts to be the same as Segment's anonmyousId feild. It is attempted to be set at initial installation at Pieces/.identity/.os")
     application: Application = Field(...)
     health: Health = Field(...)
     user: Optional[UserProfile] = None

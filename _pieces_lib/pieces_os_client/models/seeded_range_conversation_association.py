@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field
+from pydantic import BaseModel, Field
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.referenced_conversation import ReferencedConversation
 from Pieces._pieces_lib.pieces_os_client.models.seeded_range_conversation_grounding_association import SeededRangeConversationGroundingAssociation
@@ -29,7 +29,7 @@ class SeededRangeConversationAssociation(BaseModel):
     """
     SeededRangeConversationAssociation
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     reference: ReferencedConversation = Field(...)
     grounding: Optional[SeededRangeConversationGroundingAssociation] = None
     __properties = ["schema", "reference", "grounding"]

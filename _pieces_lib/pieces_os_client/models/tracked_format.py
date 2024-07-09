@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictBool, StrictStr
+from pydantic import BaseModel, Field, StrictBool, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.classification import Classification
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.role import Role
@@ -29,11 +29,11 @@ class TrackedFormat(BaseModel):
     """
     A minimal format to send to Mixpanel  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
-    id: StrictStr = Field(..., description="The UUID of the format")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
+    id: StrictStr = Field(default=..., description="The UUID of the format")
     classification: Classification = Field(...)
     role: Role = Field(...)
-    asset: StrictStr = Field(..., description="The UUID of the asset associated")
+    asset: StrictStr = Field(default=..., description="The UUID of the asset associated")
     fragment: StrictBool = Field(...)
     file: StrictBool = Field(...)
     __properties = ["schema", "id", "classification", "role", "asset", "fragment", "file"]

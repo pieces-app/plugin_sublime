@@ -15,7 +15,7 @@
 
 import atexit
 import datetime
-from Pieces._pieces_lib.dateutil.parser import parse
+from dateutil.parser import parse
 import json
 import mimetypes
 from multiprocessing.pool import ThreadPool
@@ -77,7 +77,7 @@ class ApiClient:
             self.default_headers[header_name] = header_value
         self.cookie = cookie
         # Set default User-Agent.
-        self.user_agent = 'OpenAPI-Generator/2.2.0/python'
+        self.user_agent = 'OpenAPI-Generator/2.7.0/python'
         self.client_side_validation = configuration.client_side_validation
 
     def __enter__(self):

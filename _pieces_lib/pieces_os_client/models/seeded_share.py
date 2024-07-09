@@ -20,7 +20,7 @@ import json
 
 
 from typing import List, Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr, conlist
+from pydantic import BaseModel, Field, StrictStr, conlist
 from Pieces._pieces_lib.pieces_os_client.models.access_enum import AccessEnum
 from Pieces._pieces_lib.pieces_os_client.models.asset import Asset
 from Pieces._pieces_lib.pieces_os_client.models.assets import Assets
@@ -31,12 +31,12 @@ class SeededShare(BaseModel):
     """
      required to pass in an asset or assets.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     asset: Optional[Asset] = None
-    users: Optional[conlist(SeededUser)] = Field(None, description="if private please specificy some users you want to share this with.")
+    users: Optional[conlist(SeededUser)] = Field(default=None, description="if private please specificy some users you want to share this with.")
     access: AccessEnum = Field(...)
     assets: Optional[Assets] = None
-    name: Optional[StrictStr] = Field(None, description="optional name, if it is available. and must be unique.")
+    name: Optional[StrictStr] = Field(default=None, description="optional name, if it is available. and must be unique.")
     __properties = ["schema", "asset", "users", "access", "assets", "name"]
 
     class Config:

@@ -20,15 +20,15 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictBool
+from pydantic import BaseModel, Field, StrictBool
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 
 class WorkstreamEventTrigger(BaseModel):
     """
     This is the specific event that represent the Shadow Activity ie the copy/paste ...xyz  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
-    check_in: Optional[StrictBool] = Field(None, description="this is a sort of check-in event(ie when ever your application is in the forground on there is an interaction)")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
+    check_in: Optional[StrictBool] = Field(default=None, description="this is a sort of check-in event(ie when ever your application is in the foreground on there is an interaction)")
     copy_field: Optional[StrictBool] = Field(default=None, alias="copy")
     paste: Optional[StrictBool] = None
     file_open: Optional[StrictBool] = None

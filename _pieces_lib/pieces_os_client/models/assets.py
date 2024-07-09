@@ -20,7 +20,7 @@ import json
 
 
 from typing import Dict, List, Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictInt, conlist
+from pydantic import BaseModel, Field, StrictInt, conlist
 from Pieces._pieces_lib.pieces_os_client.models.asset import Asset
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.score import Score
@@ -29,9 +29,9 @@ class Assets(BaseModel):
     """
     A base class for a collection of assets and some additional meta properties. Fully Populated with Formats internally (not just uuid's).  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     iterable: conlist(Asset) = Field(...)
-    indices: Optional[Dict[str, StrictInt]] = Field(None, description="This is a Map<String, int> where the the key is an asset id.")
+    indices: Optional[Dict[str, StrictInt]] = Field(default=None, description="This is a Map<String, int> where the the key is an asset id.")
     score: Optional[Score] = None
     __properties = ["schema", "iterable", "indices", "score"]
 

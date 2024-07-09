@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field
+from pydantic import BaseModel, Field
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.graphical_image_processing import GraphicalImageProcessing
 from Pieces._pieces_lib.pieces_os_client.models.graphical_ocr_processing import GraphicalOCRProcessing
@@ -30,7 +30,7 @@ class GraphicalMachineLearningProcessingEvent(BaseModel):
     """
     GraphicalMachineLearningProcessingEvent
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     ocr: Optional[GraphicalOCRProcessing] = None
     image: Optional[GraphicalImageProcessing] = None
     svg: Optional[GraphicalSVGStatistics] = None

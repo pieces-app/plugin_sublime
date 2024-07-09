@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field
+from pydantic import BaseModel, Field
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.mailgun_distribution import MailgunDistribution
 from Pieces._pieces_lib.pieces_os_client.models.seeded_git_hub_distribution import SeededGitHubDistribution
@@ -29,7 +29,7 @@ class SeededDistribution(BaseModel):
     """
     TODO if we add another distribution add to this, Distribution, and flattenedDistribution.  can only use this Model with our Linkify Model.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     mailgun: Optional[MailgunDistribution] = None
     github: Optional[SeededGitHubDistribution] = None
     __properties = ["schema", "mailgun", "github"]

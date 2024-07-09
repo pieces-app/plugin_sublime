@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field
+from pydantic import BaseModel, Field
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.qgpt_conversation_pipeline_for_contextualized_code_dialog import QGPTConversationPipelineForContextualizedCodeDialog
 from Pieces._pieces_lib.pieces_os_client.models.qgpt_conversation_pipeline_for_contextualized_code_generation import QGPTConversationPipelineForContextualizedCodeGeneration
@@ -31,7 +31,7 @@ class QGPTConversationPipeline(BaseModel):
     """
     This model is specifically for QGPT Conversation pipelines, the model is used to group conversational prompts for instance a conversation around generating code.  here are some use cases- 1. contextualized_code_generation- This is for users that want to have conversations around generating code, when there is provided context. 2. generalized_code- This is for users that want to have conversations without context around code. 3. contextualized_code- This is for users that want to have conversation around code with Context. 4. contextualized_code_workstream: this is for the users that want to use context as well as WPE information in their chat (we wiil prioritize WPE infomration, but also support other info as well)  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     contextualized_code_generation: Optional[QGPTConversationPipelineForContextualizedCodeGeneration] = None
     generalized_code_dialog: Optional[QGPTConversationPipelineForGeneralizedCodeDialog] = None
     contextualized_code_dialog: Optional[QGPTConversationPipelineForContextualizedCodeDialog] = None

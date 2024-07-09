@@ -20,7 +20,7 @@ import json
 
 
 from typing import List, Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictInt, StrictStr, conlist
+from pydantic import BaseModel, Field, StrictInt, StrictStr, conlist
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.seeded_tracked_keyboard_event_identifier_description_pairs import SeededTrackedKeyboardEventIdentifierDescriptionPairs
 
@@ -28,8 +28,8 @@ class SeededTrackedKeyboardEvent(BaseModel):
     """
     This is a model that will hold relavent information in relation to a keyboard(including shortcuts) analytics event (usage).  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
-    description: StrictStr = Field(..., description="This also needs structure such as key vals or enums")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
+    description: StrictStr = Field(default=..., description="This also needs structure such as key vals or enums")
     shortcut: conlist(StrictInt) = Field(...)
     identifier_description_pair: Optional[SeededTrackedKeyboardEventIdentifierDescriptionPairs] = None
     __properties = ["schema", "description", "shortcut", "identifier_description_pair"]

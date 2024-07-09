@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr
+from pydantic import BaseModel, Field, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.grouped_timestamp import GroupedTimestamp
 from Pieces._pieces_lib.pieces_os_client.models.qgpt_conversation_message_role_enum import QGPTConversationMessageRoleEnum
@@ -29,7 +29,7 @@ class QGPTConversationMessage(BaseModel):
     """
     This will take a single message, and a role.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     text: StrictStr = Field(...)
     role: QGPTConversationMessageRoleEnum = Field(...)
     timestamp: GroupedTimestamp = Field(...)

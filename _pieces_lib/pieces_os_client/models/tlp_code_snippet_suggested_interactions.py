@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field
+from pydantic import BaseModel, Field
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.tlp_code_fragment_suggested_reuse import TLPCodeFragmentSuggestedReuse
 from Pieces._pieces_lib.pieces_os_client.models.tlp_code_fragment_suggested_save import TLPCodeFragmentSuggestedSave
@@ -29,7 +29,7 @@ class TLPCodeSnippetSuggestedInteractions(BaseModel):
     """
     TLPCodeSnippetSuggestedInteractions
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     save: Optional[TLPCodeFragmentSuggestedSave] = None
     reuse: Optional[TLPCodeFragmentSuggestedReuse] = None
     __properties = ["schema", "save", "reuse"]

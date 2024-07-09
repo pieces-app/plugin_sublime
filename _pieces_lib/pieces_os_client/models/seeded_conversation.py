@@ -20,7 +20,7 @@ import json
 
 
 from typing import List, Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictBool, StrictStr, conlist
+from pydantic import BaseModel, Field, StrictBool, StrictStr, conlist
 from Pieces._pieces_lib.pieces_os_client.models.application import Application
 from Pieces._pieces_lib.pieces_os_client.models.conversation_type_enum import ConversationTypeEnum
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
@@ -36,8 +36,8 @@ class SeededConversation(BaseModel):
     """
     This is a pre-Conversation object.  This will hold together a conversation. Ie allthe message within a conversation.  All the additional properties on here used on here like(anchors/assets) are used for context that will seed the conversation.  model is a calculated property, and will be the model of the last message sent if applicable.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
-    name: Optional[StrictStr] = Field(None, description="This is a name that is customized.")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
+    name: Optional[StrictStr] = Field(default=None, description="This is a name that is customized.")
     favorited: Optional[StrictBool] = None
     application: Optional[Application] = None
     annotations: Optional[conlist(SeededAnnotation)] = None
@@ -48,7 +48,7 @@ class SeededConversation(BaseModel):
     anchors: Optional[conlist(SeededAnchor)] = None
     type: ConversationTypeEnum = Field(...)
     pipeline: Optional[QGPTPromptPipeline] = None
-    demo: Optional[StrictBool] = Field(None, description="This will let us know if this conversation was generated as a 'demo' conversation")
+    demo: Optional[StrictBool] = Field(default=None, description="This will let us know if this conversation was generated as a 'demo' conversation")
     __properties = ["schema", "name", "favorited", "application", "annotations", "messages", "model", "assets", "websites", "anchors", "type", "pipeline", "demo"]
 
     class Config:

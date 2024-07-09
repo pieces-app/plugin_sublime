@@ -20,15 +20,15 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr
+from pydantic import BaseModel, Field, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 
 class DetectedExternalApplication(BaseModel):
     """
     This is a detected External Application that comes from our endpoint that will get a snapshot of the installed applications on your machine.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
-    name: StrictStr = Field(..., description="this is the name of the application")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
+    name: StrictStr = Field(default=..., description="this is the name of the application")
     version: Optional[StrictStr] = None
     __properties = ["schema", "name", "version"]
 

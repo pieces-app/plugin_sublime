@@ -20,7 +20,7 @@ import json
 
 
 from typing import Dict, Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr
+from pydantic import BaseModel, Field, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.persons import Persons
 
@@ -28,9 +28,9 @@ class QGPTPersonsRelatedOutput(BaseModel):
     """
     This model is used for the output of the /qgpt/related/persons endpoint.  Explanations here is a custom object with key value pairs, when the key is the personUUId and the value is an explanation as to why this person was reccommended.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     persons: Persons = Field(...)
-    explanations: Optional[Dict[str, StrictStr]] = Field(None, description="This is a Map<String, String> where the the key is a person id. and the value is the explanation.")
+    explanations: Optional[Dict[str, StrictStr]] = Field(default=None, description="This is a Map<String, String> where the the key is a person id. and the value is the explanation.")
     __properties = ["schema", "persons", "explanations"]
 
     class Config:

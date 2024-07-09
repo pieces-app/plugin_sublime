@@ -20,7 +20,7 @@ import json
 
 
 from typing import List, Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, conlist
+from pydantic import BaseModel, Field, conlist
 from Pieces._pieces_lib.pieces_os_client.models.browser_tab_value import BrowserTabValue
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 
@@ -28,7 +28,7 @@ class BrowserTabValues(BaseModel):
     """
     Plural model that represent many tabs  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     iterable: conlist(BrowserTabValue) = Field(...)
     __properties = ["schema", "iterable"]
 

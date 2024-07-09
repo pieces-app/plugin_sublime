@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional, Union
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, Field, StrictFloat, StrictInt, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.system_execution_information import SystemExecutionInformation
 from Pieces._pieces_lib.pieces_os_client.models.tlp_code_fragment_classification_metadata import TLPCodeFragmentClassificationMetadata
@@ -29,7 +29,7 @@ class TLPCodeFragmentClassification(BaseModel):
     """
     Model for ML big query classification.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     asset: StrictStr = Field(...)
     model: StrictStr = Field(...)
     created: StrictStr = Field(...)
@@ -38,8 +38,8 @@ class TLPCodeFragmentClassification(BaseModel):
     context: StrictStr = Field(...)
     distribution: Optional[StrictStr] = None
     metadata: Optional[TLPCodeFragmentClassificationMetadata] = None
-    user: StrictStr = Field(..., description="identifier for the user")
-    latency: Optional[Union[StrictFloat, StrictInt]] = Field(None, description="this is the time it takes to run this model.")
+    user: StrictStr = Field(default=..., description="identifier for the user")
+    latency: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="this is the time it takes to run this model.")
     system: Optional[SystemExecutionInformation] = None
     __properties = ["schema", "asset", "model", "created", "classification", "probability", "context", "distribution", "metadata", "user", "latency", "system"]
 

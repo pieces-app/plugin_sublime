@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictBool, StrictStr
+from pydantic import BaseModel, Field, StrictBool, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.anchor_type_enum import AnchorTypeEnum
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.platform_enum import PlatformEnum
@@ -29,11 +29,11 @@ class SeededAnchorPoint(BaseModel):
     """
     SeededAnchorPoint
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     type: AnchorTypeEnum = Field(...)
     watch: Optional[StrictBool] = None
     fullpath: StrictStr = Field(...)
-    anchor: StrictStr = Field(..., description="Cannot create an AnchorPoint w/o a Anchor.")
+    anchor: StrictStr = Field(default=..., description="Cannot create an AnchorPoint w/o a Anchor.")
     platform: Optional[PlatformEnum] = None
     __properties = ["schema", "type", "watch", "fullpath", "anchor", "platform"]
 

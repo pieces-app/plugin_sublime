@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr
+from pydantic import BaseModel, Field, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.allocation_status_enum import AllocationStatusEnum
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 
@@ -28,9 +28,9 @@ class AllocationCloudUrl(BaseModel):
     """
     This is one of the 3 possible urls that will route to your cloud :).  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     status: AllocationStatusEnum = Field(...)
-    url: StrictStr = Field(..., description="this is the base url that is used to communicat with your vpc.")
+    url: StrictStr = Field(default=..., description="this is the base url that is used to communicat with your vpc.")
     __properties = ["schema", "status", "url"]
 
     class Config:

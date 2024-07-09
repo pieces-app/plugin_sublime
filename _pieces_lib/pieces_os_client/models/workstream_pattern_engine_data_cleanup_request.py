@@ -20,7 +20,7 @@ import json
 
 
 from typing import List, Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, conlist
+from pydantic import BaseModel, Field, conlist
 from Pieces._pieces_lib.pieces_os_client.models.anonymous_temporal_range import AnonymousTemporalRange
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 
@@ -28,7 +28,7 @@ class WorkstreamPatternEngineDataCleanupRequest(BaseModel):
     """
     NOTE: if we want to remove all the data the from would be unset, the to will be right now.  from: is always in the past to: is always at least before from in our time.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     ranges: Optional[conlist(AnonymousTemporalRange)] = None
     __properties = ["schema", "ranges"]
 

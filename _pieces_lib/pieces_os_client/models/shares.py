@@ -20,7 +20,7 @@ import json
 
 
 from typing import List, Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, conlist
+from pydantic import BaseModel, Field, conlist
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.score import Score
 from Pieces._pieces_lib.pieces_os_client.models.share import Share
@@ -29,8 +29,8 @@ class Shares(BaseModel):
     """
     this is just an iterable of our individual share models.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
-    iterable: conlist(Share) = Field(..., description="this is just an iterable of our individual share models.")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
+    iterable: conlist(Share) = Field(default=..., description="this is just an iterable of our individual share models.")
     score: Optional[Score] = None
     __properties = ["schema", "iterable", "score"]
 

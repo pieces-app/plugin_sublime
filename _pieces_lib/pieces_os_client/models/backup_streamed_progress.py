@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional, Union
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictFloat, StrictInt
+from pydantic import BaseModel, Field, StrictFloat, StrictInt
 from Pieces._pieces_lib.pieces_os_client.models.backup import Backup
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.model_download_progress_status_enum import ModelDownloadProgressStatusEnum
@@ -29,9 +29,9 @@ class BackupStreamedProgress(BaseModel):
     """
     This is a specific model to the /backups/create/streamed.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     status: Optional[ModelDownloadProgressStatusEnum] = None
-    percentage: Optional[Union[StrictFloat, StrictInt]] = Field(None, description="Optionally if the download is in progress you will recieve a download percent(from 0-100).")
+    percentage: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Optionally if the download is in progress you will recieve a download percent(from 0-100).")
     backup: Optional[Backup] = None
     __properties = ["schema", "status", "percentage", "backup"]
 

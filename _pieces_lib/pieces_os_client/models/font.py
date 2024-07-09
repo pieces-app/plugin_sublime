@@ -20,14 +20,14 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictInt
+from pydantic import BaseModel, Field, StrictInt
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 
 class Font(BaseModel):
     """
     This will describe the font that the user sees.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     size: StrictInt = Field(...)
     __properties = ["schema", "size"]
 

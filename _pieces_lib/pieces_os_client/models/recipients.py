@@ -20,7 +20,7 @@ import json
 
 
 from typing import List, Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, conlist
+from pydantic import BaseModel, Field, conlist
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.person_basic_type import PersonBasicType
 
@@ -29,7 +29,7 @@ class Recipients(BaseModel):
     This an iterable of People that are attached to a specific distribution ie, slack, maigun, ...etc  # noqa: E501
     """
     iterable: conlist(PersonBasicType) = Field(...)
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     __properties = ["iterable", "schema"]
 
     class Config:

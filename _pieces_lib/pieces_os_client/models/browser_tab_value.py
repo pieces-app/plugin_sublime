@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field
+from pydantic import BaseModel, Field
 from Pieces._pieces_lib.pieces_os_client.models.browser_selection import BrowserSelection
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.transferable_string import TransferableString
@@ -29,7 +29,7 @@ class BrowserTabValue(BaseModel):
     """
     snippet: these are extracted code blocks selection: here is a copy/paste/selection  note: recommended that you pass in the md version of the webpage  note: please dont pass in all three html,md,text, just pass in 1.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     html: Optional[TransferableString] = None
     md: Optional[TransferableString] = None
     text: Optional[TransferableString] = None

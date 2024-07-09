@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr
+from pydantic import BaseModel, Field, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.application import Application
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 
@@ -28,9 +28,9 @@ class SeededMacOSAsset(BaseModel):
     """
     An Seeded Asset specific to MacOS which takes in a Value, and Application  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     application: Optional[Application] = None
-    value: StrictStr = Field(..., description="The value of the text that you want to save as an asset.")
+    value: StrictStr = Field(default=..., description="The value of the text that you want to save as an asset.")
     __properties = ["schema", "application", "value"]
 
     class Config:

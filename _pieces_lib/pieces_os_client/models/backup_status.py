@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional, Union
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictFloat, StrictInt
+from pydantic import BaseModel, Field, StrictFloat, StrictInt
 from Pieces._pieces_lib.pieces_os_client.models.backup import Backup
 from Pieces._pieces_lib.pieces_os_client.models.backup_status_enum import BackupStatusEnum
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
@@ -29,9 +29,9 @@ class BackupStatus(BaseModel):
     """
     TODO add more description to this.  can eventually add a number that display the percent downloaded an so on.(this is called percent 0-100)  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     value: Optional[BackupStatusEnum] = None
-    percentage: Optional[Union[StrictFloat, StrictInt]] = Field(None, description="Optionally if the download is in progress you will receive a download percent(from 0-100).")
+    percentage: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Optionally if the download is in progress you will receive a download percent(from 0-100).")
     backup: Backup = Field(...)
     __properties = ["schema", "value", "percentage", "backup"]
 

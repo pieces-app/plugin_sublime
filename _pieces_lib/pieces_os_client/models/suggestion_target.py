@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictInt
+from pydantic import BaseModel, Field, StrictInt
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.seeded_connector_creation import SeededConnectorCreation
 
@@ -28,9 +28,9 @@ class SuggestionTarget(BaseModel):
     """
     This is the target that was sent to pieces. This will return the string that represents this coppied || pasted asset. This will also send along the SeededConnectorCreation and will send along the vector that we created based on the seed.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     seed: SeededConnectorCreation = Field(...)
-    vector: StrictInt = Field(..., description="This is the vector representation of this target that we generated.")
+    vector: StrictInt = Field(default=..., description="This is the vector representation of this target that we generated.")
     __properties = ["schema", "seed", "vector"]
 
     class Config:

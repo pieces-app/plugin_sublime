@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictInt, StrictStr
+from pydantic import BaseModel, Field, StrictInt, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.classification_specific_enum import ClassificationSpecificEnum
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 
@@ -28,10 +28,10 @@ class FileMetadata(BaseModel):
     """
     This is a model for metadata of a file!  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
-    name: Optional[StrictStr] = Field(None, description="This is the name of your file.")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
+    name: Optional[StrictStr] = Field(default=None, description="This is the name of your file.")
     ext: Optional[ClassificationSpecificEnum] = None
-    size: Optional[StrictInt] = Field(None, description="This is the size(in bytes)")
+    size: Optional[StrictInt] = Field(default=None, description="This is the size(in bytes)")
     __properties = ["schema", "name", "ext", "size"]
 
     class Config:

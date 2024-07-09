@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field
+from pydantic import BaseModel, Field
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.os_processing_permissions import OSProcessingPermissions
 
@@ -28,7 +28,7 @@ class OSPermissions(BaseModel):
     """
     This will return the permission of this specific operating system w/ relation to given features.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     processing: Optional[OSProcessingPermissions] = None
     __properties = ["schema", "processing"]
 

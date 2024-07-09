@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field
+from pydantic import BaseModel, Field
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.tracked_format import TrackedFormat
 from Pieces._pieces_lib.pieces_os_client.models.tracked_format_event_identifier_description_pairs import TrackedFormatEventIdentifierDescriptionPairs
@@ -30,8 +30,8 @@ class TrackedFormatEvent(BaseModel):
     """
     This is a model that represents a generic event that we may want to track in relation to a format, for example beamed, copied, downloaded, and view. ** Note: This is the model that will get returned by our api, and is. Representative of a full TrackedFormat event. **  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
-    format: TrackedFormat = Field(..., alias=" format")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
+    format: TrackedFormat = Field(default=..., alias=" format")
     identifier_description_pair: TrackedFormatEventIdentifierDescriptionPairs = Field(...)
     metadata: Optional[TrackedFormatEventMetadata] = None
     __properties = ["schema", " format", "identifier_description_pair", "metadata"]

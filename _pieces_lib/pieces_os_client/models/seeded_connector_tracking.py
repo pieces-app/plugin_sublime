@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field
+from pydantic import BaseModel, Field
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.seeded_tracked_adoption_event import SeededTrackedAdoptionEvent
 from Pieces._pieces_lib.pieces_os_client.models.seeded_tracked_interaction_event import SeededTrackedInteractionEvent
@@ -32,7 +32,7 @@ class SeededConnectorTracking(BaseModel):
     """
     This model is designed to be light weight and low friction while most of the heavy lifting will be happening inside of the context servers.  This Model is important because this has references to our materials, instead of fully referenced materials.(very similar to our SeededTrackedEvent, consider consolidating and converting these to Referenced models instead of ID's)  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     format: Optional[SeededTrackedFormatEvent] = None
     asset: Optional[SeededTrackedAssetEvent] = None
     interaction: Optional[SeededTrackedInteractionEvent] = None

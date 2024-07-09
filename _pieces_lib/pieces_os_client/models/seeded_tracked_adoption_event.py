@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field
+from pydantic import BaseModel, Field
 from Pieces._pieces_lib.pieces_os_client.models.analytics_tracked_adoption_event_identifier_description_pairs import AnalyticsTrackedAdoptionEventIdentifierDescriptionPairs
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 
@@ -28,7 +28,7 @@ class SeededTrackedAdoptionEvent(BaseModel):
     """
     SeededTrackedAdoptionEvent
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     identifier_description_pair: Optional[AnalyticsTrackedAdoptionEventIdentifierDescriptionPairs] = None
     __properties = ["schema", "identifier_description_pair"]
 

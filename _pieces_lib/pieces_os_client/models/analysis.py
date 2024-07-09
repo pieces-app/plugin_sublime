@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr
+from pydantic import BaseModel, Field, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.code_analysis import CodeAnalysis
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 
@@ -28,10 +28,10 @@ class Analysis(BaseModel):
     """
     This the the MlAnalysis Object, that will go on a format.  this will hold all the different analysis models!  ** keep format just a uuid for now **  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     code: Optional[CodeAnalysis] = None
     id: StrictStr = Field(...)
-    format: StrictStr = Field(..., description="this is a reference to the format that it belongs too.")
+    format: StrictStr = Field(default=..., description="this is a reference to the format that it belongs too.")
     image: Optional[ImageAnalysis] = None
     __properties = ["schema", "code", "id", "format", "image"]
 

@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr
+from pydantic import BaseModel, Field, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.mechanism_enum import MechanismEnum
 from Pieces._pieces_lib.pieces_os_client.models.sensitive_category_enum import SensitiveCategoryEnum
@@ -31,9 +31,9 @@ class SeededDiscoverableSensitive(BaseModel):
     """
     This is the SeededDiscoverableSensitive, this has every property that the seededSensitive has except this one is all optionally passed in. and will override our classification if provided.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     asset: StrictStr = Field(...)
-    text: StrictStr = Field(..., description="this is the string representative of the sensative piece of data.")
+    text: StrictStr = Field(default=..., description="this is the string representative of the sensative piece of data.")
     mechanism: Optional[MechanismEnum] = None
     category: Optional[SensitiveCategoryEnum] = None
     severity: Optional[SensitiveSeverityEnum] = None

@@ -20,18 +20,18 @@ import json
 
 
 from typing import List, Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictInt, conlist
+from pydantic import BaseModel, Field, StrictInt, conlist
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 
 class TransferableBytes(BaseModel):
     """
     Bytes is a Model for A FileFormat. Raw and file are the only 2 that are currently supported. Raw and file are an array of integers that represent the file.Typical conversion UTF8 -> array[int] or UTF8 -> array[bytes(in hexidecimal)] -> array[int]. Either way you convert is up to you but the type we need here is an array of integers.  [NOT IMPLEMENTED] base64, base64_url, data_url [IMPLEMENTED] raw  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
-    raw: Optional[conlist(StrictInt)] = Field(None, description="IMPLEMENTED")
-    var_base64: Optional[conlist(StrictInt)] = Field(None, alias="base64", description="NOT IMPLEMENTED")
-    base64_url: Optional[conlist(StrictInt)] = Field(None, description="NOT IMPLEMENTED")
-    data_url: Optional[conlist(StrictInt)] = Field(None, description="NOT IMPLEMENTED")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
+    raw: Optional[conlist(StrictInt)] = Field(default=None, description="IMPLEMENTED")
+    var_base64: Optional[conlist(StrictInt)] = Field(default=None, alias="base64", description="NOT IMPLEMENTED")
+    base64_url: Optional[conlist(StrictInt)] = Field(default=None, description="NOT IMPLEMENTED")
+    data_url: Optional[conlist(StrictInt)] = Field(default=None, description="NOT IMPLEMENTED")
     __properties = ["schema", "raw", "base64", "base64_url", "data_url"]
 
     class Config:

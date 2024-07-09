@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr
+from pydantic import BaseModel, Field, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.language_server_protocol_location_range import LanguageServerProtocolLocationRange
 
@@ -28,7 +28,7 @@ class LanguageServerProtocolLocation(BaseModel):
     """
     modeled after this (https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#location)  uri: is jsut a file path  range: here is the location of where this item is within the file.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     uri: StrictStr = Field(...)
     range: LanguageServerProtocolLocationRange = Field(...)
     __properties = ["schema", "uri", "range"]

@@ -16,7 +16,7 @@
 import json
 import pprint
 import re  # noqa: F401
-from Pieces._pieces_lib.aenum import Enum, no_arg
+from aenum import Enum, no_arg
 
 
 
@@ -530,6 +530,8 @@ class ClassificationSpecificEnum(str, Enum):
     FEATURE = 'feature'
     INI = 'ini'
     FTL = 'ftl'
+    HCL = 'hcl'
+    ABAP = 'abap'
 
     @classmethod
     def from_json(cls, json_str: str) -> ClassificationSpecificEnum:

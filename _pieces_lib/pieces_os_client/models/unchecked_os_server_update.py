@@ -20,14 +20,14 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field
+from pydantic import BaseModel, Field
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 
-class UncheckedOSUpdate(BaseModel):
+class UncheckedOSServerUpdate(BaseModel):
     """
     This is the input body for /os/update/check, just a placeholder for now.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     __properties = ["schema"]
 
     class Config:
@@ -44,8 +44,8 @@ class UncheckedOSUpdate(BaseModel):
         return json.dumps(self.to_dict())
 
     @classmethod
-    def from_json(cls, json_str: str) -> UncheckedOSUpdate:
-        """Create an instance of UncheckedOSUpdate from a JSON string"""
+    def from_json(cls, json_str: str) -> UncheckedOSServerUpdate:
+        """Create an instance of UncheckedOSServerUpdate from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self):
@@ -60,15 +60,15 @@ class UncheckedOSUpdate(BaseModel):
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: dict) -> UncheckedOSUpdate:
-        """Create an instance of UncheckedOSUpdate from a dict"""
+    def from_dict(cls, obj: dict) -> UncheckedOSServerUpdate:
+        """Create an instance of UncheckedOSServerUpdate from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
-            return UncheckedOSUpdate.parse_obj(obj)
+            return UncheckedOSServerUpdate.parse_obj(obj)
 
-        _obj = UncheckedOSUpdate.parse_obj({
+        _obj = UncheckedOSServerUpdate.parse_obj({
             "var_schema": EmbeddedModelSchema.from_dict(obj.get("schema")) if obj.get("schema") is not None else None
         })
         return _obj

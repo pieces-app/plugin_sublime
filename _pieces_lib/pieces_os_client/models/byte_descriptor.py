@@ -20,14 +20,14 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictInt, StrictStr
+from pydantic import BaseModel, Field, StrictInt, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 
 class ByteDescriptor(BaseModel):
     """
     This is a nice microclass to help with managing the size of a File or Fragment in a readable way for UI's  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     value: StrictInt = Field(...)
     readable: StrictStr = Field(...)
     __properties = ["schema", "value", "readable"]

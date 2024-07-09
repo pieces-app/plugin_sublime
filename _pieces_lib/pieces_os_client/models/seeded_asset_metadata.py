@@ -20,7 +20,7 @@ import json
 
 
 from typing import List, Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr, conlist
+from pydantic import BaseModel, Field, StrictStr, conlist
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.mechanism_enum import MechanismEnum
 from Pieces._pieces_lib.pieces_os_client.models.seeded_anchor import SeededAnchor
@@ -35,10 +35,10 @@ class SeededAssetMetadata(BaseModel):
     """
     This is optional metadata sent with the SeededAsset and other SeededAssets ie (UE, Jetbrains...)  Note: if a user/develop didnt explicitly state a mechanism we will default to manual(user Driven only)  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
-    name: Optional[StrictStr] = Field(None, description="This is the name of the asset.")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
+    name: Optional[StrictStr] = Field(default=None, description="This is the name of the asset.")
     mechanism: Optional[MechanismEnum] = None
-    tags: Optional[conlist(SeededAssetTag)] = Field(None, description="(optional) can add some tags to associate to this asset.")
+    tags: Optional[conlist(SeededAssetTag)] = Field(default=None, description="(optional) can add some tags to associate to this asset.")
     websites: Optional[conlist(SeededAssetWebsite)] = None
     sensitives: Optional[conlist(SeededAssetSensitive)] = None
     persons: Optional[conlist(SeededPerson)] = None

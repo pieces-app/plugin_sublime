@@ -20,14 +20,14 @@ import json
 
 
 from typing import Optional, Union
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, Field, StrictFloat, StrictInt, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 
 class OSDeviceCPUHardwareInformation(BaseModel):
     """
     This will let us know specific hardware information related to the CPU.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     name: Optional[StrictStr] = None
     memory: Optional[Union[StrictFloat, StrictInt]] = None
     __properties = ["schema", "name", "memory"]

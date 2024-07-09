@@ -16,7 +16,7 @@
 import json
 import pprint
 import re  # noqa: F401
-from Pieces._pieces_lib.aenum import Enum, no_arg
+from aenum import Enum, no_arg
 
 
 
@@ -53,6 +53,10 @@ class ExternalMLProviderEnum(str, Enum):
     BIGCODE = 'BIGCODE'
     JINA = 'JINA'
     PIECES = 'PIECES'
+    ANTHROPIC = 'ANTHROPIC'
+    IBM = 'IBM'
+    SNOWFLAKE = 'SNOWFLAKE'
+    PERPLEXITY = 'PERPLEXITY'
 
     @classmethod
     def from_json(cls, json_str: str) -> ExternalMLProviderEnum:

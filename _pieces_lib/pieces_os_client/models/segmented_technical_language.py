@@ -20,7 +20,7 @@ import json
 
 
 from typing import List, Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, conlist
+from pydantic import BaseModel, Field, conlist
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.segmented_technical_language_fragment import SegmentedTechnicalLanguageFragment
 
@@ -28,7 +28,7 @@ class SegmentedTechnicalLanguage(BaseModel):
     """
     This is the output model for '/machine_learning/text/technical_language/parsers/segmentation'  This will have an iterable of the segmented Technical language text/code  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     iterable: conlist(SegmentedTechnicalLanguageFragment) = Field(...)
     __properties = ["schema", "iterable"]
 

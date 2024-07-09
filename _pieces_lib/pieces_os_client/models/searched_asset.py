@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional, Union
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictBool, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, Field, StrictBool, StrictFloat, StrictInt, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.asset import Asset
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.searched_match_enum import SearchedMatchEnum
@@ -29,13 +29,13 @@ class SearchedAsset(BaseModel):
     """
     This is a modle that will represent a searched asset!  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     asset: Optional[Asset] = None
     exact: StrictBool = Field(...)
     score: Union[StrictFloat, StrictInt] = Field(...)
     match: SearchedMatchEnum = Field(...)
-    identifier: StrictStr = Field(..., description="This is the uuid of the asset.")
-    pseudo: Optional[StrictBool] = Field(None, description="If this is a pseudo asset that was also returned.")
+    identifier: StrictStr = Field(default=..., description="This is the uuid of the asset.")
+    pseudo: Optional[StrictBool] = Field(default=None, description="If this is a pseudo asset that was also returned.")
     __properties = ["schema", "asset", "exact", "score", "match", "identifier", "pseudo"]
 
     class Config:

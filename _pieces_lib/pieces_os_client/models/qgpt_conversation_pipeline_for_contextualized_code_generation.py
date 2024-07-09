@@ -20,14 +20,14 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field
+from pydantic import BaseModel, Field
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 
 class QGPTConversationPipelineForContextualizedCodeGeneration(BaseModel):
     """
     This type of conversation is reccomended to be provided when a user want generate code w/ context provided.  This is a class so that we can add optional properties in the future.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     __properties = ["schema"]
 
     class Config:

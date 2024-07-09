@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field
+from pydantic import BaseModel, Field
 from Pieces._pieces_lib.pieces_os_client.models.assets import Assets
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.interacted_assets import InteractedAssets
@@ -29,7 +29,7 @@ class SeededAssetsRecommendation(BaseModel):
     """
     This is the input data model for the /assets/recommend [GET] endpoint. It includes both a list of assets but also   # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     assets: Assets = Field(...)
     interactions: InteractedAssets = Field(...)
     __properties = ["schema", "assets", "interactions"]

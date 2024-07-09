@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictBool, StrictStr
+from pydantic import BaseModel, Field, StrictBool, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.annotation_type_enum import AnnotationTypeEnum
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.grouped_timestamp import GroupedTimestamp
@@ -32,7 +32,7 @@ class FlattenedAnnotation(BaseModel):
     """
     This is the flattened Version of the annotation, IMPORTANT: when referencing these, ONLY Take the UUID, do NOT polinate(ie w/ asset/person/model) the FlattenedAnnotation as it can create an infinite loop.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     id: StrictStr = Field(...)
     created: GroupedTimestamp = Field(...)
     updated: GroupedTimestamp = Field(...)
@@ -41,7 +41,7 @@ class FlattenedAnnotation(BaseModel):
     asset: Optional[ReferencedAsset] = None
     person: Optional[ReferencedPerson] = None
     type: AnnotationTypeEnum = Field(...)
-    text: StrictStr = Field(..., description="This is the text of the annotation.")
+    text: StrictStr = Field(default=..., description="This is the text of the annotation.")
     model: Optional[ReferencedModel] = None
     pseudo: Optional[StrictBool] = None
     favorited: Optional[StrictBool] = None

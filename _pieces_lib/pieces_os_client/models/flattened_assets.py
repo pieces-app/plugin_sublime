@@ -20,7 +20,7 @@ import json
 
 
 from typing import Dict, List, Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictInt, conlist
+from pydantic import BaseModel, Field, StrictInt, conlist
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.score import Score
 
@@ -28,9 +28,9 @@ class FlattenedAssets(BaseModel):
     """
     A collection of Assets specific to the authenticated user. [DAG Compatible - Directed Acyclic Graph Data Structure]  FlattenedAssets prevent Cycles in Reference because all outbound references are strings as opposed to crosspollinated objects.  i.e. Asset asset = FlattenedAssets.iterable[0] => Format format = asset.preview => String id = format.asset => String id  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     iterable: Optional[conlist(ReferencedAsset)] = None
-    indices: Optional[Dict[str, StrictInt]] = Field(None, description="This is a Map<String, int> where the the key is an asset id.")
+    indices: Optional[Dict[str, StrictInt]] = Field(default=None, description="This is a Map<String, int> where the the key is an asset id.")
     score: Optional[Score] = None
     __properties = ["schema", "iterable", "indices", "score"]
 

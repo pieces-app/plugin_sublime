@@ -20,15 +20,15 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr
+from pydantic import BaseModel, Field, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 
 class MailgunMetadata(BaseModel):
     """
     TODO add additional properties. TODO eventually modify this model to look like the response from Mailgun.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
-    message_id: StrictStr = Field(..., alias="messageId", description="This is the id given to us from mailgun when the email was sent successfully.")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
+    message_id: StrictStr = Field(default=..., alias="messageId", description="This is the id given to us from mailgun when the email was sent successfully.")
     __properties = ["schema", "messageId"]
 
     class Config:

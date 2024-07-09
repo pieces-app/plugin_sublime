@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field
+from pydantic import BaseModel, Field
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.seeded_workstream_event import SeededWorkstreamEvent
 
@@ -28,7 +28,7 @@ class SeededWorkstreamIngestion(BaseModel):
     """
     This is used as the input in the Context ingestion endpoint for the feed.  This will take in a required seed, this will get created as an internal WorkstreamEvent until we determine internally that this event is relevant and will then attach it to a WorkstreamSummary and it will get moved over to a WorkstreamEvent.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     event: SeededWorkstreamEvent = Field(...)
     __properties = ["schema", "event"]
 

@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr
+from pydantic import BaseModel, Field, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.qgpt_conversation import QGPTConversation
 from Pieces._pieces_lib.pieces_os_client.models.seed import Seed
@@ -29,11 +29,11 @@ class QGPTPersonsRelatedInput(BaseModel):
     """
     This is used for /qgpt/persons/related.  will accept a seed, or conversation all optionally.   # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     seed: Optional[Seed] = None
     conversation: Optional[QGPTConversation] = None
-    application: Optional[StrictStr] = Field(None, description="optional application id")
-    model: Optional[StrictStr] = Field(None, description="optional model id")
+    application: Optional[StrictStr] = Field(default=None, description="optional application id")
+    model: Optional[StrictStr] = Field(default=None, description="optional model id")
     __properties = ["schema", "seed", "conversation", "application", "model"]
 
     class Config:

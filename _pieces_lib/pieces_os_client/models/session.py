@@ -20,14 +20,14 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr
+from pydantic import BaseModel, Field, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.grouped_timestamp import GroupedTimestamp
 
 class Session(BaseModel):
     """
     This is a specific model that will let us know at what time this user was using the application.  # noqa: E501
     """
-    id: StrictStr = Field(..., description="The UUID of the current Session")
+    id: StrictStr = Field(default=..., description="The UUID of the current Session")
     opened: GroupedTimestamp = Field(...)
     closed: Optional[GroupedTimestamp] = None
     __properties = ["id", "opened", "closed"]

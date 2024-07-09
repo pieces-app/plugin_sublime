@@ -20,7 +20,7 @@ import json
 
 
 from typing import Dict, List, Optional, Union
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictFloat, StrictInt, StrictStr, conlist
+from pydantic import BaseModel, Field, StrictFloat, StrictInt, StrictStr, conlist
 from Pieces._pieces_lib.pieces_os_client.models.classification_generic_enum import ClassificationGenericEnum
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.model import Model
@@ -29,16 +29,16 @@ class CodeAnalysis(BaseModel):
     """
     This is the ML Analysis object Specific to code.  prediction and similarity are custom types. ** please dont not modify **  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     tokenized: Optional[conlist(StrictStr)] = None
     language: Optional[StrictStr] = None
     type: ClassificationGenericEnum = Field(...)
     prediction: Optional[Dict[str, Union[StrictFloat, StrictInt]]] = None
     similarity: Optional[Dict[str, Union[StrictFloat, StrictInt]]] = None
-    top5_colors: Optional[conlist(StrictInt)] = Field(None, alias="top5Colors")
-    top5_sorted: Optional[conlist(StrictStr)] = Field(None, alias="top5Sorted")
+    top5_colors: Optional[conlist(StrictInt)] = Field(default=None, alias="top5Colors")
+    top5_sorted: Optional[conlist(StrictStr)] = Field(default=None, alias="top5Sorted")
     id: StrictStr = Field(...)
-    analysis: StrictStr = Field(..., description="this is just a reference to the analysis parent object.")
+    analysis: StrictStr = Field(default=..., description="this is just a reference to the analysis parent object.")
     model: Model = Field(...)
     __properties = ["schema", "tokenized", "language", "type", "prediction", "similarity", "top5Colors", "top5Sorted", "id", "analysis", "model"]
 

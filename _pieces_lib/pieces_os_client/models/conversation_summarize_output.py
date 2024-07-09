@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field
+from pydantic import BaseModel, Field
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.referenced_annotation import ReferencedAnnotation
 from Pieces._pieces_lib.pieces_os_client.models.referenced_conversation import ReferencedConversation
@@ -29,7 +29,7 @@ class ConversationSummarizeOutput(BaseModel):
     """
     This is the output model for \"/conversation/{conversation}/summarize  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     conversation: ReferencedConversation = Field(...)
     annotation: ReferencedAnnotation = Field(...)
     __properties = ["schema", "conversation", "annotation"]

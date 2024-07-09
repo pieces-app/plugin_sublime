@@ -20,14 +20,14 @@ import json
 
 
 
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictInt, StrictStr
+from pydantic import BaseModel, Field, StrictInt, StrictStr
 
 class SystemExecutionCpuInformation(BaseModel):
     """
     SystemExecutionCpuInformation
     """
-    count: StrictInt = Field(..., description="this is the number of cpus")
-    brand: StrictStr = Field(..., description="this is the brand of cpu")
+    count: StrictInt = Field(default=..., description="this is the number of cpus")
+    brand: StrictStr = Field(default=..., description="this is the brand of cpu")
     frequency: StrictInt = Field(...)
     __properties = ["count", "brand", "frequency"]
 

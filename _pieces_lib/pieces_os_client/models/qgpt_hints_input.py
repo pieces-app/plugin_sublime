@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr
+from pydantic import BaseModel, Field, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.qgpt_question_answer import QGPTQuestionAnswer
 from Pieces._pieces_lib.pieces_os_client.models.relevant_qgpt_seeds import RelevantQGPTSeeds
 
@@ -31,8 +31,8 @@ class QGPTHintsInput(BaseModel):
     query: Optional[StrictStr] = None
     answer: Optional[QGPTQuestionAnswer] = None
     relevant: RelevantQGPTSeeds = Field(...)
-    application: Optional[StrictStr] = Field(None, description="optional application id")
-    model: Optional[StrictStr] = Field(None, description="optional model id")
+    application: Optional[StrictStr] = Field(default=None, description="optional application id")
+    model: Optional[StrictStr] = Field(default=None, description="optional model id")
     __properties = ["query", "answer", "relevant", "application", "model"]
 
     class Config:

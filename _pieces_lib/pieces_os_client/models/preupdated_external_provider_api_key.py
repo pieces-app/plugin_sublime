@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr
+from pydantic import BaseModel, Field, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.auth0_open_ai_user_metadata import Auth0OpenAIUserMetadata
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 
@@ -28,9 +28,9 @@ class PreupdatedExternalProviderApiKey(BaseModel):
     """
     This is the endput model for \"/external_provider/api_key/update\". everything but the uder will be optional, anything that is defined will get an update.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     user: StrictStr = Field(...)
-    open_ai: Optional[Auth0OpenAIUserMetadata] = Field(None, alias="open_AI")
+    open_ai: Optional[Auth0OpenAIUserMetadata] = Field(default=None, alias="open_AI")
     __properties = ["schema", "user", "open_AI"]
 
     class Config:

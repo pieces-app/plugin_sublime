@@ -20,7 +20,7 @@ import json
 
 
 from typing import List, Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, conlist
+from pydantic import BaseModel, Field, conlist
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.workstream_suggestion_type import WorkstreamSuggestionType
 
@@ -28,9 +28,9 @@ class WorkstreamSuggestions(BaseModel):
     """
     This is a list of the materials used in the workstream suggestions.  The feed will return a list of individual material that will be required to be fetched and re-referenced.(the materials that is.)  Considering if we want to have all the materaials just being referenced( ie ReferencedWebsite/ReferencedWorkstreamSummary/...xyz) && rebuilt  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     iterable: conlist(WorkstreamSuggestion) = Field(...)
-    types: Optional[conlist(WorkstreamSuggestionType)] = Field(None, description="This is iterable <WorkstreamSuggestionType>[] that gives the type of each of the items in the iterable. I.E. types[0] is the suggestion type of the item at iterable[0].")
+    types: Optional[conlist(WorkstreamSuggestionType)] = Field(default=None, description="This is iterable <WorkstreamSuggestionType>[] that gives the type of each of the items in the iterable. I.E. types[0] is the suggestion type of the item at iterable[0].")
     __properties = ["schema", "iterable", "types"]
 
     class Config:

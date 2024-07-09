@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field
+from pydantic import BaseModel, Field
 from Pieces._pieces_lib.pieces_os_client.models.application import Application
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.tracked_user_profile import TrackedUserProfile
@@ -29,7 +29,7 @@ class TrackedApplicationUpdate(BaseModel):
     """
     This is a model used to track when an Application is Updated  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     current: Application = Field(...)
     previous: Optional[Application] = None
     user: Optional[TrackedUserProfile] = None

@@ -20,7 +20,7 @@ import json
 
 
 from typing import List, Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr, conlist
+from pydantic import BaseModel, Field, StrictStr, conlist
 from Pieces._pieces_lib.pieces_os_client.models.asset_filter_phrase import AssetFilterPhrase
 from Pieces._pieces_lib.pieces_os_client.models.asset_filter_timestamp import AssetFilterTimestamp
 from Pieces._pieces_lib.pieces_os_client.models.classification_specific_enum import ClassificationSpecificEnum
@@ -30,7 +30,7 @@ class AssetFilter(BaseModel):
     """
     ** in the future, consider adding an optional bool's called nextAnd, nextOr which will say that the next filter will be  AND behavor or OR behavior.  \"operations\": here is is an optional property to allow or behavior,(we will only allow 1 level deep of or's), if or is not passed in then it is just simply ignored. If or is passed in then we will be or'd together with the top level filter and considered extras. default behavior for operations is and, however yoour can specifiy OR operations as well.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     classification: Optional[ClassificationSpecificEnum] = None
     tags: Optional[conlist(StrictStr)] = None
     websites: Optional[conlist(StrictStr)] = None

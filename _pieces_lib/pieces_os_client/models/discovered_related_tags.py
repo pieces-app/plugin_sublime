@@ -20,7 +20,7 @@ import json
 
 
 from typing import List, Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr, conlist
+from pydantic import BaseModel, Field, StrictStr, conlist
 from Pieces._pieces_lib.pieces_os_client.models.discovered_related_tag import DiscoveredRelatedTag
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 
@@ -28,7 +28,7 @@ class DiscoveredRelatedTags(BaseModel):
     """
     DiscoveredRelatedTags
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     application: StrictStr = Field(...)
     iterable: conlist(DiscoveredRelatedTag) = Field(...)
     __properties = ["schema", "application", "iterable"]

@@ -16,7 +16,7 @@
 import json
 import pprint
 import re  # noqa: F401
-from Pieces._pieces_lib.aenum import Enum, no_arg
+from aenum import Enum, no_arg
 
 
 
@@ -51,6 +51,7 @@ class ModelUsageEnum(str, Enum):
     VIDEO_OCR = 'VIDEO_OCR'
     TEXT_VS_CODE_SEGMENTATION = 'TEXT_VS_CODE_SEGMENTATION'
     TEXT_EMBEDDING = 'TEXT_EMBEDDING'
+    TECHNICAL_ERROR = 'TECHNICAL_ERROR'
 
     @classmethod
     def from_json(cls, json_str: str) -> ModelUsageEnum:

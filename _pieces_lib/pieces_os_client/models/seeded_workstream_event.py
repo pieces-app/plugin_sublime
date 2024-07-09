@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr
+from pydantic import BaseModel, Field, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.application import Application
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.referenced_workstream_summary import ReferencedWorkstreamSummary
@@ -32,13 +32,13 @@ class SeededWorkstreamEvent(BaseModel):
     """
     This is a precreated version of a WorkstreamEvent event, this will be used ingested into PiecesOS and PiecesOS will do all the magic to transform this into relevant data show in the workstream feed.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     score: Optional[Score] = None
     application: Application = Field(...)
     trigger: WorkstreamEventTrigger = Field(...)
     context: Optional[WorkstreamEventContext] = None
     summary: Optional[ReferencedWorkstreamSummary] = None
-    internal_identifier: Optional[StrictStr] = Field(None, description="This is used to override the event identifier, if this was an event that was originally in the internal events collection.")
+    internal_identifier: Optional[StrictStr] = Field(default=None, description="This is used to override the event identifier, if this was an event that was originally in the internal events collection.")
     __properties = ["schema", "score", "application", "trigger", "context", "summary", "internal_identifier"]
 
     class Config:

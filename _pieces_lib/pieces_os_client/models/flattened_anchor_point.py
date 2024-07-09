@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictBool, StrictStr
+from pydantic import BaseModel, Field, StrictBool, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.grouped_timestamp import GroupedTimestamp
 from Pieces._pieces_lib.pieces_os_client.models.platform_enum import PlatformEnum
@@ -30,10 +30,10 @@ class FlattenedAnchorPoint(BaseModel):
     """
     FlattenedAnchorPoint
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     id: StrictStr = Field(...)
     verified: Optional[StrictBool] = None
-    fullpath: StrictStr = Field(..., description="This is the text of the path.")
+    fullpath: StrictStr = Field(default=..., description="This is the text of the path.")
     created: GroupedTimestamp = Field(...)
     updated: GroupedTimestamp = Field(...)
     deleted: Optional[GroupedTimestamp] = None

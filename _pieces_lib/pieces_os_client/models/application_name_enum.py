@@ -16,7 +16,7 @@
 import json
 import pprint
 import re  # noqa: F401
-from Pieces._pieces_lib.aenum import Enum, no_arg
+from aenum import Enum, no_arg
 
 
 
@@ -67,6 +67,10 @@ class ApplicationNameEnum(str, Enum):
     SKETCH = 'SKETCH'
     ADOBE_ILLUSTRATOR = 'ADOBE_ILLUSTRATOR'
     NOTEPAD_PLUS_PLUS = 'NOTEPAD_PLUS_PLUS'
+    EMBEETLE = 'EMBEETLE'
+    ECLIPSE = 'ECLIPSE'
+    X_CODE = 'X_CODE'
+    NETBEANS = 'NETBEANS'
     UNKNOWN = 'UNKNOWN'
 
     @classmethod

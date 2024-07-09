@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field
+from pydantic import BaseModel, Field
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.tlp_code_directory_analytics import TLPCodeDirectoryAnalytics
 from Pieces._pieces_lib.pieces_os_client.models.tlp_code_file_analytics import TLPCodeFileAnalytics
@@ -31,7 +31,7 @@ class TLPCodeProcessing(BaseModel):
     """
     TLPCodeProcessing
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     fragment: Optional[TLPCodeSnippetAnalytics] = None
     file: Optional[TLPCodeFileAnalytics] = None
     directory: Optional[TLPCodeDirectoryAnalytics] = None

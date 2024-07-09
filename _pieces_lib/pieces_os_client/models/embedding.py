@@ -20,7 +20,7 @@ import json
 
 
 from typing import List, Optional, Union
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictFloat, StrictInt, conlist
+from pydantic import BaseModel, Field, StrictFloat, StrictInt, conlist
 from Pieces._pieces_lib.pieces_os_client.models.grouped_timestamp import GroupedTimestamp
 from Pieces._pieces_lib.pieces_os_client.models.model import Model
 
@@ -28,7 +28,7 @@ class Embedding(BaseModel):
     """
       # noqa: E501
     """
-    raw: conlist(Union[StrictFloat, StrictInt]) = Field(..., description="this is the raw value of the embedding")
+    raw: conlist(Union[StrictFloat, StrictInt]) = Field(default=..., description="this is the raw value of the embedding")
     model: Model = Field(...)
     created: GroupedTimestamp = Field(...)
     updated: GroupedTimestamp = Field(...)

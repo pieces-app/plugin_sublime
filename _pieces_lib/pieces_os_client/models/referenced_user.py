@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr
+from pydantic import BaseModel, Field, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.flattened_user_profile import FlattenedUserProfile
 
@@ -28,7 +28,7 @@ class ReferencedUser(BaseModel):
     """
     A object to reference a user's ID and optionally a FlattenedUserProfile Instance   # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     id: StrictStr = Field(...)
     reference: Optional[FlattenedUserProfile] = None
     __properties = ["schema", "id", "reference"]

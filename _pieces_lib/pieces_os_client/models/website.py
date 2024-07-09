@@ -20,7 +20,7 @@ import json
 
 
 from typing import Dict, Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictInt, StrictStr
+from pydantic import BaseModel, Field, StrictInt, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.flattened_assets import FlattenedAssets
 from Pieces._pieces_lib.pieces_os_client.models.flattened_conversations import FlattenedConversations
@@ -34,16 +34,16 @@ class Website(BaseModel):
     """
     This is a specific model for related websites to an asset.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     id: StrictStr = Field(...)
     assets: Optional[FlattenedAssets] = None
-    url: StrictStr = Field(..., description="this is the actual website url.")
-    name: StrictStr = Field(..., description="This is a name that is customized.")
+    url: StrictStr = Field(default=..., description="this is the actual website url.")
+    name: StrictStr = Field(default=..., description="This is a name that is customized.")
     created: GroupedTimestamp = Field(...)
     updated: GroupedTimestamp = Field(...)
     deleted: Optional[GroupedTimestamp] = None
-    mechanisms: Optional[Dict[str, MechanismEnum]] = Field(None, description="This is a Map<String, MechanismEnum> where the the key is an asset id.")
-    interactions: Optional[StrictInt] = Field(None, description="This is an optional value that will keep track of the number of times this has been interacted with.")
+    mechanisms: Optional[Dict[str, MechanismEnum]] = Field(default=None, description="This is a Map<String, MechanismEnum> where the the key is an asset id.")
+    interactions: Optional[StrictInt] = Field(default=None, description="This is an optional value that will keep track of the number of times this has been interacted with.")
     persons: Optional[FlattenedPersons] = None
     conversations: Optional[FlattenedConversations] = None
     score: Optional[Score] = None

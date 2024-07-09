@@ -20,7 +20,7 @@ import json
 
 
 from typing import Dict, List, Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictInt, conlist
+from pydantic import BaseModel, Field, StrictInt, conlist
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.score import Score
 
@@ -28,9 +28,9 @@ class FlattenedAnchorPoints(BaseModel):
     """
     FlattenedAnchorPoints
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     iterable: conlist(ReferencedAnchorPoint) = Field(...)
-    indices: Optional[Dict[str, StrictInt]] = Field(None, description="This is a Map<String, int> where the the key is an AnchorPoint id.")
+    indices: Optional[Dict[str, StrictInt]] = Field(default=None, description="This is a Map<String, int> where the the key is an AnchorPoint id.")
     score: Optional[Score] = None
     __properties = ["schema", "iterable", "indices", "score"]
 

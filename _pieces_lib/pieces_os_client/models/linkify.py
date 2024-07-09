@@ -20,7 +20,7 @@ import json
 
 
 from typing import List, Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, conlist
+from pydantic import BaseModel, Field, conlist
 from Pieces._pieces_lib.pieces_os_client.models.access_enum import AccessEnum
 from Pieces._pieces_lib.pieces_os_client.models.asset import Asset
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
@@ -32,10 +32,10 @@ class Linkify(BaseModel):
     """
     This is the incoming linkify model.  if access is PRIVATE then please provide and array of users to enable the link for.   # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     seed: Optional[Seed] = None
     asset: Optional[Asset] = None
-    users: Optional[conlist(SeededUser)] = Field(None, description="this is an array of users.")
+    users: Optional[conlist(SeededUser)] = Field(default=None, description="this is an array of users.")
     access: AccessEnum = Field(...)
     distributions: Optional[SeededDistributions] = None
     __properties = ["schema", "seed", "asset", "users", "access", "distributions"]

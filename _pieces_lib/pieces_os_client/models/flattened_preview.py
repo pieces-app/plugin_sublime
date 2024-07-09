@@ -20,16 +20,16 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr
+from pydantic import BaseModel, Field, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 
 class FlattenedPreview(BaseModel):
     """
     These are the references of the formats **Only UUIDS**  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
-    base: StrictStr = Field(..., description="this is a reference(uuid) to the base format")
-    overlay: Optional[StrictStr] = Field(None, description="this is a reference(uuid) to the overlay format")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
+    base: StrictStr = Field(default=..., description="this is a reference(uuid) to the base format")
+    overlay: Optional[StrictStr] = Field(default=None, description="this is a reference(uuid) to the overlay format")
     __properties = ["schema", "base", "overlay"]
 
     class Config:

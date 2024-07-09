@@ -20,16 +20,16 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictBool
+from pydantic import BaseModel, Field, StrictBool
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 
 class OSProcessingPermissions(BaseModel):
     """
     These are the permissions relating to the vision models.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
-    vision: Optional[StrictBool] = Field(None, description="if true it is granted, if not then it is not granted.")
-    accessibility: Optional[StrictBool] = Field(None, description="if true it is granted, if not then it is not granted.")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
+    vision: Optional[StrictBool] = Field(default=None, description="if true it is granted, if not then it is not granted.")
+    accessibility: Optional[StrictBool] = Field(default=None, description="if true it is granted, if not then it is not granted.")
     __properties = ["schema", "vision", "accessibility"]
 
     class Config:

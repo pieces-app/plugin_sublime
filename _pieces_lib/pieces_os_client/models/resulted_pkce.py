@@ -20,16 +20,16 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr
+from pydantic import BaseModel, Field, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 
 class ResultedPKCE(BaseModel):
     """
     A Model To Represent the Code Returned from a PKCE Response  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
-    code: StrictStr = Field(..., description="The PKCE Code to be used to access a Token.")
-    state: StrictStr = Field(..., description="Likely the state that will be returned which should match the requested state as well as the nonce")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
+    code: StrictStr = Field(default=..., description="The PKCE Code to be used to access a Token.")
+    state: StrictStr = Field(default=..., description="Likely the state that will be returned which should match the requested state as well as the nonce")
     __properties = ["schema", "code", "state"]
 
     class Config:

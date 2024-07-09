@@ -20,14 +20,14 @@ import json
 
 
 from typing import List
-from Pieces._pieces_lib.pydantic import BaseModel, Field, conlist
+from pydantic import BaseModel, Field, conlist
 from Pieces._pieces_lib.pieces_os_client.models.tlp_directed_discovery_filter import TLPDirectedDiscoveryFilter
 
 class TLPDirectedDiscoveryFilters(BaseModel):
     """
     Contains array of TLPDirectedDiscoveryFilter  # noqa: E501
     """
-    iterable: conlist(TLPDirectedDiscoveryFilter) = Field(..., description="Array that contains filters like class/function/loop")
+    iterable: conlist(TLPDirectedDiscoveryFilter) = Field(default=..., description="Array that contains filters like class/function/loop")
     __properties = ["iterable"]
 
     class Config:

@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr
+from pydantic import BaseModel, Field, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.classification_specific_enum import ClassificationSpecificEnum
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.seeded_format import SeededFormat
@@ -29,8 +29,8 @@ class SeededUltraSuiteAsset(BaseModel):
     """
     A SeededUEAsset is the minimum data sent from UE required to create an asset within Pieces.  Fragment & file are both optional properties however we will throw an internal error if both fragment and file are passed through or if both are undefined.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
-    name: Optional[StrictStr] = Field(None, description="(optional) name is the name of the file")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
+    name: Optional[StrictStr] = Field(default=None, description="(optional) name is the name of the file")
     ext: Optional[ClassificationSpecificEnum] = None
     format: SeededFormat = Field(...)
     description: Optional[StrictStr] = None

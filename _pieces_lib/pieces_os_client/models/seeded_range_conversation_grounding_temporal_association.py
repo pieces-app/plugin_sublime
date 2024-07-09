@@ -20,14 +20,14 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictBool
+from pydantic import BaseModel, Field, StrictBool
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 
 class SeededRangeConversationGroundingTemporalAssociation(BaseModel):
     """
     SeededRangeConversationGroundingTemporalAssociation
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     workstream: Optional[StrictBool] = None
     __properties = ["schema", "workstream"]
 

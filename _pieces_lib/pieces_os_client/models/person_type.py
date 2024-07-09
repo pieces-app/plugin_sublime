@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field
+from pydantic import BaseModel, Field
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.person_basic_type import PersonBasicType
 from Pieces._pieces_lib.pieces_os_client.models.user_profile import UserProfile
@@ -29,7 +29,7 @@ class PersonType(BaseModel):
     """
     basic or platform is absolutely required here. basic: if provided is just information that has been either extracted from the piece or other wise added here. platform: is a real Pieces User.(this user will also exist within the user's users collection. && if not then we will just use the data we have.)  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     basic: Optional[PersonBasicType] = None
     platform: Optional[UserProfile] = None
     __properties = ["schema", "basic", "platform"]

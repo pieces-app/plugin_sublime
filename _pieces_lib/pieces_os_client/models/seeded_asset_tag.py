@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr
+from pydantic import BaseModel, Field, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.mechanism_enum import MechanismEnum
 from Pieces._pieces_lib.pieces_os_client.models.tag_category_enum import TagCategoryEnum
@@ -29,8 +29,8 @@ class SeededAssetTag(BaseModel):
     """
     This is similar to an SeededTag, where this is the minimum information of a tag, but this can get added to a seededAsset,  where you may not yet have an asset id.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
-    text: StrictStr = Field(..., description="this is the text that represents the tag.")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
+    text: StrictStr = Field(default=..., description="this is the text that represents the tag.")
     mechanism: Optional[MechanismEnum] = None
     category: Optional[TagCategoryEnum] = None
     __properties = ["schema", "text", "mechanism", "category"]

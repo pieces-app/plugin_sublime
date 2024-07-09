@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field
+from pydantic import BaseModel, Field
 from Pieces._pieces_lib.pieces_os_client.models.classification import Classification
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.language_server_protocol_location import LanguageServerProtocolLocation
@@ -30,7 +30,7 @@ class IDESelection(BaseModel):
     """
     This is a given bit of text/code that is selected in the IDE, this can be a copy/paste/selection  location: this is the given location provided by the LSP(might need to be a different object we will see)  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     location: Optional[LanguageServerProtocolLocation] = None
     classification: Optional[Classification] = None
     value: Optional[TransferableString] = None

@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field
+from pydantic import BaseModel, Field
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.tracked_session_event_identifier_description_pairs import TrackedSessionEventIdentifierDescriptionPairs
 
@@ -28,7 +28,7 @@ class SeededTrackedSessionEvent(BaseModel):
     """
     A simple model to capture a Tracked Session to be send to the Connection API  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     identifier_description_pair: TrackedSessionEventIdentifierDescriptionPairs = Field(...)
     __properties = ["schema", "identifier_description_pair"]
 

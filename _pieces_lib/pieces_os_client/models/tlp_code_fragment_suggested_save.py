@@ -20,22 +20,22 @@ import json
 
 
 from typing import Optional, Union
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, Field, StrictFloat, StrictInt, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 
 class TLPCodeFragmentSuggestedSave(BaseModel):
     """
     Model for monitoring and evaluating the suggested save feature  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     asset: StrictStr = Field(...)
     user: StrictStr = Field(...)
     model: StrictStr = Field(...)
     created: StrictStr = Field(...)
     os: StrictStr = Field(...)
-    context: Optional[StrictStr] = Field(None, description="context from where suggestion came from")
-    score: Optional[Union[StrictFloat, StrictInt]] = Field(None, description="maximum similarity score")
-    candidates: Optional[StrictInt] = Field(None, description="number of candidates")
+    context: Optional[StrictStr] = Field(default=None, description="context from where suggestion came from")
+    score: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="maximum similarity score")
+    candidates: Optional[StrictInt] = Field(default=None, description="number of candidates")
     __properties = ["schema", "asset", "user", "model", "created", "os", "context", "score", "candidates"]
 
     class Config:

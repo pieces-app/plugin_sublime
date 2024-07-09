@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictBool
+from pydantic import BaseModel, Field, StrictBool
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.qgpt_prompt_pipeline import QGPTPromptPipeline
 
@@ -28,9 +28,9 @@ class QGPTRelevanceInputOptions(BaseModel):
     """
     QGPTRelevanceInputOptions
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
-    database: Optional[StrictBool] = Field(None, description="This is an optional boolen that will tell us to use our entire snippet database as the sample.")
-    question: Optional[StrictBool] = Field(None, description="This is an optional boolean, that will let the serve know if you want to combine the 2 endpointsboth relevance && the Question endpoint to return the final results.")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
+    database: Optional[StrictBool] = Field(default=None, description="This is an optional boolen that will tell us to use our entire snippet database as the sample.")
+    question: Optional[StrictBool] = Field(default=None, description="This is an optional boolean, that will let the serve know if you want to combine the 2 endpointsboth relevance && the Question endpoint to return the final results.")
     pipeline: Optional[QGPTPromptPipeline] = None
     __properties = ["schema", "database", "question", "pipeline"]
 

@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field
+from pydantic import BaseModel, Field
 from Pieces._pieces_lib.pieces_os_client.models.anonymous_temporal_range import AnonymousTemporalRange
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 
@@ -28,7 +28,7 @@ class Auth0UserBetaStatus(BaseModel):
     """
     Note: continuous: this means that from this moment in time, the user is continuously opted into beta  otherwise we will use the from/to values provided.  Note: in order to opt out of vision, you will just end their beta w/ the updated with a to property that is effectively right now in time.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     vision: Optional[AnonymousTemporalRange] = None
     __properties = ["schema", "vision"]
 

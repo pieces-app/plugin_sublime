@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field
+from pydantic import BaseModel, Field
 from Pieces._pieces_lib.pieces_os_client.models.classification import Classification
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.transferable_string import TransferableString
@@ -29,7 +29,7 @@ class BrowserSelection(BaseModel):
     """
     This is a given bit of text/code that is selected in the browser, this can be a copy/paste/selection  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     classification: Classification = Field(...)
     value: TransferableString = Field(...)
     __properties = ["schema", "classification", "value"]

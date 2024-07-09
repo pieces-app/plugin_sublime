@@ -20,15 +20,15 @@ import json
 
 
 from typing import Optional, Union
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictFloat, StrictInt
+from pydantic import BaseModel, Field, StrictFloat, StrictInt
 from Pieces._pieces_lib.pieces_os_client.models.space import Space
 
 class TrackedAssetsEventSearchMetadataResults(BaseModel):
     """
     Numbers related to search results  # noqa: E501
     """
-    fuzzy: Optional[Union[StrictFloat, StrictInt]] = Field(None, description="Total number of fuzzy results")
-    exact: Optional[Union[StrictFloat, StrictInt]] = Field(None, description="Total number of exact results")
+    fuzzy: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Total number of fuzzy results")
+    exact: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Total number of exact results")
     assets: Optional[FlattenedAssets] = None
     space: Optional[Space] = None
     __properties = ["fuzzy", "exact", "assets", "space"]

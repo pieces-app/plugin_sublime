@@ -20,7 +20,7 @@ import json
 
 
 
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictBool, StrictStr
+from pydantic import BaseModel, Field, StrictBool, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.grouped_timestamp import GroupedTimestamp
 from Pieces._pieces_lib.pieces_os_client.models.node_type_enum import NodeTypeEnum
 
@@ -30,7 +30,7 @@ class Node(BaseModel):
     """
     id: StrictStr = Field(...)
     type: NodeTypeEnum = Field(...)
-    root: StrictBool = Field(..., description="This is a boolean to let us know if this node is the root or origin of the relationship graph.")
+    root: StrictBool = Field(default=..., description="This is a boolean to let us know if this node is the root or origin of the relationship graph.")
     created: GroupedTimestamp = Field(...)
     __properties = ["id", "type", "root", "created"]
 

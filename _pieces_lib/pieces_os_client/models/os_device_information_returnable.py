@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr
+from pydantic import BaseModel, Field, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.os_device_dependencies_information import OSDeviceDependenciesInformation
 from Pieces._pieces_lib.pieces_os_client.models.os_device_hardware_information import OSDeviceHardwareInformation
@@ -29,10 +29,10 @@ class OSDeviceInformationReturnable(BaseModel):
     """
     This is the returnable model for the /os/device/information.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     dependencies: Optional[OSDeviceDependenciesInformation] = None
-    name: Optional[StrictStr] = Field(None, description="this is the name of the device")
-    version: Optional[StrictStr] = Field(None, description="this is the version of the device")
+    name: Optional[StrictStr] = Field(default=None, description="this is the name of the device")
+    version: Optional[StrictStr] = Field(default=None, description="this is the version of the device")
     hardware: Optional[OSDeviceHardwareInformation] = None
     __properties = ["schema", "dependencies", "name", "version", "hardware"]
 

@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictBool, StrictStr
+from pydantic import BaseModel, Field, StrictBool, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.grouped_timestamp import GroupedTimestamp
 from Pieces._pieces_lib.pieces_os_client.models.score import Score
@@ -29,13 +29,13 @@ class FlattenedRange(BaseModel):
     """
     This is a DAG-Safe minimal representation of a Range.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     id: StrictStr = Field(...)
     score: Optional[Score] = None
     created: GroupedTimestamp = Field(...)
     updated: GroupedTimestamp = Field(...)
     to: Optional[GroupedTimestamp] = None
-    var_from: Optional[GroupedTimestamp] = Field(None, alias="from")
+    var_from: Optional[GroupedTimestamp] = Field(default=None, alias="from")
     between: Optional[StrictBool] = None
     summaries: Optional[FlattenedWorkstreamSummaries] = None
     conversations: Optional[FlattenedConversations] = None

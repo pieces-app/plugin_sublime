@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field
+from pydantic import BaseModel, Field
 from Pieces._pieces_lib.pieces_os_client.models.application import Application
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.workstream_event_context import WorkstreamEventContext
@@ -29,7 +29,7 @@ class SeededWorkstreamSuggestionsRefresh(BaseModel):
     """
     This is used in the input of the /workstream/feed/refresh  The application here will let us know if what scope you would like to refresh the stream for. IE an Application will  provide bias in the items that are displayed.  note: context can be used here to provide further bias to the suggestions.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     application: Application = Field(...)
     context: Optional[WorkstreamEventContext] = None
     __properties = ["schema", "application", "context"]

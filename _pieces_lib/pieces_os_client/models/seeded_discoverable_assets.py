@@ -20,7 +20,7 @@ import json
 
 
 from typing import List, Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr, conlist
+from pydantic import BaseModel, Field, StrictStr, conlist
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.seeded_discoverable_asset import SeededDiscoverableAsset
 from Pieces._pieces_lib.pieces_os_client.models.tlp_directed_discovery_filters import TLPDirectedDiscoveryFilters
@@ -29,9 +29,9 @@ class SeededDiscoverableAssets(BaseModel):
     """
     Assumption: filters imposed in this model can be overwritten by passing them in SeededDiscoverableAsset  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
-    application: StrictStr = Field(..., description="application id.")
-    iterable: conlist(SeededDiscoverableAsset) = Field(..., description="This is an iterable of already snippitized snippets that we will compare && cluster.")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
+    application: StrictStr = Field(default=..., description="application id.")
+    iterable: conlist(SeededDiscoverableAsset) = Field(default=..., description="This is an iterable of already snippitized snippets that we will compare && cluster.")
     filters: Optional[TLPDirectedDiscoveryFilters] = None
     __properties = ["schema", "application", "iterable", "filters"]
 

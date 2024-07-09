@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field
+from pydantic import BaseModel, Field
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.transferable_bytes import TransferableBytes
 from Pieces._pieces_lib.pieces_os_client.models.transferable_string import TransferableString
@@ -29,7 +29,7 @@ class FileFormat(BaseModel):
     """
     This describes a FileFormat. If you need meta data you can get all of that from your format wrapper.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     bytes: Optional[TransferableBytes] = None
     string: Optional[TransferableString] = None
     __properties = ["schema", "bytes", "string"]

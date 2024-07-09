@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field
+from pydantic import BaseModel, Field
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.tracked_format_event_identifier_description_pairs import TrackedFormatEventIdentifierDescriptionPairs
 from Pieces._pieces_lib.pieces_os_client.models.tracked_format_event_metadata import TrackedFormatEventMetadata
@@ -29,7 +29,7 @@ class SeededTrackedFormatEvent(BaseModel):
     """
     Again this is a model designed to be sent over to a context server to be built and then sent along to segment.   # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     identifier_description_pair: TrackedFormatEventIdentifierDescriptionPairs = Field(...)
     format: ReferencedFormat = Field(...)
     metadata: Optional[TrackedFormatEventMetadata] = None

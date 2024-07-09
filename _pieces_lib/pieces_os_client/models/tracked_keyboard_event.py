@@ -20,16 +20,16 @@ import json
 
 
 from typing import List, Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictInt, StrictStr, conlist
+from pydantic import BaseModel, Field, StrictInt, StrictStr, conlist
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 
 class TrackedKeyboardEvent(BaseModel):
     """
     This is a model that will hold relavent information in relation to a keyboard(including shortcuts) analytics event (usage).  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
-    description: StrictStr = Field(..., description="this is a description of the event, optional.")
-    shortcut: conlist(StrictInt) = Field(..., description="this is an array of of ascii values that represent numerics on your keyboard.")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
+    description: StrictStr = Field(default=..., description="this is a description of the event, optional.")
+    shortcut: conlist(StrictInt) = Field(default=..., description="this is an array of of ascii values that represent numerics on your keyboard.")
     __properties = ["schema", "description", "shortcut"]
 
     class Config:

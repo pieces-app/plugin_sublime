@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr
+from pydantic import BaseModel, Field, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.auth0_user_beta_status import Auth0UserBetaStatus
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 
@@ -28,7 +28,7 @@ class UserBetaStatus(BaseModel):
     """
     This is used to either grant or remove a specific provider betastatus  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     auth0: Optional[Auth0UserBetaStatus] = None
     user: StrictStr = Field(...)
     __properties = ["schema", "auth0", "user"]

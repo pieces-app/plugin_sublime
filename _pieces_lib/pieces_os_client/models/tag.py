@@ -20,7 +20,7 @@ import json
 
 
 from typing import Dict, Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictInt, StrictStr
+from pydantic import BaseModel, Field, StrictInt, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.flattened_assets import FlattenedAssets
 from Pieces._pieces_lib.pieces_os_client.models.flattened_persons import FlattenedPersons
@@ -34,17 +34,17 @@ class Tag(BaseModel):
     """
     This represents a fully polinated Tag, that is either attached to an asset or a format that adds additional information \"tags\" to describe itself.Helps improve Search and other contextual information that is useful for the user.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
-    id: StrictStr = Field(..., description="UUID that represents the tag.")
-    text: StrictStr = Field(..., description="represnts the value of a tag.")
-    mechanisms: Optional[Dict[str, MechanismEnum]] = Field(None, description="This is a Map<String, MechanismEnum> where the the key is an asset id.")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
+    id: StrictStr = Field(default=..., description="UUID that represents the tag.")
+    text: StrictStr = Field(default=..., description="represnts the value of a tag.")
+    mechanisms: Optional[Dict[str, MechanismEnum]] = Field(default=None, description="This is a Map<String, MechanismEnum> where the the key is an asset id.")
     assets: Optional[FlattenedAssets] = None
     created: GroupedTimestamp = Field(...)
     updated: GroupedTimestamp = Field(...)
     deleted: Optional[GroupedTimestamp] = None
     category: TagCategoryEnum = Field(...)
     relationship: Optional[Relationship] = None
-    interactions: Optional[StrictInt] = Field(None, description="This is an optional value that will keep track of the number of times this has been interacted with.")
+    interactions: Optional[StrictInt] = Field(default=None, description="This is an optional value that will keep track of the number of times this has been interacted with.")
     persons: Optional[FlattenedPersons] = None
     score: Optional[Score] = None
     __properties = ["schema", "id", "text", "mechanisms", "assets", "created", "updated", "deleted", "category", "relationship", "interactions", "persons", "score"]

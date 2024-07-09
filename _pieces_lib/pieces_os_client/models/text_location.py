@@ -20,17 +20,17 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictInt, StrictStr
+from pydantic import BaseModel, Field, StrictInt, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 
 class TextLocation(BaseModel):
     """
     This is a generic model that is used for text location.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
-    text: StrictStr = Field(..., description="this is the value that was found.")
-    start: StrictInt = Field(..., description="this is the start index within the original string.")
-    end: StrictInt = Field(..., description="this is the end index within the original string.")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
+    text: StrictStr = Field(default=..., description="this is the value that was found.")
+    start: StrictInt = Field(default=..., description="this is the start index within the original string.")
+    end: StrictInt = Field(default=..., description="this is the end index within the original string.")
     __properties = ["schema", "text", "start", "end"]
 
     class Config:

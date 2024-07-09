@@ -20,7 +20,7 @@ import json
 
 
 from typing import List, Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, conlist
+from pydantic import BaseModel, Field, conlist
 from Pieces._pieces_lib.pieces_os_client.models.distribution import Distribution
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 
@@ -29,7 +29,7 @@ class Distributions(BaseModel):
     This is the plural Model of a Distribution.  # noqa: E501
     """
     iterable: conlist(Distribution) = Field(...)
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     __properties = ["iterable", "schema"]
 
     class Config:

@@ -20,7 +20,7 @@ import json
 
 
 from typing import List, Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr, conlist
+from pydantic import BaseModel, Field, StrictStr, conlist
 from Pieces._pieces_lib.pieces_os_client.models.classification_generic_enum import ClassificationGenericEnum
 from Pieces._pieces_lib.pieces_os_client.models.classification_specific_enum import ClassificationSpecificEnum
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
@@ -29,10 +29,10 @@ class FormatMetric(BaseModel):
     """
     FormatMetric  This is a model that will represent the about of specific formats. ie Generic: 'CODE' specific: 'DART' identifiers: ['FormatUID1, 'FormatUID2']  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     generic: ClassificationGenericEnum = Field(...)
     specific: ClassificationSpecificEnum = Field(...)
-    identifiers: conlist(StrictStr) = Field(..., description="this is a list of format ids")
+    identifiers: conlist(StrictStr) = Field(default=..., description="this is a list of format ids")
     __properties = ["schema", "generic", "specific", "identifiers"]
 
     class Config:

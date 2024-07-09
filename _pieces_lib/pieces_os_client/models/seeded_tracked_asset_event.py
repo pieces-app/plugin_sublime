@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field
+from pydantic import BaseModel, Field
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.tracked_asset_event_identifier_description_pairs import TrackedAssetEventIdentifierDescriptionPairs
 
@@ -28,7 +28,7 @@ class SeededTrackedAssetEvent(BaseModel):
     """
     This seeded tracked asset event will be recieved by a context on the OS Server side, which will then be able to look up the asset id and structure the asset for shipment to Segment aka a fully built TrackedAssetEvent  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     asset: ReferencedAsset = Field(...)
     identifier_description_pair: TrackedAssetEventIdentifierDescriptionPairs = Field(...)
     metadata: Optional[TrackedAssetEventMetadata] = None

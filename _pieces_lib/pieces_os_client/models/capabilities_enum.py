@@ -16,7 +16,7 @@
 import json
 import pprint
 import re  # noqa: F401
-from Pieces._pieces_lib.aenum import Enum, no_arg
+from aenum import Enum, no_arg
 
 
 

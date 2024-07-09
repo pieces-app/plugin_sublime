@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr
+from pydantic import BaseModel, Field, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.seeded_file import SeededFile
 from Pieces._pieces_lib.pieces_os_client.models.seeded_fragment import SeededFragment
@@ -30,7 +30,7 @@ class SeededDiscoverableAsset(BaseModel):
     """
     Assumption: filters applied in this model will overwrite filters passed in SeededDiscoverableAssets  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
     file: Optional[SeededFile] = None
     fragment: Optional[SeededFragment] = None
     directory: Optional[StrictStr] = None
