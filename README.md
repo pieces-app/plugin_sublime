@@ -152,3 +152,5 @@ We take your privacy seriously. We are committed to ensuring that your data rema
 
 **We do not collect any client side telemetry.**
 
+[Read more about data collection and privacy](https://docs.pieces.app/product-highlights-and-benefits/privacy-security-data)
+
