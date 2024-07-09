@@ -5,7 +5,7 @@ from .assets.list_assets import PiecesListAssetsCommand
 from .settings import PiecesSettings
 from .misc import PiecesOnboardingCommand
 from .copilot.ask_command import copilot
-
+from .copilot.conversation_websocket import ConversationWS
 
 class PiecesEventListener(sublime_plugin.EventListener):
 	commands_to_exclude = ["pieces_onboarding","pieces_reload","pieces_support"]
@@ -103,12 +103,13 @@ class PiecesEventListener(sublime_plugin.EventListener):
 				# Close the old view and rerender the conversation
 				conversation = view.settings().get("conversation_id")
 				if conversation:
-					on_close = lambda x:copilot.render_conversation(conversation)
-					sublime.set_timeout(lambda: view.close(on_close),5000)# Wait some sec until the conversations is loaded
-					
-				
-				
-				
+					on_open = lambda: view.close(lambda x:copilot.render_conversation(conversation))# Wait some sec until the conversations is loaded
+					if ConversationWS.is_running():
+						on_open() # Run the command if it is running already
+					else: 
+						instance = ConversationWS.get_instance()
+						if instance:
+							instance.on_open_callbacks.append(on_open)
 
 
 class PiecesViewEventListener(sublime_plugin.ViewEventListener):
