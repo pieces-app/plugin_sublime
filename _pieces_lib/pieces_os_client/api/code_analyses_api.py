@@ -17,7 +17,7 @@ import re  # noqa: F401
 import io
 import warnings
 
-from pydantic import validate_arguments, ValidationError
+from Pieces._pieces_lib.pydantic import validate_arguments, ValidationError
 
 from Pieces._pieces_lib.pieces_os_client.models.code_analyses import CodeAnalyses
 

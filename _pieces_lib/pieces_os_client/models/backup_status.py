@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional, Union
-from pydantic import BaseModel, Field, StrictFloat, StrictInt
+from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictFloat, StrictInt
 from Pieces._pieces_lib.pieces_os_client.models.backup import Backup
 from Pieces._pieces_lib.pieces_os_client.models.backup_status_enum import BackupStatusEnum
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema

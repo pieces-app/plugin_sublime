@@ -15,7 +15,7 @@
 
 import atexit
 import datetime
-from dateutil.parser import parse
+from Pieces._pieces_lib.dateutil.parser import parse
 import json
 import mimetypes
 from multiprocessing.pool import ThreadPool

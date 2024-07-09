@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from pydantic import BaseModel, Field
+from Pieces._pieces_lib.pydantic import BaseModel, Field
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.tracked_conversation_event_identifier_description_pairs import TrackedConversationEventIdentifierDescriptionPairs
 from Pieces._pieces_lib.pieces_os_client.models.tracked_conversation_event_metadata import TrackedConversationEventMetadata

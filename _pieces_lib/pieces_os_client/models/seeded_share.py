@@ -20,7 +20,7 @@ import json
 
 
 from typing import List, Optional
-from pydantic import BaseModel, Field, StrictStr, conlist
+from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr, conlist
 from Pieces._pieces_lib.pieces_os_client.models.access_enum import AccessEnum
 from Pieces._pieces_lib.pieces_os_client.models.asset import Asset
 from Pieces._pieces_lib.pieces_os_client.models.assets import Assets

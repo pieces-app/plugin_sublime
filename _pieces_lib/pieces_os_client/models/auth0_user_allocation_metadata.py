@@ -20,7 +20,7 @@ import json
 
 
 
-from pydantic import BaseModel, Field, StrictStr
+from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr
 
 class Auth0UserAllocationMetadata(BaseModel):
     """

@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional, Union
-from pydantic import BaseModel, Field, StrictFloat, StrictInt
+from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictFloat, StrictInt
 from Pieces._pieces_lib.pieces_os_client.models.space import Space
 
 class TrackedAssetsEventSearchMetadataResults(BaseModel):

@@ -17,9 +17,9 @@ import re  # noqa: F401
 import io
 import warnings
 
-from pydantic import validate_arguments, ValidationError
+from Pieces._pieces_lib.pydantic import validate_arguments, ValidationError
 
-from pydantic import StrictStr
+from Pieces._pieces_lib.pydantic import StrictStr
 
 from typing import Optional
 

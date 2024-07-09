@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from pydantic import BaseModel, Field, StrictBool, StrictInt, StrictStr
+from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictBool, StrictInt, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.external_provider_profile_data import ExternalProviderProfileData
 from Pieces._pieces_lib.pieces_os_client.models.external_provider_type_enum import ExternalProviderTypeEnum

@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from pydantic import BaseModel, Field, StrictStr, validator
+from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr, validator
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.seeded_anchor import SeededAnchor
 from Pieces._pieces_lib.pieces_os_client.models.seeded_asset import SeededAsset

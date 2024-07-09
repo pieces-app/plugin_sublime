@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from pydantic import BaseModel, Field
+from Pieces._pieces_lib.pydantic import BaseModel, Field
 from Pieces._pieces_lib.pieces_os_client.models.anonymous_temporal_range import AnonymousTemporalRange
 from Pieces._pieces_lib.pieces_os_client.models.classifications import Classifications
 from Pieces._pieces_lib.pieces_os_client.models.document_contributors import DocumentContributors

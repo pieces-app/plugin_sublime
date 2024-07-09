@@ -20,7 +20,7 @@ import json
 
 
 from typing import Dict, Optional, Union
-from pydantic import BaseModel, Field, StrictFloat, StrictInt
+from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictFloat, StrictInt
 from Pieces._pieces_lib.pieces_os_client.models.assets import Assets
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.reuse_suggestion import ReuseSuggestion

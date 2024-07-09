@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from pydantic import BaseModel, Field, StrictStr
+from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.auth0_open_ai_user_metadata import Auth0OpenAIUserMetadata
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 

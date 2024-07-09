@@ -17,10 +17,10 @@ import re  # noqa: F401
 import io
 import warnings
 
-from pydantic import validate_arguments, ValidationError
+from Pieces._pieces_lib.pydantic import validate_arguments, ValidationError
 
 from typing_extensions import Annotated
-from pydantic import Field, StrictBool
+from Pieces._pieces_lib.pydantic import Field, StrictBool
 
 from typing import Optional
 

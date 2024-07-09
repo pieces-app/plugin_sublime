@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from pydantic import BaseModel, Field, StrictBool, StrictStr
+from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictBool, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.asset_filter_phrase_options import AssetFilterPhraseOptions
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 

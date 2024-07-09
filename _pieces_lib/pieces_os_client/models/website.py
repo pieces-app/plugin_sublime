@@ -20,7 +20,7 @@ import json
 
 
 from typing import Dict, Optional
-from pydantic import BaseModel, Field, StrictInt, StrictStr
+from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictInt, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.flattened_assets import FlattenedAssets
 from Pieces._pieces_lib.pieces_os_client.models.flattened_conversations import FlattenedConversations

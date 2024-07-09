@@ -17,7 +17,7 @@ import re  # noqa: F401
 import io
 import warnings
 
-from pydantic import validate_arguments, ValidationError
+from Pieces._pieces_lib.pydantic import validate_arguments, ValidationError
 
 from Pieces._pieces_lib.pieces_os_client.models.formats_metrics import FormatsMetrics
 from Pieces._pieces_lib.pieces_os_client.models.ordered_metrics import OrderedMetrics

@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from pydantic import BaseModel, Field, StrictStr
+from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.anonymous_temporal_range import AnonymousTemporalRange
 from Pieces._pieces_lib.pieces_os_client.models.auth0_open_ai_user_metadata import Auth0OpenAIUserMetadata
 from Pieces._pieces_lib.pieces_os_client.models.auth0_user_allocation_metadata import Auth0UserAllocationMetadata

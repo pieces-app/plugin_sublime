@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from pydantic import BaseModel, Field, StrictInt, StrictStr
+from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictInt, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.grouped_timestamp import GroupedTimestamp
 from Pieces._pieces_lib.pieces_os_client.models.mechanism_enum import MechanismEnum

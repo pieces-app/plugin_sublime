@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from pydantic import BaseModel, Field, StrictBool, StrictStr
+from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictBool, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.qgpt_question_input import QGPTQuestionInput
 from Pieces._pieces_lib.pieces_os_client.models.qgpt_relevance_input import QGPTRelevanceInput
 

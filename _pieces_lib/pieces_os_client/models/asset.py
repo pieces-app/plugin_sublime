@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from pydantic import BaseModel, Field, StrictBool, StrictStr
+from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictBool, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.activities import Activities
 from Pieces._pieces_lib.pieces_os_client.models.anchors import Anchors
 from Pieces._pieces_lib.pieces_os_client.models.annotations import Annotations

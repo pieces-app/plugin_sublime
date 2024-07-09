@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from pydantic import BaseModel, Field
+from Pieces._pieces_lib.pydantic import BaseModel, Field
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.qgpt_task_pipeline_for_code_commentation import QGPTTaskPipelineForCodeCommentation
 from Pieces._pieces_lib.pieces_os_client.models.qgpt_task_pipeline_for_code_completion import QGPTTaskPipelineForCodeCompletion

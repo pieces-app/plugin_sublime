@@ -20,7 +20,7 @@ import json
 
 
 from typing import Dict, List, Optional, Union
-from pydantic import BaseModel, Field, StrictFloat, StrictInt, StrictStr, conlist
+from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictFloat, StrictInt, StrictStr, conlist
 from Pieces._pieces_lib.pieces_os_client.models.classification_generic_enum import ClassificationGenericEnum
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.model import Model

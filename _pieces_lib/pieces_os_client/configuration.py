@@ -17,7 +17,7 @@ import copy
 import logging
 import multiprocessing
 import sys
-import urllib3
+from Pieces._pieces_lib import urllib3
 
 import http.client as httplib
 

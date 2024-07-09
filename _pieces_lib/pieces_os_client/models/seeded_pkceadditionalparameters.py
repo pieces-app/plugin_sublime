@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from pydantic import BaseModel, StrictStr, validator
+from Pieces._pieces_lib.pydantic import BaseModel, StrictStr, validator
 
 class SeededPKCEADDITIONALPARAMETERS(BaseModel):
     """

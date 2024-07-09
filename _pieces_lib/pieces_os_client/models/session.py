@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from pydantic import BaseModel, Field, StrictStr
+from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.grouped_timestamp import GroupedTimestamp
 
 class Session(BaseModel):

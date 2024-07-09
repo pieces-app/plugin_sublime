@@ -20,7 +20,7 @@ import json
 
 from datetime import datetime
 from typing import List, Optional
-from pydantic import BaseModel, Field, StrictBool, StrictInt, StrictStr, conlist
+from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictBool, StrictInt, StrictStr, conlist
 from Pieces._pieces_lib.pieces_os_client.models.auth0_identity import Auth0Identity
 from Pieces._pieces_lib.pieces_os_client.models.auth0_user_metadata import Auth0UserMetadata
 

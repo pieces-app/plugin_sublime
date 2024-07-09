@@ -20,7 +20,7 @@ import json
 
 
 from typing import List, Optional, Union
-from pydantic import BaseModel, Field, StrictFloat, StrictInt, conlist
+from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictFloat, StrictInt, conlist
 from Pieces._pieces_lib.pieces_os_client.models.grouped_timestamp import GroupedTimestamp
 from Pieces._pieces_lib.pieces_os_client.models.model import Model
 

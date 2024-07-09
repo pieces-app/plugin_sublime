@@ -20,7 +20,7 @@ import json
 
 
 
-from pydantic import BaseModel, Field, constr
+from Pieces._pieces_lib.pydantic import BaseModel, Field, constr
 
 class OAuthAccount(BaseModel):
     """

@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from pydantic import BaseModel, Field, StrictBool, StrictStr
+from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictBool, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.application import Application
 from Pieces._pieces_lib.pieces_os_client.models.conversation_grounding import ConversationGrounding
 from Pieces._pieces_lib.pieces_os_client.models.conversation_type_enum import ConversationTypeEnum

@@ -20,7 +20,7 @@ import re
 import ssl
 
 from urllib.parse import urlencode, quote_plus
-import urllib3
+from Pieces._pieces_lib import urllib3
 
 from Pieces._pieces_lib.pieces_os_client.exceptions import ApiException, UnauthorizedException, ForbiddenException, NotFoundException, ServiceException, ApiValueError, BadRequestException
 
@@ -95,7 +95,7 @@ class RESTClientObject:
         # https pool manager
         if configuration.proxy:
             if is_socks_proxy_url(configuration.proxy):
-                from urllib3.contrib.socks import SOCKSProxyManager
+                from Pieces._pieces_lib.urllib3.contrib.socks import SOCKSProxyManager
                 self.pool_manager = SOCKSProxyManager(
                         cert_reqs=cert_reqs,
                         ca_certs=configuration.ssl_ca_cert,

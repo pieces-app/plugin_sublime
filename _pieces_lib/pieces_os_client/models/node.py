@@ -20,7 +20,7 @@ import json
 
 
 
-from pydantic import BaseModel, Field, StrictBool, StrictStr
+from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictBool, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.grouped_timestamp import GroupedTimestamp
 from Pieces._pieces_lib.pieces_os_client.models.node_type_enum import NodeTypeEnum
 

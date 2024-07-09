@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from pydantic import BaseModel, Field, StrictBool
+from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictBool
 
 class WorkstreamSuggestionType(BaseModel):
     """

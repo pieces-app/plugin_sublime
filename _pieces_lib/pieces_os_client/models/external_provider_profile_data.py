@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from pydantic import BaseModel, StrictBool, StrictInt, StrictStr
+from Pieces._pieces_lib.pydantic import BaseModel, StrictBool, StrictInt, StrictStr
 
 class ExternalProviderProfileData(BaseModel):
     """

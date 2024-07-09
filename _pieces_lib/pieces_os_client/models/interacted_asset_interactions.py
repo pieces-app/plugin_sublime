@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from pydantic import BaseModel, Field, StrictBool, constr, validator
+from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictBool, constr, validator
 
 class InteractedAssetInteractions(BaseModel):
     """

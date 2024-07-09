@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional, Union
-from pydantic import BaseModel, Field, StrictFloat, StrictInt, StrictStr
+from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictFloat, StrictInt, StrictStr
 from Pieces._pieces_lib.pieces_os_client.models.qgpt_agent_routes import QGPTAgentRoutes
 from Pieces._pieces_lib.pieces_os_client.models.qgpt_question_output import QGPTQuestionOutput
 from Pieces._pieces_lib.pieces_os_client.models.qgpt_relevance_output import QGPTRelevanceOutput

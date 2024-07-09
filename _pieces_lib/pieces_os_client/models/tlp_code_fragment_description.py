@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional, Union
-from pydantic import BaseModel, Field, StrictFloat, StrictInt, StrictStr
+from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictFloat, StrictInt, StrictStr
 
 class TLPCodeFragmentDescription(BaseModel):
     """

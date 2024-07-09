@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from pydantic import BaseModel, Field
+from Pieces._pieces_lib.pydantic import BaseModel, Field
 from Pieces._pieces_lib.pieces_os_client.models.classification_generic_enum import ClassificationGenericEnum
 from Pieces._pieces_lib.pieces_os_client.models.classification_rendering_enum import ClassificationRenderingEnum
 from Pieces._pieces_lib.pieces_os_client.models.classification_specific_enum import ClassificationSpecificEnum

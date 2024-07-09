@@ -20,7 +20,7 @@ import json
 
 
 from typing import Optional
-from pydantic import BaseModel
+from Pieces._pieces_lib.pydantic import BaseModel
 
 class SeededTrackedAssetsEventMetadata(BaseModel):
     """
