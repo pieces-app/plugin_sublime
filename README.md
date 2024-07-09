@@ -1,4 +1,6 @@
-![Pieces Sublime Plugin](https://camo.githubusercontent.com/69c990240f877927146712d45be2f690085b9e45b4420736aa373917f8e0b2c8/68747470733a2f2f73746f726167652e676f6f676c65617069732e636f6d2f7069656365735f7374617469635f7265736f75726365732f7066645f77696b692f5049454345535f4d41494e5f4c4f474f5f57494b492e706e67)
+# [Pieces for Developers](https://pieces.app) | Sublime Plugin
+
+![Pieces Sublime Plugin](https://github.com/Bishoy-at-pieces/plugin_sublime/assets/167128903/272cf4cc-60ff-4bd4-8701-3e3feb38a8b1)
 
 
 ##### <p align="center"> [Website](https://pieces.app/) • [Pieces OS Documentation](https://docs.pieces.app/) • [Pieces Sublime github repository](https://github.com/pieces-app/plugin_sublime)
@@ -8,37 +10,68 @@
 
 Please make sure you have [**Pieces OS**](https://docs.pieces.app/installation-getting-started/what-am-i-installing) installed to run the Package.
 
+## Getting Started with the Pieces Sublime Plugin
 
-## Getting Started
+Welcome to the **Pieces Sublime Plugin**!
 
-Welcome to the Pieces Sublime Plugin.
-The Pieces Sublime plugin is designed to manage your saved materials in Pieces right from within Sublime, and interact seamlessly with Pieces OS.
+The Pieces Sublime plugin is your gateway to managing your saved materials in Pieces directly from within Sublime Text. Seamlessly interact with Pieces OS and enhance your workflow like never before.
 
-To get started, check the settings. If you wish to change the llm model you're using or the host, you can do so in the settings `Preferences > Package Settings > Pieces > Settings`.
+## Features
+### Configuration
 
-### Open Saved Material
+Before diving in, let's ensure everything is set up to your liking. You can customize the LLM model or the host by navigating to:
+`Preferences > Package Settings > Pieces > Settings`.
+You can also open the settings from the command palette `Pieces: Open Settings`.
 
-To open your saved materials, simply open your command palette and run `Pieces: Open Saved Material`. Then, select the asset you wish to open.
+### Right Click to Save to Pieces
 
-#### Edit Saved Materials
+Saving a new snippet in Pieces is a breeze! Just select the code you want to save, right-click to open the context menu, and choose `Pieces > Save to Pieces`. Your code is now safely stored!
 
-To edit a saved material, you'll need to toggle into editor mode. You can do so by tapping `command/ctrl+e`. From there, you will be able to modify the contents of your material and save the changes using `command/ctrl + s`.
+![](https://storage.googleapis.com/pieces_multimedia/PROMOTIONAL/PIECES_FOR_DEVELOPERS/SUBLIME/create.gif)
 
-#### Copy Saved Material
+### Engage with the Pieces Copilot
 
-If you're viewing a saved material, you can quickly copy the asset content without selecting it using `command/ctrl + c`.
+Ever wished for a personal coding assistant? Look no further! With Pieces Copilot, you can have an AI-powered assistant right at your fingertips. Simply open the command palette and select `Pieces: Copilot`. From there, you can ask anything whether it's for coding help, debugging, or even generating snippets to save to Pieces with some clicks.
 
-### Right click to add an asset
-
-To save a new snippet in Pieces, select the code you wish to save, right-click to open the context menu, and select `Pieces > Save to Pieces`.
+![](https://storage.googleapis.com/pieces_multimedia/PROMOTIONAL/PIECES_FOR_DEVELOPERS/SUBLIME/ask%20stream.gif)
 
 ### Copilot Ask
 
-Need the Copilot to comment, fix a bug, or add a doc string? Select some code, right-click to open the context menu, and select Pieces > Ask Copilot.
+Need some help from the Pieces Copilot? Whether it's commenting, fixing a bug, or adding a docstring, just select the code, right-click to open the context menu, and choose `Pieces > Ask Copilot`. Let Copilot do the heavy lifting for you!
+
+![](https://storage.googleapis.com/pieces_multimedia/PROMOTIONAL/PIECES_FOR_DEVELOPERS/SUBLIME/ask.gif)
+
+### Open Saved Materials
+
+Ready to access your saved materials? It's super easy! Just follow these steps:
+
+1. Open your command palette (`Ctrl+Shift+P` or `Cmd+Shift+P`).
+2. Run the command: `Pieces: Open Saved Material`.
+3. Select the asset you wish to open from the list.
+
+Your material is now open and ready for you to use. Happy coding! 
+
+### Edit Saved Materials
+
+Want to make changes to your saved materials? Switch to editor mode by clicking the **Edit** button on your saved snippet. Modify the content as needed and save your changes with a simple `command/ctrl + s`. It's that easy!
+
+![](https://storage.googleapis.com/pieces_multimedia/PROMOTIONAL/PIECES_FOR_DEVELOPERS/SUBLIME/open-edit_snippet.gif)
+
+### Shareable Link
+
+Ever wanted to share a code snippet effortlessly? Select the code, right-click to open the context menu, and choose `Pieces > Generate shareable link`. You can also share a saved material by opening it and clicking the **Share** button. Sharing has never been simpler!
+
+![](https://storage.googleapis.com/pieces_multimedia/PROMOTIONAL/PIECES_FOR_DEVELOPERS/SUBLIME/share.gif)
+
+### Change the LLM Model
+
+Want to customize your Copilot experience? You can easily switch the LLM model to better suit your needs. Open the settings from your command palette by selecting `Pieces: Open Settings`. You can change some configuration and choose the model that works best for you. Tailor your Copilot to be the perfect coding companion!
 
 ### Login/Logout
 
 You can log in and out of your Pieces account using the `Pieces: Login` or `Pieces: Logout` command in your command palette. An output panel is available to check your cloud status and login status.
+
+![](https://storage.googleapis.com/pieces_multimedia/PROMOTIONAL/PIECES_FOR_DEVELOPERS/SUBLIME/auth.gif)
 
 ### Connect or Disconnect your Personal Pieces Cloud
 
@@ -56,6 +89,8 @@ There are three main types of seaching:
 - **Full Text Search**: Full Text Search is a technique used to search for documents or records that contain the exact sequence of words in the search query. It indexes all the words in a document to enable fast and efficient searching.
 
 - **Neural Code Search**: Neural Code Search is a technique that leverages neural networks and machine learning to improve the search and retrieval of code snippets. It allows you to use natural language to describe what you are looking for, capturing the semantics and context of the code to provide more accurate and relevant results.
+
+![](https://storage.googleapis.com/pieces_multimedia/PROMOTIONAL/PIECES_FOR_DEVELOPERS/SUBLIME/search.gif)
 
 ### Reload the Plugin
 
@@ -111,11 +146,11 @@ Explore our collection of awesome Pieces [plugins](https://code.pieces.app/plugi
 Don't forget to check out our YouTube channel for [Power Tips & Best Practices](https://youtube.com/@getpieces)
 
 
-
-
 ### Privacy and Data Collection
 
 We take your privacy seriously. We are committed to ensuring that your data remains private and secure. To that end, we want to make it clear that:
 
 **We do not collect any client side telemetry.**
+
+[Read more about data collection and privacy](https://docs.pieces.app/product-highlights-and-benefits/privacy-security-data)
 
