@@ -52,9 +52,9 @@ class PiecesEventListener(sublime_plugin.EventListener):
 
 	def on_pre_close(self,view):
 		sheet_id = view.settings().get("pieces_sheet_id","")
-		asset_id = PiecesListAssetsCommand.sheets_md[sheet_id]
-		asset_wrapper = AssetSnapshot(asset_id)
-		if sheet_id and sheet_id in PiecesListAssetsCommand.sheets_md:
+		if sheet_id in PiecesListAssetsCommand.sheets_md:
+			asset_id = PiecesListAssetsCommand.sheets_md[sheet_id]
+			asset_wrapper = AssetSnapshot(asset_id)
 			code = asset_wrapper.get_asset_raw()
 			data = view.substr(sublime.Region(0, view.size()))
 			
