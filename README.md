@@ -1,6 +1,6 @@
 # [Pieces for Developers](https://pieces.app) | Sublime Plugin
 
-![Pieces Sublime Plugin](https://github.com/Bishoy-at-pieces/plugin_sublime/assets/167128903/272cf4cc-60ff-4bd4-8701-3e3feb38a8b1)
+![Pieces Sublime Plugin](icons/hero-image.png)
 
 
 ##### <p align="center"> [Website](https://pieces.app/) • [Pieces OS Documentation](https://docs.pieces.app/) • [Pieces Sublime github repository](https://github.com/pieces-app/plugin_sublime)
