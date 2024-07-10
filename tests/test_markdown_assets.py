@@ -29,7 +29,8 @@ class TestMarkdownCommand(DeferrableTestCase):
 		yield 1000
 		edited_view = self.window.active_view()
 		sheet_id = list(PiecesListAssetsCommand.sheets_md.keys())[0]
-		code = PiecesListAssetsCommand.sheets_md[sheet_id]["code"]
+		asset_id = PiecesListAssetsCommand.sheets_md[sheet_id]
+		code = AssetSnapshot(asset_id).get_asset_raw()
 		
 		yield 500
 		self.assertEqual(edited_view.substr(

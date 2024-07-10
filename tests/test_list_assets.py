@@ -30,10 +30,4 @@ class TestListAssetsCommand(DeferrableTestCase):
 		# Make sure the correct asset is generate successfully
 		self.assertEqual(len([sheet for sheet in self.window.sheets() if sheet.id() == sheet_id]),1)
 
-		# Checkout the extracted code
-		code = PiecesListAssetsCommand.sheets_md[sheet_id]["code"]
-		asset_id = PiecesListAssetsCommand.sheets_md[sheet_id]["id"]
-		raw = AssetSnapshot.identifiers_snapshot[asset_id].original.reference.fragment.string.raw
-		self.assertEqual(code,raw)
-
 

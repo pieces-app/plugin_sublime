@@ -14,7 +14,7 @@ A_TAG_STYLE = "padding:2px 5px; background-color: var(--accent); border-radius: 
 HTML_CODE_BUTTON_CONTENT = '<div style="margin-top:2px">{content}</div>'
 
 class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
-	sheets_md = {} # {Sheetid : {code,name,langauge,id}}
+	sheets_md = {} # {Sheetid : asset_id}
 	shareable_link = [] # asset_ids
 	def run(self,pieces_asset_id):
 		self.pieces_asset_id = pieces_asset_id
@@ -38,12 +38,6 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 		
 		markdown_text = api_response.raw.string.raw
 
-		
-		code_block_pattern = r'(```[\s\S]*?\n```)'
-
-		# Find all code blocks
-		code_block = re.findall(code_block_pattern, markdown_text)[0]
-		
 		markdown_text_table = tabulate_from_markdown(markdown_text,buttons = cls.create_html_buttons(sheet.id(),**buttons_kwargs))
 		
 		mdpopups.update_html_sheet(sheet,markdown_text_table,css = ".div_wrapper {margin-left:2rem}",wrapper_class="div_wrapper")
@@ -53,11 +47,7 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 			sheet.set_name(api_response.name)
 		except:
 			pass
-		try:
-			language = AssetSnapshot.identifiers_snapshot[asset_id].original.reference.classification.specific
-		except:
-			language = None
-		cls.sheets_md[sheet.id()] = {"code":"\n".join(code_block.splitlines()[1:-1]),"name":api_response.name,"language":language,"id":asset_id}
+		cls.sheets_md[sheet.id()] = asset_id
 
 	
 	@classmethod
