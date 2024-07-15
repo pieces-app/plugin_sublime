@@ -5,6 +5,7 @@ import mdpopups
 import re
 
 from .assets_snapshot import AssetSnapshot
+from .assets_identifiers_ws import AssetsIdentifiersWS
 from .._pieces_lib.pieces_os_client import *
 from ..settings import PiecesSettings
 

@@ -2,8 +2,7 @@ import sublime_plugin
 import sublime
 from .ask_command import copilot
 from ..assets.list_assets import PiecesAssetIdInputHandler
-from ..assets.utils import AssetSnapshot
-from .._pieces_lib.pieces_os_client import FlattenedAsset,FlattenedAssets
+from ..assets.assets_snapshot import AssetSnapshot
 
 
 RELEVANCE_FILE_TYPES = [
@@ -20,7 +19,7 @@ class PiecesContextManagerCommand(sublime_plugin.TextCommand):
 			else:
 				copilot.relevant[key].iterable.pop(idx)
 		if pieces_asset_id:
-			copilot.add_context(asset = AssetSnapshot.identifiers_snapshot[pieces_asset_id])
+			copilot.add_context(asset = AssetSnapshot.get_asset(pieces_asset_id))
 
 	def is_enabled(self):
 		return self.view.settings().get("PIECES_GPT_VIEW",False)
