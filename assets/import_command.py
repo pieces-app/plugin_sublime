@@ -1,12 +1,12 @@
 import sublime
 import sublime_plugin
-import xml.etree.ElementTree as ET
+
 
 class PiecesImportAssetCommand(sublime_plugin.WindowCommand):
 	def run(self,sublime_snippets):
-		content = sublime.load_resource(sublime_snippets)
-		tree = ET.fromstring(content)
-		content = tree.find('content').text
+		dummy_view = self.window.create_output_panel("pieces_dummy_view",unlisted=True)
+		dummy_view.run_command("insert_snippet", {"name": sublime_snippets})
+		content = dummy_view.substr(sublime.Region(0, self.window.active_view().size()))
 		self.window.views()[0].run_command("pieces_create_asset",{"data":content})
 		
 	def input(self,args):
