@@ -1,6 +1,6 @@
 {
 	"host": "",
-	"model":"GPT-3.5-turbo Chat Model" 
+	"model":"GPT-3.5-turbo Chat Model",
 			//  "GPT-4o Chat Model", 
 			//  "GPT-4 Chat Model", 
 			//  "CodeLlama GPU Chat Model",
@@ -17,4 +17,5 @@
 			//  "NeuralHermes-2.5-Mistral-7B GPU Chat Model", 
 			//  "(PaLM2) Chat Model", 
 			//  "Llama2 CPU Chat Model"
+	"snippet.autocomplete":true // auto complete via Pieces saved snippets or not
 }

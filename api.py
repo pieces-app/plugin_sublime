@@ -7,8 +7,8 @@ import subprocess
 from . import __version__
 from ._pieces_lib import semver
 
-PIECES_OS_MIN_VERSION = "9.0.0"  # Minium version (9.0.0)
-PIECES_OS_MAX_VERSION = "10.0.0" # Maxium version (10.0.0)
+PIECES_OS_MIN_VERSION = "10.0.0"  # Minium version (10.0.0)
+PIECES_OS_MAX_VERSION = "11.0.0" # Maxium version (11.0.0)
 
 def get_version() -> Optional[str]:
 	"""Get pieces os version return None if there is a problem"""

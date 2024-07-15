@@ -1,5 +1,6 @@
 import sublime_plugin
 import sublime
+from .assets_snapshot import AssetSnapshot
 from .._pieces_lib.pieces_os_client import *
 
 from .list_assets import PiecesListAssetsCommand
@@ -35,17 +36,16 @@ class PiecesHandleMarkdownCommand(sublime_plugin.WindowCommand):
 		self.sheet_id = int(self.sheet_id)
 		self.sheet = sublime.Sheet(self.sheet_id)
 
-		sheet_details = None
+		asset_id = None
 		if self.sheet_id:
-			sheet_details = PiecesListAssetsCommand.sheets_md.get(self.sheet_id)
+			asset_id = PiecesListAssetsCommand.sheets_md.get(self.sheet_id)
 
-		if not sheet_details:
+		if not asset_id:
 			return
-		
-		self.code = sheet_details["code"]
-		self.language = sheet_details["language"]
-		self.name = sheet_details["name"]
-		self.asset_id = sheet_details["id"]
+		asset_wrapper = AssetSnapshot(asset_id)
+		self.code = asset_wrapper.get_asset_raw()
+		self.language = asset_wrapper.original_classification_specific()
+		self.name = asset_wrapper.name
 
 		if mode == "copy":
 			sublime.set_clipboard(self.code)

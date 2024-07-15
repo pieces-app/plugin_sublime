@@ -16,14 +16,17 @@ class PiecesCreateAssetCommand(sublime_plugin.TextCommand):
 
 
 		# Getting the metadata
-		try:
-			ext = self.view.file_name().split(".")[-1]
+		if not data:
+			try:
+				ext = self.view.file_name().split(".")[-1]
 
-			if ext in pos_client.ClassificationSpecificEnum:
-				metadata = pos_client.FragmentMetadata(ext=ext)
-			else:
-				raise IndexError
-		except:
+				if ext in pos_client.ClassificationSpecificEnum:
+					metadata = pos_client.FragmentMetadata(ext=ext)
+				else:
+					raise IndexError
+			except:
+				metadata = None
+		else:
 			metadata = None
 		
 		

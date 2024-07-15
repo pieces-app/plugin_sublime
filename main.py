@@ -21,6 +21,7 @@ def startup(settings_model):
 
 	if not pieces_version:
 		print("Couldn't start pieces os\nPlease run pieces os and restart the editor to ensure everything is running properly")
+		return
 	else:
 		if version_check()[0]:
 			PiecesSettings.is_loaded = True

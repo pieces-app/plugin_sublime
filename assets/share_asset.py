@@ -2,7 +2,7 @@ import sublime_plugin
 import sublime
 from .._pieces_lib.pieces_os_client import LinkifyApi,Linkify
 
-from .utils import AssetSnapshot
+from .assets_snapshot import AssetSnapshot
 from .list_assets import PiecesListAssetsCommand
 from .create_asset import PiecesCreateAssetCommand
 from ..settings import PiecesSettings
@@ -22,7 +22,7 @@ class PiecesShareAssetCommand(sublime_plugin.WindowCommand):
 			You need to either give the seed or the asset_id
 		"""
 		if asset_id:
-			kwargs = {"asset" : AssetSnapshot.identifiers_snapshot[asset_id]}
+			kwargs = {"asset" : AssetSnapshot.get_asset(asset_id)}
 		else:
 			kwargs = {"seed" : seed}
 		user = AuthUser.user_profile

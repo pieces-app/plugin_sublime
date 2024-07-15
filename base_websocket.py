@@ -1,22 +1,28 @@
-import sublime
-import sublime_plugin
+from typing import Optional
+from typing_extensions import Self
 from ._pieces_lib import websocket
 import threading
 from abc import ABC, abstractmethod
 
 class BaseWebsocket(ABC):
 	instances = []
+	def __new__(cls,*args,**kwargs):
+		if not hasattr(cls, 'instance'):
+			cls.instance = super(BaseWebsocket, cls).__new__(cls)
+		return cls.instance
 
-	def __init__(self, on_message_callback=None):
+	def __init__(self, on_message_callback,on_open_callbacks=[]):
 		self.ws = None
 		self.thread = None
 		self.running = False
 		self.on_message_callback = on_message_callback
+		self.on_open_callbacks = on_open_callbacks
 
 		BaseWebsocket.instances.append(self)
 
 	@abstractmethod
-	def url(self):
+	def url(self) -> str:
+		"""The URL to connect to. Should be overridden."""
 		pass
 
 
@@ -32,6 +38,8 @@ class BaseWebsocket(ABC):
 
 	def on_open(self, ws):
 		self.running = True
+		for callback in self.on_open_callbacks:
+			callback()
 
 	def run(self):
 		self.ws = websocket.WebSocketApp(
@@ -73,3 +81,13 @@ class BaseWebsocket(ABC):
 	def __str__(self):
 		return getattr(self, "url", self.instances)
 
+	@classmethod
+	def is_running(cls) -> bool:
+		instance = cls.get_instance()
+		if instance:
+			return cls.instance.running
+		return False
+
+	@classmethod
+	def get_instance(cls) -> Optional[Self]:
+		return getattr(cls,'instance',None)

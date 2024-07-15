@@ -2,7 +2,7 @@ from UnitTesting.unittesting import DeferrableTestCase
 import sublime
 
 from Pieces.assets.share_asset import PiecesShareAssetCommand
-from Pieces.assets.utils import AssetSnapshot
+from Pieces.assets.assets_snapshot import AssetSnapshot
 
 class TestShareCommand(DeferrableTestCase):
 	def setUp(self):
