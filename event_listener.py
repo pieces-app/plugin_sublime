@@ -24,7 +24,8 @@ class PiecesEventListener(sublime_plugin.EventListener):
 		"pieces_ask_question":"ask",
 		"pieces_search":"search",
 		"pieces_ask_stream":"copilot",
-		"pieces_share_asset":"share"
+		"pieces_share_asset":"share",
+		"pieces_explain":"explain"
 	}
 	def on_post_text_command(self,window,command_name,args):
 		self.check_onboarding(command_name)

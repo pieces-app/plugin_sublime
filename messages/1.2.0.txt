@@ -1,0 +1,15 @@
+Version 1.2.0
+-------------
+
+
+- Add two more buttons in the Copilot view (Explain,Share)
+- Add Context Menu inside the Copilot view
+- Auto Complete via a snippet
+- New Command "Pieces: Ask about the current project"
+- New Command "Pieces: Ask about the current file"
+- New Command "Pieces: Import Sublime Snippet" to import a Sublime snippet to Pieces
+- New Command "Pieces: Export Pieces Material" to export the Pieces snippet to sublime
+- Pieces Explain command in the right-click context menu 
+- Start conversation about the current selection in the right-click context menu
+- Ask about a Pieces Material
+
