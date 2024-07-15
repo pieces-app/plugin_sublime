@@ -7,8 +7,10 @@ from .assets.assets_snapshot import AssetSnapshot
 from .settings import PiecesSettings
 from .misc import PiecesOnboardingCommand
 from .copilot.ask_command import copilot
+from .copilot.conversation_websocket import ConversationWS
 
 file_map_reverse = {v:k for k,v in file_map.items()}
+
 
 class PiecesEventListener(sublime_plugin.EventListener):
 	commands_to_exclude = ["pieces_onboarding","pieces_reload","pieces_support"]
@@ -21,15 +23,15 @@ class PiecesEventListener(sublime_plugin.EventListener):
 		"pieces_ask_stream":"copilot",
 		"pieces_share_asset":"share"
 	}
-
+	def on_post_text_command(self,window,command_name,args):
+		self.check_onboarding(command_name)
+	def on_post_window_command(self,window,command_name,args):
+		self.check_onboarding(command_name)
 	def on_window_command(self, window, command_name, args):
 		self.check(command_name)
-		self.check_onboarding(command_name)
 		
 	def on_text_command(self,view,command_name,args):
 		self.check(command_name)
-
-		self.check_onboarding(command_name)
 
 		if command_name == "paste": # To avoid pasting in the middle of the view of the copilot
 			self.on_query_context(view,"pieces_copilot_add",True,sublime.OP_EQUAL,True)
@@ -106,9 +108,13 @@ class PiecesEventListener(sublime_plugin.EventListener):
 				# Close the old view and rerender the conversation
 				conversation = view.settings().get("conversation_id")
 				if conversation:
-					on_close = lambda x:copilot.render_conversation(conversation)
-					sublime.set_timeout(lambda: view.close(on_close),5000)# Wait some sec until the conversations is loaded
-					
+					on_open = lambda: view.close(lambda x:copilot.render_conversation(conversation)) # Wait some sec until the conversations is loaded
+					if ConversationWS.is_running():
+						on_open() # Run the command if it is running already
+					else: 
+						instance = ConversationWS.get_instance()
+						if instance:
+							instance.on_open_callbacks.append(on_open)
 				
 	def on_query_completions(self, view:sublime.View, prefix, locations):
 		syntax = view.syntax()

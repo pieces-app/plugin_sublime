@@ -6,11 +6,6 @@ import json
 
 
 class AuthWebsocket(BaseWebsocket):
-	def __new__(cls,*args,**kwargs):
-		if not hasattr(cls, 'instance'):
-			cls.instance = super(AuthWebsocket, cls).__new__(cls)
-		return cls.instance
-
 	@property
 	def url(self):
 		return PiecesSettings.AUTH_WS_URL
