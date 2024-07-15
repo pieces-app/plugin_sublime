@@ -76,3 +76,9 @@ class PiecesConversationIdInputHandler(sublime_plugin.ListInputHandler):
 	def placeholder(self):
 		return "Choose a conversation or start new one"
 
+class PiecesInsertTextCommand(sublime_plugin.TextCommand):
+	def run(self,edit,text,point=None):
+		self.view.window().focus_view(self.view)
+		if not point:
+			point = self.view.sel()[0].begin()
+		self.view.insert(edit,point,text)

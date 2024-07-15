@@ -7,12 +7,15 @@ from .assets.assets_snapshot import AssetSnapshot
 from .settings import PiecesSettings
 from .misc import PiecesOnboardingCommand
 from .copilot.ask_command import copilot
+from .copilot.ask_view import CopilotViewManager
 from .copilot.conversation_websocket import ConversationWS
+
 
 file_map_reverse = {v:k for k,v in file_map.items()}
 
 
 class PiecesEventListener(sublime_plugin.EventListener):
+	secondary_view = None # Used in the ask to know the ssecondary view at insert
 	commands_to_exclude = ["pieces_onboarding","pieces_reload","pieces_support"]
 
 	onboarding_commands_dict = {
@@ -115,7 +118,10 @@ class PiecesEventListener(sublime_plugin.EventListener):
 						instance = ConversationWS.get_instance()
 						if instance:
 							instance.on_open_callbacks.append(on_open)
-				
+	@staticmethod
+	def on_deactivated(view):
+		copilot.secondary_view = view
+
 	def on_query_completions(self, view:sublime.View, prefix, locations):
 		syntax = view.syntax()
 		if not syntax:
@@ -138,6 +144,7 @@ class PiecesEventListener(sublime_plugin.EventListener):
 							details=f"<div><a href='{href}'>More </a></div>")
 						)
 		return sublime.CompletionList(out)
+
 
 class PiecesViewEventListener(sublime_plugin.ViewEventListener):
 	def on_close(self):

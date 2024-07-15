@@ -18,17 +18,21 @@ from ..settings import PiecesSettings
 import re
 from typing import Optional
 
+
 PHANTOM_A_TAG_STYLE = "padding: 4px;background-color: var(--accent); border-radius: 6px;color: var(--foreground);text-decoration: None;text-align: center"
 
 PHANTOM_CONTENT = f"""
 <div style="padding-right:2px">
 	<a style="{PHANTOM_A_TAG_STYLE}" href ="save_{{id}}">{{save}}</a>
 	<a style="{PHANTOM_A_TAG_STYLE}" href="copy_{{id}}">{{copy}}</a>
+	<a style="{PHANTOM_A_TAG_STYLE}" href="share_{{id}}">{{share}}</a>
+	<a style="{PHANTOM_A_TAG_STYLE}" href="insert_{{id}}">{{insert}}</a>
 </div>
 """
 
 class CopilotViewManager:
 	can_type = True
+	_gpt_view = None
 
 	@property
 	def gpt_view(self) -> sublime.View:
@@ -221,7 +225,8 @@ class CopilotViewManager:
 	def relevant(self,relevant):
 		self._relevant = relevant
 
-	def ask(self):
+	def ask(self,relevant=RelevantQGPTSeeds(iterable=[]),pipeline=None):
+
 		query = self.gpt_view.substr(Region(self.end_response,self.gpt_view.size()))
 		if not query:
 			return
@@ -249,7 +254,8 @@ class CopilotViewManager:
 					query=query,
 					relevant = relevance_input,
 					application=PiecesSettings.get_application().id,
-					model = PiecesSettings.model_id
+					model = PiecesSettings.model_id,
+					pipeline=pipeline
 				),
 				conversation = self.conversation_id,
 			))
@@ -297,13 +303,20 @@ class CopilotViewManager:
 			sublime.set_clipboard(code)
 			self.update_phantom_set(region,id,copy="Copied")
 			sublime.set_timeout_async(lambda:self.update_phantom_set(region,id,copy="Copy"),5000)
+		elif command == "share":
+			self.gpt_view.run_command("pieces_generate_shareable_link",{"data":code})
+			self.update_phantom_set(region,id,share="Sharing")
+			sublime.set_timeout_async(lambda:self.update_phantom_set(region,id),5000)
+		elif command == "insert":
+			s = self.secondary_view
+			if s:
+				s.run_command("pieces_insert_text",{"text":code})
 
-	
-	def update_phantom_set(self,region,id,save="Save",copy="Copy",reset = False):
+	def update_phantom_set(self,region,id,save="Save",copy="Copy",share="Share",insert="Insert",reset = False):
 		# Change the text 
 		phantom = sublime.Phantom(
 				region,
-				PHANTOM_CONTENT.format(id = id,copy=copy,save=save),
+				PHANTOM_CONTENT.format(id = id,copy=copy,save=save,share=share,insert=insert),
 				sublime.LAYOUT_BELOW,
 				on_navigate=self.on_nav
 			)
@@ -356,7 +369,27 @@ class CopilotViewManager:
 		self.show_cursor
 		self.end_response = self.gpt_view.size()
 		self.add_code_phantoms()
-	
+    
+	@property
+	def secondary_view(self):
+		return getattr(self,"_secondary_view",None) # Will be updated via event listeners
+	@secondary_view.setter
+	def secondary_view(self,view):
+		if not view.settings().get("PIECES_GPT_VIEW") and view in sublime.active_window().views():
+			self._secondary_view = view
+
+	def clear(self):
+		self.end_response = 0
+		self.conversation_id = None
+		self.can_type = True
+		view = self._gpt_view
+		self._gpt_view = None
+		if not view:
+			return  
+		view.run_command("select_all")
+		view.run_command("delete")
+		self.gpt_view
+
 	def add_query(self,query):
 		self.gpt_view.run_command("append",{"characters":query})
 		self.gpt_view.run_command("pieces_enter_response")

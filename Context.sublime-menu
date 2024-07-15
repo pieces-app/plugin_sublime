@@ -12,6 +12,10 @@
 				"command": "pieces_generate_shareable_link",
 			},
 			{
+				"caption": "Explain",
+				"command": "pieces_explain",
+			},
+			{
 				"id": "pieces-ask",
 				"caption": "Ask Copilot",
 				"children":[
