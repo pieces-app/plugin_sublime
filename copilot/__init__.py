@@ -2,3 +2,6 @@ from .ask_command import PiecesAskStreamCommand,PiecesEnterResponseCommand,Piece
 from .conversation_websocket import ConversationWS
 from .conversations import ConversationsSnapshot
 from .explain import PiecesExplainCommand
+from .context_manager import PiecesContextManagerCommand
+from .ask_about_command import PiecesAskStreamAboutCommand
+

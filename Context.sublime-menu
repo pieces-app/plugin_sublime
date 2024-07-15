@@ -35,6 +35,13 @@
 						"args":{"task":"comment"}
 					}
 				]
+			},
+			{
+				"caption":"Conversation about selection",
+				"command":"pieces_ask_stream_about",
+				"args":{
+					"type":"section"
+				}
 			}
 		]
 	}
