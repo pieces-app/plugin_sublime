@@ -44,11 +44,11 @@ Need some help from the Pieces Copilot? Whether it's commenting, fixing a bug, o
 ### Ask about the current Project/File
 
 - **Ask About the Current Project**: Use the command `Pieces: Ask about the current project` to get to be able to ask the Copilot on your Project.
-- **Ask About the Current File**: Use the command `Pieces: Ask about the current file` to get file-specific assistance.
+- **Ask About the Current File**: Use the command `Pieces: Ask about the current file` to get the current file that is in focus assistance.
 
 ### Sublime Snippet Managment
 - **Import Sublime Snippet**: Use the command `Pieces: Import Sublime Snippet` to import a Sublime snippet into Pieces.
-- **Export Pieces Material**: Use the command Pieces: Export Pieces Material to export a Pieces snippet back to Sublime.
+- **Export Pieces Material**: Use the command `Pieces: Export Pieces Material` to export a Pieces snippet back to Sublime.
 
 ### Open Saved Materials
 
@@ -72,9 +72,11 @@ Ever wanted to share a code snippet effortlessly? Select the code, right-click t
 
 ![](https://storage.googleapis.com/pieces_multimedia/PROMOTIONAL/PIECES_FOR_DEVELOPERS/SUBLIME/share.gif)
 
-### Auto Complete
+### [Auto Complete](https://docs.pieces.app/features/code-completion)
 
-Auto-completion of code via snippets to speed up your coding process, you can turn this settings off from your settings.
+Auto-completion of code via snippets to speed up your coding process.If you have saved Pieces Snippets you get automatic completion via Pieces Snippets for specific language. 
+
+you can turn this settings on/off from your settings.
 > Open your settings from `Pieces: Open Pieces Settings` and overwrite the `snippet.autocomplete` to false to turn the auto-completion off
 
 ### Change the LLM Model
