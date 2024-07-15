@@ -1,7 +1,7 @@
 from UnitTesting.unittesting import DeferrableTestCase
 import sublime
 from Pieces.assets.list_assets import PiecesListAssetsCommand
-from Pieces.assets.utils import AssetSnapshot
+from Pieces.assets.assets_snapshot import AssetSnapshot
 
 
 class TestListAssetsCommand(DeferrableTestCase):
@@ -29,11 +29,5 @@ class TestListAssetsCommand(DeferrableTestCase):
 		sheet_id = list(PiecesListAssetsCommand.sheets_md.keys())[0]
 		# Make sure the correct asset is generate successfully
 		self.assertEqual(len([sheet for sheet in self.window.sheets() if sheet.id() == sheet_id]),1)
-
-		# Checkout the extracted code
-		code = PiecesListAssetsCommand.sheets_md[sheet_id]["code"]
-		asset_id = PiecesListAssetsCommand.sheets_md[sheet_id]["id"]
-		raw = AssetSnapshot.identifiers_snapshot[asset_id].original.reference.fragment.string.raw
-		self.assertEqual(code,raw)
 
 

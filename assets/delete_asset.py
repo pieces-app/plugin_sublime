@@ -1,6 +1,7 @@
 from .._pieces_lib.pieces_os_client import AssetsApi
 from ..settings import PiecesSettings
 from .list_assets import PiecesListAssetsCommand
+from .assets_snapshot import AssetSnapshot
 import sublime
 import sublime_plugin
 
@@ -9,11 +10,11 @@ class PiecesDeleteAssetCommand(sublime_plugin.WindowCommand):
 		
 		if not asset_id:
 			sheet = self.window.active_sheet()
-			sheet_details =  PiecesListAssetsCommand.sheets_md.get(sheet.id())
-			if not sheet_details:
+			asset_id =  PiecesListAssetsCommand.sheets_md.get(sheet.id())
+			if not asset_id:
 				return
-			asset_id = sheet_details["id"]
-			name = sheet_details["name"]
+			asset_wrapper = AssetSnapshot(asset_id)
+			name = asset_wrapper.name
 			msg = f"Are you sure you want to delete '{name}'"
 		else:
 			sheet = None

@@ -2,10 +2,15 @@ import sublime
 import sublime_plugin
 
 from .assets.list_assets import PiecesListAssetsCommand
+from .assets.ext_map import file_map
+from .assets.assets_snapshot import AssetSnapshot
 from .settings import PiecesSettings
 from .misc import PiecesOnboardingCommand
 from .copilot.ask_command import copilot
 from .copilot.conversation_websocket import ConversationWS
+
+file_map_reverse = {v:k for k,v in file_map.items()}
+
 
 class PiecesEventListener(sublime_plugin.EventListener):
 	commands_to_exclude = ["pieces_onboarding","pieces_reload","pieces_support"]
@@ -48,11 +53,11 @@ class PiecesEventListener(sublime_plugin.EventListener):
 		PiecesOnboardingCommand.add_onboarding_settings(**{self.onboarding_commands_dict[command_name] : True})
 
 	def on_pre_close(self,view):
-		sheet_id = view.settings().get("pieces_sheet_id")
-
-		if sheet_id and sheet_id in PiecesListAssetsCommand.sheets_md:
-			code = PiecesListAssetsCommand.sheets_md[sheet_id].get("code")
-			asset_id = PiecesListAssetsCommand.sheets_md[sheet_id].get("id")
+		sheet_id = view.settings().get("pieces_sheet_id","")
+		if sheet_id in PiecesListAssetsCommand.sheets_md:
+			asset_id = PiecesListAssetsCommand.sheets_md[sheet_id]
+			asset_wrapper = AssetSnapshot(asset_id)
+			code = asset_wrapper.get_asset_raw()
 			data = view.substr(sublime.Region(0, view.size()))
 			
 			if data != code:
@@ -103,16 +108,39 @@ class PiecesEventListener(sublime_plugin.EventListener):
 				# Close the old view and rerender the conversation
 				conversation = view.settings().get("conversation_id")
 				if conversation:
-					on_open = lambda: view.close(lambda x:copilot.render_conversation(conversation))# Wait some sec until the conversations is loaded
+					on_open = lambda: view.close(lambda x:copilot.render_conversation(conversation)) # Wait some sec until the conversations is loaded
 					if ConversationWS.is_running():
 						on_open() # Run the command if it is running already
 					else: 
 						instance = ConversationWS.get_instance()
 						if instance:
 							instance.on_open_callbacks.append(on_open)
-
+				
+	def on_query_completions(self, view:sublime.View, prefix, locations):
+		syntax = view.syntax()
+		if not syntax:
+			return
+		classification_enum = file_map_reverse.get(syntax.path)
+		out = []
+		for asset_id in AssetSnapshot.identifiers_snapshot:
+			asset_wrapper = AssetSnapshot(asset_id)
+			if asset_wrapper.original_classification_specific() == classification_enum:
+				content = asset_wrapper.get_asset_raw()
+				
+				if prefix.lower() in asset_wrapper.name.lower().replace(" ","") and prefix != "":
+					href = sublime.command_url("pieces_show_completion_details",{"asset_id":asset_wrapper._asset_id})
+					out.append(
+						sublime.CompletionItem(
+							asset_wrapper.name,
+							annotation="Pieces",
+							completion=content,
+							kind=sublime.KIND_SNIPPET,
+							details=f"<div><a href='{href}'>More </a></div>")
+						)
+		return sublime.CompletionList(out)
 
 class PiecesViewEventListener(sublime_plugin.ViewEventListener):
 	def on_close(self):
 		if self.view.settings().get("PIECES_GPT_VIEW"):
 			copilot.gpt_view = None
+

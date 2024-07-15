@@ -2,7 +2,7 @@ import unittest
 from UnitTesting.unittesting import DeferrableTestCase
 import sublime
 import sublime_plugin
-from Pieces.assets.utils import AssetSnapshot
+from Pieces.assets.assets_snapshot import AssetSnapshot
 from Pieces.search.search_command import (PiecesSearchCommand,
     SearchTypeInputHandler,
     QueryInputHandler)
