@@ -7,8 +7,8 @@ import subprocess
 from . import __version__
 from ._pieces_lib import semver
 
-PIECES_OS_MIN_VERSION = "9.0.0"  # Minium version (9.0.0)
-PIECES_OS_MAX_VERSION = "10.0.0" # Maxium version (10.0.0)
+PIECES_OS_MIN_VERSION = "10.0.0"  # Minium version (10.0.0)
+PIECES_OS_MAX_VERSION = "11.0.0" # Maxium version (11.0.0)
 
 def get_version() -> Optional[str]:
 	"""Get pieces os version return None if there is a problem"""
@@ -63,13 +63,13 @@ def version_check():
 		print("Please update your Pieces Sublime Package is up-to-date. It is not compatible with the current Pieces OS version")
 		print()
 		print_version_details(pieces_os_version, __version__)
-		return False
+		return False,"the Pieces Sublime Package"
 	elif os_version_parsed < min_version_parsed:
 		print("Please update your Pieces OS. It is not compatible with the current package version")
 		print()
 		print_version_details(pieces_os_version, __version__)
-		return False
-	return True
+		return False,"Pieces OS"
+	return True,None
 
 def print_version_details(pieces_os_version, __version__):
 	print(f"Pieces os version: {pieces_os_version}\nPlugin version: {__version__}")

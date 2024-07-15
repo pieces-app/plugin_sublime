@@ -3,19 +3,35 @@ import sublime_plugin
 
 from .assets.list_assets import PiecesListAssetsCommand
 from .settings import PiecesSettings
+from .misc import PiecesOnboardingCommand
 from .copilot.ask_command import copilot
-
+from .copilot.conversation_websocket import ConversationWS
 
 class PiecesEventListener(sublime_plugin.EventListener):
-	commands_to_exclude = ["pieces_handle_markdown","pieces_reload","pieces_support"]
+	commands_to_exclude = ["pieces_onboarding","pieces_reload","pieces_support"]
 
+	onboarding_commands_dict = {
+		"pieces_create_asset":"create",
+		"pieces_list_assets":"open",
+		"pieces_ask_question":"ask",
+		"pieces_search":"search",
+		"pieces_ask_stream":"copilot",
+		"pieces_share_asset":"share"
+	}
+	def on_post_text_command(self,window,command_name,args):
+		self.check_onboarding(command_name)
+	def on_post_window_command(self,window,command_name,args):
+		self.check_onboarding(command_name)
 	def on_window_command(self, window, command_name, args):
 		self.check(command_name)
 		
 	def on_text_command(self,view,command_name,args):
 		self.check(command_name)
+
 		if command_name == "paste": # To avoid pasting in the middle of the view of the copilot
 			self.on_query_context(view,"pieces_copilot_add",True,sublime.OP_EQUAL,True)
+		elif command_name == "cut":
+			self.on_query_context(view,"pieces_copilot_remove",True,sublime.OP_EQUAL,True)
 
 	def check(self,command_name):
 		if command_name.startswith("pieces_") and command_name not in PiecesEventListener.commands_to_exclude: # Check any command 
@@ -26,6 +42,10 @@ class PiecesEventListener(sublime_plugin.EventListener):
 				return False
 		return None
 	
+	def check_onboarding(self,command_name):
+		if command_name not in self.onboarding_commands_dict:
+			return
+		PiecesOnboardingCommand.add_onboarding_settings(**{self.onboarding_commands_dict[command_name] : True})
 
 	def on_pre_close(self,view):
 		sheet_id = view.settings().get("pieces_sheet_id")
@@ -42,7 +62,9 @@ class PiecesEventListener(sublime_plugin.EventListener):
 					del view.settings()["pieces_sheet_id"]
 					return
 			sublime.active_window().run_command("pieces_list_assets",{"pieces_asset_id":asset_id})
-	
+
+
+
 	def on_query_context(self,view,key, operator, operand, match_all):
 		if key == "save_pieces_asset":
 			return view.settings().get("pieces_sheet_id")
@@ -81,12 +103,13 @@ class PiecesEventListener(sublime_plugin.EventListener):
 				# Close the old view and rerender the conversation
 				conversation = view.settings().get("conversation_id")
 				if conversation:
-					on_close = lambda x:copilot.render_conversation(conversation)
-					sublime.set_timeout(lambda: view.close(on_close),5000)# Wait some sec until the conversations is loaded
-					
-				
-				
-				
+					on_open = lambda: view.close(lambda x:copilot.render_conversation(conversation))# Wait some sec until the conversations is loaded
+					if ConversationWS.is_running():
+						on_open() # Run the command if it is running already
+					else: 
+						instance = ConversationWS.get_instance()
+						if instance:
+							instance.on_open_callbacks.append(on_open)
 
 
 class PiecesViewEventListener(sublime_plugin.ViewEventListener):

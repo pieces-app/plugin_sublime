@@ -21,15 +21,13 @@ def startup(settings_model):
 
 	if not pieces_version:
 		print("Couldn't start pieces os\nPlease run pieces os and restart the editor to ensure everything is running properly")
+		return
 	else:
-		if version_check():
+		if version_check()[0]:
 			PiecesSettings.is_loaded = True
 			PiecesSettings.get_application()
 			print_version_details(pieces_version, __version__)
-
-			
 			PiecesSettings.models_init(settings_model) # Intilize the models
-	
 
 	# WEBSOCKETS:
 	# Assets Identifiers Websocket
@@ -37,11 +35,16 @@ def startup(settings_model):
 	
 	# User Weboscket
 	PiecesSettings.create_auth_output_panel()
+
 	AuthWebsocket(AuthUser.on_user_callback).start() # Load the stream user websocket
 
 	# Conversation Websocket
 	ConversationWS(ConversationsSnapshot.streamed_identifiers_callback).start()
 
+	# Lunch Onboarding if it is the first time
+	if not PiecesOnboardingCommand.get_onboarding_settings().get("lunch_onboarding",False):
+		sublime.active_window().run_command("pieces_onboarding")
+		PiecesOnboardingCommand.add_onboarding_settings(lunch_onboarding=True)
 
 def plugin_loaded():
 	global settings # Set it to global to use 

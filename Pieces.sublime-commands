@@ -33,6 +33,10 @@
 		"command": "pieces_reload"
 	},
 	{
+		"caption": "Pieces: Launch Onboarding",
+		"command": "pieces_onboarding"
+	},
+	{
 		"caption": "Pieces: Copilot",
 		"command": "pieces_ask_stream"
 	},
@@ -51,7 +55,7 @@
 		"args":
             {
                 "base_file": "${packages}/Pieces/Pieces.sublime-settings",
-                "default": "${packages}/User/Default.sublime-settings"
+                "default": "\n{\n\t$0\n}\n"
             }
 	},
 	{

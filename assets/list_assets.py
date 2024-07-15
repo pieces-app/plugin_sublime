@@ -3,6 +3,7 @@ import sublime
 import mdpopups
 import re
 
+from .assets_identifiers_ws import AssetsIdentifiersWS
 from .utils import tabulate_from_markdown,AssetSnapshot
 from .._pieces_lib.pieces_os_client import *
 from ..settings import PiecesSettings
@@ -81,7 +82,7 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 		return PiecesAssetIdInputHandler()
 
 	def is_enabled(self):
-		return PiecesSettings().is_loaded
+		return PiecesSettings().is_loaded and AssetsIdentifiersWS.is_running()
 
 
 

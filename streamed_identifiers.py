@@ -22,7 +22,6 @@ Example:
 """
 
 import queue
-import threading
 from typing import Dict, Union, Callable
 from ._pieces_lib.pieces_os_client import Conversation, StreamedIdentifiers, Asset
 import sublime

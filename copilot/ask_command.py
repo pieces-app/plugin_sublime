@@ -1,8 +1,9 @@
-from .._pieces_lib.pieces_os_client import AnnotationApi,Seeds,FlattenedAssets
 import sublime_plugin
 import sublime
 from .ask_view import CopilotViewManager
 from .conversations import ConversationsSnapshot
+from .conversation_websocket import ConversationWS
+from .._pieces_lib.pieces_os_client import AnnotationApi,Seeds,FlattenedAssets
 from ..settings import PiecesSettings
 from typing import Optional
 
@@ -20,7 +21,7 @@ class PiecesAskStreamCommand(sublime_plugin.WindowCommand):
 		return PiecesChooseTypeInputHandler()
 
 	def is_enabled(self):
-		return PiecesSettings().is_loaded
+		return PiecesSettings().is_loaded and ConversationWS.is_running()
 
 class PiecesChooseTypeInputHandler(sublime_plugin.ListInputHandler):
 	def list_items(self):

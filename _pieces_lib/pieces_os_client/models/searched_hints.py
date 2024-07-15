@@ -19,16 +19,18 @@ import re  # noqa: F401
 import json
 
 
-from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field
+from typing import List, Optional
+from Pieces._pieces_lib.pydantic import BaseModel, Field, conlist
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
+from Pieces._pieces_lib.pieces_os_client.models.searched_hint import SearchedHint
 
-class UncheckedOSUpdate(BaseModel):
+class SearchedHints(BaseModel):
     """
-    This is the input body for /os/update/check, just a placeholder for now.  # noqa: E501
+    This is the plural Model used to return many SearchedHint.  # noqa: E501
     """
-    var_schema: Optional[EmbeddedModelSchema] = Field(None, alias="schema")
-    __properties = ["schema"]
+    var_schema: Optional[EmbeddedModelSchema] = Field(default=None, alias="schema")
+    iterable: conlist(SearchedHint) = Field(...)
+    __properties = ["schema", "iterable"]
 
     class Config:
         """Pydantic configuration"""
@@ -44,8 +46,8 @@ class UncheckedOSUpdate(BaseModel):
         return json.dumps(self.to_dict())
 
     @classmethod
-    def from_json(cls, json_str: str) -> UncheckedOSUpdate:
-        """Create an instance of UncheckedOSUpdate from a JSON string"""
+    def from_json(cls, json_str: str) -> SearchedHints:
+        """Create an instance of SearchedHints from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self):
@@ -57,19 +59,27 @@ class UncheckedOSUpdate(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of var_schema
         if self.var_schema:
             _dict['schema'] = self.var_schema.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in iterable (list)
+        _items = []
+        if self.iterable:
+            for _item in self.iterable:
+                if _item:
+                    _items.append(_item.to_dict())
+            _dict['iterable'] = _items
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: dict) -> UncheckedOSUpdate:
-        """Create an instance of UncheckedOSUpdate from a dict"""
+    def from_dict(cls, obj: dict) -> SearchedHints:
+        """Create an instance of SearchedHints from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
-            return UncheckedOSUpdate.parse_obj(obj)
+            return SearchedHints.parse_obj(obj)
 
-        _obj = UncheckedOSUpdate.parse_obj({
-            "var_schema": EmbeddedModelSchema.from_dict(obj.get("schema")) if obj.get("schema") is not None else None
+        _obj = SearchedHints.parse_obj({
+            "var_schema": EmbeddedModelSchema.from_dict(obj.get("schema")) if obj.get("schema") is not None else None,
+            "iterable": [SearchedHint.from_dict(_item) for _item in obj.get("iterable")] if obj.get("iterable") is not None else None
         })
         return _obj
 

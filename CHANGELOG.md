@@ -1,5 +1,46 @@
 # CHANGELOG
-# 1.0.0
+# [1.1.0](https://github.com/pieces-app/plugin_sublime/milestone/2)
+## June 26th, 2024
+
+- Use mini html in the onboarding flow
+- Add more commands to the onboarding flow
+
+## June 20th, 2024
+
+- Add about command
+- Add Shareable link command
+
+## June 18th, 2024
+
+- Vendoring (we were installing the dependencies from github now it's inside the project)
+
+## June 14th, 2024
+
+- Refactor the ask command (better git algo and highlights)
+
+## June 13th, 2024
+
+- Added Copilot buttons (copy,save)
+
+## June 12th, 2024
+
+- Added Conversations
+
+## June 10th, 2024
+
+- Added Copilot and the chatgpt view
+
+## June 3rd, 2024
+
+- Fix the Snippets order in the "Pieces: Open saved material"
+
+## May 27th, 2024
+
+- Add the first Onboarding flow (Without the minihtml using phantoms)
+- Add some commands (create,ask,open) to the flow
+
+# [1.0.0](https://github.com/pieces-app/plugin_sublime/milestone/1)
+
 ## June 12th, 2024
 
 - Add open Pieces OS command to quickly open Piece OS
