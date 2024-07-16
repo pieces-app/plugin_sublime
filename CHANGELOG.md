@@ -1,4 +1,30 @@
 # CHANGELOG
+# [1.2.0](https://github.com/pieces-app/plugin_sublime/milestone/3)
+
+##  Jul 15, 2024
+
+- Fix some bugs (onboarding,event listners, context, explain)
+
+## July 10th, 2024
+
+- Some assets preformance boosts and better memeory usages
+- Creating assets wrapper class
+
+## July 8th, 2024
+
+- Add Export snippet command
+- Add Import snippet command
+- Add snippet auto-complete
+
+## July 4th, 2024
+
+- add Explain command
+- add new buttons in the Copilot view (Insert, Share)
+
+## July 1th, 2024
+
+- Add context menu managment 
+
 # [1.1.0](https://github.com/pieces-app/plugin_sublime/milestone/2)
 ## June 26th, 2024
 
