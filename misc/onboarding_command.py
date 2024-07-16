@@ -87,19 +87,25 @@ html_template = """
 			</div>
 		</div>
 		<div class="step">
-			<div class="step-title">Step 7: Explore the Features</div>
+			<div class="step-title">Step 7: Explain</div>
+			<div class="step-description">
+				{explain_status}
+			</div>
+		</div>
+		<div class="step">
+			<div class="step-title">Step 8: Explore the Features</div>
 			<div class="step-description">
 				Check out the <a href="https://example.com/docs">documentation</a> to learn about all the features and how to use them effectively.
 			</div>
 		</div>
 		<div class="step">
-			<div class="step-title">Step 8: Get Support</div>
+			<div class="step-title">Step 9: Get Support</div>
 			<div class="step-description">
 				Feeling stuck or encountering bugs? No worries! Head over to your command palette and select <code><a href="subl:pieces_support">Pieces: Get Support</a></code>. You'll discover a treasure trove of useful resources to help you out!
 			</div>
 		</div>
 		<div class="step">
-			<div class="step-title">Step 9: Join the Community</div>
+			<div class="step-title">Step 10: Join the Community</div>
 			<div class="step-description">
 				Don't forget to join our <a href="https://docs.pieces.app/community/">community</a><br>
 				Don't forget also to check the <a href="subl:pieces_about">Pieces: About</a> command for your command palette.
@@ -154,6 +160,7 @@ class PiecesOnboardingCommand(sublime_plugin.WindowCommand):
 			"search_status":self.search_command_status(),
 			"ask_status":self.ask_question_command_status(),
 			"copilot_status":self.copilot_status(),
+			"explain_status":self.explain_status(),
 			"css":CSS,
 		}
 		sheet.set_contents(html_template.format(**kwargs))
@@ -231,6 +238,12 @@ class PiecesOnboardingCommand(sublime_plugin.WindowCommand):
 		if settings.get("share"):
 			return green("Shared your Snippet successfully")
 		return f"{subl_onboarding_commands('Generate a shareable link','share')} to share it with others"
+	
+	def explain_status(self):
+		settings= self.get_onboarding_settings()
+		if settings.get("explain"):
+			return green("You asked for the Copilot explanation")
+		return f'Want help with a code block that you can\'t understand? Ask Pieces for code {subl_onboarding_commands("explanation","explain")}'
 
 	@classmethod
 	def get_onboarding_settings(cls):
@@ -289,6 +302,9 @@ class PiecesOnboardingCommandsCommand(sublime_plugin.WindowCommand):
 				"Share a Snippet ✉",
 				"Right click to open your context menu Then go to 'Pieces > Generate Shareable Link'"
 				)
+		elif cmd == "explain":
+			self.create_onboarding_view(snippet_create,"Explain.py","Right click to open your context menu Then go to 'Pieces > Explain'")
+
 	def create_onboarding_view(self,snippet,name,popup_text):
 		new_file = self.window.new_file(syntax="Packages/Python/Python.sublime-syntax")
 		new_file.run_command("append",{"characters":snippet})

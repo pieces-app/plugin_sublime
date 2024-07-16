@@ -26,20 +26,26 @@ You can also open the settings from the command palette `Pieces: Open Settings`.
 ### Right Click to Save to Pieces
 
 Saving a new snippet in Pieces is a breeze! Just select the code you want to save, right-click to open the context menu, and choose `Pieces > Save to Pieces`. Your code is now safely stored!
-
 ![](https://storage.googleapis.com/pieces_multimedia/PROMOTIONAL/PIECES_FOR_DEVELOPERS/SUBLIME/create.gif)
 
 ### Engage with the Pieces Copilot
 
 Ever wished for a personal coding assistant? Look no further! With Pieces Copilot, you can have an AI-powered assistant right at your fingertips. Simply open the command palette and select `Pieces: Copilot`. From there, you can ask anything whether it's for coding help, debugging, or even generating snippets to save to Pieces with some clicks.
-
 ![](https://storage.googleapis.com/pieces_multimedia/PROMOTIONAL/PIECES_FOR_DEVELOPERS/SUBLIME/ask%20stream.gif)
 
 ### Copilot Ask
 
 Need some help from the Pieces Copilot? Whether it's commenting, fixing a bug, or adding a docstring, just select the code, right-click to open the context menu, and choose `Pieces > Ask Copilot`. Let Copilot do the heavy lifting for you!
-
 ![](https://storage.googleapis.com/pieces_multimedia/PROMOTIONAL/PIECES_FOR_DEVELOPERS/SUBLIME/ask.gif)
+
+### Ask about the current Project/File
+
+- **Ask About the Current Project**: Use the command `Pieces: Ask about the current project` to get to be able to ask the Copilot on your Project.
+- **Ask About the Current File**: Use the command `Pieces: Ask about the current file` to get the current file that is in focus assistance.
+
+### Sublime Snippet Managment
+- **Import Sublime Snippet**: Use the command `Pieces: Import Sublime Snippet` to import a Sublime snippet into Pieces.
+- **Export Pieces Material**: Use the command `Pieces: Export Pieces Material` to export a Pieces snippet back to Sublime.
 
 ### Open Saved Materials
 
@@ -54,14 +60,19 @@ Your material is now open and ready for you to use. Happy coding!
 ### Edit Saved Materials
 
 Want to make changes to your saved materials? Switch to editor mode by clicking the **Edit** button on your saved snippet. Modify the content as needed and save your changes with a simple `command/ctrl + s`. It's that easy!
-
 ![](https://storage.googleapis.com/pieces_multimedia/PROMOTIONAL/PIECES_FOR_DEVELOPERS/SUBLIME/open-edit_snippet.gif)
 
 ### Shareable Link
 
 Ever wanted to share a code snippet effortlessly? Select the code, right-click to open the context menu, and choose `Pieces > Generate shareable link`. You can also share a saved material by opening it and clicking the **Share** button. Sharing has never been simpler!
-
 ![](https://storage.googleapis.com/pieces_multimedia/PROMOTIONAL/PIECES_FOR_DEVELOPERS/SUBLIME/share.gif)
+
+### [Auto Complete](https://docs.pieces.app/features/code-completion)
+
+Auto-completion of code via snippets to speed up your coding process.If you have saved Pieces Snippets you get automatic completion via Pieces Snippets for specific language. 
+
+You can turn this settings on/off from your settings.
+> Open your settings from `Pieces: Open Pieces Settings` and overwrite the `snippet.autocomplete` to false to turn the auto-completion off
 
 ### Change the LLM Model
 
@@ -70,7 +81,6 @@ Want to customize your Copilot experience? You can easily switch the LLM model t
 ### Login/Logout
 
 You can log in and out of your Pieces account using the `Pieces: Login` or `Pieces: Logout` command in your command palette. An output panel is available to check your cloud status and login status.
-
 ![](https://storage.googleapis.com/pieces_multimedia/PROMOTIONAL/PIECES_FOR_DEVELOPERS/SUBLIME/auth.gif)
 
 ### Connect or Disconnect your Personal Pieces Cloud

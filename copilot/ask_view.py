@@ -225,8 +225,7 @@ class CopilotViewManager:
 	def relevant(self,relevant):
 		self._relevant = relevant
 
-	def ask(self,relevant=RelevantQGPTSeeds(iterable=[]),pipeline=None):
-
+	def ask(self,pipeline=None):
 		query = self.gpt_view.substr(Region(self.end_response,self.gpt_view.size()))
 		if not query:
 			return
@@ -234,9 +233,9 @@ class CopilotViewManager:
 		self.select_end # got to the end of the text to enter the new lines
 		self.new_line()
 		self.remove_context_phantom()
-		sublime.set_timeout_async(lambda: self.run_ask_async(query))
+		sublime.set_timeout_async(lambda: self.run_ask_async(query,pipeline))
 
-	def run_ask_async(self,query):
+	def run_ask_async(self,query,pipeline):
 		if self._relevant:
 			relevance_input = QGPTApi(PiecesSettings.api_client).relevance(QGPTRelevanceInput(
 				query=query,
