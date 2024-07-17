@@ -113,7 +113,7 @@ html_template = """
 		</div>
 		<p>Enjoy using the Package! :)</p>
 		<a href="subl:pieces_onboarding">Reload the view</a>
-		<a href="subl:pieces_reset_onboarding">Rest Onboarding</a>
+		<a href="subl:pieces_reset_onboarding">Reset Onboarding</a>
 	</div>
 </body>
 """	
@@ -315,6 +315,6 @@ class PiecesOnboardingCommandsCommand(sublime_plugin.WindowCommand):
 
 class PiecesResetOnboardingCommand(sublime_plugin.WindowCommand):
 	def run(self):
-		if sublime.yes_no_cancel_dialog("Are you sure you want to rest your onboarding progress"):
+		if sublime.yes_no_cancel_dialog("Are you sure you want to reset your onboarding progress"):
 			os.remove(PiecesOnboardingCommand.ONBOARDING_SETTINGS_PATH)
 			self.window.run_command("pieces_onboarding")
