@@ -21,3 +21,5 @@ class PiecesExplainCommand(sublime_plugin.TextCommand):
 				)
 		)
 
+	def is_enabled(self):
+		return PiecesSettings().is_loaded

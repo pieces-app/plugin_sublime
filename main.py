@@ -16,11 +16,13 @@ from .base_websocket import BaseWebsocket
 
 
 def startup(settings_model):
-	pieces_version = open_pieces_os()
+	pieces_version = None
+	if PiecesSettings.get_settings().get("auto_start_pieces_os"):
+		pieces_version = open_pieces_os()
 
 
 	if not pieces_version:
-		print("Couldn't start pieces os\nPlease run pieces os and restart the editor to ensure everything is running properly")
+		print("Couldn't start pieces OS\nPlease run Pieces OS and restart the editor to ensure everything is running properly")
 		return
 	else:
 		if version_check()[0]:
