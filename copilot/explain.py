@@ -8,13 +8,13 @@ from ..assets.create_asset import PiecesCreateAssetCommand
 class PiecesExplainCommand(sublime_plugin.TextCommand):
 	def run(self,edit):
 		copilot.clear()
-		if self.view.name():
-			ext = self.view.name().split(".")[-1]
+		if self.view.file_name():
+			ext = self.view.file_name().split(".")[-1]
 		else: ext = 'txt'
 		seed = PiecesCreateAssetCommand(self.view).get_seeds()
 		query = f"Can you explain this \n```{ext}\n{seed.asset.format.fragment.string.raw}\n```"
 		copilot.add_query(query)
-		copilot.add_context(seed=seed)
+		# copilot.add_context(seed=seed)
 		copilot.ask(
 			pipeline=QGPTTaskPipeline(
 				code_explanation=QGPTTaskPipelineForCodeExplanation()

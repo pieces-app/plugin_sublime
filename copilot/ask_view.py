@@ -65,6 +65,7 @@ class CopilotViewManager:
 			self.copilot_regions = []
 			self.show_cursor
 			self.update_status_bar()
+			self._relevant = {}
 			# self.render_copilot_image_phantom(CopilotViewManager._gpt_view)
 
         
@@ -82,7 +83,6 @@ class CopilotViewManager:
 			sublime.active_window().focus_group(1)
 
 			# Relevant
-			self._relevant = {}
 
 		return CopilotViewManager._gpt_view
 		
@@ -391,5 +391,4 @@ class CopilotViewManager:
 
 	def add_query(self,query):
 		self.gpt_view.run_command("append",{"characters":query})
-		self.gpt_view.run_command("pieces_enter_response")
 
