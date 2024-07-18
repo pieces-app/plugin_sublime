@@ -15,6 +15,7 @@ class PiecesAskStreamCommand(sublime_plugin.WindowCommand):
 		copilot.render_conversation(pieces_conversation_id)
 		if pieces_query:
 			copilot.add_query(pieces_query)
+			self.window.active_view().run_command("pieces_enter_response")
 		return
 
 	def input(self,args):
