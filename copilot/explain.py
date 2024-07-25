@@ -1,9 +1,9 @@
 import sublime_plugin
-import sublime
 from .._pieces_lib.pieces_os_client import (QGPTTaskPipeline,
 											QGPTTaskPipelineForCodeExplanation)
 from .ask_command import copilot
 from ..assets.create_asset import PiecesCreateAssetCommand
+from ..settings import PiecesSettings
 
 class PiecesExplainCommand(sublime_plugin.TextCommand):
 	def run(self,edit):

@@ -48,7 +48,7 @@ html_template = """
 		{css}
 	</style>
 	<div class="container">
-		<h1>Welcome to Pieces For Deveopers!</h1>
+		<h1>Welcome to Pieces for Developers!</h1>
 		<p>Follow these steps to get started:</p>
 		<div class="step">
 			<div class="step-title">Step 1: Pieces OS Installation</div>
