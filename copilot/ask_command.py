@@ -22,7 +22,7 @@ class PiecesAskStreamCommand(sublime_plugin.WindowCommand):
 		return PiecesChooseTypeInputHandler()
 
 	def is_enabled(self):
-		return PiecesSettings().is_loaded and ConversationWS.is_running()
+		return PiecesSettings.is_loaded and ConversationWS.is_running()
 
 class PiecesChooseTypeInputHandler(sublime_plugin.ListInputHandler):
 	def list_items(self):
@@ -52,7 +52,7 @@ class PiecesEnterResponseCommand(sublime_plugin.TextCommand):
 		copilot.ask()
 
 	def is_enabled(self):
-		return PiecesSettings().is_loaded
+		return PiecesSettings.is_loaded
 
 
 class PiecesConversationIdInputHandler(sublime_plugin.ListInputHandler):

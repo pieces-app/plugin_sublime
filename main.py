@@ -2,6 +2,7 @@ from . import __version__
 from .api import open_pieces_os,print_version_details,version_check
 from .settings import PiecesSettings
 from .copilot.ask_command import copilot
+from .health_ws import HealthWS
 import sublime
 
 # load the commands
@@ -27,9 +28,11 @@ def startup(settings_model):
 	else:
 		if version_check()[0]:
 			PiecesSettings.is_loaded = True
+			PiecesSettings.compatible = True
 			PiecesSettings.get_application()
 			print_version_details(pieces_version, __version__)
 			PiecesSettings.models_init(settings_model) # Intilize the models
+		else: return
 
 	# WEBSOCKETS:
 	# Assets Identifiers Websocket
@@ -42,6 +45,9 @@ def startup(settings_model):
 
 	# Conversation Websocket
 	ConversationWS(ConversationsSnapshot.streamed_identifiers_callback).start()
+
+	# Health websocket
+	HealthWS().start()
 
 	# Lunch Onboarding if it is the first time
 	if not PiecesOnboardingCommand.get_onboarding_settings().get("lunch_onboarding",False):

@@ -18,7 +18,8 @@ class BaseWebsocket(ABC):
 		self.on_message_callback = on_message_callback
 		self.on_open_callbacks = on_open_callbacks
 
-		BaseWebsocket.instances.append(self)
+		if self not in BaseWebsocket.instances:
+			BaseWebsocket.instances.append(self)
 
 	@abstractmethod
 	def url(self) -> str:

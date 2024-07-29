@@ -14,12 +14,10 @@ class PiecesSettings:
 	host = ""
 	model_name = ""
 	api_client = None
-	_is_loaded = False # is the plugin loaded
-	_color_scheme = None # default color scheme
+	is_loaded = False # is the plugin loaded
+	compatible  = False # compatible?
 
 	ONBOARDING_SYNTAX = "Packages/Pieces/syntax/Onboarding.sublime-syntax"
-	ONBOARDING_COLOR_SCHEME = "User/Pieces/Pieces.hidden-color-scheme"
-
 	
 	on_model_change_callbacks = [] # If the model change a function should be runned
 
@@ -32,18 +30,6 @@ class PiecesSettings:
 	if not os.path.exists(PIECES_USER_DIRECTORY):
 		os.makedirs(PIECES_USER_DIRECTORY)
 
-	@property
-	def is_loaded(self):
-		sublime.set_timeout_async(self.get_health,0)
-		return self._is_loaded
-
-
-
-	@is_loaded.setter
-	def is_loaded(self,is_loaded):
-		self._is_loaded = is_loaded
-
-
 
 	@classmethod
 	def get_health(cls):
@@ -55,9 +41,7 @@ class PiecesSettings:
 		"""
 		try:
 			health = pos_client.WellKnownApi(cls.api_client).get_well_known_health()
-			health = health == "ok"
-			cls._is_loaded = health
-			return health
+			return health == "ok"
 		except:
 			return False
 
@@ -83,6 +67,7 @@ class PiecesSettings:
 		cls.AUTH_WS_URL = ws_base_url + "/user/stream"
 		cls.ASK_STREAM_WS_URL = ws_base_url + "/qgpt/stream"
 		cls.CONVERSATION_WS_URL = ws_base_url + "/conversations/stream/identifiers"
+		cls.HEALTH_WS_URL = ws_base_url + "/.well-known/stream/health"
 
 		configuration = pos_client.Configuration(host=cls.host)
 

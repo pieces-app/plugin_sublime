@@ -23,5 +23,7 @@ class PiecesReloadCommand(sublime_plugin.ApplicationCommand):
 	def run_reload_async():
 		PiecesSettings.on_settings_change(all = True)
 		BaseWebsocket.reconnect_all()
-		PiecesSettings.is_loaded = True
 		sublime.status_message(f"Reloading [completed]")
+
+	def is_enabled(self) -> bool:
+		return PiecesSettings.is_loaded

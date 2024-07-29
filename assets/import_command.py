@@ -1,5 +1,6 @@
 import sublime
 import sublime_plugin
+from ..settings import PiecesSettings
 
 
 class PiecesImportAssetCommand(sublime_plugin.WindowCommand):
@@ -12,9 +13,13 @@ class PiecesImportAssetCommand(sublime_plugin.WindowCommand):
 	def input(self,args):
 		return SublimeSnippetsInputHandler()
 
+	def is_enabled(self):
+		return PiecesSettings.is_loaded
+
 class SublimeSnippetsInputHandler(sublime_plugin.ListInputHandler):
 	def list_items(self):
 		snippets = sublime.find_resources("*.sublime-snippet")
 		return [
 			(snippet,snippet) for snippet in snippets
 		]
+	
