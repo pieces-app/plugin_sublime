@@ -106,7 +106,7 @@ class PiecesExportAssetToSublimeCommand(sublime_plugin.WindowCommand):
 		self.sheet.close(lambda x:self._instances.remove(self))
 
 	def is_enabled(self):
-		return PiecesSettings().is_loaded
+		return PiecesSettings.is_loaded
 
 class PiecesSaveSublimeSnippetCommand(sublime_plugin.WindowCommand):
 	SNIPPETS_DIR = os.path.join(PiecesSettings.PIECES_USER_DIRECTORY, "snippets")
@@ -129,7 +129,7 @@ class PiecesSaveSublimeSnippetCommand(sublime_plugin.WindowCommand):
 		instance.close_sheet()
 
 	def is_enabled(self):
-		return PiecesSettings().is_loaded
+		return PiecesSettings.is_loaded
 
 class PiecesEditSnippetSheetCommand(sublime_plugin.WindowCommand):
 	def run(self,field:str,sheet_id):
@@ -150,5 +150,5 @@ class PiecesEditSnippetSheetCommand(sublime_plugin.WindowCommand):
 		self.instance.update_sheet()
 
 	def is_enabled(self):
-		return PiecesSettings().is_loaded
+		return PiecesSettings.is_loaded
 

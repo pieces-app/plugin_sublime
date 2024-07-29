@@ -89,7 +89,7 @@ class PiecesSearchCommand(sublime_plugin.WindowCommand):
 					return {id:identifiers_snapshot.get(id) for id in combined_ids if identifiers_snapshot.get(id)}
 
 	def is_enabled(self):
-		return PiecesSettings().is_loaded
+		return PiecesSettings.is_loaded
 
 	def input(self,args):
 		return SearchTypeInputHandler()

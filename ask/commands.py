@@ -31,7 +31,7 @@ description_needed_commands = {
 
 class PiecesAskQuestionCommand(sublime_plugin.TextCommand):
 	def is_enabled(self):
-		return PiecesSettings().is_loaded
+		return PiecesSettings.is_loaded
 
 
 	def run(self,edit, task):

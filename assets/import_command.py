@@ -14,7 +14,7 @@ class PiecesImportAssetCommand(sublime_plugin.WindowCommand):
 		return SublimeSnippetsInputHandler()
 
 	def is_enabled(self):
-		return PiecesSettings().is_loaded
+		return PiecesSettings.is_loaded
 
 class SublimeSnippetsInputHandler(sublime_plugin.ListInputHandler):
 	def list_items(self):

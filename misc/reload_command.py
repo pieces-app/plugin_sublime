@@ -26,4 +26,4 @@ class PiecesReloadCommand(sublime_plugin.ApplicationCommand):
 		sublime.status_message(f"Reloading [completed]")
 
 	def is_enabled(self) -> bool:
-		return PiecesSettings.enable_restart_command
+		return PiecesSettings.is_loaded

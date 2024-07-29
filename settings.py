@@ -14,8 +14,8 @@ class PiecesSettings:
 	host = ""
 	model_name = ""
 	api_client = None
-	_is_loaded = False # is the plugin loaded
-	enable_restart_command = False # enable the restart command if pos version is compatible
+	is_loaded = False # is the plugin loaded
+	compatible  = False # compatible?
 
 	ONBOARDING_SYNTAX = "Packages/Pieces/syntax/Onboarding.sublime-syntax"
 	
@@ -30,18 +30,6 @@ class PiecesSettings:
 	if not os.path.exists(PIECES_USER_DIRECTORY):
 		os.makedirs(PIECES_USER_DIRECTORY)
 
-	@property
-	def is_loaded(self):
-		sublime.set_timeout_async(self.get_health,0)
-		return self._is_loaded
-
-
-
-	@is_loaded.setter
-	def is_loaded(self,is_loaded):
-		self._is_loaded = is_loaded
-
-
 
 	@classmethod
 	def get_health(cls):
@@ -53,9 +41,7 @@ class PiecesSettings:
 		"""
 		try:
 			health = pos_client.WellKnownApi(cls.api_client).get_well_known_health()
-			health = health == "ok"
-			cls._is_loaded = health
-			return health
+			return health == "ok"
 		except:
 			return False
 

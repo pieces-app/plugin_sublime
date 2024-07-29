@@ -28,7 +28,7 @@ def startup(settings_model):
 	else:
 		if version_check()[0]:
 			PiecesSettings.is_loaded = True
-			PiecesSettings.enable_restart_command = True
+			PiecesSettings.compatible = True
 			PiecesSettings.get_application()
 			print_version_details(pieces_version, __version__)
 			PiecesSettings.models_init(settings_model) # Intilize the models

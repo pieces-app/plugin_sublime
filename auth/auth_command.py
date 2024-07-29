@@ -20,7 +20,7 @@ class PiecesLoginCommand(sublime_plugin.WindowCommand):
 			pass
 
 	def is_enabled(self):
-		return PiecesSettings().is_loaded
+		return PiecesSettings.is_loaded
 		
 		
 class PiecesLogoutCommand(sublime_plugin.WindowCommand):
@@ -28,7 +28,7 @@ class PiecesLogoutCommand(sublime_plugin.WindowCommand):
 		OSApi(PiecesSettings.api_client).sign_out_of_os(async_req=True)
 
 	def is_enabled(self):
-		return PiecesSettings().is_loaded
+		return PiecesSettings.is_loaded
 
 class PiecesAllocationConnectCommand(sublime_plugin.WindowCommand):
 	def run(self):
@@ -38,7 +38,7 @@ class PiecesAllocationConnectCommand(sublime_plugin.WindowCommand):
 			AuthUser.logout_page(user.email,user.name,None,True)
 
 	def is_enabled(self):
-		return PiecesSettings().is_loaded
+		return PiecesSettings.is_loaded
 
 	def is_visible(self): # will appear if the user logged in but no allocation 
 		return bool(AuthUser.user_profile) and not bool(AuthUser.user_profile.allocation)
@@ -54,5 +54,5 @@ class PiecesAllocationDisconnectCommand(sublime_plugin.WindowCommand):
 
 
 	def is_enabled(self):
-		return PiecesSettings().is_loaded
+		return PiecesSettings.is_loaded
 

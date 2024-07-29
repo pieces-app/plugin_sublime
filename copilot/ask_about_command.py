@@ -38,6 +38,6 @@ class PiecesAskStreamAboutCommand(sublime_plugin.TextCommand):
 		copilot.add_query(query) # Add the query
 
 	def is_enabled(self):
-		return PiecesSettings().is_loaded
+		return PiecesSettings.is_loaded
 
 
