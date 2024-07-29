@@ -10,7 +10,7 @@ class HealthWS(BaseWebsocket):
 		return PiecesSettings.HEALTH_WS_URL
 
 	def on_message(self,ws, message):
-		if message == "ok":
+		if message == "OK":
 			PiecesSettings.is_loaded = True
 		else:
 			PiecesSettings.is_loaded = False

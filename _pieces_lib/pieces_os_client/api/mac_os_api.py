@@ -19,7 +19,7 @@ import warnings
 
 from Pieces._pieces_lib.pydantic import validate_arguments, ValidationError
 
-from typing_extensions import Annotated
+from Pieces._pieces_lib.typing_extensions import Annotated
 from Pieces._pieces_lib.pydantic import Field
 
 from typing import Optional

@@ -34,6 +34,7 @@ def startup(settings_model):
 			PiecesSettings.models_init(settings_model) # Intilize the models
 		else: return
 
+	
 	# WEBSOCKETS:
 	# Assets Identifiers Websocket
 	AssetsIdentifiersWS(AssetSnapshot.streamed_identifiers_callback).start() # Load the assets ws at the startup

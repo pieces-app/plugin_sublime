@@ -121,7 +121,7 @@ OptionalDate = Optional[date]
 StrIntFloat = Union[str, int, float]
 
 if TYPE_CHECKING:
-    from typing_extensions import Annotated
+    from Pieces._pieces_lib.typing_extensions import Annotated
 
     from .dataclasses import Dataclass
     from .main import BaseModel

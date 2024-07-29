@@ -144,7 +144,7 @@ class PiecesOnboardingCommand(sublime_plugin.WindowCommand):
 		self.reload(sheet)
 
 	def is_enabled(self) -> bool:
-		return PiecesSettings.compatible
+		return PiecesSettings.is_loaded
 
 	@staticmethod
 	def get_html_sheet_ids() -> List[int]:

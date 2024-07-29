@@ -1,5 +1,5 @@
 from typing import Optional
-from typing_extensions import Self
+from ._pieces_lib.typing_extensions import Self
 from ._pieces_lib import websocket
 import threading
 from abc import ABC, abstractmethod
