@@ -15,7 +15,7 @@ file_map_reverse = {v:k for k,v in file_map.items()}
 
 
 class PiecesEventListener(sublime_plugin.EventListener):
-	secondary_view = None # Used in the ask to know the ssecondary view at insert
+	secondary_view = None # Used in the ask to know the secondary view at insert
 	commands_to_exclude = ["pieces_onboarding","pieces_reload","pieces_support"]
 
 	onboarding_commands_dict = {
@@ -31,25 +31,13 @@ class PiecesEventListener(sublime_plugin.EventListener):
 		self.check_onboarding(command_name)
 	def on_post_window_command(self,window,command_name,args):
 		self.check_onboarding(command_name)
-	def on_window_command(self, window, command_name, args):
-		self.check(command_name)
 		
 	def on_text_command(self,view,command_name,args):
-		self.check(command_name)
-
 		if command_name == "paste": # To avoid pasting in the middle of the view of the copilot
 			self.on_query_context(view,"pieces_copilot_add",True,sublime.OP_EQUAL,True)
 		elif command_name == "cut":
 			self.on_query_context(view,"pieces_copilot_remove",True,sublime.OP_EQUAL,True)
 
-	def check(self,command_name):
-		if command_name.startswith("pieces_") and command_name not in PiecesEventListener.commands_to_exclude: # Check any command 
-			health = PiecesSettings.get_health()
-			if not health:
-				PiecesSettings.is_loaded = False
-				sublime.message_dialog("The Pieces OS server is not running")
-				return False
-		return None
 	
 	def check_onboarding(self,command_name):
 		if command_name not in self.onboarding_commands_dict:

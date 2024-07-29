@@ -15,11 +15,9 @@ class PiecesSettings:
 	model_name = ""
 	api_client = None
 	_is_loaded = False # is the plugin loaded
-	_color_scheme = None # default color scheme
+	enable_restart_command = False # enable the restart command if pos version is compatible
 
 	ONBOARDING_SYNTAX = "Packages/Pieces/syntax/Onboarding.sublime-syntax"
-	ONBOARDING_COLOR_SCHEME = "User/Pieces/Pieces.hidden-color-scheme"
-
 	
 	on_model_change_callbacks = [] # If the model change a function should be runned
 
@@ -83,6 +81,7 @@ class PiecesSettings:
 		cls.AUTH_WS_URL = ws_base_url + "/user/stream"
 		cls.ASK_STREAM_WS_URL = ws_base_url + "/qgpt/stream"
 		cls.CONVERSATION_WS_URL = ws_base_url + "/conversations/stream/identifiers"
+		cls.HEALTH_WS_URL = ws_base_url + "/.well-known/stream/health"
 
 		configuration = pos_client.Configuration(host=cls.host)
 

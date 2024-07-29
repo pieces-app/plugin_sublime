@@ -2,6 +2,7 @@ import sublime_plugin
 import sublime
 from .ask_command import copilot
 from ..assets.create_asset import PiecesCreateAssetCommand
+from ..settings import PiecesSettings
 
 class PiecesAskStreamAboutCommand(sublime_plugin.TextCommand):
 	def run(self,edit,type):
@@ -35,5 +36,8 @@ class PiecesAskStreamAboutCommand(sublime_plugin.TextCommand):
 		copilot.add_context(**self.context)
 		if self.before_query: query = self.before_query + query
 		copilot.add_query(query) # Add the query
+
+	def is_enabled(self):
+		return PiecesSettings().is_loaded
 
 
