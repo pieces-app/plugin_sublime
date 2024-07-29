@@ -2,7 +2,7 @@ import sublime_plugin
 import mdpopups
 import os
 import re
-from typing_extensions import Self
+from .._pieces_lib.typing_extensions import Self
 from .list_assets import PiecesAssetIdInputHandler,A_TAG_STYLE
 from .assets_snapshot import AssetSnapshot
 from .ext_map import file_map
