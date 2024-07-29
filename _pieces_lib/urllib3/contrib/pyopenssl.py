@@ -28,7 +28,7 @@ like this:
 .. code-block:: python
 
     try:
-        import Pieces._pieces_lib.urllib3.contrib.pyopenssl
+        import pieces_python._pieces_lib.urllib3.contrib.pyopenssl
         urllib3.contrib.pyopenssl.inject_into_urllib3()
     except ImportError:
         pass

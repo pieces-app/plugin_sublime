@@ -57,6 +57,9 @@ class PiecesShareAssetCommand(sublime_plugin.WindowCommand):
 			pass
 
 		if share: return share
+
+	def is_enabled(self):
+		return PiecesSettings.is_loaded 
 		
 
 class PiecesGenerateShareableLinkCommand(sublime_plugin.TextCommand):
@@ -121,10 +124,14 @@ class PiecesGenerateShareableLinkCommand(sublime_plugin.TextCommand):
 			</body>""", 
 			location=-1,
 			on_navigate=on_nav)
-
+	
+	def is_enabled(self):
+		return PiecesSettings.is_loaded 
 
 class PiecesCopyLinkCommand(sublime_plugin.WindowCommand):
 	def run(self,content,asset_id):
 		sublime.set_clipboard(content)
 		sheet = self.window.active_sheet()
 		PiecesListAssetsCommand.update_sheet(sheet,asset_id,buttons_kwargs={"share":{"title":"Copied"}})
+	def is_enabled(self):
+		return PiecesSettings.is_loaded 
