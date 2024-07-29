@@ -46,6 +46,7 @@ class PiecesHandleMarkdownCommand(sublime_plugin.WindowCommand):
 		self.code = asset_wrapper.get_asset_raw()
 		self.language = asset_wrapper.original_classification_specific()
 		self.name = asset_wrapper.name
+		self.asset_id = asset_id
 
 		if mode == "copy":
 			sublime.set_clipboard(self.code)

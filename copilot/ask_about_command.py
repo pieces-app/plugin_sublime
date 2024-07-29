@@ -36,6 +36,7 @@ class PiecesAskStreamAboutCommand(sublime_plugin.TextCommand):
 		copilot.add_context(**self.context)
 		if self.before_query: query = self.before_query + query
 		copilot.add_query(query) # Add the query
+		copilot.gpt_view.run_command("pieces_enter_response")
 
 	def is_enabled(self):
 		return PiecesSettings.is_loaded

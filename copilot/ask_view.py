@@ -62,10 +62,10 @@ class CopilotViewManager:
 			self.context_phantom = sublime.PhantomSet(CopilotViewManager._gpt_view, "Pieces_context")
 
 			# Others
+			CopilotViewManager._relevant = {}
 			self.copilot_regions = []
 			self.show_cursor
 			self.update_status_bar()
-			self._relevant = {}
 			# self.render_copilot_image_phantom(CopilotViewManager._gpt_view)
 
         
@@ -88,7 +88,11 @@ class CopilotViewManager:
 		
 	@property
 	def view_name(self):
-		return "Pieces: " + getattr(self,"_view_name","New Conversation")
+		name = getattr(self,"_view_name","New Conversation")
+		if not name:
+			name = "New Conversation"
+
+		return "Pieces: " + name
 	
 	@view_name.setter
 	def view_name(self,v):

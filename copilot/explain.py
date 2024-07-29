@@ -18,7 +18,7 @@ class PiecesExplainCommand(sublime_plugin.TextCommand):
 		copilot.ask(
 			pipeline=QGPTTaskPipeline(
 				code_explanation=QGPTTaskPipelineForCodeExplanation()
-				)
+			)
 		)
 
 	def is_enabled(self):
