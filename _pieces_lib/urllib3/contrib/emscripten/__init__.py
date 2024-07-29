@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import pieces_python._pieces_lib.urllib3.connection
+import Pieces._pieces_lib.urllib3.connection
 
 from ...connectionpool import HTTPConnectionPool, HTTPSConnectionPool
 from .connection import EmscriptenHTTPConnection, EmscriptenHTTPSConnection
@@ -12,5 +12,5 @@ def inject_into_urllib3() -> None:
     # if it isn't ignored
     HTTPConnectionPool.ConnectionCls = EmscriptenHTTPConnection
     HTTPSConnectionPool.ConnectionCls = EmscriptenHTTPSConnection
-    pieces_python._pieces_lib.urllib3.connection.HTTPConnection = EmscriptenHTTPConnection  # type: ignore[misc,assignment]
-    pieces_python._pieces_lib.urllib3.connection.HTTPSConnection = EmscriptenHTTPSConnection  # type: ignore[misc,assignment]
+    Pieces._pieces_lib.urllib3.connection.HTTPConnection = EmscriptenHTTPConnection  # type: ignore[misc,assignment]
+    Pieces._pieces_lib.urllib3.connection.HTTPSConnection = EmscriptenHTTPSConnection  # type: ignore[misc,assignment]

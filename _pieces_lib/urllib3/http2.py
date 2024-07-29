@@ -8,8 +8,8 @@ import h2.config  # type: ignore[import-untyped]
 import h2.connection  # type: ignore[import-untyped]
 import h2.events  # type: ignore[import-untyped]
 
-import pieces_python._pieces_lib.urllib3.connection
-import pieces_python._pieces_lib.urllib3.util.ssl_
+import Pieces._pieces_lib.urllib3.connection
+import Pieces._pieces_lib.urllib3.util.ssl_
 from Pieces._pieces_lib.urllib3.response import BaseHTTPResponse
 
 from ._collections import HTTPHeaderDict
@@ -217,14 +217,14 @@ class HTTP2Response(BaseHTTPResponse):
 
 def inject_into_urllib3() -> None:
     HTTPSConnectionPool.ConnectionCls = HTTP2Connection
-    pieces_python._pieces_lib.urllib3.connection.HTTPSConnection = HTTP2Connection  # type: ignore[misc]
+    Pieces._pieces_lib.urllib3.connection.HTTPSConnection = HTTP2Connection  # type: ignore[misc]
 
     # TODO: Offer 'http/1.1' as well, but for testing purposes this is handy.
-    pieces_python._pieces_lib.urllib3.util.ssl_.ALPN_PROTOCOLS = ["h2"]
+    Pieces._pieces_lib.urllib3.util.ssl_.ALPN_PROTOCOLS = ["h2"]
 
 
 def extract_from_urllib3() -> None:
     HTTPSConnectionPool.ConnectionCls = orig_HTTPSConnection
-    pieces_python._pieces_lib.urllib3.connection.HTTPSConnection = orig_HTTPSConnection  # type: ignore[misc]
+    Pieces._pieces_lib.urllib3.connection.HTTPSConnection = orig_HTTPSConnection  # type: ignore[misc]
 
-    pieces_python._pieces_lib.urllib3.util.ssl_.ALPN_PROTOCOLS = ["http/1.1"]
+    Pieces._pieces_lib.urllib3.util.ssl_.ALPN_PROTOCOLS = ["http/1.1"]

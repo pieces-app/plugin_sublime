@@ -27,7 +27,7 @@ from urllib.parse import quote
 
 from Pieces._pieces_lib.pieces_os_client.configuration import Configuration
 from Pieces._pieces_lib.pieces_os_client.api_response import ApiResponse
-import pieces_python._pieces_lib.pieces_os_client.models
+import Pieces._pieces_lib.pieces_os_client.models
 from Pieces._pieces_lib.pieces_os_client import rest
 from Pieces._pieces_lib.pieces_os_client.exceptions import ApiValueError, ApiException
 
@@ -345,7 +345,7 @@ class ApiClient:
             if klass in self.NATIVE_TYPES_MAPPING:
                 klass = self.NATIVE_TYPES_MAPPING[klass]
             else:
-                klass = getattr(pieces_python._pieces_lib.pieces_os_client.models, klass)
+                klass = getattr(Pieces._pieces_lib.pieces_os_client.models, klass)
 
         if klass in self.PRIMITIVE_TYPES:
             return self.__deserialize_primitive(data, klass)

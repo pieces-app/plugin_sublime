@@ -33,8 +33,8 @@ from typing import Callable, Dict, Type, Union, cast, overload
 import hypothesis.strategies as st
 
 from Pieces._pieces_lib import pydantic
-import pieces_python._pieces_lib.pydantic.color
-import pieces_python._pieces_lib.pydantic.types
+import Pieces._pieces_lib.pydantic.color
+import Pieces._pieces_lib.pydantic.types
 from Pieces._pieces_lib.pydantic.utils import lenient_issubclass
 
 # FilePath and DirectoryPath are explicitly unsupported, as we'd have to create
@@ -88,23 +88,23 @@ st.register_type_strategy(
 _color_regexes = (
     '|'.join(
         (
-            pieces_python._pieces_lib.pydantic.color.r_hex_short,
-            pieces_python._pieces_lib.pydantic.color.r_hex_long,
-            pieces_python._pieces_lib.pydantic.color.r_rgb,
-            pieces_python._pieces_lib.pydantic.color.r_rgba,
-            pieces_python._pieces_lib.pydantic.color.r_hsl,
-            pieces_python._pieces_lib.pydantic.color.r_hsla,
+            Pieces._pieces_lib.pydantic.color.r_hex_short,
+            Pieces._pieces_lib.pydantic.color.r_hex_long,
+            Pieces._pieces_lib.pydantic.color.r_rgb,
+            Pieces._pieces_lib.pydantic.color.r_rgba,
+            Pieces._pieces_lib.pydantic.color.r_hsl,
+            Pieces._pieces_lib.pydantic.color.r_hsla,
         )
     )
     # Use more precise regex patterns to avoid value-out-of-range errors
-    .replace(pieces_python._pieces_lib.pydantic.color._r_sl, r'(?:(\d\d?(?:\.\d+)?|100(?:\.0+)?)%)')
-    .replace(pieces_python._pieces_lib.pydantic.color._r_alpha, r'(?:(0(?:\.\d+)?|1(?:\.0+)?|\.\d+|\d{1,2}%))')
-    .replace(pieces_python._pieces_lib.pydantic.color._r_255, r'(?:((?:\d|\d\d|[01]\d\d|2[0-4]\d|25[0-4])(?:\.\d+)?|255(?:\.0+)?))')
+    .replace(Pieces._pieces_lib.pydantic.color._r_sl, r'(?:(\d\d?(?:\.\d+)?|100(?:\.0+)?)%)')
+    .replace(Pieces._pieces_lib.pydantic.color._r_alpha, r'(?:(0(?:\.\d+)?|1(?:\.0+)?|\.\d+|\d{1,2}%))')
+    .replace(Pieces._pieces_lib.pydantic.color._r_255, r'(?:((?:\d|\d\d|[01]\d\d|2[0-4]\d|25[0-4])(?:\.\d+)?|255(?:\.0+)?))')
 )
 st.register_type_strategy(
-    pieces_python._pieces_lib.pydantic.color.Color,
+    Pieces._pieces_lib.pydantic.color.Color,
     st.one_of(
-        st.sampled_from(sorted(pieces_python._pieces_lib.pydantic.color.COLORS_BY_NAME)),
+        st.sampled_from(sorted(Pieces._pieces_lib.pydantic.color.COLORS_BY_NAME)),
         st.tuples(
             st.integers(0, 255),
             st.integers(0, 255),
@@ -182,22 +182,22 @@ RESOLVERS: Dict[type, Callable[[type], st.SearchStrategy]] = {}  # type: ignore[
 
 
 @overload
-def _registered(typ: Type[pieces_python._pieces_lib.pydantic.types.T]) -> Type[pieces_python._pieces_lib.pydantic.types.T]:
+def _registered(typ: Type[Pieces._pieces_lib.pydantic.types.T]) -> Type[Pieces._pieces_lib.pydantic.types.T]:
     pass
 
 
 @overload
-def _registered(typ: pieces_python._pieces_lib.pydantic.types.ConstrainedNumberMeta) -> pieces_python._pieces_lib.pydantic.types.ConstrainedNumberMeta:
+def _registered(typ: Pieces._pieces_lib.pydantic.types.ConstrainedNumberMeta) -> Pieces._pieces_lib.pydantic.types.ConstrainedNumberMeta:
     pass
 
 
 def _registered(
-    typ: Union[Type[pieces_python._pieces_lib.pydantic.types.T], pieces_python._pieces_lib.pydantic.types.ConstrainedNumberMeta]
-) -> Union[Type[pieces_python._pieces_lib.pydantic.types.T], pieces_python._pieces_lib.pydantic.types.ConstrainedNumberMeta]:
-    # This function replaces the version in `pieces_python._pieces_lib.pydantic.types`, in order to
+    typ: Union[Type[Pieces._pieces_lib.pydantic.types.T], Pieces._pieces_lib.pydantic.types.ConstrainedNumberMeta]
+) -> Union[Type[Pieces._pieces_lib.pydantic.types.T], Pieces._pieces_lib.pydantic.types.ConstrainedNumberMeta]:
+    # This function replaces the version in `Pieces._pieces_lib.pydantic.types`, in order to
     # effect the registration of new constrained types so that Hypothesis
     # can generate valid examples.
-    pieces_python._pieces_lib.pydantic.types._DEFINED_TYPES.add(typ)
+    Pieces._pieces_lib.pydantic.types._DEFINED_TYPES.add(typ)
     for supertype, resolver in RESOLVERS.items():
         if issubclass(typ, supertype):
             st.register_type_strategy(typ, resolver(typ))  # type: ignore
@@ -206,7 +206,7 @@ def _registered(
 
 
 def resolves(
-    typ: Union[type, pieces_python._pieces_lib.pydantic.types.ConstrainedNumberMeta]
+    typ: Union[type, Pieces._pieces_lib.pydantic.types.ConstrainedNumberMeta]
 ) -> Callable[[Callable[..., st.SearchStrategy]], Callable[..., st.SearchStrategy]]:  # type: ignore[type-arg]
     def inner(f):  # type: ignore
         assert f not in RESOLVERS
@@ -385,7 +385,7 @@ def resolve_constr(cls):  # type: ignore[no-untyped-def]  # pragma: no cover
 
 
 # Finally, register all previously-defined types, and patch in our new function
-for typ in list(pieces_python._pieces_lib.pydantic.types._DEFINED_TYPES):
+for typ in list(Pieces._pieces_lib.pydantic.types._DEFINED_TYPES):
     _registered(typ)
-pieces_python._pieces_lib.pydantic.types._registered = _registered
+Pieces._pieces_lib.pydantic.types._registered = _registered
 st.register_type_strategy(pydantic.Json, resolve_json)
