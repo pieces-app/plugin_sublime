@@ -1,6 +1,7 @@
 from .._pieces_lib.pieces_os_client import UserProfile
 from ..settings import PiecesSettings
 import sublime
+from typing import Optional
 
 
 CONNECTING_HTML = "<p>Cloud Status: <span style=color:yellow>•</span> Connecting</p>"
@@ -18,7 +19,8 @@ class AuthUser:
 			sublime.Region(0, 0), html, sublime.LAYOUT_INLINE)
 
 	@classmethod
-	def on_user_callback(cls,user:UserProfile=None):
+	def on_user_callback(cls,user:Optional[UserProfile]=None):
+		PiecesSettings.api_client.user.on_user_callback(user)
 		sublime.active_window().focus_view(PiecesSettings.output_panel)
 		cls.user_profile = user
 		if not user:
