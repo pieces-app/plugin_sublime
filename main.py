@@ -35,8 +35,8 @@ def startup():
 	
 	# User Weboscket
 	PiecesSettings.create_auth_output_panel()
-	auth_ws = AuthWS.get_instance()
-	auth_ws.on_message_callback = AuthUser.on_user_callback
+
+	PiecesSettings.api_client.user.on_user_callback = AuthUser.on_user_callback
 
 	# Lunch Onboarding if it is the first time
 	if not PiecesOnboardingCommand.get_onboarding_settings().get("lunch_onboarding",False):
