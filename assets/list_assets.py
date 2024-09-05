@@ -1,11 +1,10 @@
-from typing import Optional
+from _pieces_lib.pieces_os_client.wrapper.basic_identifier.asset import BasicAsset
 import sublime_plugin
 import sublime
 import mdpopups
 import re
 
-from .assets_snapshot import AssetSnapshot
-from .assets_identifiers_ws import AssetsIdentifiersWS
+from .._pieces_lib.pieces_os_client.wrapper.websockets import AssetsIdentifiersWS
 from .._pieces_lib.pieces_os_client import *
 from ..settings import PiecesSettings
 
@@ -34,7 +33,6 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 		try:
 			api_response = api_instance.asset_specific_asset_export(asset_id, "MD")
 		except:
-			AssetSnapshot.identifiers_snapshot.pop(asset_id)
 			return sublime.error_message("Asset Not Found")
 		
 		markdown_text = api_response.raw.string.raw
@@ -76,31 +74,21 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 		return PiecesSettings.is_loaded and AssetsIdentifiersWS.is_running()
 
 
-
-
-
 class PiecesAssetIdInputHandler(sublime_plugin.ListInputHandler):
 	def list_items(self):
-		return self.get_assets_list(AssetSnapshot.identifiers_snapshot)
+		return self.get_assets_list(PiecesSettings.api_client.assets())
 
-	def get_assets_list(self,assets_snapshot):
+	def get_assets_list(self,assets_snapshot:list[BasicAsset]):
 		assets_list = []
-		for asset_id in assets_snapshot.keys():
-			asset = assets_snapshot[asset_id]
-			name = asset.name if asset.name else "New asset"
-			annotation = self.get_annotation(asset)
+		for basic_asset in assets_snapshot:
+			name = basic_asset.name
+			annotation = basic_asset.description
 			if annotation:
-				assets_list.append(sublime.ListInputItem(text=name, value=asset_id,details=annotation.text))
+				assets_list.append(sublime.ListInputItem(text=name, value=basic_asset.id,details=annotation))
 			else:
-				assets_list.append(sublime.ListInputItem(text=name, value=asset_id))
+				assets_list.append(sublime.ListInputItem(text=name, value=basic_asset.id))
 		return assets_list
-	@staticmethod
-	def get_annotation(asset) -> Optional[Annotation]:
-		annotations = asset.annotations.iterable
-		annotations = sorted(annotations, key=lambda x: x.updated.value, reverse=True)
-		for annotation in annotations:
-			if annotation.type == "DESCRIPTION":
-				return annotation
+
 	def placeholder(self):
 		return "Choose an asset"
 

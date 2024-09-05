@@ -2,9 +2,9 @@ import sublime_plugin
 import mdpopups
 import os
 import re
-from .._pieces_lib.typing_extensions import Self
+from typing import Self
+from .._pieces_lib.pieces_os_client.wrapper.basic_identifier.asset import BasicAsset
 from .list_assets import PiecesAssetIdInputHandler,A_TAG_STYLE
-from .assets_snapshot import AssetSnapshot
 from .ext_map import file_map
 from ..settings import PiecesSettings
 
@@ -56,15 +56,16 @@ class PiecesExportAssetToSublimeCommand(sublime_plugin.WindowCommand):
 		return PiecesAssetIdInputHandler()
 
 	def run(self,pieces_asset_id):
-		asset_wrapper = AssetSnapshot(pieces_asset_id)
+		asset_wrapper = BasicAsset(pieces_asset_id)
 		self.trigger = asset_wrapper.name
-		self.description = getattr(PiecesAssetIdInputHandler.get_annotation(asset_wrapper.asset),"text","No Description Found")
+		self.asset_description = asset_wrapper.description if asset_wrapper.description else "No description found"
 
-		self.content = asset_wrapper.get_asset_raw()
+		self.content = asset_wrapper.raw_content
 		
 		self.dummy_view = self.window.create_output_panel("pieces_dummy_view",unlisted=True)
-		self.lang = asset_wrapper.original_classification_specific()
+		self.lang = asset_wrapper.classification
 		self.asset_id = pieces_asset_id
+
 		try: syntax = file_map[self.lang]
 		except: syntax=None
 
@@ -86,9 +87,9 @@ class PiecesExportAssetToSublimeCommand(sublime_plugin.WindowCommand):
 				trigger = self.trigger,
 				asset_id = self.asset_id,
 				content = self.content,
-				description = self.description,
+				description = self.asset_description,
 				scope = self.scope,
-				lang = self.lang.value,
+				lang = self.lang.value if self.lang else "txt",
 				A_TAG_STYLE = A_TAG_STYLE,
 				sheet_id =self.sheet.id()
 			),

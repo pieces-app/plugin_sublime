@@ -1,6 +1,7 @@
 from ._pieces_lib.pieces_os_client import SeededConnectorConnection,SeededTrackedApplication
 from ._pieces_lib.pieces_os_client.wrapper.websockets.base_websocket import BaseWebsocket
 from ._pieces_lib.pieces_os_client.wrapper import PiecesClient
+from multiprocessing.pool import ThreadPool
 import sublime
 import os
 
@@ -15,6 +16,7 @@ class PiecesSettings:
 				name = "SUBLIME",
 				platform = sublime.platform().upper() if sublime.platform() != 'osx' else "MACOS",
 				version = __version__)))
+	_pool = None
 	is_loaded = False # is the plugin loaded
 	health = "failed"
 	ONBOARDING_SYNTAX = "Packages/Pieces/syntax/Onboarding.sublime-syntax"
@@ -86,6 +88,15 @@ class PiecesSettings:
 		cls.output_panel.settings().set("line_numbers", False)  # Disable line numbers
 		cls.output_panel.settings().set("gutter", False)
 		cls.output_panel.set_read_only(True)
+
+	@classmethod
+	def pool(cls):
+		"""Create thread pool on first request
+		 avoids instantiating unused threadpool for blocking clients.
+		"""
+		if cls._pool is None:
+			cls._pool = ThreadPool(1)
+		return cls._pool
 
 	# Load the settings from 'Pieces.sublime-settings' file using Sublime Text API
 	pieces_settings = sublime.load_settings('Pieces.sublime-settings')

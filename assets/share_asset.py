@@ -1,10 +1,8 @@
 import sublime_plugin
 import sublime
-from .._pieces_lib.pieces_os_client import LinkifyApi,Linkify
+from .._pieces_lib.pieces_os_client.wrapper.basic_identifier.asset import BasicAsset
 
-from .assets_snapshot import AssetSnapshot
 from .list_assets import PiecesListAssetsCommand
-from .create_asset import PiecesCreateAssetCommand
 from ..settings import PiecesSettings
 from ..auth.auth_user import AuthUser
 
@@ -17,14 +15,11 @@ class PiecesShareAssetCommand(sublime_plugin.WindowCommand):
 			PiecesListAssetsCommand.update_sheet(self.sheet,asset_id,{"share":{"title":"Sharing","url":"noop"}})
 		sublime.set_timeout_async(lambda:self.run_async(asset_id))
 
-	def run_async(self,asset_id=None,seed=None):
+	def run_async(self,asset_id=None,raw_content=None):
 		"""
 			You need to either give the seed or the asset_id
 		"""
-		if asset_id:
-			kwargs = {"asset" : AssetSnapshot.get_asset(asset_id)}
-		else:
-			kwargs = {"seed" : seed}
+		
 		user = AuthUser.user_profile
 		if not user:
 			if sublime.ok_cancel_dialog("You need to be logged in to generate a shareable link",ok_title="Login",title="Pieces"):
@@ -35,12 +30,10 @@ class PiecesShareAssetCommand(sublime_plugin.WindowCommand):
 				self.window.run_command("pieces_allocation_connect")
 			return
 
-		self.thread = LinkifyApi(PiecesSettings.api_client).linkify(async_req=True,
-			linkify=Linkify(
-				access="PUBLIC",
-				**kwargs
-				)
-			)
+		if asset_id:
+			self.thread = PiecesSettings.pool().apply_async(BasicAsset(asset_id).share)
+		if raw_content:
+			self.thread = PiecesSettings.pool().apply_async(BasicAsset.share_raw_content,raw_content)
 		
 		share = None
 		try:
@@ -70,12 +63,10 @@ class PiecesGenerateShareableLinkCommand(sublime_plugin.TextCommand):
 
 	def run_async(self):
 		self.view.set_status("pieces_share","Creating asset")
-		create_asset = PiecesCreateAssetCommand(self.view)
-		seed = create_asset.get_seeds(self.data)
 
 		self.view.set_status("pieces_share","Generating shareable link")
 
-		shares = PiecesShareAssetCommand(sublime.active_window()).run_async(seed=seed)
+		shares = PiecesShareAssetCommand(sublime.active_window()).run_async(raw_content=self.data)
 		link = shares.iterable[0].link
 		self.view.set_status("pieces_share",f"Link Generated {link}")
 
