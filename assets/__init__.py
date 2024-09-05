@@ -1,6 +1,5 @@
-from .list_assets import PiecesListAssetsCommand, AssetSnapshot
+from .list_assets import PiecesListAssetsCommand
 from .markdown_handler import PiecesHandleMarkdownCommand
-from .assets_identifiers_ws import AssetsIdentifiersWS
 from .create_asset import PiecesCreateAssetCommand
 from .delete_asset import PiecesDeleteAssetCommand
 from .save_asset import PiecesSaveAssetCommand

@@ -40,8 +40,6 @@ class PiecesAskQuestionCommand(sublime_plugin.TextCommand):
 		sublime.set_timeout_async(self.run_async,0)
 
 
-
-
 	def run_async(self):
 		# Get the current selection
 		self.selection = self.view.sel()[0]
@@ -93,7 +91,7 @@ class PiecesAskQuestionCommand(sublime_plugin.TextCommand):
 		gpt_input = QGPTQuestionInput(
 			query = " ",
 			model = PiecesSettings.model_id,
-			application = PiecesSettings.application.id,
+			application = PiecesSettings.api_client.tracked_application.id,
 			pipeline = QGPTPromptPipeline(
 				task = pipeline
 			),
@@ -103,7 +101,7 @@ class PiecesAskQuestionCommand(sublime_plugin.TextCommand):
 						seed = Seed(
 							type="SEEDED_ASSET",
 							asset=SeededAsset(
-								application=PiecesSettings.application,
+								application=PiecesSettings.api_client.tracked_application,
 								format=SeededFormat(
 									fragment = SeededFragment(
 										string = TransferableString(raw = self.selected_text)
