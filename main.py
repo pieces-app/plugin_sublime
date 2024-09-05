@@ -45,6 +45,7 @@ def startup():
 
 def on_message(message):
 	if message == "OK":
+		PiecesSettings.health = message
 		PiecesSettings.is_loaded = True
 	else:
 		PiecesSettings.is_loaded = False

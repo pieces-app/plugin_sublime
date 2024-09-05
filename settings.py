@@ -16,9 +16,8 @@ class PiecesSettings:
 				platform = sublime.platform().upper() if sublime.platform() != 'osx' else "MACOS",
 				version = __version__)))
 	is_loaded = False # is the plugin loaded
-
+	health = "failed"
 	ONBOARDING_SYNTAX = "Packages/Pieces/syntax/Onboarding.sublime-syntax"
-
 	on_model_change_callbacks = [] # If the model change a function should be runned
 
 	PIECES_USER_DIRECTORY = os.path.join(sublime.packages_path(),"User","Pieces")

@@ -1,5 +1,5 @@
 from ..settings import PiecesSettings
-from ..base_websocket import BaseWebsocket
+from .._pieces_lib.pieces_os_client.wrapper.websockets import BaseWebsocket
 import sublime
 import sublime_plugin
 
@@ -11,7 +11,7 @@ class PiecesReloadCommand(sublime_plugin.ApplicationCommand):
 
 	
 	def reload_async(self):
-		if PiecesSettings.get_health():
+		if PiecesSettings.api_client.health:
 			try:
 				sublime.set_timeout_async(self.run_reload_async)
 			except Exception as e:

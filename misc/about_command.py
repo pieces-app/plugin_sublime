@@ -1,8 +1,8 @@
+from settings import PiecesSettings
 import sublime
 import sublime_plugin
 import mdpopups
 from .. import __version__
-from ..api import get_version
 
 
 md_text = f"""
@@ -27,7 +27,7 @@ md_text = f"""
 
 ## Version
 - Plugin Version: {__version__}
-- Pieces Version: {get_version() if get_version() else "Unknown"}
+- Pieces Version: {PiecesSettings.api_client.version if PiecesSettings.api_client.version else "Unknown"}
 """
 class PiecesAboutCommand(sublime_plugin.WindowCommand):
 	def run(self):

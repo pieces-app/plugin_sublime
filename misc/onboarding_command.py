@@ -6,7 +6,6 @@ import os
 import json
 
 from ..settings import PiecesSettings
-from ..api import version_check
 
 CSS = """
 html.dark {
@@ -169,36 +168,9 @@ class PiecesOnboardingCommand(sublime_plugin.WindowCommand):
 		sheet.set_contents(html_template.format(**kwargs))
 
 
-	def _lazy_load(func):
-		def wrapper(self,*args, **kwargs):
-			"""
-			Wrapper will be used on the function that takes time to load
-			it will return a placeholder with loading utill it is loaded
-			"""
-			if self.clearing_time < time.time():
-				self.clearing_time = time.time() + 20
-				self.calls = {}
-
-			def load_function():
-				self.calls[func.__name__] = func(*args, **kwargs)
-				self.reload(sublime.HtmlSheet(self.sheet_id))
-
-			if self.calls.get(func.__name__):
-				return self.calls[func.__name__] 
-			else:
-				sublime.set_timeout_async(load_function,0)
-				return self.lazy_load_status.get(func.__name__,"[Loading]")
-		return wrapper
-
-
-	@_lazy_load
-	def pieces_os_status():
-		if PiecesSettings().get_health():
-			check_version,update = version_check()
-			if not check_version:
-				return red(f'You need to update {update}')
+	def pieces_os_status(self):
+		if PiecesSettings.health == "OK":
 			return green('Installed Pieces OS is installed successfully')
-		
 		return red("Oops! Pieces OS is not running.") + """
 			<br>
 			Don't worry, you can easily <a href="subl:pieces_open_pieces">open Pieces OS</a> and get started right away!<br>
