@@ -1,6 +1,7 @@
-from ._pieces_lib import pieces_os_client as pos_client
+from ._pieces_lib.pieces_os_client import SeededConnectorConnection,SeededTrackedApplication
+from ._pieces_lib.pieces_os_client.wrapper.websockets.base_websocket import BaseWebsocket
+from ._pieces_lib.pieces_os_client.wrapper import PiecesClient
 import sublime
-from typing import Dict
 import os
 
 from . import __version__
@@ -9,41 +10,23 @@ from . import __version__
 
 class PiecesSettings:
 	# Initialize class variables
-	application = None
-	models = None
-	host = ""
-	model_name = ""
-	api_client = None
+	api_client = PiecesClient(seeded_connector= SeededConnectorConnection(
+			application=SeededTrackedApplication(
+				name = "SUBLIME",
+				platform = sublime.platform().upper() if sublime.platform() != 'osx' else "MACOS",
+				version = __version__)))
 	is_loaded = False # is the plugin loaded
-	compatible  = False # compatible?
 
 	ONBOARDING_SYNTAX = "Packages/Pieces/syntax/Onboarding.sublime-syntax"
-	
+
 	on_model_change_callbacks = [] # If the model change a function should be runned
 
-
 	PIECES_USER_DIRECTORY = os.path.join(sublime.packages_path(),"User","Pieces")
-	
 
 	autocomplete_snippet:bool = True 
 	# Create the pieces directory to store the data if it does not exists
 	if not os.path.exists(PIECES_USER_DIRECTORY):
 		os.makedirs(PIECES_USER_DIRECTORY)
-
-
-	@classmethod
-	def get_health(cls):
-		"""
-		Retrieves the health status from the WellKnownApi and returns True if the health is 'ok', otherwise returns False.
-
-		Returns:
-		bool: True if the health status is 'ok', False otherwise.
-		"""
-		try:
-			health = pos_client.WellKnownApi(cls.api_client).get_well_known_health()
-			return health == "ok"
-		except:
-			return False
 
 
 	@classmethod
@@ -54,26 +37,9 @@ class PiecesSettings:
 		This method sets the host URL based on the configuration settings. If the host URL is not provided in the settings, it defaults to a specific URL based on the platform. 
 		It then creates the WebSocket base URL and defines the WebSocket URLs for different API endpoints.
 		"""
-		cls.host = host
-		if not host:
-			if 'linux' == sublime.platform():
-				cls.host = "http://127.0.0.1:5323"
-			else:
-				cls.host = "http://127.0.0.1:1000"
-
-		# Websocket urls
-		ws_base_url = cls.host.replace('http','ws')
-		cls.ASSETS_IDENTIFIERS_WS_URL = ws_base_url + "/assets/stream/identifiers"
-		cls.AUTH_WS_URL = ws_base_url + "/user/stream"
-		cls.ASK_STREAM_WS_URL = ws_base_url + "/qgpt/stream"
-		cls.CONVERSATION_WS_URL = ws_base_url + "/conversations/stream/identifiers"
-		cls.HEALTH_WS_URL = ws_base_url + "/.well-known/stream/health"
-
-		configuration = pos_client.Configuration(host=cls.host)
-
-		cls.api_client = pos_client.ApiClient(configuration)
-
-
+		if host != cls.api_client.host:
+			cls.api_client.init_host(host)
+			BaseWebsocket.reconnect_all()
 
 
 	@classmethod
@@ -85,7 +51,7 @@ class PiecesSettings:
 		and defaults to a specific model ("GPT-3.5-turbo Chat Model") if the specified model is not found.
 		"""
 
-		models = cls.get_models_ids()
+		models = cls.api_client.get_models()
 		cls.model_name = model
 		cls.model_id = models.get(str(cls.model_name))
 
@@ -100,10 +66,10 @@ class PiecesSettings:
 			all parameter means to update everything not the changes
 		"""
 		settings = cls.get_settings()
-		cls.autocomplete_snippet = settings.get("snippet.autocomplete",True)
+		cls.autocomplete_snippet = bool(settings.get("snippet.autocomplete",True))
 		host = settings.get('host')
 		model = settings.get("model")
-		if cls.host != host or all:
+		if cls.api_client.host != host or all:
 			cls.host_init(host = host)
 			cls.models_init(model = model)
 
@@ -114,37 +80,6 @@ class PiecesSettings:
 	def get_settings():
 		return sublime.load_settings("Pieces.sublime-settings") # Reload the settings
 
-
-	@classmethod
-	def get_application(cls)-> pos_client.Application:
-		if cls.application:
-			return cls.application
-
-		# Decide if it's Windows, Mac, Linux or Web
-		api_instance = pos_client.ConnectorApi(cls.api_client)
-		seeded_connector_connection = pos_client.SeededConnectorConnection(
-			application=pos_client.SeededTrackedApplication(
-				name = "SUBLIME",
-				platform = sublime.platform().upper() if sublime.platform() != 'osx' else "MACOS",
-				version = __version__))
-		api_response = api_instance.connect(seeded_connector_connection=seeded_connector_connection)
-		cls.application = api_response.application
-		return cls.application
-
-	@classmethod
-	def get_models_ids(cls) -> Dict[str, str]:
-		if cls.models:
-			return cls.models
-
-		api_instance = pos_client.ModelsApi(cls.api_client)
-
-		api_response = api_instance.models_snapshot()
-		cls.models = {model.name: model.id for model in api_response.iterable if model.cloud or model.downloaded} # getting the models that are available in the cloud or is downloaded
-
-
-		return cls.models
-
-
 	@classmethod
 	def create_auth_output_panel(cls):
 		window = sublime.active_window()
@@ -153,8 +88,7 @@ class PiecesSettings:
 		cls.output_panel.settings().set("gutter", False)
 		cls.output_panel.set_read_only(True)
 
-
-		
 	# Load the settings from 'Pieces.sublime-settings' file using Sublime Text API
 	pieces_settings = sublime.load_settings('Pieces.sublime-settings')
 	pieces_settings.add_on_change("PIECES_SETTINGS",on_settings_change)
+
