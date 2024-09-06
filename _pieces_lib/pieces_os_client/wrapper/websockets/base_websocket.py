@@ -1,4 +1,4 @@
-from typing import Callable, Optional,TYPE_CHECKING
+from typing import Callable, Optional,TYPE_CHECKING,List
 from Pieces._pieces_lib.typing_extensions import Self
 from Pieces._pieces_lib import websocket
 import threading
@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 class BaseWebsocket(ABC):
 	instances = []
-	_initialized_events:list[threading.Event] = []
+	_initialized_events:List[threading.Event] = []
 
 	def __new__(cls, *args, **kwargs):
 		"""
