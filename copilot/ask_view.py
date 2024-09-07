@@ -1,4 +1,3 @@
-import copilot
 import sublime
 from sublime import Region
 from .images.context_image import ContextImage
