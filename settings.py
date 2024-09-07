@@ -15,10 +15,9 @@ class PiecesSettings:
 			application=SeededTrackedApplication(
 				name = "SUBLIME",
 				platform = sublime.platform().upper() if sublime.platform() != 'osx' else "MACOS",
-				version = __version__)))
+				version = __version__)),connect_wesockets=False)
 	_pool = None
 	is_loaded = False # is the plugin loaded
-	health = "failed"
 	ONBOARDING_SYNTAX = "Packages/Pieces/syntax/Onboarding.sublime-syntax"
 	on_model_change_callbacks = [] # If the model change a function should be runned
 
@@ -38,9 +37,10 @@ class PiecesSettings:
 		This method sets the host URL based on the configuration settings. If the host URL is not provided in the settings, it defaults to a specific URL based on the platform. 
 		It then creates the WebSocket base URL and defines the WebSocket URLs for different API endpoints.
 		"""
-		if host != cls.api_client.host:
-			cls.api_client.init_host(host)
-			BaseWebsocket.reconnect_all()
+		if host != cls.api_client.host and host:
+			cls.api_client.host = host
+			if BaseWebsocket.instances:
+				sublime.set_timeout_async(BaseWebsocket.reconnect_all)
 
 
 	@classmethod

@@ -14,7 +14,6 @@ file_map_reverse = {v:k for k,v in file_map.items()}
 
 class PiecesEventListener(sublime_plugin.EventListener):
 	secondary_view = None # Used in the ask to know the secondary view at insert
-	commands_to_exclude = ["pieces_onboarding","pieces_reload","pieces_support"]
 
 	onboarding_commands_dict = {
 		"pieces_create_asset":"create",

@@ -11,7 +11,7 @@ class PiecesReloadCommand(sublime_plugin.ApplicationCommand):
 
 	
 	def reload_async(self):
-		if PiecesSettings.api_client.health:
+		if PiecesSettings.api_client.is_pieces_running():
 			try:
 				sublime.set_timeout_async(self.run_reload_async)
 			except Exception as e:

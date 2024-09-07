@@ -1,4 +1,4 @@
-from settings import PiecesSettings
+from ..settings import PiecesSettings
 import sublime
 import sublime_plugin
 import mdpopups

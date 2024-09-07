@@ -2,6 +2,7 @@ import sublime_plugin
 import sublime
 import mdpopups
 import re
+from typing import List
 
 from .._pieces_lib.pieces_os_client.wrapper.websockets import AssetsIdentifiersWS
 from .._pieces_lib.pieces_os_client.wrapper.basic_identifier import BasicAsset
@@ -78,7 +79,7 @@ class PiecesAssetIdInputHandler(sublime_plugin.ListInputHandler):
 	def list_items(self):
 		return self.get_assets_list(PiecesSettings.api_client.assets())
 
-	def get_assets_list(self,assets_snapshot:list[BasicAsset]):
+	def get_assets_list(self,assets_snapshot:List[BasicAsset]):
 		assets_list = []
 		for basic_asset in assets_snapshot:
 			name = basic_asset.name

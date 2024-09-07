@@ -169,7 +169,7 @@ class PiecesOnboardingCommand(sublime_plugin.WindowCommand):
 
 
 	def pieces_os_status(self):
-		if PiecesSettings.health == "OK":
+		if PiecesSettings.api_client.is_pieces_running:
 			return green('Installed Pieces OS is installed successfully')
 		return red("Oops! Pieces OS is not running.") + """
 			<br>

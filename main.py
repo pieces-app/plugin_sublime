@@ -3,7 +3,11 @@ from .settings import PiecesSettings
 from .copilot.ask_command import copilot
 import sublime
 from ._pieces_lib.pieces_os_client.wrapper.version_compatibility import VersionChecker,UpdateEnum
-from ._pieces_lib.pieces_os_client.wrapper.websockets import BaseWebsocket,AuthWS,HealthWS
+from ._pieces_lib.pieces_os_client.wrapper.websockets import (
+	BaseWebsocket,
+	AuthWS,HealthWS,
+	ConversationWS,
+	AssetsIdentifiersWS)
 
 # load the commands
 from .assets import *
@@ -18,6 +22,11 @@ PIECES_OS_MAX_VERSION = "11.0.0" # Maximum version (11.0.0)
 
 
 def startup():
+	ConversationWS(PiecesSettings.api_client)
+	AssetsIdentifiersWS(PiecesSettings.api_client)
+	AuthWS(PiecesSettings.api_client,PiecesSettings.api_client.user.on_user_callback)
+	BaseWebsocket.start_all()
+
 	pieces_os_version = PiecesSettings.api_client.version
 	version_result = VersionChecker(PIECES_OS_MIN_VERSION,PIECES_OS_MAX_VERSION,pieces_os_version).version_check()
 	if version_result.compatible:
@@ -45,11 +54,10 @@ def startup():
 
 def on_message(message):
 	if message == "OK":
-		PiecesSettings.health = message
 		PiecesSettings.is_loaded = True
 	else:
 		PiecesSettings.is_loaded = False
-		print("Please make sure Pieces OS is running\n")
+		print("Please make sure Pieces OS is running")
 
 def on_close(ws):
 	PiecesSettings.is_loaded = False
@@ -61,7 +69,7 @@ def plugin_loaded():
 	PiecesSettings.host_init(host) # Intilize the hosts url
 	# callbacks needed onchange settings
 	PiecesSettings.on_model_change_callbacks.append(copilot.update_status_bar)
-	health = PiecesSettings.api_client.health
+	health = PiecesSettings.api_client.is_pieces_running()
 	if PiecesSettings.get_settings().get("auto_start_pieces_os") and not health:
 			health = PiecesSettings.api_client.open_pieces_os()
 
