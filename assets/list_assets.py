@@ -1,10 +1,10 @@
-from _pieces_lib.pieces_os_client.wrapper.basic_identifier.asset import BasicAsset
 import sublime_plugin
 import sublime
 import mdpopups
 import re
 
 from .._pieces_lib.pieces_os_client.wrapper.websockets import AssetsIdentifiersWS
+from .._pieces_lib.pieces_os_client.wrapper.basic_identifier import BasicAsset
 from .._pieces_lib.pieces_os_client import *
 from ..settings import PiecesSettings
 

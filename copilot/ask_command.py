@@ -1,8 +1,7 @@
 import sublime_plugin
 import sublime
 from .ask_view import CopilotViewManager
-from .conversations import ConversationsSnapshot
-from .conversation_websocket import ConversationWS
+from .._pieces_lib.pieces_os_client.wrapper.websockets import ConversationWS
 from .._pieces_lib.pieces_os_client import AnnotationApi,Seeds,FlattenedAssets
 from ..settings import PiecesSettings
 from typing import Optional
@@ -57,22 +56,12 @@ class PiecesEnterResponseCommand(sublime_plugin.TextCommand):
 
 class PiecesConversationIdInputHandler(sublime_plugin.ListInputHandler):
 	def list_items(self):
-		conversation_list = []
-		api = AnnotationApi(PiecesSettings.api_client)
-		for conversation in ConversationsSnapshot.identifiers_snapshot.values():
-			name = getattr(conversation,"name","New Conversation")
-			if not name: name = "New Conversation"
-
-			try:
-				id = list(conversation.annotations.indices.keys())[0]
-				details = str(api.annotation_specific_annotation_snapshot(id).text).replace("\n"," ")
-			except AttributeError:
-				details = ""
-
-
-			conversation_list.append(sublime.ListInputItem(text=name, value=conversation.id,details=details))
-
-		return conversation_list
+		return [
+			sublime.ListInputItem(
+				text=chat.name,
+				value=chat.id,
+				details=chat.description.replace("\n","") if chat.description else "")
+		 for chat in PiecesSettings.api_client.copilot.chats()]
 
 	def placeholder(self):
 		return "Choose a conversation or start new one"
