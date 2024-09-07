@@ -87,35 +87,26 @@ class PiecesAskQuestionCommand(sublime_plugin.TextCommand):
 		
 		self.view.set_status('Pieces Refactoring', 'Copilot is thinking...')
 
-
-		gpt_input = QGPTQuestionInput(
-			query = " ",
-			model = PiecesSettings.model_id,
-			application = PiecesSettings.api_client.tracked_application.id,
-			pipeline = QGPTPromptPipeline(
-				task = pipeline
-			),
-			relevant = RelevantQGPTSeeds(
-				iterable = [
-					RelevantQGPTSeed(
-						seed = Seed(
-							type="SEEDED_ASSET",
-							asset=SeededAsset(
-								application=PiecesSettings.api_client.tracked_application,
-								format=SeededFormat(
-									fragment = SeededFragment(
-										string = TransferableString(raw = self.selected_text)
-									),
-									classification = self.classification
+		relevant = RelevantQGPTSeeds(
+			iterable = [
+				RelevantQGPTSeed(
+					seed = Seed(
+						type="SEEDED_ASSET",
+						asset=SeededAsset(
+							application=PiecesSettings.api_client.tracked_application,
+							format=SeededFormat(
+								fragment = SeededFragment(
+									string = TransferableString(raw = self.selected_text)
 								),
-							), 
-						),
-					)
-				]
-			)
+								classification = self.classification
+							),
+						), 
+					),
+				)
+			]
 		)
 		try:
-			res = QGPTApi(PiecesSettings.api_client).question(gpt_input)
+			res = PiecesSettings.api_client.copilot.question(" ",relevant,pipeline)
 		except:
 			self.view.set_status('Pieces Refactoring', 'Copilot error in getting the responses')
 			sublime.set_timeout(lambda:self.view.erase_status("Pieces Refactoring"),5000)
