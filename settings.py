@@ -51,13 +51,10 @@ class PiecesSettings:
 		This method retrieves the available models, sets the model ID based on the settings provided,
 		and defaults to a specific model ("GPT-3.5-turbo Chat Model") if the specified model is not found.
 		"""
-
-		models = cls.api_client.get_models()
-		cls.model_name = model
-		cls.model_id = models.get(str(cls.model_name))
-
-		if not cls.model_id:
-			cls.model_id = models["GPT-3.5-turbo Chat Model"]
+		try:
+			cls.api_client.model_name = model
+		except ValueError:
+			sublime.error_message(f"Invalid model\n Choose one from {' ,'.join(cls.api_client.available_models_names)}")
 		for func in cls.on_model_change_callbacks:
 			func()
 
@@ -74,7 +71,7 @@ class PiecesSettings:
 			cls.host_init(host = host)
 			cls.models_init(model = model)
 
-		if cls.model_name != model or all:
+		if cls.api_client.model_name != model or all:
 			cls.models_init(model = model)
 
 	@staticmethod

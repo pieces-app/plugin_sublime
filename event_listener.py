@@ -52,7 +52,7 @@ class PiecesEventListener(sublime_plugin.EventListener):
 			
 			if data != code:
 				sublime.active_window().focus_view(view)
-				if sublime.ok_cancel_dialog("Do you want to this snippet to pieces?", ok_title='Save', title='Save snippet'):
+				if sublime.ok_cancel_dialog("Do you want to save this snippet to Pieces?", ok_title='Save', title='Save snippet'):
 					view.window().run_command("pieces_handle_markdown",{"mode": "save","sheet_id":sheet_id,"data":data,"close":False})
 					del view.settings()["pieces_sheet_id"]
 					return
