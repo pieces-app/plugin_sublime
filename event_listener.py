@@ -103,6 +103,8 @@ class PiecesEventListener(sublime_plugin.EventListener):
 		copilot.secondary_view = view
 
 	def on_query_completions(self, view:sublime.View, prefix, locations):
+		if not PiecesSettings.autocomplete_snippet or not PiecesSettings.is_loaded:
+			return
 		syntax = view.syntax()
 		if not syntax:
 			return

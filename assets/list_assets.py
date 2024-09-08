@@ -25,14 +25,12 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 		self.sheet = self.window.new_html_sheet("Loading","")
 		self.sheet_id = self.sheet.id()
 		self.update_sheet(self.sheet,self.pieces_asset_id)
-		
 
 
 	@classmethod
 	def update_sheet(cls,sheet,asset_id,buttons_kwargs={}):
-		api_instance = AssetApi(PiecesSettings.api_client)
 		try:
-			api_response = api_instance.asset_specific_asset_export(asset_id, "MD")
+			api_response = PiecesSettings.api_client.asset_api.asset_specific_asset_export(asset_id, "MD")
 		except:
 			return sublime.error_message("Asset Not Found")
 		

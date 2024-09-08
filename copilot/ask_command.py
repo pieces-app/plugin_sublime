@@ -60,8 +60,18 @@ class PiecesConversationIdInputHandler(sublime_plugin.ListInputHandler):
 			sublime.ListInputItem(
 				text=chat.name,
 				value=chat.id,
-				details=chat.description.replace("\n","") if chat.description else "")
-		 for chat in PiecesSettings.api_client.copilot.chats()]
+				details=self.get_annotation(chat)) 
+			for chat in PiecesSettings.api_client.copilot.chats()]
+
+	def get_annotation(self,chat):
+		try:
+			annotation = " "
+			annotations = chat.conversation.annotations
+			if annotations and annotations.indices:
+				annotation = PiecesSettings.api_client.annotation_api.annotation_specific_annotation_snapshot(list(annotations.indices.keys())[0]).text.replace("\n"," ")
+			return annotation
+		except:
+			return ""
 
 	def placeholder(self):
 		return "Choose a conversation or start new one"

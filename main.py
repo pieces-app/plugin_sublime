@@ -59,7 +59,7 @@ def on_message(message):
 		PiecesSettings.is_loaded = False
 		print("Please make sure Pieces OS is running")
 
-def on_close(ws):
+def on_close():
 	PiecesSettings.is_loaded = False
 
 def plugin_loaded():
@@ -70,11 +70,11 @@ def plugin_loaded():
 	# callbacks needed onchange settings
 	PiecesSettings.on_model_change_callbacks.append(copilot.update_status_bar)
 	health = PiecesSettings.api_client.is_pieces_running()
-	if PiecesSettings.get_settings().get("auto_start_pieces_os") and not health:
+	if PiecesSettings.get_settings().get("auto_start_pieces_os"):
 			health = PiecesSettings.api_client.open_pieces_os()
 
 	if health:
-		HealthWS(PiecesSettings.api_client, on_message, startup, on_close).start()
+		HealthWS(PiecesSettings.api_client, on_message, lambda x:startup(), on_close=lambda x,y,z:on_close).start()
 	else:
 		print("Couldn't start pieces OS\nPlease run Pieces OS and restart the editor to ensure everything is running properly")
 		BaseWebsocket.close_all()

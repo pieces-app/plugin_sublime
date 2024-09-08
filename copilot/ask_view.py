@@ -102,8 +102,6 @@ class CopilotViewManager:
 	@property
 	def show_cursor(self):
 		self.update_status_bar()
-		self.gpt_view.run_command("append",{"characters":">>> "})
-		self.end_response += 4 # ">>> " 4 characters
 		region = sublime.Region(self.gpt_view.size(), self.gpt_view.size())
 		point_phantom = self.gpt_view.line(region.a).begin()
 
@@ -121,7 +119,7 @@ class CopilotViewManager:
 			icon=f"Packages/Pieces/copilot/images/copilot-icon-{ui}.png", 
 			flags=sublime.HIDDEN
 		)
-		self.add_role("User: ")
+		self.add_role("User")
 		self.select_end
 	
 	@property
@@ -208,8 +206,11 @@ class CopilotViewManager:
 		sublime.set_timeout_async(lambda: PiecesSettings.api_client.copilot.stream_question(query,pipeline))
 
 	def add_role(self,role):
-		self.gpt_view.run_command("append",{"characters":f"{role}: "})
-		self.end_response += len(role) + 2
+		text = f'>>> **{role}**: '
+		text_size = len(text)
+		self.gpt_view.run_command("append",{"characters":text})
+		self.end_response += text_size
+		
 
 	def add_code_phantoms(self):
 		view = self.gpt_view
