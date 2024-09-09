@@ -183,7 +183,7 @@ class CopilotViewManager:
 
 	@conversation_id.setter
 	def conversation_id(self,id):
-		PiecesSettings.api_client.copilot.chat = BasicChat(id)
+		PiecesSettings.api_client.copilot.chat = BasicChat(id) if id else None
 		self.gpt_view.settings().set("conversation_id",id)
 
 	@property
@@ -279,30 +279,30 @@ class CopilotViewManager:
 
 		if conversation_id:
 			try:
-				PiecesSettings.api_client.copilot.chat = BasicChat(conversation_id)
+				self.conversation_id = conversation_id
 			except ValueError:
 				return sublime.error_message("Conversation not found") # Error conversation not found
 		else:
-			PiecesSettings.api_client.copilot.chat = None
+			self.conversation_id = None
 			self.gpt_view # Nothing need to be rendered 
 			if hasattr(self,"_view_name"): delattr(self,"_view_name")
 			return 
-		
-		self.view_name = PiecesSettings.api_client.copilot.chat.name
+		chat = PiecesSettings.api_client.copilot.chat
+		self.view_name = chat.name if chat else "New Conversation"
 		self.gpt_view.run_command("select_all")
 		self.gpt_view.run_command("right_delete") # Clear the cursor created by default ">>>"
 
+		if chat:
+			for message in chat.messages():
+				if message.role == "USER":
+					self.show_cursor
+				else:
+					self.add_role("Copilot")
+				
+				if message.raw_content:
+					self.gpt_view.run_command("append",{"characters":message.raw_content})
 
-		for message in conversation.messages():
-			if message.role == "USER":
-				self.show_cursor
-			else:
-				self.add_role("Copilot")
-			
-			if message.raw_content:
-				self.gpt_view.run_command("append",{"characters":message.raw_content})
-
-			self.new_line()
+				self.new_line()
 
 		self.show_cursor
 		self.end_response = self.gpt_view.size()
