@@ -1,8 +1,7 @@
 import sublime_plugin
 import sublime
-from .assets_snapshot import AssetSnapshot
 from .._pieces_lib.pieces_os_client import *
-
+from .._pieces_lib.pieces_os_client.wrapper.basic_identifier import BasicAsset
 from .list_assets import PiecesListAssetsCommand
 from .ext_map import file_map
 
@@ -42,10 +41,10 @@ class PiecesHandleMarkdownCommand(sublime_plugin.WindowCommand):
 
 		if not asset_id:
 			return
-		asset_wrapper = AssetSnapshot(asset_id)
-		self.code = asset_wrapper.get_asset_raw()
-		self.language = asset_wrapper.original_classification_specific()
-		self.name = asset_wrapper.name
+		asset_wrapper = BasicAsset(asset_id)
+		self.code = asset_wrapper.raw_content
+		self.language = asset_wrapper.classification
+		self.asset_name = asset_wrapper.name
 		self.asset_id = asset_id
 
 		if mode == "copy":
@@ -80,7 +79,7 @@ class PiecesHandleMarkdownCommand(sublime_plugin.WindowCommand):
 		# Insert the text
 		view.run_command('append', {'characters': self.code})
 		# Set the name
-		view.set_name(self.name)
+		view.set_name(self.asset_name)
 		# Set it to scratch to avoid the default saving menu
 		view.set_scratch(True)
 		# Set the view to handle the save operation

@@ -83,5 +83,9 @@
 	{
 		"caption": "Pieces: Export Pieces Material",
 		"command":"pieces_export_asset_to_sublime"
+	},
+	{
+		"caption": "Pieces: Close Pieces OS",
+		"command":"pieces_close_os"
 	}
 ]

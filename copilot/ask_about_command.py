@@ -1,44 +1,40 @@
 import sublime_plugin
 import sublime
-from .ask_command import copilot
-from ..assets.create_asset import PiecesCreateAssetCommand
+from .ask_command import copilot,PiecesQueryInputHandler
 from ..settings import PiecesSettings
 
+
 class PiecesAskStreamAboutCommand(sublime_plugin.TextCommand):
-	def run(self,edit,type):
+	def run(self,edit,type,pieces_query):
+		self.context = PiecesSettings.api_client.copilot.context
 		self.before_query = ""
 		if type == "file":
 			path = self.view.file_name()
 			if not path: return 
-
-			placeholder = "Ask about that file"
-			self.context = {"paths":[path]}
+			self.context.paths.append(path)
 		elif type == "folder":
 			window = self.view.window()
 			if not window: return
 			paths = window.folders()
 			if not paths: return
-
-			self.context = {"paths":paths}
-			placeholder = "Ask a question about your current project"
+			[self.context.paths.append(path) for path in paths]
 
 		elif type == "section":
-			seed = PiecesCreateAssetCommand(self.view).get_seeds()
-			if not seed: return
-			self.before_query = str(seed.asset.format.fragment.string.raw)
-			self.context = {"seed":seed}
-			placeholder = "Ask about the current section"
+			# Get the all the selected text
+			data = "\n".join([self.view.substr(selection) for selection in self.view.sel()])
+			if not data:
+				return sublime.error_message("Please select a text")
+			self.context.raw_assets.append(data)
 
-		self.view.window().show_input_panel(placeholder, "",self.on_done, None, None)
-		
-	def on_done(self,query):
 		copilot.render_conversation(None) # Create conversation if not already
-		copilot.add_context(**self.context)
-		if self.before_query: query = self.before_query + query
-		copilot.add_query(query) # Add the query
+		if self.before_query: 
+			pieces_query = self.before_query + pieces_query
+		copilot.add_query(pieces_query) # Add the query
 		copilot.gpt_view.run_command("pieces_enter_response")
 
 	def is_enabled(self):
 		return PiecesSettings.is_loaded
 
+	def input(self, args):
+		return PiecesQueryInputHandler()
 

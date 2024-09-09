@@ -1,6 +1,7 @@
-from .._pieces_lib.pieces_os_client import UserProfile
+from .._pieces_lib.pieces_os_client import UserProfile,AllocationStatusEnum
 from ..settings import PiecesSettings
 import sublime
+from typing import Optional
 
 
 CONNECTING_HTML = "<p>Cloud Status: <span style=color:yellow>•</span> Connecting</p>"
@@ -18,13 +19,14 @@ class AuthUser:
 			sublime.Region(0, 0), html, sublime.LAYOUT_INLINE)
 
 	@classmethod
-	def on_user_callback(cls,user:UserProfile=None):
+	def on_user_callback(cls,user:Optional[UserProfile]=None,connecting=False):
+		PiecesSettings.api_client.user.user_profile = user
 		sublime.active_window().focus_view(PiecesSettings.output_panel)
 		cls.user_profile = user
 		if not user:
 			cls.login_page()
 		else:
-			cls.logout_page(user.email,user.name,user.allocation)
+			cls.logout_page(connecting)
 
 	@classmethod
 	def login_page(cls):
@@ -33,26 +35,26 @@ class AuthUser:
 		
 
 	@classmethod
-	def logout_page(cls,email,username,allocation=None,connecting=False):
+	def logout_page(cls,connecting=False):
 		allocation_html = ""
-		if allocation:
-			status = allocation.status.cloud
-			if status == "PENDING":
+		user = PiecesSettings.api_client.user
+		status = user.cloud_status
+		if status:
+
+			if status == AllocationStatusEnum.PENDING:
 				allocation_html = CONNECTING_HTML
-			elif status == "RUNNING" and "SUCCEEDED":
+			elif status == AllocationStatusEnum.SUCCEEDED \
+			 or status ==  AllocationStatusEnum.RUNNING:
 				allocation_html = CONNECTED_HTML
-			elif status == "FAILED":
+			elif status == AllocationStatusEnum.FAILED:
 				allocation_html = DISCONNECTED_HTML
 
-			try:
-				if allocation.urls.vanity.url:
-					allocation_html += f"<p>Personal Domain: {allocation.urls.vanity.url}</p>"
-			except AttributeError:
-				pass
+			if user.vanity_name:
+				allocation_html += f"<p>Personal Domain: {user.vanity_name}.pieces.cloud</p>"
 		else:
 			if connecting:
 				allocation_html = CONNECTING_HTML
 			else:
 				allocation_html = DISCONNECTED_HTML
-		phantom_content = f"<p>Username: {username}</p><p>Email: {email}</p>{allocation_html}<a href='subl:pieces_logout'>Logout</a>"
+		phantom_content = f"<p>Username: {user.name}</p><p>Email: {user.email}</p>{allocation_html}<a href='subl:pieces_logout'>Logout</a>"
 		cls.create_new_phantom(phantom_content)

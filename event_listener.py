@@ -1,14 +1,12 @@
 import sublime
 import sublime_plugin
 
+from ._pieces_lib.pieces_os_client.wrapper.basic_identifier.asset import BasicAsset
 from .assets.list_assets import PiecesListAssetsCommand
 from .assets.ext_map import file_map
-from .assets.assets_snapshot import AssetSnapshot
 from .settings import PiecesSettings
 from .misc import PiecesOnboardingCommand
 from .copilot.ask_command import copilot
-from .copilot.ask_view import CopilotViewManager
-from .copilot.conversation_websocket import ConversationWS
 
 
 file_map_reverse = {v:k for k,v in file_map.items()}
@@ -16,7 +14,6 @@ file_map_reverse = {v:k for k,v in file_map.items()}
 
 class PiecesEventListener(sublime_plugin.EventListener):
 	secondary_view = None # Used in the ask to know the secondary view at insert
-	commands_to_exclude = ["pieces_onboarding","pieces_reload","pieces_support"]
 
 	onboarding_commands_dict = {
 		"pieces_create_asset":"create",
@@ -48,13 +45,13 @@ class PiecesEventListener(sublime_plugin.EventListener):
 		sheet_id = view.settings().get("pieces_sheet_id","")
 		if sheet_id in PiecesListAssetsCommand.sheets_md:
 			asset_id = PiecesListAssetsCommand.sheets_md[sheet_id]
-			asset_wrapper = AssetSnapshot(asset_id)
-			code = asset_wrapper.get_asset_raw()
+			asset_wrapper = BasicAsset(asset_id)
+			code = asset_wrapper.raw_content
 			data = view.substr(sublime.Region(0, view.size()))
 			
 			if data != code:
 				sublime.active_window().focus_view(view)
-				if sublime.ok_cancel_dialog("Do you want to this snippet to pieces?", ok_title='Save', title='Save snippet'):
+				if sublime.ok_cancel_dialog("Do you want to save this snippet to Pieces?", ok_title='Save', title='Save snippet'):
 					view.window().run_command("pieces_handle_markdown",{"mode": "save","sheet_id":sheet_id,"data":data,"close":False})
 					del view.settings()["pieces_sheet_id"]
 					return
@@ -72,7 +69,6 @@ class PiecesEventListener(sublime_plugin.EventListener):
 		elif key == "pieces_copilot_add" or key == "pieces_copilot_remove":
 			## TRUE -> Means no operation will be done
 			## False -> Means operation can be done
-
 			if view.settings().get("PIECES_GPT_VIEW"):
 				if not copilot.can_type:
 					return True # If we can't type then don't accpet operations
@@ -98,35 +94,30 @@ class PiecesEventListener(sublime_plugin.EventListener):
 			if view.settings().get("PIECES_GPT_VIEW"):
 				# Update the conversation to be real-time
 				# Close the old view and rerender the conversation
-				conversation = view.settings().get("conversation_id")
-				if conversation:
-					on_open = lambda: view.close(lambda x:copilot.render_conversation(conversation)) # Wait some sec until the conversations is loaded
-					if ConversationWS.is_running():
-						on_open() # Run the command if it is running already
-					else: 
-						instance = ConversationWS.get_instance()
-						if instance:
-							instance.on_open_callbacks.append(on_open)
+				view.close()
+
+
 	@staticmethod
 	def on_deactivated(view):
 		copilot.secondary_view = view
 
 	def on_query_completions(self, view:sublime.View, prefix, locations):
+		if not PiecesSettings.autocomplete_snippet or not PiecesSettings.is_loaded:
+			return
 		syntax = view.syntax()
 		if not syntax:
 			return
 		classification_enum = file_map_reverse.get(syntax.path)
 		out = []
-		for asset_id in AssetSnapshot.identifiers_snapshot:
-			asset_wrapper = AssetSnapshot(asset_id)
-			if asset_wrapper.original_classification_specific() == classification_enum:
-				content = asset_wrapper.get_asset_raw()
+		for asset in PiecesSettings.api_client.assets():
+			if asset.classification == classification_enum:
+				content = asset.raw_content
 				
-				if prefix.lower() in asset_wrapper.name.lower().replace(" ","") and prefix != "":
-					href = sublime.command_url("pieces_show_completion_details",{"asset_id":asset_wrapper._asset_id})
+				if prefix.lower() in asset.name.lower().replace(" ","") and prefix != "" and content:
+					href = sublime.command_url("pieces_show_completion_details",{"asset_id":asset.id})
 					out.append(
 						sublime.CompletionItem(
-							asset_wrapper.name,
+							asset.name,
 							annotation="Pieces",
 							completion=content,
 							kind=sublime.KIND_SNIPPET,

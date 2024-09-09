@@ -1,8 +1,7 @@
 import sublime_plugin
 import sublime
 from .ask_view import CopilotViewManager
-from .conversations import ConversationsSnapshot
-from .conversation_websocket import ConversationWS
+from .._pieces_lib.pieces_os_client.wrapper.websockets import ConversationWS
 from .._pieces_lib.pieces_os_client import AnnotationApi,Seeds,FlattenedAssets
 from ..settings import PiecesSettings
 from typing import Optional
@@ -45,6 +44,8 @@ class PiecesChooseTypeInputHandler(sublime_plugin.ListInputHandler):
 class PiecesQueryInputHandler(sublime_plugin.TextInputHandler):
 	def placeholder(self) -> str:
 		return "Enter a query to ask the copilot about"
+	def validate(self, text: str) -> bool:
+		return bool(text.strip())
 
 
 class PiecesEnterResponseCommand(sublime_plugin.TextCommand):
@@ -57,22 +58,22 @@ class PiecesEnterResponseCommand(sublime_plugin.TextCommand):
 
 class PiecesConversationIdInputHandler(sublime_plugin.ListInputHandler):
 	def list_items(self):
-		conversation_list = []
-		api = AnnotationApi(PiecesSettings.api_client)
-		for conversation in ConversationsSnapshot.identifiers_snapshot.values():
-			name = getattr(conversation,"name","New Conversation")
-			if not name: name = "New Conversation"
+		return [
+			sublime.ListInputItem(
+				text=chat.name,
+				value=chat.id,
+				details=self.get_annotation(chat)) 
+			for chat in PiecesSettings.api_client.copilot.chats()]
 
-			try:
-				id = list(conversation.annotations.indices.keys())[0]
-				details = str(api.annotation_specific_annotation_snapshot(id).text).replace("\n"," ")
-			except AttributeError:
-				details = ""
-
-
-			conversation_list.append(sublime.ListInputItem(text=name, value=conversation.id,details=details))
-
-		return conversation_list
+	def get_annotation(self,chat):
+		try:
+			annotation = " "
+			annotations = chat.conversation.annotations
+			if annotations and annotations.indices:
+				annotation = PiecesSettings.api_client.annotation_api.annotation_specific_annotation_snapshot(list(annotations.indices.keys())[0]).text.replace("\n"," ")
+			return annotation
+		except:
+			return ""
 
 	def placeholder(self):
 		return "Choose a conversation or start new one"

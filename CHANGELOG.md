@@ -1,4 +1,14 @@
 # CHANGELOG
+# 1.3.0
+
+## Sept 10, 2024
+
+- Major speed stability 
+- Fix some typos
+- Better Copilot UI
+- Major bug fixes including many assets and Copilot commands
+- New Pieces Close command
+
 # [1.2.0](https://github.com/pieces-app/plugin_sublime/milestone/3)
 
 ##  Jul 15, 2024

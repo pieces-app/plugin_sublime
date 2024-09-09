@@ -1,12 +1,11 @@
 import sublime_plugin
 import sublime
+from typing import List, Optional
 
 from ..settings import PiecesSettings
-from ..assets.assets_snapshot import AssetSnapshot
 from ..assets.list_assets import PiecesAssetIdInputHandler
 
-from .._pieces_lib.pieces_os_client import SearchApi,AssetsApi
-
+from .._pieces_lib.pieces_os_client.wrapper.basic_identifier import BasicAsset
 
 
 
@@ -25,18 +24,24 @@ class QueryInputHandler(sublime_plugin.TextInputHandler):
 			return
 		result = PiecesSearchCommand.search(SearchTypeInputHandler.search_type,query = text)
 		if result:
-			names_html = [f"<li>{asset.name}</li>" for id,asset in result.items()]
+			names_html = []
+			for asset in result:
+				try:
+					names_html.append(f"<li>{asset.name}</li>")
+				except ValueError: # Asset id is not valid
+					pass
 			return sublime.Html(f"""<p>Asset Matches:</p><ul>{"".join(names_html)}</ul>""")
 
 	def next_input(self,args):
 		result = PiecesSearchCommand.search(**args)
 
 		if not result: # No results just set the status
-			sublime.active_window().active_view().set_status('Pieces Search', 'No matches found.')
-			return
+			view = sublime.active_window().active_view()
+			if view:
+				view.set_status('Pieces Search', 'No matches found.')
+				return
 
 		return PiecesAssetIdExtendInputHandler(result) # get a choose menu of the assets found
-	
 
 
 
@@ -44,8 +49,7 @@ class SearchTypeInputHandler(sublime_plugin.ListInputHandler):
 	def list_items(self):
 		return [
 			("Neural Code Search","ncs"),
-			("Full Text Search", "fts"),
-			("Fuzzy Search", "assets")
+			("Full Text Search", "fts")
 		]
 	def next_input(self,args):
 		SearchTypeInputHandler.search_type = args["search_type"] # used in the preview
@@ -59,17 +63,14 @@ class PiecesSearchCommand(sublime_plugin.WindowCommand):
 			return self.window.run_command("pieces_list_assets",args={"pieces_asset_id":pieces_asset_id})
 
 	@staticmethod
-	def search(search_type,query)-> list:
-		if search_type == 'assets':
-			api_instance = AssetsApi(PiecesSettings.api_client)
-			results = api_instance.assets_search_assets(query=query, transferables=False)
-		elif search_type == 'ncs':
-			api_instance = SearchApi(PiecesSettings.api_client)
+	def search(search_type,query)-> Optional[List[BasicAsset]]:
+		api_instance = PiecesSettings.api_client.search_api
+		if search_type == 'ncs':
 			results = api_instance.neural_code_search(query=query)
 		elif search_type == 'fts':
-			api_instance = SearchApi(PiecesSettings.api_client)
 			results = api_instance.full_text_search(query=query)
 			# Check and extract asset IDs from the results
+
 		if results:
 			# Extract the iterable which contains the search results
 			iterable_list = results.iterable if hasattr(results, 'iterable') else []
@@ -85,8 +86,7 @@ class PiecesSearchCommand(sublime_plugin.WindowCommand):
 
 				# Print the combined asset details
 				if combined_ids:
-					identifiers_snapshot = AssetSnapshot.identifiers_snapshot
-					return {id:identifiers_snapshot.get(id) for id in combined_ids if identifiers_snapshot.get(id)}
+					return [BasicAsset(id) for id in combined_ids]
 
 	def is_enabled(self):
 		return PiecesSettings.is_loaded

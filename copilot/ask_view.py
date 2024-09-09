@@ -1,19 +1,8 @@
 import sublime
 from sublime import Region
 from .images.context_image import ContextImage
-from .ask_websocket import AskStreamWS
-from .conversations import ConversationsSnapshot
-from .._pieces_lib.pieces_os_client import (ConversationMessageApi,
-											QGPTQuestionInput,
-											QGPTStreamInput,
-											RelevantQGPTSeeds,
-											QGPTStreamOutput,
-											QGPTRelevanceInput,
-											QGPTApi,
-											Asset,
-											Seed,
-											Seeds,
-											FlattenedAssets)
+from .._pieces_lib.pieces_os_client import QGPTStreamOutput
+from .._pieces_lib.pieces_os_client.wrapper.basic_identifier.chat import BasicChat
 from ..settings import PiecesSettings
 import re
 from typing import Optional
@@ -82,7 +71,8 @@ class CopilotViewManager:
 			# Focus on the new group
 			sublime.active_window().focus_group(1)
 
-			# Relevant
+			# Update the Copilot message callback
+			PiecesSettings.api_client.copilot.ask_stream_ws.on_message_callback = self.on_message_callback
 
 		return CopilotViewManager._gpt_view
 		
@@ -107,15 +97,14 @@ class CopilotViewManager:
 
 	def update_status_bar(self):
 		if getattr(self,"_gpt_view",None):
-			self._gpt_view.set_status("MODEL",f"LLM Model: {PiecesSettings.model_name.replace('Chat Model','')}")
+			self._gpt_view.set_status("MODEL",f"LLM Model: {PiecesSettings.api_client.model_name.replace('Chat Model','')}")
 
 	@property
 	def show_cursor(self):
-		self.gpt_view.set_status("MODEL",PiecesSettings.model_name)
-		self.gpt_view.run_command("append",{"characters":">>> "})
-		self.end_response += 4 # ">>> " 4 characters
+		self.update_status_bar()
 		region = sublime.Region(self.gpt_view.size(), self.gpt_view.size())
 		point_phantom = self.gpt_view.line(region.a).begin()
+
 		self.add_context_phantom(sublime.Region(point_phantom,point_phantom))
 
 		ui = sublime.ui_info()["theme"]["style"]
@@ -130,10 +119,9 @@ class CopilotViewManager:
 			icon=f"Packages/Pieces/copilot/images/copilot-icon-{ui}.png", 
 			flags=sublime.HIDDEN
 		)
+		self.add_role("User")
 		self.select_end
 	
-
-
 	@property
 	def end_response(self) -> int:
 		return self.gpt_view.settings().get("end_response")
@@ -175,11 +163,12 @@ class CopilotViewManager:
 
 	def add_context_phantom(self,region):
 		self.context_phantom_region = region
-		href = sublime.html_format_command("show_overlay", args={"overlay": "command_palette","text":"Pieces: Manage Conversation Context"})
 		ui = sublime.ui_info()["theme"]["style"]
+		if ui not in ["light","dark"]:
+			ui = "light"
 		image = getattr(ContextImage,ui)
 		self.context_phantom.update(
-			[sublime.Phantom(region,f"<a href='subl:{href}'>{image.format(style='width:20px;height:20px')}</a>",sublime.LAYOUT_INLINE)]
+			[sublime.Phantom(region,f"<a href='subl:pieces_context_manager'>{image.format(style='width:20px;height:20px')}</a>",sublime.LAYOUT_INLINE)]
 		)
 	def remove_context_phantom(self):
 		self.context_phantom.update([])
@@ -194,6 +183,7 @@ class CopilotViewManager:
 
 	@conversation_id.setter
 	def conversation_id(self,id):
+		PiecesSettings.api_client.copilot.chat = BasicChat(id)
 		self.gpt_view.settings().set("conversation_id",id)
 
 	@property
@@ -205,30 +195,6 @@ class CopilotViewManager:
 		for _ in range(lines):
 			self.gpt_view.run_command("append",{"characters":"\n"})
 
-
-	def add_context(self, paths: Optional[list] = None, seed: Optional[Seed] = None, asset: Optional[Asset] = None):
-		if paths:
-			self._relevant["paths"] = self._relevant.get("paths", []) + paths
-		if seed:
-			seeds = self._relevant.get("seeds")
-			if seeds is None:
-				self._relevant["seeds"] = Seeds(iterable=[])
-			self._relevant["seeds"].iterable.append(seed)
-		if asset:
-			assets = self._relevant.get("assets",None)
-			if assets is None:
-				self._relevant["assets"] = FlattenedAssets(iterable=[])
-			self._relevant["assets"].iterable.append(asset)
-
-
-
-	@property
-	def relevant(self):
-		return self._relevant
-	@relevant.setter
-	def relevant(self,relevant):
-		self._relevant = relevant
-
 	def ask(self,pipeline=None):
 		query = self.gpt_view.substr(Region(self.end_response,self.gpt_view.size()))
 		if not query:
@@ -237,39 +203,14 @@ class CopilotViewManager:
 		self.select_end # got to the end of the text to enter the new lines
 		self.new_line()
 		self.remove_context_phantom()
-		sublime.set_timeout_async(lambda: self.run_ask_async(query,pipeline))
+		self.add_role("Copilot")
+		sublime.set_timeout_async(lambda: PiecesSettings.api_client.copilot.stream_question(query,pipeline))
 
-	def run_ask_async(self,query,pipeline):
-		if self._relevant:
-			relevance_input = QGPTApi(PiecesSettings.api_client).relevance(QGPTRelevanceInput(
-				query=query,
-				application=PiecesSettings.get_application().id,
-				model=PiecesSettings.model_id,
-				**self._relevant
-			)).relevant
-		else:
-			relevance_input = RelevantQGPTSeeds(iterable=[])
+	def add_role(self,role):
+		text = f'>>> **{role}**: '
+		self.gpt_view.run_command("append",{"characters":text})
+		self.end_response = self.gpt_view.size()
 		
-		
-		self.ask_websocket.send_message(
-			QGPTStreamInput(
-				question=QGPTQuestionInput(
-					query=query,
-					relevant = relevance_input,
-					application=PiecesSettings.get_application().id,
-					model = PiecesSettings.model_id,
-					pipeline=pipeline
-				),
-				conversation = self.conversation_id,
-			))
-	
-	@property
-	def ask_websocket(self):
-		if not hasattr(self,"_ask_websocket"):
-			CopilotViewManager._ask_websocket = AskStreamWS(self.on_message_callback)
-		return self._ask_websocket
-
-
 
 	def add_code_phantoms(self):
 		view = self.gpt_view
@@ -285,7 +226,6 @@ class CopilotViewManager:
 			id = str(len(self.phantom_details_dict))
 			# Create a phantom at the end of each code block
 
-			
 			end_point = match.end()
 			region = sublime.Region(end_point+self.last_edit_phantom, end_point+self.last_edit_phantom)
 			self.phantom_details_dict[id] = {"code":match.group(1),"region":region}
@@ -334,38 +274,33 @@ class CopilotViewManager:
 
 
 	def render_conversation(self,conversation_id):
-		
-		self.conversation_id = conversation_id # Set the conversation
-
 		# Clear everything!
-		self._gpt_view = None # clear the old _gpt_view
-		self.phantom_set.update([]) # Clear old phantoms
-		
+		self.clear()
 
 		if conversation_id:
-			conversation = ConversationsSnapshot.identifiers_snapshot.get(conversation_id)
-			if not conversation:
+			try:
+				PiecesSettings.api_client.copilot.chat = BasicChat(conversation_id)
+			except ValueError:
 				return sublime.error_message("Conversation not found") # Error conversation not found
 		else:
+			PiecesSettings.api_client.copilot.chat = None
 			self.gpt_view # Nothing need to be rendered 
 			if hasattr(self,"_view_name"): delattr(self,"_view_name")
 			return 
 		
-		self.view_name = conversation.name
+		self.view_name = PiecesSettings.api_client.copilot.chat.name
 		self.gpt_view.run_command("select_all")
 		self.gpt_view.run_command("right_delete") # Clear the cursor created by default ">>>"
-		message_api = ConversationMessageApi(PiecesSettings.api_client)
 
-		for key,val in conversation.messages.indices.items():
-			self.select_end
-			if val == -1: # message is deleted
-				continue
-			message = message_api.message_specific_message_snapshot(message=key,transferables=True)
+
+		for message in conversation.messages():
 			if message.role == "USER":
 				self.show_cursor
+			else:
+				self.add_role("Copilot")
 			
-			if message.fragment.string:
-				self.gpt_view.run_command("append",{"characters":message.fragment.string.raw})
+			if message.raw_content:
+				self.gpt_view.run_command("append",{"characters":message.raw_content})
 
 			self.new_line()
 
@@ -376,6 +311,7 @@ class CopilotViewManager:
 	@property
 	def secondary_view(self):
 		return getattr(self,"_secondary_view",None) # Will be updated via event listeners
+
 	@secondary_view.setter
 	def secondary_view(self,view):
 		if not view.settings().get("PIECES_GPT_VIEW") and view in sublime.active_window().views():
@@ -387,6 +323,7 @@ class CopilotViewManager:
 		self.can_type = True
 		view = self._gpt_view
 		self._gpt_view = None
+		self.phantom_set.update([])
 		if not view:
 			return  
 		view.run_command("select_all")
