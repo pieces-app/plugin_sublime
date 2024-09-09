@@ -69,7 +69,6 @@ class PiecesEventListener(sublime_plugin.EventListener):
 		elif key == "pieces_copilot_add" or key == "pieces_copilot_remove":
 			## TRUE -> Means no operation will be done
 			## False -> Means operation can be done
-
 			if view.settings().get("PIECES_GPT_VIEW"):
 				if not copilot.can_type:
 					return True # If we can't type then don't accpet operations

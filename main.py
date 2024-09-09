@@ -22,6 +22,9 @@ PIECES_OS_MAX_VERSION = "11.0.0" # Maximum version (11.0.0)
 
 
 def startup():
+	# Use the auth callback instead of the default one in the client
+	PiecesSettings.api_client.user.on_user_callback = AuthUser.on_user_callback 
+	
 	ConversationWS(PiecesSettings.api_client)
 	AssetsIdentifiersWS(PiecesSettings.api_client)
 	AuthWS(PiecesSettings.api_client,PiecesSettings.api_client.user.on_user_callback)
@@ -45,7 +48,6 @@ def startup():
 	# User Weboscket
 	PiecesSettings.create_auth_output_panel()
 
-	PiecesSettings.api_client.user.on_user_callback = AuthUser.on_user_callback
 
 	# Lunch Onboarding if it is the first time
 	if not PiecesOnboardingCommand.get_onboarding_settings().get("lunch_onboarding",False):
@@ -61,6 +63,7 @@ def on_message(message):
 
 def on_close():
 	PiecesSettings.is_loaded = False
+	print("Please make sure Pieces OS is running")
 
 def plugin_loaded():
 	settings = PiecesSettings.get_settings()
@@ -70,13 +73,14 @@ def plugin_loaded():
 	# callbacks needed onchange settings
 	PiecesSettings.on_model_change_callbacks.append(copilot.update_status_bar)
 	health = PiecesSettings.api_client.is_pieces_running()
+	health_ws = HealthWS(PiecesSettings.api_client, on_message, lambda x:startup(), on_close=lambda x,y,z:on_close())
 	if PiecesSettings.get_settings().get("auto_start_pieces_os"):
-			health = PiecesSettings.api_client.open_pieces_os()
+		health = PiecesSettings.api_client.open_pieces_os()
 
 	if health:
-		HealthWS(PiecesSettings.api_client, on_message, lambda x:startup(), on_close=lambda x,y,z:on_close).start()
+		health_ws.start()
 	else:
-		print("Couldn't start pieces OS\nPlease run Pieces OS and restart the editor to ensure everything is running properly")
+		print("Please run Pieces OS and restart the editor to ensure everything is running properly")
 		BaseWebsocket.close_all()
 
 

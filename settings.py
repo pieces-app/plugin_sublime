@@ -39,8 +39,9 @@ class PiecesSettings:
 		"""
 		if host != cls.api_client.host and host:
 			cls.api_client.host = host
-			if BaseWebsocket.instances:
-				sublime.set_timeout_async(BaseWebsocket.reconnect_all)
+
+		if BaseWebsocket.instances:
+			BaseWebsocket.reconnect_all()
 
 
 	@classmethod
@@ -71,7 +72,7 @@ class PiecesSettings:
 			cls.host_init(host = host)
 			cls.models_init(model = model)
 
-		if cls.api_client.model_name != model or all:
+		elif cls.api_client.model_name != model:
 			cls.models_init(model = model)
 
 	@staticmethod
