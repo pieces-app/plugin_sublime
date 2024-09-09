@@ -81,9 +81,6 @@ class BasicAsset(Basic):
 
 		Args:
 			content: The new content to be set.
-
-		Raises:
-			NotImplemented: If the asset is an image.
 		"""
 		format_api = AssetSnapshot.pieces_client.format_api
 		original = format_api.format_snapshot(self.asset.original.id, transferable=True)
@@ -326,11 +323,12 @@ class BasicAsset(Basic):
 		else:
 			kwargs = {"seed" : seed}
 
-		user = BasicUser.user_profile
+		user = AssetSnapshot.pieces_client.user.user_profile
 
 		if not user:
 			raise PermissionError("You need to be logged in to generate a shareable link")
 
+		print(not user.allocation)
 		if not user.allocation:
 			raise PermissionError("You need to connect to the cloud to generate a shareable link")
 

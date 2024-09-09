@@ -1,12 +1,20 @@
 from ._pieces_lib.pieces_os_client import SeededConnectorConnection,SeededTrackedApplication
 from ._pieces_lib.pieces_os_client.wrapper.websockets.base_websocket import BaseWebsocket
 from ._pieces_lib.pieces_os_client.wrapper import PiecesClient
+from ._pieces_lib import notify
 from multiprocessing.pool import ThreadPool
 import sublime
 import os
 
 from . import __version__
 
+
+try:
+	from . import _debug
+	debug = True
+	print("RUNNING DEBUG MODE")
+except:
+	debug = False
 
 
 class PiecesSettings:
@@ -17,6 +25,7 @@ class PiecesSettings:
 				platform = sublime.platform().upper() if sublime.platform() != 'osx' else "MACOS",
 				version = __version__)),connect_wesockets=False)
 	_pool = None
+	debug=debug
 	is_loaded = False # is the plugin loaded
 	ONBOARDING_SYNTAX = "Packages/Pieces/syntax/Onboarding.sublime-syntax"
 	on_model_change_callbacks = [] # If the model change a function should be runned
@@ -96,7 +105,32 @@ class PiecesSettings:
 			cls._pool = ThreadPool(1)
 		return cls._pool
 
+
 	# Load the settings from 'Pieces.sublime-settings' file using Sublime Text API
 	pieces_settings = sublime.load_settings('Pieces.sublime-settings')
 	pieces_settings.add_on_change("PIECES_SETTINGS",on_settings_change)
+
+	@staticmethod
+	def notify(title,message,level="info"):
+		try:
+			if level == "error":
+				notify.error(title, message, False)
+			elif level == "warning":
+				notify.warning(title, message, False)
+			else:
+				notify.info(title, message, False)
+			notify.destroy()
+		except:
+			pass
+if PiecesSettings.api_client.local_os == "MACOS":
+	os_icon = "pieces_server.icns"
+elif PiecesSettings.api_client.local_os ==  "WINDOWS":
+	os_icon = "pieces_server.ico"
+else:
+	os_icon = "pieces_server.png"
+
+package_path = os.path.join(sublime.packages_path(),"Pieces") if debug else os.path.join(sublime.installed_packages_path(),"Pieces.sublime-package")
+path = os.path.join(package_path,"icons", os_icon) if os_icon else None
+os_icon = path
+notify.setup_notifications("Pieces for Sublime Text",os_icon,sender=None)
 

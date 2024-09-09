@@ -160,3 +160,4 @@ cython_debug/
 .idea/
 Pieces/
 Pieces.sublime-package
+_debug.py
