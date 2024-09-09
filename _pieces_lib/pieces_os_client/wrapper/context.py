@@ -1,4 +1,5 @@
 from typing import TYPE_CHECKING, List
+
 from .basic_identifier import BasicAsset,BasicMessage
 import os
 from Pieces._pieces_lib.pieces_os_client import QGPTRelevanceInput,Seeds,FlattenedAssets,FlattenedConversationMessages

@@ -30,7 +30,6 @@ import subprocess
 import urllib.request
 import urllib.error
 
-
 from .copilot import Copilot
 from .basic_identifier import BasicAsset,BasicUser
 from .streamed_identifiers import AssetSnapshot
@@ -42,8 +41,8 @@ class PiecesClient:
         if not host:
             host = "http://localhost:5323" if 'Linux' in platform.platform() else "http://localhost:1000"
 
-        self.models = None
         self.host = host
+        self.models = None
         self._is_started_runned = False
         self.local_os = platform.system().upper() if platform.system().upper() in ["WINDOWS","LINUX","DARWIN"] else "WEB"
         self.local_os = "MACOS" if self.local_os == "DARWIN" else self.local_os
@@ -57,12 +56,14 @@ class PiecesClient:
         self.copilot = Copilot(self)
         self._startup()
 
+
     def _startup(self) -> bool:
         if self._is_started_runned: return True
         if not self.is_pieces_running(): return False
 
         self._is_started_runned = True
         self.tracked_application = self.connector_api.connect(seeded_connector_connection=self._seeded_connector).application
+        self.api_client.set_default_header("application",self.tracked_application.id)
 
         if self._connect_websockets:
             self.conversation_ws = ConversationWS(self)
@@ -214,3 +215,4 @@ class PiecesClient:
 
 # Register the function to be called on exit
 atexit.register(BaseWebsocket.close_all)
+

@@ -73,7 +73,7 @@ class CopilotViewManager:
 
 			# Update the Copilot message callback
 			PiecesSettings.api_client.copilot.ask_stream_ws.on_message_callback = self.on_message_callback
-
+			PiecesSettings.api_client.copilot._return_on_message = lambda:None # Modify the copilot becaue we will use the on_message_callback
 		return CopilotViewManager._gpt_view
 		
 	@property
