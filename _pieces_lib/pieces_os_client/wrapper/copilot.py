@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Optional, Generator,List
+from typing import TYPE_CHECKING, List, Optional, Generator
 from Pieces._pieces_lib.pieces_os_client import (SeededConversation,
     QGPTStreamInput,
     RelevantQGPTSeeds,
@@ -54,6 +54,7 @@ class Copilot:
         Yields:
             QGPTStreamOutput: The streamed output from the QGPT model.
         """
+        self.pieces_client._check_startup()
         relevant = self.context._relevance_api(query) if self.context._check_relevant_existance else RelevantQGPTSeeds(iterable=[])
         self.ask_stream_ws.send_message(
             QGPTStreamInput(
@@ -67,7 +68,16 @@ class Copilot:
                 conversation=self._chat_id,
             )
         )
+        return self._return_on_message()
 
+    def _return_on_message(self):
+        while True:
+            message: QGPTStreamOutput = self._on_message_queue.get()
+            if message.status != QGPTStreamEnum.IN_MINUS_PROGRESS:  # Loop only while in progress
+                yield message
+                self.chat = BasicChat(message.conversation)  # Save the conversation
+                break
+            yield message
 
 
     def question(self,
@@ -87,6 +97,7 @@ class Copilot:
         returns:
             QGPTQuestionOutput: The streamed output from the QGPT model.
         """
+        self.pieces_client._check_startup()
         gpt_input = QGPTQuestionInput(
             query = query,
             model = self.pieces_client.model_id,

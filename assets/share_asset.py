@@ -8,6 +8,11 @@ from ..auth.auth_user import AuthUser
 
 
 class PiecesShareAssetCommand(sublime_plugin.WindowCommand):
+	def __init__(self, window):
+		self.sheet = None
+		self.update_sheet = False # Should we update the current sheet
+		super().__init__(window)
+
 	def run(self,asset_id,update_sheet=False):
 		self.update_sheet = update_sheet
 		self.sheet = self.window.active_sheet()
@@ -19,7 +24,6 @@ class PiecesShareAssetCommand(sublime_plugin.WindowCommand):
 		"""
 			You need to either give the seed or the asset_id
 		"""
-		
 		user = AuthUser.user_profile
 		if not user:
 			if sublime.ok_cancel_dialog("You need to be logged in to generate a shareable link",ok_title="Login",title="Pieces"):
@@ -29,27 +33,20 @@ class PiecesShareAssetCommand(sublime_plugin.WindowCommand):
 			if sublime.ok_cancel_dialog("You need to connect to the cloud to generate a shareable link",ok_title="Connect",title="Pieces"):
 				self.window.run_command("pieces_allocation_connect")
 			return
-
 		if asset_id:
-			self.thread = PiecesSettings.pool().apply_async(BasicAsset(asset_id).share)
+			share = BasicAsset(asset_id).share()
 		if raw_content:
-			self.thread = PiecesSettings.pool().apply_async(BasicAsset.share_raw_content,raw_content)
-		
-		share = None
-		try:
-			share = self.thread.get(120)
-			if self.sheet and self.update_sheet:
-				if self.sheet.id() in PiecesListAssetsCommand.sheets_md:
-					PiecesListAssetsCommand.update_sheet(self.sheet,asset_id,
-						{"share":
-							{"title":"Copy Generated Link",
-							"url":f'subl:pieces_copy_link  {{"content":"{share.iterable[0].link}", "asset_id":"{asset_id}"}}'}
-						})
+			share = BasicAsset.share_raw_content(raw_content)
 
-		except:	
-			pass
-
-		if share: return share
+		if self.sheet and self.update_sheet:
+			if self.sheet.id() in PiecesListAssetsCommand.sheets_md:
+				PiecesListAssetsCommand.update_sheet(self.sheet,asset_id,
+					{"share":
+						{"title":"Copy Generated Link",
+						"url":f'subl:pieces_copy_link  {{"content":"{share.iterable[0].link}", "asset_id":"{asset_id}"}}'}
+					})
+		PiecesSettings.notify("Shareable Link Generated",share.iterable[0].link)
+		return share
 
 	def is_enabled(self):
 		return PiecesSettings.is_loaded 
@@ -58,6 +55,10 @@ class PiecesShareAssetCommand(sublime_plugin.WindowCommand):
 class PiecesGenerateShareableLinkCommand(sublime_plugin.TextCommand):
 	def run(self,edit,data=None):
 		self.data = data
+		if not data:
+			self.data = "\n".join([self.view.substr(selection) for selection in self.view.sel()])
+			if not self.data:
+				return sublime.error_message("Please select a text")
 		sublime.set_timeout_async(self.run_async)
 
 
@@ -72,8 +73,7 @@ class PiecesGenerateShareableLinkCommand(sublime_plugin.TextCommand):
 
 		# self.show_dialog(link)
    
-		# self.create_popup(self.view,link)
-		self.show_dialog(link)
+		self.create_popup(self.view,link)
 		sublime.set_timeout(lambda: self.view.erase_status("pieces_share"),4000)
 	
 
@@ -114,7 +114,8 @@ class PiecesGenerateShareableLinkCommand(sublime_plugin.TextCommand):
 			<div style='background-color:var(--base_background)'>Pieces Link Generated: {link}</div>
 			</body>""", 
 			location=-1,
-			on_navigate=on_nav)
+			on_navigate=on_nav,
+			max_width=350)
 	
 	def is_enabled(self):
 		return PiecesSettings.is_loaded 

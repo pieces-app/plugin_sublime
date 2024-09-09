@@ -21,7 +21,7 @@ from Pieces._pieces_lib.pieces_os_client import (
 	Shares
 )
 
-from typing import Optional
+from typing import Literal, Optional, List
 from .basic import Basic
 from .user import BasicUser
 
@@ -81,19 +81,20 @@ class BasicAsset(Basic):
 
 		Args:
 			content: The new content to be set.
-
-		Raises:
-			NotImplemented: If the asset is an image.
 		"""
 		format_api = AssetSnapshot.pieces_client.format_api
-		original = format_api.format_snapshot(self.asset.original.id, transferable=True)
-		if original.classification.generic == ClassificationGenericEnum.IMAGE:
-			raise NotImplemented("Can't edit an image yet")
+		if self.is_image:
+			original = self._get_ocr_format(self.asset)
+		else:
+			original = format_api.format_snapshot(self.asset.original.id, transferable=True)
 
 		if original.fragment and original.fragment.string and original.fragment.string.raw:
 			original.fragment.string.raw = content
 		elif original.file and original.file.string and original.file.string.raw:
 			original.file.string.raw = content
+		elif original.file and original.file.bytes and original.file.bytes.raw:
+			original.file.bytes.raw =  list(content.encode('utf-8'))
+
 		format_api.format_update_value(transferable=False, format=original)
 
 	@property
@@ -160,7 +161,7 @@ class BasicAsset(Basic):
 		Get the name of the asset.
 
 		Returns:
-			Optional[str]: The name of the asset if available, otherwise "Unnamed snippet".
+			str: The name of the asset if available, otherwise "Unnamed snippet".
 		"""
 		return self.asset.name if self.asset.name else "Unnamed snippet"
 	
@@ -175,7 +176,7 @@ class BasicAsset(Basic):
 		self._edit_asset(self.asset)
 
 	@property
-	def description(self) -> str:
+	def description(self) -> Optional[str]:
 		"""
 		Retrieve the description of the asset.
 
@@ -204,7 +205,7 @@ class BasicAsset(Basic):
 		return getattr(self.asset.annotations,"iterable",None)
 
 
-	def delete(self):
+	def delete(self) -> None:
 		"""
 		Delete the asset.
 		"""
@@ -250,6 +251,44 @@ class BasicAsset(Basic):
 		PermissionError: If the user is not logged in or is not connected to the cloud.
 		"""
 		return cls._share(seed = cls._get_seed(raw_content))
+
+
+	@staticmethod
+	def search(query:str,search_type:Literal["fts","ncs","fuzzy"] = "fts") -> Optional[List["BasicAsset"]]:
+		"""
+	    Perform a search using either Full Text Search (FTS) or Neural Code Search (NCS) or Fuzzy search (fuzzy).
+	    
+	    Parameters:
+	        query (str): The search query string.
+	        search_type (Literal["fts", "ncs", "fuzzy"], optional): The type of search to perform.
+	            'fts' for Full Text Search (default) or 'ncs' for Neural Code Search.
+	    
+	    Returns:
+	        Optional[List["BasicAsset"]]: A list of search results or None if no results are found.
+	    """
+		if search_type == 'ncs':
+			results = AssetSnapshot.pieces_client.search_api.neural_code_search(query=query)
+		elif search_type == 'fts':
+			results = AssetSnapshot.pieces_client.search_api.full_text_search(query=query)
+		elif search_type == "fuzzy":
+			results = AssetSnapshot.pieces_client.assets_api.search_assets(query=query,transferables=False)
+
+		if results:
+			# Extract the iterable which contains the search results
+			iterable_list = results.iterable if hasattr(results, 'iterable') else []
+
+			# Check if iterable_list is a list and contains SearchedAsset objects
+			if isinstance(iterable_list, list) and all(hasattr(asset, 'exact') and hasattr(asset, 'identifier') for asset in iterable_list):
+				# Extracting suggested and exact IDs
+				suggested_ids = [asset.identifier for asset in iterable_list if not asset.exact]
+				exact_ids = [asset.identifier for asset in iterable_list if asset.exact]
+
+				# Combine and store best and suggested matches in asset_ids
+				combined_ids = exact_ids + suggested_ids
+
+				# Print the combined asset details
+				if combined_ids:
+					return [BasicAsset(id) for id in combined_ids]
 
 	@staticmethod
 	def _get_seed(raw: str, metadata: Optional[FragmentMetadata] = None) -> Seed:
@@ -326,7 +365,7 @@ class BasicAsset(Basic):
 		else:
 			kwargs = {"seed" : seed}
 
-		user = BasicUser.user_profile
+		user = AssetSnapshot.pieces_client.user.user_profile
 
 		if not user:
 			raise PermissionError("You need to be logged in to generate a shareable link")
@@ -340,3 +379,4 @@ class BasicAsset(Basic):
 				**kwargs
 				)
 			)
+
