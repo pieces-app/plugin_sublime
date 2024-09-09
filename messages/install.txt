@@ -1,5 +1,5 @@
-Welcome to Pieces Sublime Plugin
---------------------------------
+Pieces for Sublime 
+-------------------
 
 
 To get started, please make sure you have Pieces OS installed, running, and up-to-date.

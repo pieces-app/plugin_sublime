@@ -1,0 +1,22 @@
+Pieces for Sublime
+
+Version 1.3.0
+-------------
+
+Bug fixes
+- Major speed stability (much faster startup)
+- Fix some typos
+- Major bug fixes including many assets and Copilot commands
+
+New Features
+- New Pieces Close command
+- Better Copilot UI
+
+
+Useful links:
+-------------
+Website: https://pieces.app
+GitHub: https://github.com/pieces-app/plugin_sublime
+Discord: https://discord.gg/getpieces
+YouTube: https://youtube.com/@getpieces
+
