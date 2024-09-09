@@ -78,10 +78,10 @@ class PiecesShowInputHandler(sublime_plugin.ListInputHandler):
 				for idx,path in enumerate(value):
 					res.append((path,f"paths_{idx}"))
 			elif key == "assets":
-				for idx,asset in enumerate(value.iterable):
+				for idx,asset in enumerate(value):
 					res.append((asset.name,f"assets_{idx}"))
 			elif key == "seeds":
-				for idx in range(len(value.iterable)):
+				for idx in range(len(value)):
 					res.append((f"Snippet {idx+1}",f"seeds_{idx}"))
 		return res
 
