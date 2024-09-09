@@ -12,6 +12,7 @@ class PiecesOpenPiecesCommand(sublime_plugin.ApplicationCommand):
 		view.set_status("OPEN_STATUS","Opening Pieces OS") if view else None
 		if PiecesSettings.api_client.open_pieces_os():
 			view.erase_status("OPEN_STATUS") if view else None
+			sublime.run_command("pieces_reload")
 			sublime.status_message("Pieces OS lunched successfully")
 		else: 
 			view.erase_status("OPEN_STATUS") if view else None

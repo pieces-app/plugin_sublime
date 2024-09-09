@@ -27,7 +27,7 @@ md_text = f"""
 
 ## Version
 - Plugin Version: {__version__}
-- Pieces Version: {PiecesSettings.api_client.version if PiecesSettings.api_client.version else "Unknown"}
+- Pieces Version: {PiecesSettings.api_client.version if PiecesSettings.api_client.is_pieces_running() else "Unknown"}
 """
 class PiecesAboutCommand(sublime_plugin.WindowCommand):
 	def run(self):

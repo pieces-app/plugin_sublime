@@ -13,17 +13,10 @@ class PiecesReloadCommand(sublime_plugin.ApplicationCommand):
 	def reload_async(self):
 		if PiecesSettings.api_client.is_pieces_running():
 			try:
-				sublime.set_timeout_async(self.run_reload_async)
+				PiecesSettings.on_settings_change(all = True)
+				sublime.status_message(f"Reloading [completed]")
 			except Exception as e:
 				sublime.error_message(f"Error during reload: {e}")
 		else:
 			sublime.status_message(f"Pieces OS is offline")
 
-	@staticmethod
-	def run_reload_async():
-		PiecesSettings.on_settings_change(all = True)
-		BaseWebsocket.reconnect_all()
-		sublime.status_message(f"Reloading [completed]")
-
-	def is_enabled(self) -> bool:
-		return PiecesSettings.is_loaded
