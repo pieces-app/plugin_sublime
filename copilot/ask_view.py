@@ -163,11 +163,12 @@ class CopilotViewManager:
 
 	def add_context_phantom(self,region):
 		self.context_phantom_region = region
-		href = sublime.html_format_command("show_overlay", args={"overlay": "command_palette","text":"Pieces: Manage Conversation Context"})
 		ui = sublime.ui_info()["theme"]["style"]
+		if ui not in ["light","dark"]:
+			ui = "light"
 		image = getattr(ContextImage,ui)
 		self.context_phantom.update(
-			[sublime.Phantom(region,f"<a href='subl:{href}'>{image.format(style='width:20px;height:20px')}</a>",sublime.LAYOUT_INLINE)]
+			[sublime.Phantom(region,f"<a href='subl:pieces_context_manager'>{image.format(style='width:20px;height:20px')}</a>",sublime.LAYOUT_INLINE)]
 		)
 	def remove_context_phantom(self):
 		self.context_phantom.update([])
@@ -207,9 +208,8 @@ class CopilotViewManager:
 
 	def add_role(self,role):
 		text = f'>>> **{role}**: '
-		text_size = len(text)
 		self.gpt_view.run_command("append",{"characters":text})
-		self.end_response += text_size
+		self.end_response = self.gpt_view.size()
 		
 
 	def add_code_phantoms(self):
@@ -226,7 +226,6 @@ class CopilotViewManager:
 			id = str(len(self.phantom_details_dict))
 			# Create a phantom at the end of each code block
 
-			
 			end_point = match.end()
 			region = sublime.Region(end_point+self.last_edit_phantom, end_point+self.last_edit_phantom)
 			self.phantom_details_dict[id] = {"code":match.group(1),"region":region}
@@ -280,16 +279,16 @@ class CopilotViewManager:
 
 		if conversation_id:
 			try:
-				conversation = BasicChat(conversation_id)
-				conversation.conversation
+				PiecesSettings.api_client.copilot.chat = BasicChat(conversation_id)
 			except ValueError:
 				return sublime.error_message("Conversation not found") # Error conversation not found
 		else:
+			PiecesSettings.api_client.copilot.chat = None
 			self.gpt_view # Nothing need to be rendered 
 			if hasattr(self,"_view_name"): delattr(self,"_view_name")
 			return 
 		
-		self.view_name = conversation.name
+		self.view_name = PiecesSettings.api_client.copilot.chat.name
 		self.gpt_view.run_command("select_all")
 		self.gpt_view.run_command("right_delete") # Clear the cursor created by default ">>>"
 

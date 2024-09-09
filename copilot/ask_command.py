@@ -44,6 +44,8 @@ class PiecesChooseTypeInputHandler(sublime_plugin.ListInputHandler):
 class PiecesQueryInputHandler(sublime_plugin.TextInputHandler):
 	def placeholder(self) -> str:
 		return "Enter a query to ask the copilot about"
+	def validate(self, text: str) -> bool:
+		return bool(text.strip())
 
 
 class PiecesEnterResponseCommand(sublime_plugin.TextCommand):

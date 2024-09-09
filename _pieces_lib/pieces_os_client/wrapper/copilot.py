@@ -36,6 +36,7 @@ class Copilot:
         self.ask_stream_ws = AskStreamWS(self.pieces_client, self._on_message_queue.put)
         self.context = Context(pieces_client)
         self._chat = None
+        self._chat_id = None
 
     def stream_question(self,
             query: str,
@@ -53,7 +54,6 @@ class Copilot:
         Yields:
             QGPTStreamOutput: The streamed output from the QGPT model.
         """
-        id = self._chat.id if self._chat else None
         relevant = self.context._relevance_api(query) if self.context._check_relevant_existance else RelevantQGPTSeeds(iterable=[])
         self.ask_stream_ws.send_message(
             QGPTStreamInput(
@@ -64,17 +64,10 @@ class Copilot:
                     model=self.pieces_client.model_id,
                     pipeline=pipeline
                 ),
-                conversation=id,
+                conversation=self._chat_id,
             )
         )
 
-        while True:
-            message: QGPTStreamOutput = self._on_message_queue.get()
-            if message.status != QGPTStreamEnum.IN_MINUS_PROGRESS:  # Loop only while in progress
-                yield message
-                self.chat = BasicChat(message.conversation)  # Save the conversation
-                break
-            yield message
 
 
     def question(self,
@@ -122,7 +115,6 @@ class Copilot:
         Returns:
             Optional[BasicChat]: The current chat instance or None if no chat is set.
         """
-        self.context.clear() # clear the context on changing the conversation
         return self._chat
 
     @chat.setter
@@ -132,13 +124,11 @@ class Copilot:
 
         Args:
             chat (Optional[BasicChat]): The chat instance to set.
-
-        Raises:
-            ValueError: If the provided chat is not a valid BasicChat instance.
+            use chat = None if you want to create a new conversation on asking
         """
-        if not (chat is None or isinstance(chat, BasicChat)):
-            raise ValueError("Not a valid chat")
         self._chat = chat
+        self.context.clear() # clear the context on changing the conversation
+        self._chat_id = chat.id if chat else None
 
 
     def create_chat(self, name:Optional[str]=None):

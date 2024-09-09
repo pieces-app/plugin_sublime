@@ -5,8 +5,8 @@ from ..settings import PiecesSettings
 from ..assets.list_assets import PiecesAssetIdInputHandler
 
 
-class PiecesContextManagerCommand(sublime_plugin.TextCommand):
-	def run(self, edit: sublime.Edit,context=None,pieces_asset_id=None,context_remove=None):
+class PiecesContextManagerCommand(sublime_plugin.WindowCommand):
+	def run(self,context,pieces_asset_id=None,context_remove=None):
 		if context_remove:
 			key,idx = context_remove.split("_")
 			idx = int(idx)
@@ -21,7 +21,7 @@ class PiecesContextManagerCommand(sublime_plugin.TextCommand):
 			PiecesSettings.api_client.copilot.context.assets.append(BasicAsset(pieces_asset_id))
 
 	def is_enabled(self):
-		return self.view.settings().get("PIECES_GPT_VIEW",False) and PiecesSettings.is_loaded
+		return sublime.active_window().active_view().settings().get("PIECES_GPT_VIEW",False) and PiecesSettings.is_loaded
 	def input(self,args):
 		return PiecesContextInputHandler()
 
