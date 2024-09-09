@@ -42,6 +42,7 @@ class PiecesClient:
         if not host:
             host = "http://localhost:5323" if 'Linux' in platform.platform() else "http://localhost:1000"
 
+        self.models = None
         self.host = host
         self._is_started_runned = False
         self.local_os = platform.system().upper() if platform.system().upper() in ["WINDOWS","LINUX","DARWIN"] else "WEB"
@@ -55,7 +56,6 @@ class PiecesClient:
         self.user = BasicUser(self)   
         self.copilot = Copilot(self)
         self._startup()
-
 
     def _startup(self) -> bool:
         if self._is_started_runned: return True
@@ -71,7 +71,6 @@ class PiecesClient:
             # Start all initilized websockets
             BaseWebsocket.start_all()
         
-        self.models = None
         self.model_name = "GPT-3.5-turbo Chat Model"
         return True
 
