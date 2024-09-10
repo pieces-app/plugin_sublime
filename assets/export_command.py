@@ -116,7 +116,7 @@ class PiecesSaveSublimeSnippetCommand(sublime_plugin.WindowCommand):
 		kwargs={
 			"asset_id":instance.asset_id,
 			"content":instance.content,
-			"description":instance.description,
+			"description":instance.asset_description,
 			"scope":instance.scope,
 			"trigger":instance.trigger
 		}
