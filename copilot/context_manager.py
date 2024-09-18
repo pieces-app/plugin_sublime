@@ -21,7 +21,10 @@ class PiecesContextManagerCommand(sublime_plugin.WindowCommand):
 			PiecesSettings.api_client.copilot.context.assets.append(BasicAsset(pieces_asset_id))
 
 	def is_enabled(self):
-		return sublime.active_window().active_view().settings().get("PIECES_GPT_VIEW",False) and PiecesSettings.is_loaded
+		v = sublime.active_window().active_view()
+		if v:
+			return v.settings().get("PIECES_GPT_VIEW",False) and PiecesSettings.is_loaded
+
 	def input(self,args):
 		return PiecesContextInputHandler()
 
