@@ -35,7 +35,7 @@ template_view = """
 
 - Tab Trigger: <a href='subl:pieces_edit_snippet_sheet {{"field":"trigger","sheet_id":{sheet_id}}}'>{trigger}</a>
 
-- Description: <a href='subl:pieces_edit_snippet_sheet {{"field":"description","sheet_id":{sheet_id}}}'>{description}</a>
+- Description: <a href='subl:pieces_edit_snippet_sheet {{"field":"asset_description","sheet_id":{sheet_id}}}'>{description}</a>
 
 - Scope: <a href='subl:pieces_edit_snippet_sheet {{"field":"scope","sheet_id":{sheet_id}}}'>{scope}</a>
 
@@ -116,7 +116,7 @@ class PiecesSaveSublimeSnippetCommand(sublime_plugin.WindowCommand):
 		kwargs={
 			"asset_id":instance.asset_id,
 			"content":instance.content,
-			"description":instance.asset_description,
+			"asset_description":instance.asset_description,
 			"scope":instance.scope,
 			"trigger":instance.trigger
 		}
@@ -138,10 +138,11 @@ class PiecesEditSnippetSheetCommand(sublime_plugin.WindowCommand):
 			field (str):
 				- trigger
 				- scope
-				- description
+				- asset_description
 				- content
 				- asset_id
 		"""
+		print(field)
 		self.field = field
 		self.instance = PiecesExportAssetToSublimeCommand.get_instance(sheet_id)
 		self.window.show_input_panel(f"{field.title()}:", getattr(self.instance,field), self.on_done, None, None)
