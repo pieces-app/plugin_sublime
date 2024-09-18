@@ -72,18 +72,18 @@ class PiecesAskQuestionCommand(sublime_plugin.TextCommand):
 
 
 	def on_done(self,description):
-		self.description = description
-		if not self.description:
-			self.description = "No description provided"
+		self._description = description
+		if not description:
+			description = "No description provided"
 		sublime.set_timeout_async(self.on_done_async,0)
 
 	def on_done_async(self):
 		if self.task == "fix":
-			pipeline = QGPTTaskPipeline(code_fix=QGPTTaskPipelineForCodeFix(error=self.description))
+			task = QGPTTaskPipeline(code_fix=QGPTTaskPipelineForCodeFix(error=self._description))
 		elif self.task == "modify":
-			pipeline = QGPTTaskPipeline(code_modification=QGPTTaskPipelineForCodeModification(instruction=self.description))
-		elif self.task == "comment":
-			pipeline = QGPTTaskPipeline(code_commentation=QGPTTaskPipelineForCodeCommentation())
+			task = QGPTTaskPipeline(code_modification=QGPTTaskPipelineForCodeModification(instruction=self._description))
+		else: # comment
+			task = QGPTTaskPipeline(code_commentation=QGPTTaskPipelineForCodeCommentation())
 		
 		self.view.set_status('Pieces Refactoring', 'Copilot is thinking...')
 
@@ -105,6 +105,7 @@ class PiecesAskQuestionCommand(sublime_plugin.TextCommand):
 				)
 			]
 		)
+		pipeline = QGPTPromptPipeline(task=task)
 		try:
 			res = PiecesSettings.api_client.copilot.question(" ",relevant,pipeline)
 		except:
@@ -152,6 +153,7 @@ class PiecesReplaceCodeSelectionCommand(sublime_plugin.TextCommand):
 		settings = self.view.settings()
 		use_spaces = settings.get('translate_tabs_to_spaces')
 		tab_size = settings.get('tab_size', 4)
+
 
 		# Get the current indentation level of the selected region
 		current_line_region = self.view.line(region.begin())
