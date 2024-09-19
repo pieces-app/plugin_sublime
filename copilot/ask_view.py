@@ -1,5 +1,5 @@
 import sublime
-from sublime import Region
+from sublime import Region, View
 from .images.context_image import ContextImage
 from .._pieces_lib.pieces_os_client import QGPTStreamOutput
 from .._pieces_lib.pieces_os_client.wrapper.basic_identifier.chat import BasicChat
@@ -20,42 +20,42 @@ PHANTOM_CONTENT = f"""
 """
 
 class CopilotViewManager:
-	can_type = True
-	_gpt_view = None
+	def __init__(self):
+		self._gpt_view = None
+		self._view_name = None
+		self._secondary_view = None
 
 	@property
 	def gpt_view(self) -> sublime.View:
-		if not getattr(CopilotViewManager, "_gpt_view",None):
+		if not self._gpt_view:
 			# File config and creation
-			CopilotViewManager._gpt_view = sublime.active_window().new_file(syntax="Packages/Markdown/Markdown.sublime-syntax")	
-			CopilotViewManager.can_type = True
-			CopilotViewManager._gpt_view.settings().set("PIECES_GPT_VIEW",True) # Label the view as gpt view
-			CopilotViewManager._gpt_view.settings().set("end_response",0) # End reponse charater
-			CopilotViewManager._gpt_view.settings().set("line_numbers", False) # Remove lines
-			CopilotViewManager._gpt_view.set_scratch(True)
-			CopilotViewManager._gpt_view.set_name(self.view_name)
+			self._gpt_view = sublime.active_window().new_file(syntax="Packages/Markdown/Markdown.sublime-syntax")	
+			self.can_type = True
+			self._gpt_view.settings().set("PIECES_GPT_VIEW",True) # Label the view as gpt view
+			self._gpt_view.settings().set("line_numbers", False) # Remove lines
+			self._gpt_view.settings().set("word_wrap",True)
+			self._gpt_view.set_scratch(True)
 
 			# Phantom intilization 
 			self.last_edit_phantom = 0
-			self.phantom_set = sublime.PhantomSet(CopilotViewManager._gpt_view, "Pieces_Phantoms")
+			self.phantom_set = sublime.PhantomSet(self._gpt_view, "Pieces_Phantoms")
 			self.phantom_details_dict = {} # id: {"code":code,"region":region}
 
 
 
 			# Failed regions
 			self.failed_regions = []
-			self.failed_phantom = sublime.PhantomSet(CopilotViewManager._gpt_view, "Pieces_Failed_Phantoms")
+			self.failed_phantom = sublime.PhantomSet(self._gpt_view, "Pieces_Failed_Phantoms")
 
 
 			# Context Phantom
-			self.context_phantom = sublime.PhantomSet(CopilotViewManager._gpt_view, "Pieces_context")
+			self.context_phantom = sublime.PhantomSet(self._gpt_view, "Pieces_context")
 
 			# Others
-			CopilotViewManager._relevant = {}
+			self._relevant = {}
 			self.copilot_regions = []
-			self.show_cursor
 			self.update_status_bar()
-			# self.render_copilot_image_phantom(CopilotViewManager._gpt_view)
+			# self.render_copilot_image_phantom(self._gpt_view)
 
         
 			# Create a new group (split view)
@@ -66,19 +66,21 @@ class CopilotViewManager:
 			})
 
 			# Move the active view to the new group
-			sublime.active_window().set_view_index(CopilotViewManager._gpt_view, 1, 0)
+			sublime.active_window().set_view_index(self._gpt_view, 1, 0)
 
 			# Focus on the new group
 			sublime.active_window().focus_group(1)
 
+			self.show_cursor
+
 			# Update the Copilot message callback
 			PiecesSettings.api_client.copilot.ask_stream_ws.on_message_callback = self.on_message_callback
 			PiecesSettings.api_client.copilot._return_on_message = lambda:None # Modify the copilot becaue we will use the on_message_callback
-		return CopilotViewManager._gpt_view
+		return self._gpt_view
 		
 	@property
 	def view_name(self):
-		name = getattr(self,"_view_name","New Conversation")
+		name = self._view_name
 		if not name:
 			name = "New Conversation"
 
@@ -92,11 +94,11 @@ class CopilotViewManager:
 
 	@gpt_view.setter
 	def gpt_view(self,view):
-		CopilotViewManager._gpt_view = view
+		self._gpt_view = view
 
 
 	def update_status_bar(self):
-		if getattr(self,"_gpt_view",None):
+		if self._gpt_view:
 			self._gpt_view.set_status("MODEL",f"LLM Model: {PiecesSettings.api_client.model_name.replace('Chat Model','')}")
 
 	@property
@@ -124,7 +126,7 @@ class CopilotViewManager:
 	
 	@property
 	def end_response(self) -> int:
-		return self.gpt_view.settings().get("end_response")
+		return self.gpt_view.settings().get("end_response",0)
 
 	@end_response.setter
 	def end_response(self,e):
@@ -139,7 +141,6 @@ class CopilotViewManager:
 		
 		if message.status == "COMPLETED":
 			self.new_line()
-			self.end_response = self.gpt_view.size() # Update the size
 			self.reset_view()
 			self.conversation_id = message.conversation
 			self.add_code_phantoms() # Generate the code phantoms	
@@ -174,8 +175,9 @@ class CopilotViewManager:
 		self.context_phantom.update([])
 
 	def reset_view(self):
+		self.end_response = self.gpt_view.size()
 		self.show_cursor
-		CopilotViewManager.can_type = True
+		self.can_type = True
 
 	@property
 	def conversation_id(self):
@@ -195,11 +197,12 @@ class CopilotViewManager:
 		for _ in range(lines):
 			self.gpt_view.run_command("append",{"characters":"\n"})
 
+
 	def ask(self,pipeline=None):
 		query = self.gpt_view.substr(Region(self.end_response,self.gpt_view.size()))
 		if not query:
 			return
-		CopilotViewManager.can_type = False
+		self.can_type = False
 		self.select_end # got to the end of the text to enter the new lines
 		self.new_line()
 		self.remove_context_phantom()
@@ -283,14 +286,13 @@ class CopilotViewManager:
 			except ValueError:
 				return sublime.error_message("Conversation not found") # Error conversation not found
 		else:
+			self.view_name = "New Conversation"
 			self.conversation_id = None
-			self.gpt_view # Nothing need to be rendered 
-			if hasattr(self,"_view_name"): delattr(self,"_view_name")
 			return 
 		chat = PiecesSettings.api_client.copilot.chat
-		self.view_name = chat.name if chat else "New Conversation"
 		self.gpt_view.run_command("select_all")
 		self.gpt_view.run_command("right_delete") # Clear the cursor created by default ">>>"
+		self.view_name = chat.name if chat else "New Conversation"
 
 		if chat:
 			for message in chat.messages():
@@ -310,7 +312,7 @@ class CopilotViewManager:
     
 	@property
 	def secondary_view(self):
-		return getattr(self,"_secondary_view",None) # Will be updated via event listeners
+		return self._secondary_view # Will be updated via event listeners
 
 	@secondary_view.setter
 	def secondary_view(self,view):
@@ -318,17 +320,9 @@ class CopilotViewManager:
 			self._secondary_view = view
 
 	def clear(self):
-		self.end_response = 0
-		self.conversation_id = None
-		self.can_type = True
-		view = self._gpt_view
-		self._gpt_view = None
-		self.phantom_set.update([])
-		if not view:
-			return  
-		view.run_command("select_all")
-		view.run_command("delete")
-		self.gpt_view
+		if self._gpt_view:
+			self._gpt_view.close()
+			self._gpt_view = None
 
 	def add_query(self,query):
 		self.gpt_view.run_command("append",{"characters":query})
