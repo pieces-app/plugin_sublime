@@ -24,7 +24,7 @@ PIECES_OS_MAX_VERSION = "11.0.0" # Maximum version (11.0.0)
 def startup():
 	# Use the auth callback instead of the default one in the client
 	PiecesSettings.api_client.user.on_user_callback = AuthUser.on_user_callback 
-	
+	PiecesSettings.create_auth_output_panel()
 	ConversationWS(PiecesSettings.api_client)
 	AssetsIdentifiersWS(PiecesSettings.api_client)
 	AuthWS(PiecesSettings.api_client,PiecesSettings.api_client.user.on_user_callback)
@@ -44,9 +44,6 @@ def startup():
 		PiecesSettings.is_loaded = False
 		BaseWebsocket.close_all()
 		return
-	
-	# User Weboscket
-	PiecesSettings.create_auth_output_panel()
 
 
 	# Lunch Onboarding if it is the first time
