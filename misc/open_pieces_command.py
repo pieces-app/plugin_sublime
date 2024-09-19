@@ -8,6 +8,8 @@ class PiecesOpenPiecesCommand(sublime_plugin.ApplicationCommand):
 
 	@staticmethod
 	def run_async():
+		if PiecesSettings.api_client.is_pieces_running():
+			return sublime.status_message("Pieces OS is already running")
 		view = sublime.active_window().active_view()
 		view.set_status("OPEN_STATUS","Opening Pieces OS") if view else None
 		if PiecesSettings.api_client.open_pieces_os():
