@@ -44,7 +44,7 @@ from .websockets import *
 class PiecesClient:
     def __init__(self, host:str="", seeded_connector: Optional[SeededConnectorConnection] = None,**kwargs):
         if not host:
-            host = "http://localhost:5323" if 'Linux' in platform.platform() else "http://localhost:1000"
+            host = "http://127.0.0.1:5323" if 'Linux' in platform.platform() else "http://127.0.0.1:1000"
         self.host = host
         self.models = None
         self._is_started_runned = False
