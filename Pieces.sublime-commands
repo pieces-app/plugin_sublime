@@ -45,7 +45,6 @@
 		"command": "pieces_open_pieces"
 	},
 	{
-
 		"caption": "Pieces: About",
 		"command": "pieces_about"
 	},
@@ -63,14 +62,14 @@
 		"command":"pieces_context_manager"
 	},
 	{
-		"caption":"Pieces: Ask about the current file",
+		"caption":"Pieces: Ask About The Current File",
 		"command":"pieces_ask_stream_about",
 		"args":{
 			"type":"file"
 		}
 	},
 	{
-		"caption":"Pieces: Ask about the current project",
+		"caption":"Pieces: Ask About The Current Project",
 		"command":"pieces_ask_stream_about",
 		"args":{
 			"type":"folder"

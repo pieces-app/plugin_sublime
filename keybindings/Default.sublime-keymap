@@ -1,4 +1,11 @@
 [
+    {
+        "keys": ["ctrl+s"], 
+        "command": "pieces_handle_markdown",
+        "args": {"mode": "save"},
+        "context": [{"key": "save_pieces_asset"}]
+    }, // Saving a snippet in a snippet view
+
     // Not ment to be edited by any user!
     // All of these keybindings works on the copilot view
 

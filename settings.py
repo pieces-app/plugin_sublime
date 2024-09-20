@@ -23,7 +23,8 @@ class PiecesSettings:
 			application=SeededTrackedApplication(
 				name = "SUBLIME",
 				platform = sublime.platform().upper() if sublime.platform() != 'osx' else "MACOS",
-				version = __version__)),connect_wesockets=False)
+				version = __version__)),
+	connect_wesockets=False)
 	_pool = None
 	debug=debug
 	is_loaded = False # is the plugin loaded

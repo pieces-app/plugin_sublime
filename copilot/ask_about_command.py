@@ -5,8 +5,7 @@ from ..settings import PiecesSettings
 
 
 class PiecesAskStreamAboutCommand(sublime_plugin.TextCommand):
-	def run(self,edit,type,pieces_query):
-		copilot.render_conversation(None) # Create conversation if not already
+	def run(self,edit,type,pieces_query=None):
 		self.before_query = ""
 		if type == "file":
 			path = self.view.file_name()
@@ -27,9 +26,17 @@ class PiecesAskStreamAboutCommand(sublime_plugin.TextCommand):
 				return sublime.error_message("Please select a text")
 			PiecesSettings.api_client.copilot.context.raw_assets.append(data)
 
+		if not pieces_query:
+			sublime.active_window().show_input_panel("Enter a query", "", self.on_done, None, None)
+			return
+
 		if self.before_query: 
 			pieces_query = self.before_query + pieces_query
-		copilot.add_query(pieces_query) # Add the query
+		self.on_done(pieces_query)
+
+	def on_done(self,query):
+		copilot.render_conversation(None)
+		copilot.add_query(query) # Add the query
 		copilot.gpt_view.run_command("pieces_enter_response")
 
 	def is_enabled(self):

@@ -14,6 +14,7 @@ class PiecesExplainCommand(sublime_plugin.TextCommand):
 		copilot.clear()
 		ext = self.view.file_name().split(".")[-1] if self.view.file_name() else 'txt'
 		query = f"Can you explain this \n```{ext}\n{data}\n```"
+		copilot.render_conversation(None)
 		copilot.add_query(query)
 		copilot.ask(
 			pipeline=QGPTTaskPipeline(
