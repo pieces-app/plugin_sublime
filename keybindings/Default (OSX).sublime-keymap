@@ -24,7 +24,7 @@
         "command": "pieces_search"
     },
     {
-        "keys": ["command+shift+o"], // Pieces: Open Pieces OS
+        "keys": ["command+p","command+o"], // Pieces: Open Pieces OS
         "command": "pieces_open_pieces"
     },
     {
