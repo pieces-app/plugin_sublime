@@ -1,8 +1,8 @@
-# [Pieces for Developers](https://pieces.app) | Sublime Plugin
+# [Pieces for Developers](https://pieces.app/plugins/sublime) | Sublime Plugin
 
 ![Pieces Sublime Plugin](icons/hero-image.png)
 
-##### <p align="center"> [Website](https://pieces.app/) • [Pieces OS Documentation](https://docs.pieces.app/) • [Pieces Sublime Github Repository](https://github.com/pieces-app/plugin_sublime)
+##### <p align="center"> [Website](https://pieces.app/) • [Pieces OS Documentation](https://docs.pieces.app/) • [Pieces for Sublime Docs](https://github.com/pieces-app/plugin_sublime](https://docs.pieces.app/extensions-plugins/sublime)
 </p>
 
 # Important
