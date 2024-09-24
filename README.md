@@ -22,7 +22,7 @@ Before diving in, let's ensure everything is set up to your liking. You can cust
 
 You can also open the settings from the command palette `Pieces: Open Settings`.
 
-![Pieces Open Settings](https://raw.githubusercontent.com/pieces-app/plugin_sublime/update-readme/icons/pieces%20open%20settings.png)
+![Pieces Open Settings](icons/pieces%20open%20settings.png)
 
 #### LLMs Supported by the Pieces for Sublime Plugin 
 
@@ -56,25 +56,25 @@ Logging into your Pieces account lets you sync your snippets and settings betwee
 
 Saving a new snippet in Pieces is a breeze! Just select the code you want to save, right-click to open the context menu, and choose `Pieces > Save to Pieces`. Your code is now safely stored!
 
-![save to pieces](https://github.com/pieces-app/plugin_sublime/blob/update-readme/icons/pieces%20save%20to%20pieces.png)
+![save to pieces](icons/pieces%20save%20to%20pieces.png)
 
 ### Engage with the Pieces Copilot
 
 You can ask the Pieces Copilot questions about your code, view your conversations list, or start a new conversation by opening the command palette and entering `Pieces: Copilot`. Your selected LLM will then output an answer as a generation on the right side of your screen, right in your Sublime Text editor window.
 
-![pieces copilot](https://github.com/pieces-app/plugin_sublime/blob/update-readme/icons/pieces%20pieces%20copilot.png)
+![pieces copilot]icons/pieces%20pieces%20copilot.png)
 
 ### Copilot Ask
 
 Need some help from the Pieces Copilot? Just select the code and right-click to open the context menu and choose `Pieces > Ask Copilot`. 
 
-![copilot ask](https://github.com/pieces-app/plugin_sublime/blob/update-readme/icons/pieces%20ask%20copilot.png)
+![copilot ask](icons/pieces%20ask%20copilot.png)
 
 #### AI Debugging
 
 You can utilize the LLM capabilities of Pieces Copilot with an intelligent debugging feature, helping you identify errors in your code and preview potential solutions before applying changes.
 
-![debugging](https://github.com/pieces-app/plugin_sublime/blob/update-readme/icons/pieces%20debugging%20tool.png)
+![debugging](icons/pieces%20debugging%20tool.png)
 
 #### Code Comments
 
@@ -82,7 +82,7 @@ The mark of well-written, high-quality code (aside from functionality!) is code 
 
 Let Copilot do the heavy lifting for you!
 
-![code comments](https://github.com/pieces-app/plugin_sublime/blob/update-readme/icons/pieces%20add%20code%20comments.png)
+![code comments](icons/pieces%20add%20code%20comments.png)
 
 ### Ask about the current Project or File
 
@@ -91,7 +91,7 @@ The Pieces for Sublime Plugin lets you ask context-focused questions based on th
 - **Ask About the Current Project**: Use the command `Pieces: Ask about the current project` to ask the Pieces Copilot a question about your entire project. 
 - **Ask About the Current File**: Use the command `Pieces: Ask about the current file` to get assistance with the current opened file.
 
-![ask about current file and project](https://github.com/pieces-app/plugin_sublime/blob/update-readme/icons/pieces%20ask%20about%20current%20file.png)
+![ask about current file and project](icons/pieces%20ask%20about%20current%20file.png)
 
 ### Sublime Snippet Management
 
@@ -108,7 +108,7 @@ Ready to access your saved materials? It's super easy! Just follow these steps:
 2. Run the command: `Pieces: Open Saved Material`.
 3. Select the asset you wish to open from the list.
 
-![open saved materials](https://github.com/pieces-app/plugin_sublime/blob/update-readme/icons/pieces%20open%20saved%20material.png)
+![open saved materials](icons/pieces%20open%20saved%20material.png)
 
 Your material is now open and ready for you to use. 
 
