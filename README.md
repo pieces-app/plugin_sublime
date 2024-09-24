@@ -116,7 +116,7 @@ Your material is now open and ready for you to use.
 
 You can search for saved snippets using `Pieces: Search`.
 
-There are ![three types of searching:](https://docs.pieces.app/features/search-modes)
+There are [three types of searching:](https://docs.pieces.app/features/search-modes)
 
 - **Fuzzy Search**: Fuzzy Search finds snippets that are likely to be relevant, even if they are not exact matches. It is particularly useful for handling typos, misspellings, and variations in data.
 
