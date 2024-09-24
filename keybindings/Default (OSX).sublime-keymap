@@ -1,62 +1,59 @@
 [
+    // all Key Chords should begin with command+p (for Pieces)
     {
         "command": "pieces_ask_question", // Ask copilot in the context menu to fix a bug
         "args": {"task": "fix"},
-        "keys": ["command+shift+alt+f"]
+        "keys": ["command+shift+option+f"]
     },
     {
         "command": "pieces_ask_question", // Ask copilot in the context menu to modify the code
         "args": {"task": "modify"},
-        "keys": ["command+shift+alt+m"]
+        "keys": ["command+shift+option+m"]
     },
     {
         "command": "pieces_ask_question", // Ask copilot in the context menu code commentation
         "args": {"task": "comment"},
-        "keys": ["command+shift+c"]
+        "keys": ["command+shift+option+c"]
     },
     {
-        "keys": ["command+shift+l"], // Pieces: Open Saved Material
+        "keys": ["command+p","command+l"], // Pieces: Open Saved Material
         "command": "pieces_list_assets"
     },
     {
-        "keys": ["command+shift+s"], // Pieces: Search
+        "keys": ["command+p","command+s"], // Pieces: Search
         "command": "pieces_search"
     },
     {
-        "keys": ["command+shift+o"], // Pieces: Open Pieces OS
+        "keys": ["command+p","command+o"], // Pieces: Open Pieces OS
         "command": "pieces_open_pieces"
     },
     {
-        "keys": ["command+shift+m"], // Pieces: Manage Conversation Context
+        "keys": ["command+p","command+c"], // Pieces: Manage Conversation Context
         "command": "pieces_context_manager"
     },
     {
-        "keys": ["command+shift+alt+f"], // Pieces: Ask about the current file
+        "keys": ["command+p","command+f"], // Pieces: Ask about the current file
         "command": "pieces_ask_stream_about",
         "args": {
             "type": "file"
         }
     },
     {
-        "keys": ["command+shift+alt+p"], // Pieces: Ask about the current project
+        "keys": ["command+p","command+i"], // Pieces: Ask about the current project
         "command": "pieces_ask_stream_about",
         "args": {
             "type": "folder"
         }
     },
     {
-        "keys": ["command+shift+alt+o"], // Pieces: Close Pieces OS
-        "command": "pieces_close_os"
-    },
-    {
         "command" : "pieces_ask_stream", // Pieces: Copilot
-        "keys" : ["command+shift+alt+n"],
+        "keys" : ["command+shift+option+n"],
         "args": {
             "pieces_choose_type": "new" // Open a new conversation
         }
     },
     {
         "command" : "pieces_ask_stream", // Pieces: Copilot
-        "keys" : ["command+shift+alt+o"],
+        "keys" : ["command+shift+option+o"],
     }
 ]
