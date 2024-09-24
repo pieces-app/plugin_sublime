@@ -2,7 +2,7 @@
 
 ![Pieces Sublime Plugin](icons/hero-image.png)
 
-##### <p align="center"> [Website](https://pieces.app/) • [Pieces OS Documentation](https://docs.pieces.app/) • [Pieces for Sublime Docs](https://github.com/pieces-app/plugin_sublime](https://docs.pieces.app/extensions-plugins/sublime)
+##### <p align="center"> [Website](https://pieces.app/) • [Pieces OS Documentation](https://docs.pieces.app/) • [Pieces for Sublime Docs](https://docs.pieces.app/extensions-plugins/sublime)
 </p>
 
 # Important
