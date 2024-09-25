@@ -62,7 +62,7 @@ Saving a new snippet in Pieces is a breeze! Just select the code you want to sav
 
 You can ask the Pieces Copilot questions about your code, view your conversations list, or start a new conversation by opening the command palette and entering `Pieces: Copilot`. Your selected LLM will then output an answer as a generation on the right side of your screen, right in your Sublime Text editor window.
 
-![pieces copilot]icons/pieces%20pieces%20copilot.png)
+![pieces copilot](icons/pieces%20pieces%20copilot.png)
 
 ### Copilot Ask
 
