@@ -14,14 +14,14 @@ class AuthUser:
 
 	@classmethod
 	def create_new_phantom(cls,html):
-		PiecesSettings.output_panel.erase_phantoms("auth_phantom") # Remove the old phantom
-		PiecesSettings.output_panel.add_phantom("auth_phantom", 
+		PiecesSettings.output_panel().erase_phantoms("auth_phantom") # Remove the old phantom
+		PiecesSettings.output_panel().add_phantom("auth_phantom", 
 			sublime.Region(0, 0), html, sublime.LAYOUT_INLINE)
 
 	@classmethod
 	def on_user_callback(cls,user:Optional[UserProfile]=None,connecting=False):
 		PiecesSettings.api_client.user.user_profile = user
-		sublime.active_window().focus_view(PiecesSettings.output_panel)
+		sublime.active_window().focus_view(PiecesSettings.output_panel())
 		cls.user_profile = user
 		if not user:
 			cls.login_page()

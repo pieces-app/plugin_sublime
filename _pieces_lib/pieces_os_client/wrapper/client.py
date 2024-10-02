@@ -169,7 +169,7 @@ class PiecesClient:
             Waits for all the assets/conversations and all the started websockets to open
         """
         self._check_startup()
-        BaseWebsocket.wait_all()
+        # BaseWebsocket.wait_all()
 
     @classmethod
     def close(cls):
@@ -209,7 +209,7 @@ class PiecesClient:
             subprocess.run(["open","pieces://launch"])
         elif self.local_os == "LINUX":
             subprocess.run(["xdg-open","pieces://launch"])
-        return self.is_pieces_running(maxium_retries=3)
+        return self.is_pieces_running(maxium_retries=8)
 
 
     def is_pieces_running(self,maxium_retries=1) -> bool:
@@ -221,7 +221,9 @@ class PiecesClient:
         for _ in range(maxium_retries):
             try:
                 with urllib.request.urlopen(f"{self.host}/.well-known/health", timeout=1) as response:
-                    return response.status == 200
+                    print(response)
+                    if response.status == 200:
+                        return True
             except:
                 pass
         return False

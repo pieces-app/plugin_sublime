@@ -1,6 +1,7 @@
 from ._pieces_lib.pieces_os_client import SeededConnectorConnection,SeededTrackedApplication
 from ._pieces_lib.pieces_os_client.wrapper.websockets.base_websocket import BaseWebsocket
 from ._pieces_lib.pieces_os_client.wrapper import PiecesClient
+from ._pieces_lib.pieces_os_client.wrapper.version_compatibility import VersionCheckResult, UpdateEnum
 from ._pieces_lib import notify as notification
 from multiprocessing.pool import ThreadPool
 import sublime
@@ -19,6 +20,7 @@ except:
 
 class PiecesSettings:
 	# Initialize class variables
+	compatiablity_result = VersionCheckResult(True,None) # is it compatiable with the current PiecesOS version?
 	api_client = PiecesClient(seeded_connector= SeededConnectorConnection(
 			application=SeededTrackedApplication(
 				name = "SUBLIME",
@@ -88,14 +90,17 @@ class PiecesSettings:
 	@staticmethod
 	def get_settings():
 		return sublime.load_settings("Pieces.sublime-settings") # Reload the settings
-
-	@classmethod
-	def create_auth_output_panel(cls):
+	
+	@staticmethod
+	def output_panel():
 		window = sublime.active_window()
-		cls.output_panel = window.create_output_panel("Pieces Auth")
-		cls.output_panel.settings().set("line_numbers", False)  # Disable line numbers
-		cls.output_panel.settings().set("gutter", False)
-		cls.output_panel.set_read_only(True)
+		output_panel = window.find_output_panel("Pieces Auth")
+		if not output_panel:
+			output_panel = window.create_output_panel("Pieces Auth")
+			output_panel.settings().set("line_numbers", False)  # Disable line numbers
+			output_panel.settings().set("gutter", False)
+			output_panel.set_read_only(True)
+		return output_panel
 
 	@classmethod
 	def pool(cls):
@@ -105,7 +110,6 @@ class PiecesSettings:
 		if cls._pool is None:
 			cls._pool = ThreadPool(1)
 		return cls._pool
-
 
 	# Load the settings from 'Pieces.sublime-settings' file using Sublime Text API
 	pieces_settings = sublime.load_settings('Pieces.sublime-settings')
@@ -136,3 +140,22 @@ class PiecesSettings:
 	os_icon = path
 	notification.setup_notifications("Pieces for Sublime Text",os_icon,sender=None)
 
+def check_pieces_os(func):
+	def wrapper(*args, **kwargs):
+		if PiecesSettings.is_loaded:
+			return func(*args, **kwargs)
+
+		if not PiecesSettings.compatiablity_result.compatible:
+			plugin = PiecesSettings.compatiablity_result.update
+			plugin_name = "Pieces OS" if plugin == UpdateEnum.PiecesOS else "Pieces for Sublime"
+			print(f"Please update {plugin_name}")
+
+		if PiecesSettings.compatiablity_result.compatible:
+			def run_async():
+				if PiecesSettings.api_client.is_pieces_running():
+					BaseWebsocket.reconnect_all()
+					return func(*args,**kwargs)
+			sublime.set_timeout_async(run_async)
+			print("Make sure Pieces OS is running")
+		
+	return wrapper
