@@ -1,11 +1,12 @@
 import sublime_plugin
 import sublime
 from .._pieces_lib.pieces_os_client.wrapper.basic_identifier.asset import BasicAsset
-from ..settings import PiecesSettings
+from ..settings import PiecesSettings, check_pieces_os
 from ..assets.list_assets import PiecesAssetIdInputHandler
 
 
 class PiecesContextManagerCommand(sublime_plugin.WindowCommand):
+	@check_pieces_os
 	def run(self,context,pieces_asset_id=None,context_remove=None):
 		if context_remove:
 			key,idx = context_remove.split("_")
@@ -23,7 +24,7 @@ class PiecesContextManagerCommand(sublime_plugin.WindowCommand):
 	def is_enabled(self):
 		v = sublime.active_window().active_view()
 		if v:
-			return v.settings().get("PIECES_GPT_VIEW",False) and PiecesSettings.is_loaded
+			return v.settings().get("PIECES_GPT_VIEW",False)
 
 	def input(self,args):
 		return PiecesContextInputHandler()

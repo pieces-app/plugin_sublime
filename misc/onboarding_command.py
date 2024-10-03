@@ -5,7 +5,7 @@ import time
 import os
 import json
 
-from ..settings import PiecesSettings
+from ..settings import PiecesSettings, check_pieces_os
 
 CSS = """
 html.dark {
@@ -137,13 +137,11 @@ class PiecesOnboardingCommand(sublime_plugin.WindowCommand):
 
 	ONBOARDING_SETTINGS_PATH = os.path.join(PiecesSettings.PIECES_USER_DIRECTORY, "onboarding_settings.json")
 	
+	@check_pieces_os
 	def run(self):
 		sheet = sublime.HtmlSheet(self.sheet_id) if self.sheet_id in self.get_html_sheet_ids() else self.window.new_html_sheet(self.SHEET_NAME,"") 
 		self.sheet_id = sheet.id()
 		self.reload(sheet)
-
-	def is_enabled(self) -> bool:
-		return PiecesSettings.is_loaded
 
 	@staticmethod
 	def get_html_sheet_ids() -> List[int]:

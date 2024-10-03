@@ -49,7 +49,8 @@ class SearchTypeInputHandler(sublime_plugin.ListInputHandler):
 	def list_items(self):
 		return [
 			("Neural Code Search","ncs"),
-			("Full Text Search", "fts")
+			("Full Text Search", "fts"),
+			("Fuzzy search", "fuzzy")
 		]
 	def next_input(self,args):
 		SearchTypeInputHandler.search_type = args["search_type"] # used in the preview
@@ -64,35 +65,13 @@ class PiecesSearchCommand(sublime_plugin.WindowCommand):
 
 	@staticmethod
 	def search(search_type,query)-> Optional[List[BasicAsset]]:
-		api_instance = PiecesSettings.api_client.search_api
-		if search_type == 'ncs':
-			results = api_instance.neural_code_search(query=query)
-		elif search_type == 'fts':
-			results = api_instance.full_text_search(query=query)
-			# Check and extract asset IDs from the results
+		return BasicAsset.search(search_type,query)
 
-		if results:
-			# Extract the iterable which contains the search results
-			iterable_list = results.iterable if hasattr(results, 'iterable') else []
-
-			# Check if iterable_list is a list and contains SearchedAsset objects
-			if isinstance(iterable_list, list) and all(hasattr(asset, 'exact') and hasattr(asset, 'identifier') for asset in iterable_list):
-				# Extracting suggested and exact IDs
-				suggested_ids = [asset.identifier for asset in iterable_list if not asset.exact]
-				exact_ids = [asset.identifier for asset in iterable_list if asset.exact]
-
-				# Combine and store best and suggested matches in asset_ids
-				combined_ids = exact_ids + suggested_ids
-
-				# Print the combined asset details
-				if combined_ids:
-					return [BasicAsset(id) for id in combined_ids]
-
-	def is_enabled(self):
-		return PiecesSettings.is_loaded
 
 	def input(self,args):
 		return SearchTypeInputHandler()
+	def is_enabled(self) -> bool:
+		return PiecesSettings.is_loaded
 
 
 

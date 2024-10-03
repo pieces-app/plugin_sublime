@@ -1,15 +1,14 @@
 import sublime_plugin
 import sublime
 from .ask_view import CopilotViewManager
-from .._pieces_lib.pieces_os_client.wrapper.websockets import ConversationWS
-from .._pieces_lib.pieces_os_client import AnnotationApi,Seeds,FlattenedAssets
-from ..settings import PiecesSettings
+from ..settings import PiecesSettings, check_pieces_os
 from typing import Optional
 
 copilot = CopilotViewManager()
 
 
 class PiecesAskStreamCommand(sublime_plugin.WindowCommand):
+	@check_pieces_os
 	def run(self,pieces_choose_type,pieces_query=None,pieces_conversation_id=None):
 		copilot.render_conversation(pieces_conversation_id)
 		if pieces_query:
@@ -20,8 +19,6 @@ class PiecesAskStreamCommand(sublime_plugin.WindowCommand):
 	def input(self,args):
 		return PiecesChooseTypeInputHandler()
 
-	def is_enabled(self):
-		return PiecesSettings.is_loaded and ConversationWS.is_running()
 
 class PiecesChooseTypeInputHandler(sublime_plugin.ListInputHandler):
 	def list_items(self):
@@ -49,11 +46,9 @@ class PiecesQueryInputHandler(sublime_plugin.TextInputHandler):
 
 
 class PiecesEnterResponseCommand(sublime_plugin.TextCommand):
+	@check_pieces_os
 	def run(self,edit):
 		copilot.ask()
-
-	def is_enabled(self):
-		return PiecesSettings.is_loaded
 
 
 class PiecesConversationIdInputHandler(sublime_plugin.ListInputHandler):
