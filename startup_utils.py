@@ -14,13 +14,27 @@ def check_pieces_os(is_input_handler=False):
 				if not is_input_handler:
 					plugin = PiecesSettings.compatiablity_result.update
 					plugin_name = "Pieces OS" if plugin == UpdateEnum.PiecesOS else "Pieces for Sublime"
-					print(f"Please update {plugin_name}")
+					sublime.error_message(f"'{plugin_name}' is out of date. Please update to the latest version to ensure full functionality.")
 				return
 
 			if PiecesSettings.api_client.is_pieces_running():
 				sublime.set_timeout_async(lambda: PiecesSettings.on_settings_change(True))
 				return func(*args, **kwargs)
 			else:
+				r = sublime.yes_no_cancel_dialog(
+					title="Pieces for Sublime",
+					msg=(
+				        "Pieces OS is not currently running.\n"
+				        "To use this feature, please start Pieces OS.\n"
+				        "Would you like to launch it now?"
+				    ),
+					yes_title="Yes",
+					no_title="Contact Support",
+				)
+				if r == sublime.DIALOG_NO:
+					sublime.run_command("pieces_support")
+				elif r == sublime.DIALOG_YES:
+					return sublime.run_command("pieces_open_pieces")
 				print("Make sure Pieces OS is running")
 
 		return wrapper

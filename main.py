@@ -43,15 +43,12 @@ def startup():
 
 def on_message(message):
 	if message == "OK":
-		print("TRUE")
 		PiecesSettings.is_loaded = True
 	else:
-		print("FALSE")
 		PiecesSettings.is_loaded = False
 		print("Please make sure Pieces OS is running")
 
 def on_close():
-	print("FALSE")
 	PiecesSettings.is_loaded = False
 
 def plugin_loaded():
@@ -71,7 +68,7 @@ def plugin_loaded():
 		health_ws = HealthWS(PiecesSettings.api_client, on_message, lambda x:startup(), on_close=lambda x,y,z:on_close())
 		health_ws.start()
 	else:
-		print("Please run that Pieces OS")
+		print("Please make sure Pieces OS is running")
 		BaseWebsocket.close_all()
 
 

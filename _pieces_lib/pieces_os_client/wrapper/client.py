@@ -221,7 +221,6 @@ class PiecesClient:
         for _ in range(maxium_retries):
             try:
                 with urllib.request.urlopen(f"{self.host}/.well-known/health", timeout=1) as response:
-                    print(response)
                     if response.status == 200:
                         return True
             except:
