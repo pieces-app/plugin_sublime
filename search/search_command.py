@@ -70,8 +70,6 @@ class PiecesSearchCommand(sublime_plugin.WindowCommand):
 
 	def input(self,args):
 		return SearchTypeInputHandler()
-	def is_enabled(self) -> bool:
-		return PiecesSettings.is_loaded
 
 
 

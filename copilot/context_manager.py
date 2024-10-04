@@ -26,6 +26,7 @@ class PiecesContextManagerCommand(sublime_plugin.WindowCommand):
 		v = sublime.active_window().active_view()
 		if v:
 			return v.settings().get("PIECES_GPT_VIEW",False)
+		return False
 
 	@check_pieces_os(True)
 	def input(self,args):
