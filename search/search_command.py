@@ -50,7 +50,7 @@ class SearchTypeInputHandler(sublime_plugin.ListInputHandler):
 		return [
 			("Neural Code Search","ncs"),
 			("Full Text Search", "fts"),
-			("Fuzzy search", "fuzzy")
+			("Fuzzy Search", "fuzzy")
 		]
 	def next_input(self,args):
 		SearchTypeInputHandler.search_type = args["search_type"] # used in the preview
@@ -65,8 +65,10 @@ class PiecesSearchCommand(sublime_plugin.WindowCommand):
 
 	@staticmethod
 	def search(search_type,query)-> Optional[List[BasicAsset]]:
-		return BasicAsset.search(search_type,query)
+		return BasicAsset.search(query,search_type)
 
+	def is_enabled(self):
+		return PiecesSettings.is_loaded
 
 	def input(self,args):
 		return SearchTypeInputHandler()
