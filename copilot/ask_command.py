@@ -1,7 +1,7 @@
 import sublime_plugin
 import sublime
 from .ask_view import CopilotViewManager
-from ..settings import PiecesSettings, 
+from ..settings import PiecesSettings
 from ..startup_utils import check_pieces_os
 from typing import Optional
 
