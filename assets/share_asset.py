@@ -3,7 +3,8 @@ import sublime
 from .._pieces_lib.pieces_os_client.wrapper.basic_identifier.asset import BasicAsset
 
 from .list_assets import PiecesListAssetsCommand
-from ..settings import PiecesSettings, check_pieces_os
+from ..settings import PiecesSettings
+from ..startup_utils import check_pieces_os
 from ..auth.auth_user import AuthUser
 
 
@@ -13,7 +14,7 @@ class PiecesShareAssetCommand(sublime_plugin.WindowCommand):
 		self.update_sheet = False # Should we update the current sheet
 		super().__init__(window)
 
-	@check_pieces_os
+	@check_pieces_os()
 	def run(self,asset_id,update_sheet=False):
 		self.update_sheet = update_sheet
 		self.sheet = self.window.active_sheet()
@@ -52,7 +53,7 @@ class PiecesShareAssetCommand(sublime_plugin.WindowCommand):
 		
 
 class PiecesGenerateShareableLinkCommand(sublime_plugin.TextCommand):
-	@check_pieces_os
+	@check_pieces_os()
 	def run(self,edit,data=None):
 		self.data = data
 		if not data:
@@ -119,7 +120,7 @@ class PiecesGenerateShareableLinkCommand(sublime_plugin.TextCommand):
 
 
 class PiecesCopyLinkCommand(sublime_plugin.WindowCommand):
-	@check_pieces_os
+	@check_pieces_os()
 	def run(self,content,asset_id):
 		sublime.set_clipboard(content)
 		sheet = self.window.active_sheet()

@@ -22,7 +22,9 @@ import re
 import mdpopups
 
 from .diff import show_diff_popup
-from ..settings import PiecesSettings, check_pieces_os
+from ..settings import PiecesSettings
+
+from ..startup_utils import check_pieces_os
 
 description_needed_commands = {
 	"modify":"Enter the instructions that should we use to modify that code",
@@ -30,7 +32,7 @@ description_needed_commands = {
 }
 
 class PiecesAskQuestionCommand(sublime_plugin.TextCommand):
-	@check_pieces_os
+	@check_pieces_os()
 	def run(self,edit, task):
 		# task = comment,fix,modify
 		self.task = task

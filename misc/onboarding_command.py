@@ -1,11 +1,11 @@
 from typing import List
 import sublime_plugin
 import sublime
-import time
 import os
 import json
 
-from ..settings import PiecesSettings, check_pieces_os
+from ..settings import PiecesSettings
+from ..startup_utils import check_pieces_os
 
 CSS = """
 html.dark {
@@ -128,16 +128,10 @@ def subl_onboarding_commands(title,cmd):
 class PiecesOnboardingCommand(sublime_plugin.WindowCommand):
 	SHEET_NAME = "Welcome to Pieces 🎉🎉!"
 	calls = {}
-	clearing_time = time.time()
 	sheet_id = None
-
-	lazy_load_status = {
-		"pieces_os_status":"Checking Pieces OS",
-	} # Maps a function name to the status to be displayed when it is loading
-
 	ONBOARDING_SETTINGS_PATH = os.path.join(PiecesSettings.PIECES_USER_DIRECTORY, "onboarding_settings.json")
 	
-	@check_pieces_os
+	@check_pieces_os()
 	def run(self):
 		sheet = sublime.HtmlSheet(self.sheet_id) if self.sheet_id in self.get_html_sheet_ids() else self.window.new_html_sheet(self.SHEET_NAME,"") 
 		self.sheet_id = sheet.id()

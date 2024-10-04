@@ -6,7 +6,8 @@ from .._pieces_lib.typing_extensions import Self
 from .._pieces_lib.pieces_os_client.wrapper.basic_identifier.asset import BasicAsset
 from .list_assets import PiecesAssetIdInputHandler,A_TAG_STYLE
 from .ext_map import file_map
-from ..settings import PiecesSettings, check_pieces_os
+from ..settings import PiecesSettings
+from ..startup_utils import check_pieces_os
 
 template_snippet = """<snippet>
 <!-- asset_id {asset_id} -->
@@ -52,10 +53,11 @@ class PiecesExportAssetToSublimeCommand(sublime_plugin.WindowCommand):
 		PiecesExportAssetToSublimeCommand._instances.append(self)
 		super().__init__(window)
 
+	@check_pieces_os(True)
 	def input(self, args: dict):
 		return PiecesAssetIdInputHandler()
 
-	@check_pieces_os
+	@check_pieces_os()
 	def run(self,pieces_asset_id):
 		asset_wrapper = BasicAsset(pieces_asset_id)
 		self.trigger = asset_wrapper.name
@@ -111,7 +113,7 @@ class PiecesExportAssetToSublimeCommand(sublime_plugin.WindowCommand):
 class PiecesSaveSublimeSnippetCommand(sublime_plugin.WindowCommand):
 	SNIPPETS_DIR = os.path.join(PiecesSettings.PIECES_USER_DIRECTORY, "snippets")
 
-	@check_pieces_os
+	@check_pieces_os()
 	def run(self,sheet_id):
 		instance = PiecesExportAssetToSublimeCommand.get_instance(sheet_id)
 		kwargs={
@@ -132,7 +134,7 @@ class PiecesSaveSublimeSnippetCommand(sublime_plugin.WindowCommand):
 
 
 class PiecesEditSnippetSheetCommand(sublime_plugin.WindowCommand):
-	@check_pieces_os
+	@check_pieces_os()
 	def run(self,field:str,sheet_id):
 		"""
 			field (str):
@@ -142,7 +144,6 @@ class PiecesEditSnippetSheetCommand(sublime_plugin.WindowCommand):
 				- content
 				- asset_id
 		"""
-		print(field)
 		self.field = field
 		self.instance = PiecesExportAssetToSublimeCommand.get_instance(sheet_id)
 		self.window.show_input_panel(f"{field.title()}:", getattr(self.instance,field), self.on_done, None, None)

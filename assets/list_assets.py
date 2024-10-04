@@ -7,8 +7,8 @@ from typing import List
 from .._pieces_lib.pieces_os_client.wrapper.websockets import AssetsIdentifiersWS
 from .._pieces_lib.pieces_os_client.wrapper.basic_identifier import BasicAsset
 from .._pieces_lib.pieces_os_client import *
-from ..settings import PiecesSettings, check_pieces_os
-
+from ..settings import PiecesSettings
+from ..startup_utils import check_pieces_os
 
 A_TAG_STYLE = "padding:2px 5px; background-color: var(--accent); border-radius: 6px;color: var(--foreground);text-align:center;text-decoration: None;display:inline"
 
@@ -18,7 +18,7 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 	sheets_md = {} # {Sheetid : asset_id}
 	shareable_link = [] # asset_ids
 
-	@check_pieces_os
+	@check_pieces_os()
 	def run(self,pieces_asset_id):
 		self.pieces_asset_id = pieces_asset_id
 		sublime.set_timeout_async(self.run_async,0)
@@ -68,6 +68,7 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 	
 		return HTML_CODE_BUTTON_CONTENT.format(content=content)
 
+	@check_pieces_os(True)
 	def input(self,args):
 		return PiecesAssetIdInputHandler()
 
