@@ -3,7 +3,6 @@ from ._pieces_lib.pieces_os_client.wrapper.websockets.health_ws import HealthWS
 from .settings import PiecesSettings
 import sublime
 from functools import wraps
-import threading
 
 PIECES_OS_MIN_VERSION = "10.1.5"  # Minimum version (10.1.5)
 PIECES_OS_MAX_VERSION = "11.0.0" # Maximum version (11.0.0)
@@ -35,7 +34,16 @@ def check_pieces_os(is_input_handler=False):
 				if not is_input_handler:
 					plugin = compatiablity_result.update
 					plugin_name = "Pieces OS" if plugin == UpdateEnum.PiecesOS else "Pieces for Sublime"
-					sublime.error_message(f"'{plugin_name}' is out of date. Please update to the latest version to ensure full functionality.")
+					r = sublime.ok_cancel_dialog(
+						title="Pieces for Sublime",
+						msg = (
+							f"'{plugin_name}' is out of date. "
+							"Please update to the latest version to ensure full functionality."
+						),
+						ok_title="Contact Support"
+					)
+					if r:
+						sublime.run_command("pieces_support",args={"support":"https://docs.pieces.app/support"})
 				return
 
 			if HealthWS.instance.is_loaded:
