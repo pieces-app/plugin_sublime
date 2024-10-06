@@ -34,6 +34,7 @@ import atexit
 import subprocess
 import urllib.request
 import urllib.error
+import time
 
 from .copilot import Copilot
 from .basic_identifier import BasicAsset,BasicUser
@@ -224,7 +225,7 @@ class PiecesClient:
                     if response.status == 200:
                         return True
             except:
-                pass
+                time.sleep(1)
         return False
 
     def _check_startup(self):
