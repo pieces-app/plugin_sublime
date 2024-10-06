@@ -6,6 +6,7 @@ from ._pieces_lib import notify as notification
 from multiprocessing.pool import ThreadPool
 import sublime
 import os
+from typing import Optional
 
 from . import __version__
 
@@ -20,7 +21,6 @@ except:
 
 class PiecesSettings:
 	# Initialize class variables
-	compatiablity_result = VersionCheckResult(True,None) # is it compatiable with the current PiecesOS version?
 	api_client = PiecesClient(seeded_connector= SeededConnectorConnection(
 			application=SeededTrackedApplication(
 				name = "SUBLIME",
@@ -29,7 +29,6 @@ class PiecesSettings:
 	connect_wesockets=False)
 	_pool = None
 	debug=debug
-	is_loaded = False # is the plugin loaded
 	ONBOARDING_SYNTAX = "Packages/Pieces/syntax/Onboarding.sublime-syntax"
 	on_model_change_callbacks = [] # If the model change a function should be runned
 
@@ -110,6 +109,7 @@ class PiecesSettings:
 		if cls._pool is None:
 			cls._pool = ThreadPool(1)
 		return cls._pool
+
 
 	# Load the settings from 'Pieces.sublime-settings' file using Sublime Text API
 	pieces_settings = sublime.load_settings('Pieces.sublime-settings')

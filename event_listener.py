@@ -1,6 +1,7 @@
 import sublime
 import sublime_plugin
 
+from ._pieces_lib.pieces_os_client.wrapper.websockets.health_ws import HealthWS
 from ._pieces_lib.pieces_os_client.wrapper.basic_identifier.asset import BasicAsset
 from .assets.list_assets import PiecesListAssetsCommand
 from .assets.ext_map import file_map
@@ -102,7 +103,7 @@ class PiecesEventListener(sublime_plugin.EventListener):
 		copilot.secondary_view = view
 
 	def on_query_completions(self, view:sublime.View, prefix, locations):
-		if not PiecesSettings.autocomplete_snippet or not PiecesSettings.is_loaded:
+		if not PiecesSettings.autocomplete_snippet or not HealthWS.instance.is_loaded:
 			return
 		syntax = view.syntax()
 		if not syntax:
