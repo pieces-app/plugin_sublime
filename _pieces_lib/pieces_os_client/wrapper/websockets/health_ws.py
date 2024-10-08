@@ -12,7 +12,7 @@ class HealthWS(BaseWebsocket):
 
 	def on_message(self, ws, message):
 
-		if "OK" in message.lower():
+		if "ok" in message.lower():
 			self.is_loaded = True
 		else:
 			self.is_loaded = False
