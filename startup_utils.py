@@ -4,7 +4,7 @@ from .settings import PiecesSettings
 import sublime
 from functools import wraps
 
-PIECES_OS_MIN_VERSION = "10.1.5"  # Minimum version (10.1.5)
+PIECES_OS_MIN_VERSION = "10.1.8"  # Minimum version (10.1.8)
 PIECES_OS_MAX_VERSION = "11.0.0" # Maximum version (11.0.0)
 
 compatiablity_result = None
