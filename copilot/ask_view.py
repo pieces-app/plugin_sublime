@@ -1,11 +1,10 @@
 import sublime
-from sublime import Region, View
+from sublime import ADD_TO_SELECTION, Region, View
 from .images.context_image import ContextImage
 from .._pieces_lib.pieces_os_client import QGPTStreamOutput
 from .._pieces_lib.pieces_os_client.wrapper.basic_identifier.chat import BasicChat
 from ..settings import PiecesSettings
 import re
-from typing import Optional
 
 
 PHANTOM_A_TAG_STYLE = "padding: 4px;background-color: var(--accent); border-radius: 6px;color: var(--foreground);text-decoration: None;text-align: center"
@@ -26,10 +25,10 @@ class CopilotViewManager:
 		self._secondary_view = None
 
 	@property
-	def gpt_view(self) -> sublime.View:
+	def gpt_view(self) -> View:
 		if not self._gpt_view:
 			# File config and creation
-			self._gpt_view = sublime.active_window().new_file(syntax="Packages/Markdown/Markdown.sublime-syntax")	
+			self._gpt_view = sublime.active_window().new_file(ADD_TO_SELECTION,syntax="Packages/Markdown/Markdown.sublime-syntax")	
 			self.can_type = True
 			self._gpt_view.settings().set("PIECES_GPT_VIEW",True) # Label the view as gpt view
 			self._gpt_view.settings().set("line_numbers", False) # Remove lines
@@ -56,20 +55,6 @@ class CopilotViewManager:
 			self.copilot_regions = []
 			self.update_status_bar()
 			# self.render_copilot_image_phantom(self._gpt_view)
-
-        
-			# Create a new group (split view)
-			sublime.active_window().run_command("set_layout", {
-			    "cols": [0.0, 0.5, 1.0],
-			    "rows": [0.0, 1.0],
-			    "cells": [[0, 0, 1, 1], [1, 0, 2, 1]]
-			})
-
-			# Move the active view to the new group
-			sublime.active_window().set_view_index(self._gpt_view, 1, 0)
-
-			# Focus on the new group
-			sublime.active_window().focus_group(1)
 
 			self.show_cursor
 
