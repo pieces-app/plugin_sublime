@@ -1,11 +1,11 @@
 from .._pieces_lib.pieces_os_client.wrapper.basic_identifier import BasicAsset
-from .._pieces_lib.pieces_os_client import AssetsApi
-from ..settings import PiecesSettings
+from ..startup_utils import check_pieces_os
 from .list_assets import PiecesListAssetsCommand
 import sublime
 import sublime_plugin
 
 class PiecesDeleteAssetCommand(sublime_plugin.WindowCommand):
+	@check_pieces_os()
 	def run(self,asset_id=None):
 		if not asset_id:
 			sheet = self.window.active_sheet()
@@ -26,5 +26,3 @@ class PiecesDeleteAssetCommand(sublime_plugin.WindowCommand):
 			if sheet:
 				sheet.close()
 
-	def is_enabled(self):
-		return PiecesSettings.is_loaded

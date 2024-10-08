@@ -2,9 +2,11 @@ import sublime_plugin
 import sublime
 from .ask_command import copilot,PiecesQueryInputHandler
 from ..settings import PiecesSettings
+from ..startup_utils import check_pieces_os
 
 
 class PiecesAskStreamAboutCommand(sublime_plugin.TextCommand):
+	@check_pieces_os()
 	def run(self,edit,type,pieces_query=None):
 		self.before_query = ""
 		if type == "file":
@@ -39,9 +41,7 @@ class PiecesAskStreamAboutCommand(sublime_plugin.TextCommand):
 		copilot.add_query(query) # Add the query
 		copilot.gpt_view.run_command("pieces_enter_response")
 
-	def is_enabled(self):
-		return PiecesSettings.is_loaded
-
+	@check_pieces_os(True)
 	def input(self, args):
 		return PiecesQueryInputHandler()
 

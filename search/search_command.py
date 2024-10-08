@@ -3,6 +3,7 @@ import sublime
 from typing import List, Optional
 
 from ..settings import PiecesSettings
+from ..startup_utils import check_pieces_os
 from ..assets.list_assets import PiecesAssetIdInputHandler
 
 from .._pieces_lib.pieces_os_client.wrapper.basic_identifier import BasicAsset
@@ -59,6 +60,7 @@ class SearchTypeInputHandler(sublime_plugin.ListInputHandler):
 		return "Choose the type of searching."
 
 class PiecesSearchCommand(sublime_plugin.WindowCommand):
+	@check_pieces_os()
 	def run(self,search_type,query,pieces_asset_id=None):
 		if pieces_asset_id:
 			return self.window.run_command("pieces_list_assets",args={"pieces_asset_id":pieces_asset_id})
@@ -67,9 +69,7 @@ class PiecesSearchCommand(sublime_plugin.WindowCommand):
 	def search(search_type,query)-> Optional[List[BasicAsset]]:
 		return BasicAsset.search(query,search_type)
 
-	def is_enabled(self):
-		return PiecesSettings.is_loaded
-
+	@check_pieces_os(True)
 	def input(self,args):
 		return SearchTypeInputHandler()
 
