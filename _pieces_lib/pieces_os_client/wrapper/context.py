@@ -1,9 +1,13 @@
 from typing import TYPE_CHECKING, List
+import os
+
+from Pieces._pieces_lib.pieces_os_client.models.qgpt_relevance_input import QGPTRelevanceInput
+from Pieces._pieces_lib.pieces_os_client.models.seeds import Seeds
+from Pieces._pieces_lib.pieces_os_client.models.flattened_assets import FlattenedAssets
+from Pieces._pieces_lib.pieces_os_client.models.flattened_conversation_messages import FlattenedConversationMessages
+
 
 from .basic_identifier import BasicAsset,BasicMessage
-import os
-from Pieces._pieces_lib.pieces_os_client import QGPTRelevanceInput,Seeds,FlattenedAssets,FlattenedConversationMessages
-
 if TYPE_CHECKING:
 	from . import PiecesClient
 
@@ -39,7 +43,7 @@ class Context:
 			"messages":messages
 		}
 
-	def _check_relevant_existance(self) -> bool:
+	def _check_relevant_existence(self) -> bool:
 		return bool(self.paths or self.assets or self.raw_assets)
 
 	@staticmethod

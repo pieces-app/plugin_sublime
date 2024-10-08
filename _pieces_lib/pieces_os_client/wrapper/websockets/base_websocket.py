@@ -1,5 +1,4 @@
-from typing import Callable, Optional,TYPE_CHECKING,List
-from Pieces._pieces_lib.typing_extensions import Self
+from typing import Callable, Optional,TYPE_CHECKING, List
 from Pieces._pieces_lib import websocket
 import threading
 from abc import ABC, abstractmethod

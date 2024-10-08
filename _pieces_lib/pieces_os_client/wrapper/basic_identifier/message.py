@@ -1,8 +1,11 @@
-from typing import Literal, Optional,TYPE_CHECKING
-from Pieces._pieces_lib.pieces_os_client import ConversationMessage,Annotations
+from typing import Literal, Optional,TYPE_CHECKING, List
 from .basic import Basic
+
+from Pieces._pieces_lib.pieces_os_client.models.conversation_message import ConversationMessage
+
 if TYPE_CHECKING:
     from ..client import PiecesClient
+    from . import BasicChat, BasicAnnotation
 
 class BasicMessage(Basic):
     """
@@ -45,6 +48,7 @@ class BasicMessage(Basic):
         except:
             raise ValueError("Error in retrieving the message")
         self.pieces_client = pieces_client
+        super().__init__(id)
 
     @property
     def raw_content(self) -> Optional[str]:
@@ -100,6 +104,14 @@ class BasicMessage(Basic):
         """
         return self.message.id
 
+    @property
+    def chat(self) -> "BasicChat":
+        """
+        Returns the chat that the message is in
+        """
+        from . import BasicChat
+        return BasicChat(self.message.conversation.id)
+
     def delete(self) -> None:
         """
         Deletes the message from the API.
@@ -109,10 +121,15 @@ class BasicMessage(Basic):
         )
 
     @property
-    def annotations(self) -> Optional[Annotations]:
-        out = []
-        if self.message.annotations:
-            for referenced_annotation in self.message.annotations.iterable:
-                out.append(self.pieces_client.annotation_api.annotation_specific_annotation_snapshot(referenced_annotation.id))
-            return Annotations(iterable=out)
+    def annotations(self) -> List["BasicAnnotation"]:
+        """
+        Gets the annotations of the message.
 
+        Returns: 
+            The BasicAnnotation of the message, or None if not available.
+        """
+        from . import BasicAnnotation
+        return self._from_indices(
+            getattr(self.message.annotations, "indices", {}),
+            lambda id:BasicAnnotation.from_id(self.pieces_client,id)
+        )
