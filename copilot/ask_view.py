@@ -4,6 +4,7 @@ from .images.context_image import ContextImage
 from .._pieces_lib.pieces_os_client import QGPTStreamOutput
 from .._pieces_lib.pieces_os_client.wrapper.basic_identifier.chat import BasicChat
 from ..settings import PiecesSettings
+from ..progress_bar import ProgressBar
 import re
 
 
@@ -23,6 +24,7 @@ class CopilotViewManager:
 		self._gpt_view = None
 		self._view_name = None
 		self._secondary_view = None
+		self.progress_bar = ProgressBar("Pieces Copilot")
 
 	@property
 	def gpt_view(self) -> View:
@@ -134,6 +136,8 @@ class CopilotViewManager:
 			self.show_failed()
 			self.reset_view()
 
+		if message.status != "IN-PROGRESS":
+			self.progress_bar.stop()
 
 	def show_failed(self):
 		self.gpt_view.add_regions(
@@ -192,6 +196,7 @@ class CopilotViewManager:
 		self.new_line()
 		self.remove_context_phantom()
 		self.add_role("Copilot")
+		self.progress_bar.start()
 		sublime.set_timeout_async(lambda: PiecesSettings.api_client.copilot.stream_question(query,pipeline))
 
 	def add_role(self,role):
