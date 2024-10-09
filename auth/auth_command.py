@@ -9,7 +9,7 @@ from .auth_user import AuthUser
 class PiecesLoginCommand(sublime_plugin.WindowCommand):
 	@check_pieces_os()
 	def run(self):
-		sublime.set_timeout_async(lambda:PiecesSettings.api_client.user.login(False))
+		sublime.set_timeout_async(lambda:PiecesSettings.api_client.user.login(True)) # Lets connect to cloud after login
 		
 		
 class PiecesLogoutCommand(sublime_plugin.WindowCommand):
