@@ -1,10 +1,12 @@
 from ._pieces_lib.pieces_os_client import SeededConnectorConnection,SeededTrackedApplication
 from ._pieces_lib.pieces_os_client.wrapper.websockets.base_websocket import BaseWebsocket
 from ._pieces_lib.pieces_os_client.wrapper import PiecesClient
+from ._pieces_lib.pieces_os_client.wrapper.version_compatibility import VersionCheckResult
 from ._pieces_lib import notify as notification
 from multiprocessing.pool import ThreadPool
 import sublime
 import os
+from typing import Optional
 
 from . import __version__
 
@@ -27,7 +29,6 @@ class PiecesSettings:
 	connect_wesockets=False)
 	_pool = None
 	debug=debug
-	is_loaded = False # is the plugin loaded
 	ONBOARDING_SYNTAX = "Packages/Pieces/syntax/Onboarding.sublime-syntax"
 	on_model_change_callbacks = [] # If the model change a function should be runned
 
@@ -88,14 +89,17 @@ class PiecesSettings:
 	@staticmethod
 	def get_settings():
 		return sublime.load_settings("Pieces.sublime-settings") # Reload the settings
-
-	@classmethod
-	def create_auth_output_panel(cls):
+	
+	@staticmethod
+	def output_panel():
 		window = sublime.active_window()
-		cls.output_panel = window.create_output_panel("Pieces Auth")
-		cls.output_panel.settings().set("line_numbers", False)  # Disable line numbers
-		cls.output_panel.settings().set("gutter", False)
-		cls.output_panel.set_read_only(True)
+		output_panel = window.find_output_panel("Pieces Auth")
+		if not output_panel:
+			output_panel = window.create_output_panel("Pieces Auth")
+			output_panel.settings().set("line_numbers", False)  # Disable line numbers
+			output_panel.settings().set("gutter", False)
+			output_panel.set_read_only(True)
+		return output_panel
 
 	@classmethod
 	def pool(cls):

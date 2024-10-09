@@ -1,11 +1,13 @@
 from .._pieces_lib.pieces_os_client.wrapper.basic_identifier import BasicTag,BasicAsset
 from ..settings import PiecesSettings
+from ..startup_utils import check_pieces_os
 from .._pieces_lib.pieces_os_client import ClassificationSpecificEnum,FragmentMetadata
 import sublime_plugin
 import sublime
 
 
 class PiecesCreateAssetCommand(sublime_plugin.TextCommand):
+	@check_pieces_os()
 	def run(self,edit,data=None,metadata=None, add_metadata=True, open_on_save = True, tags = []):
 		if not data:
 			# Get the all the selected text
@@ -34,5 +36,3 @@ class PiecesCreateAssetCommand(sublime_plugin.TextCommand):
 	
 	
 
-	def is_enabled(self):
-		return PiecesSettings.is_loaded

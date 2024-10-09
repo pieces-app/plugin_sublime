@@ -4,6 +4,7 @@ from .._pieces_lib.pieces_os_client.wrapper.basic_identifier.asset import BasicA
 
 from .list_assets import PiecesListAssetsCommand
 from ..settings import PiecesSettings
+from ..startup_utils import check_pieces_os
 from ..auth.auth_user import AuthUser
 
 
@@ -13,6 +14,7 @@ class PiecesShareAssetCommand(sublime_plugin.WindowCommand):
 		self.update_sheet = False # Should we update the current sheet
 		super().__init__(window)
 
+	@check_pieces_os()
 	def run(self,asset_id,update_sheet=False):
 		self.update_sheet = update_sheet
 		self.sheet = self.window.active_sheet()
@@ -48,11 +50,10 @@ class PiecesShareAssetCommand(sublime_plugin.WindowCommand):
 		PiecesSettings.notify("Shareable Link Generated",share.iterable[0].link)
 		return share
 
-	def is_enabled(self):
-		return PiecesSettings.is_loaded 
 		
 
 class PiecesGenerateShareableLinkCommand(sublime_plugin.TextCommand):
+	@check_pieces_os()
 	def run(self,edit,data=None):
 		self.data = data
 		if not data:
@@ -116,14 +117,12 @@ class PiecesGenerateShareableLinkCommand(sublime_plugin.TextCommand):
 			location=-1,
 			on_navigate=on_nav,
 			max_width=350)
-	
-	def is_enabled(self):
-		return PiecesSettings.is_loaded 
+
 
 class PiecesCopyLinkCommand(sublime_plugin.WindowCommand):
+	@check_pieces_os()
 	def run(self,content,asset_id):
 		sublime.set_clipboard(content)
 		sheet = self.window.active_sheet()
 		PiecesListAssetsCommand.update_sheet(sheet,asset_id,buttons_kwargs={"share":{"title":"Copied"}})
-	def is_enabled(self):
-		return PiecesSettings.is_loaded 
+

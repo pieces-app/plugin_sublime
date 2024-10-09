@@ -1,9 +1,11 @@
 import sublime
 import sublime_plugin
-from ..settings import PiecesSettings
 from .create_asset import PiecesCreateAssetCommand
+from ..startup_utils import check_pieces_os
+
 
 class PiecesImportAssetCommand(sublime_plugin.WindowCommand):
+	@check_pieces_os()
 	def run(self,sublime_snippets):
 		def save(snippet, open_on_save):
 			dummy_view = self.window.create_output_panel("pieces_dummy_view",unlisted=True)
@@ -36,18 +38,17 @@ class PiecesImportAssetCommand(sublime_plugin.WindowCommand):
 		else:
 			save(sublime_snippets, open_on_save = True)
 		
-		
+	@check_pieces_os(True)
 	def input(self,args):
 		return SublimeSnippetsInputHandler()
 
-	def is_enabled(self):
-		return PiecesSettings.is_loaded
+
 
 class SublimeSnippetsInputHandler(sublime_plugin.ListInputHandler):
 	def list_items(self):
 		snippets = sublime.find_resources("*.sublime-snippet")
 		return [
 			("Import All", "all"),
-			(snippet,snippet) for snippet in snippets
+			*[(snippet,snippet) for snippet in snippets]
 		]
 	

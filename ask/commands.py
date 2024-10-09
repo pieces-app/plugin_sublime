@@ -24,16 +24,15 @@ import mdpopups
 from .diff import show_diff_popup
 from ..settings import PiecesSettings
 
+from ..startup_utils import check_pieces_os
+
 description_needed_commands = {
 	"modify":"Enter the instructions that should we use to modify that code",
 	"fix":"Enter the error message that you got"
 }
 
 class PiecesAskQuestionCommand(sublime_plugin.TextCommand):
-	def is_enabled(self):
-		return PiecesSettings.is_loaded
-
-
+	@check_pieces_os()
 	def run(self,edit, task):
 		# task = comment,fix,modify
 		self.task = task
