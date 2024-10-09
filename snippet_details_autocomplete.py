@@ -10,7 +10,7 @@ class PiecesShowCompletionDetailsCommand(sublime_plugin.TextCommand):
 		details = asset_wrapper.description
 		mdpopups.show_popup(
 			self.view,
-			f"{details.text if details else ''}\n```{lang}\n{content}\n```",max_width=900,
+			f"{details if details else ''}\n```{lang}\n{content}\n```",max_width=900,
 			wrapper_class="wrapper",
 			css=".wrapper {margin:6px}")
 
