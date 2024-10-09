@@ -1,18 +1,18 @@
 from typing import TYPE_CHECKING, List, Optional, Generator
-from Pieces._pieces_lib.pieces_os_client import (SeededConversation,
-    QGPTStreamInput,
-    RelevantQGPTSeeds,
-    QGPTQuestionInput,
-    QGPTStreamOutput,
-    QGPTStreamEnum,
-    QGPTQuestionOutput)
-from Pieces._pieces_lib.pieces_os_client.models.qgpt_prompt_pipeline import QGPTPromptPipeline
+import queue
 
 from .context import Context
 from .basic_identifier.chat import BasicChat
 from .streamed_identifiers.conversations_snapshot import ConversationsSnapshot
 from .websockets import AskStreamWS
-import queue
+
+from Pieces._pieces_lib.pieces_os_client.models.qgpt_stream_input import QGPTStreamInput
+from Pieces._pieces_lib.pieces_os_client.models.relevant_qgpt_seeds import RelevantQGPTSeeds
+from Pieces._pieces_lib.pieces_os_client.models.qgpt_question_input import QGPTQuestionInput
+from Pieces._pieces_lib.pieces_os_client.models.qgpt_stream_output import QGPTStreamOutput
+from Pieces._pieces_lib.pieces_os_client.models.qgpt_stream_enum import QGPTStreamEnum
+from Pieces._pieces_lib.pieces_os_client.models.qgpt_question_output import QGPTQuestionOutput
+from Pieces._pieces_lib.pieces_os_client.models.qgpt_prompt_pipeline import QGPTPromptPipeline
 
 
 if TYPE_CHECKING:
@@ -55,7 +55,7 @@ class Copilot:
             QGPTStreamOutput: The streamed output from the QGPT model.
         """
         self.pieces_client._check_startup()
-        relevant = self.context._relevance_api(query) if self.context._check_relevant_existance else RelevantQGPTSeeds(iterable=[])
+        relevant = self.context._relevance_api(query) if self.context._check_relevant_existence else RelevantQGPTSeeds(iterable=[])
         self.ask_stream_ws.send_message(
             QGPTStreamInput(
                 question=QGPTQuestionInput(
@@ -139,7 +139,7 @@ class Copilot:
         """
         self._chat = chat
         self.context.clear() # clear the context on changing the conversation
-        self._chat_id = chat.id if chat else None
+        self._chat_id = chat._id if chat else None
 
 
     def create_chat(self, name:Optional[str]=None):

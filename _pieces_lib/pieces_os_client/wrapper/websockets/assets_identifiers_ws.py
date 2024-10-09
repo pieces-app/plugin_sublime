@@ -1,8 +1,11 @@
 from typing import Callable,Optional,TYPE_CHECKING
-from Pieces._pieces_lib.pieces_os_client import StreamedIdentifiers,Asset
 from ..streamed_identifiers.assets_snapshot import AssetSnapshot
 from .base_websocket import BaseWebsocket
 from Pieces._pieces_lib.websocket import WebSocketApp
+
+from Pieces._pieces_lib.pieces_os_client.models.streamed_identifiers import StreamedIdentifiers
+from Pieces._pieces_lib.pieces_os_client.models.asset import Asset
+
 
 if TYPE_CHECKING:
 	from ..client import PiecesClient

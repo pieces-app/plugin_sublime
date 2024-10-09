@@ -22,9 +22,13 @@ Example:
 """
 import queue
 from typing import Dict, List, Union, Callable, TYPE_CHECKING
-from Pieces._pieces_lib.pieces_os_client import Conversation, StreamedIdentifiers, Asset
 from abc import ABC, abstractmethod
 import threading
+
+from Pieces._pieces_lib.pieces_os_client.models.conversation import Conversation
+from Pieces._pieces_lib.pieces_os_client.models.streamed_identifiers import StreamedIdentifiers
+from Pieces._pieces_lib.pieces_os_client.models.asset import Asset
+
 
 if TYPE_CHECKING:
     from ..client import PiecesClient

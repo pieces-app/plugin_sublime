@@ -1,9 +1,11 @@
 import threading
-from Pieces._pieces_lib.pieces_os_client import UserProfile,AllocationStatusEnum
 from typing import Optional
+from .basic import Basic
 
-## TODO: Modify the Basic class to be able to fit in the BasicUser
-class BasicUser:
+from Pieces._pieces_lib.pieces_os_client.models.user_profile import UserProfile
+from Pieces._pieces_lib.pieces_os_client.models.allocation_status_enum import AllocationStatusEnum
+
+class BasicUser(Basic):
 	"""
 	A class to represent a basic user and manage their connection to the cloud.
 
@@ -22,6 +24,13 @@ class BasicUser:
 			pieces_client: The client used to interact with the pieces OS API.
 		"""
 		self.pieces_client = pieces_client
+	
+
+	@property
+	def id(self) -> Optional[str]:
+		if self.user_profile:
+			return self.user_profile.id
+
 
 	def on_user_callback(self, user: Optional[UserProfile], connecting=False):
 		"""
@@ -142,3 +151,6 @@ class BasicUser:
 		"""
 		if self.user_profile and self.user_profile.allocation:
 			return self.user_profile.allocation.status.cloud
+
+	def __repr__(self):
+		return f"<{self.__class__.__name__}(pieces_client={self.pieces_client})>"

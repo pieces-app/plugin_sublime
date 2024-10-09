@@ -1,34 +1,4 @@
-from Pieces._pieces_lib.pieces_os_client import (
-    ApiClient,
-    Configuration,
-    ConversationApi,
-    ConversationMessageApi,
-    ConversationMessagesApi,
-    ConversationsApi,
-    QGPTApi,
-    UserApi,
-    FormatApi,
-    ConnectorApi,
-    SeededConnectorConnection,
-    SeededTrackedApplication,
-    AssetApi,
-    AssetsApi,
-    FragmentMetadata,
-    ModelsApi,
-    AnnotationApi,
-    LinkifyApi,
-    WellKnownApi,
-    OSApi,
-    AllocationsApi,
-    SearchApi,
-    AnnotationsApi,
-    TagsApi,
-    TagApi,
-    WebsitesApi,
-    WebsiteApi,
-    __version__
-)
-from typing import Optional,Dict
+from typing import TYPE_CHECKING, Optional,Dict
 import platform
 import atexit
 import subprocess
@@ -36,18 +6,55 @@ import urllib.request
 import urllib.error
 import time
 
+from Pieces._pieces_lib.pieces_os_client import __version__
+
+from Pieces._pieces_lib.pieces_os_client.api_client import ApiClient
+from Pieces._pieces_lib.pieces_os_client.configuration import Configuration
+
+from Pieces._pieces_lib.pieces_os_client.api.conversation_api import ConversationApi
+from Pieces._pieces_lib.pieces_os_client.api.conversation_message_api import ConversationMessageApi
+from Pieces._pieces_lib.pieces_os_client.api.conversation_messages_api import ConversationMessagesApi
+from Pieces._pieces_lib.pieces_os_client.api.conversations_api import ConversationsApi
+from Pieces._pieces_lib.pieces_os_client.api.qgpt_api import QGPTApi
+from Pieces._pieces_lib.pieces_os_client.api.user_api import UserApi
+from Pieces._pieces_lib.pieces_os_client.api.format_api import FormatApi
+from Pieces._pieces_lib.pieces_os_client.api.connector_api import ConnectorApi
+from Pieces._pieces_lib.pieces_os_client.api.os_api import OSApi
+from Pieces._pieces_lib.pieces_os_client.api.allocations_api import AllocationsApi
+from Pieces._pieces_lib.pieces_os_client.api.search_api import SearchApi
+from Pieces._pieces_lib.pieces_os_client.api.asset_api import AssetApi
+from Pieces._pieces_lib.pieces_os_client.api.well_known_api import WellKnownApi
+from Pieces._pieces_lib.pieces_os_client.api.assets_api import AssetsApi
+from Pieces._pieces_lib.pieces_os_client.api.models_api import ModelsApi
+from Pieces._pieces_lib.pieces_os_client.api.annotations_api import AnnotationsApi
+from Pieces._pieces_lib.pieces_os_client.api.annotation_api import AnnotationApi
+from Pieces._pieces_lib.pieces_os_client.api.linkify_api import LinkifyApi
+from Pieces._pieces_lib.pieces_os_client.api.tags_api import TagsApi
+from Pieces._pieces_lib.pieces_os_client.api.tag_api import TagApi
+from Pieces._pieces_lib.pieces_os_client.api.website_api import WebsiteApi
+from Pieces._pieces_lib.pieces_os_client.api.websites_api import WebsitesApi
+
+from Pieces._pieces_lib.pieces_os_client.models.seeded_connector_connection import SeededConnectorConnection
+from Pieces._pieces_lib.pieces_os_client.models.seeded_tracked_application import SeededTrackedApplication
+
+
 from .copilot import Copilot
 from .basic_identifier import BasicAsset,BasicUser
 from .streamed_identifiers import AssetSnapshot
 from .websockets import *
 
+if TYPE_CHECKING:
+    from Pieces._pieces_lib.pieces_os_client.models.fragment_metadata import FragmentMetadata
+    from Pieces._pieces_lib.pieces_os_client.models.model import Model
 
 class PiecesClient:
     def __init__(self, host:str="", seeded_connector: Optional[SeededConnectorConnection] = None,**kwargs):
+        self.models:Dict[str, str] = {} # Maps model_name to the model_id
+        self.models_object: list[Model] = []
+
         if not host:
             host = "http://127.0.0.1:5323" if 'Linux' in platform.platform() else "http://127.0.0.1:1000"
         self.host = host
-        self.models = None
         self._is_started_runned = False
         self.local_os = platform.system().upper() if platform.system().upper() in ["WINDOWS","LINUX","DARWIN"] else "WEB"
         self.local_os = "MACOS" if self.local_os == "DARWIN" else self.local_os
@@ -129,6 +136,9 @@ class PiecesClient:
         self.HEALTH_WS_URL = ws_base_url + "/.well-known/stream/health"
 
     def assets(self):
+        """
+            Retruns all the assets after the caching process is done
+        """
         self.ensure_initialization()
         return [BasicAsset(id) for id in AssetSnapshot.identifiers_snapshot.keys()]
 
@@ -137,17 +147,21 @@ class PiecesClient:
         return BasicAsset(asset_id)
 
     @staticmethod
-    def create_asset(content:str,metadata:Optional[FragmentMetadata]=None):
+    def create_asset(content:str, metadata:Optional["FragmentMetadata"]=None):
+        """
+            Create an asset
+        """
         return BasicAsset.create(content,metadata)
 
 
     def get_models(self) -> Dict[str, str]:
-        if self.models:
-            return self.models
-        api_response = self.models_api.models_snapshot()
-        models = {model.name: model.id for model in api_response.iterable if model.cloud or model.downloaded} # getting the models that are available in the cloud or is downloaded
-        self.models = models
-        return models
+        """
+            Returns a dict of the {model_name: model_id}
+        """
+        if not self.models:
+            self.models_object = self.models_api.models_snapshot().iterable
+            self.models = {model.name: model.id for model in self.models_object if model.cloud or model.downloaded} # getting the models that are available in the cloud or is downloaded
+        return self.models
 
     @property
     def model_name(self):
@@ -163,6 +177,9 @@ class PiecesClient:
 
     @property
     def available_models_names(self) -> list:
+        """
+            Returns all available models names
+        """
         return list(self.get_models().keys())
 
     def ensure_initialization(self):
@@ -232,8 +249,10 @@ class PiecesClient:
         if not self._startup():
             raise ValueError("PiecesClient is not started successfully\nPerhaps Pieces OS is not running")
 
+
     def __str__(self) -> str:
         return f"<PiecesClient host={self.host}, pieces_os_status={'Running' if self.is_pieces_running else 'Not running'}>"
+
 
     def __repr__(self) -> str:
         return f"<PiecesClient(host={self.host})>"

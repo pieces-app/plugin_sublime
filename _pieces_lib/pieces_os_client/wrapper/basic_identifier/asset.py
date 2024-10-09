@@ -1,29 +1,23 @@
 from ..streamed_identifiers.assets_snapshot import AssetSnapshot
-from Pieces._pieces_lib.pieces_os_client import (
-	Asset, 
-	AssetsApi,
-	AssetApi,
-	ClassificationSpecificEnum,
-	FormatApi,
-	ClassificationGenericEnum,
-	Annotation,
-	Format,
-	Classification,
-	Annotations,
-	SeededAsset,
-	Seed,
-	SeededFormat,
-	SeededFragment,
-	TransferableString,
-	FragmentMetadata,
-	AssetReclassification,
-	Linkify,
-	Shares
-)
-
-from typing import Literal, Optional, List
 from .basic import Basic
-from .user import BasicUser
+from typing import Literal, Optional, List, TYPE_CHECKING
+
+from Pieces._pieces_lib.pieces_os_client.models.asset import Asset
+from Pieces._pieces_lib.pieces_os_client.models.classification_specific_enum import ClassificationSpecificEnum
+from Pieces._pieces_lib.pieces_os_client.models.classification_generic_enum import ClassificationGenericEnum
+from Pieces._pieces_lib.pieces_os_client.models.format import Format
+from Pieces._pieces_lib.pieces_os_client.models.seeded_asset import SeededAsset
+from Pieces._pieces_lib.pieces_os_client.models.seed import Seed
+from Pieces._pieces_lib.pieces_os_client.models.seeded_format import SeededFormat
+from Pieces._pieces_lib.pieces_os_client.models.seeded_fragment import SeededFragment
+from Pieces._pieces_lib.pieces_os_client.models.transferable_string import TransferableString
+from Pieces._pieces_lib.pieces_os_client.models.fragment_metadata import FragmentMetadata
+from Pieces._pieces_lib.pieces_os_client.models.asset_reclassification import AssetReclassification
+from Pieces._pieces_lib.pieces_os_client.models.linkify import Linkify
+from Pieces._pieces_lib.pieces_os_client.models.shares import Shares
+
+if TYPE_CHECKING:
+	from . import BasicAnnotation, BasicTag, BasicWebsite
 
 # Friendly wrapper (to avoid interacting with the pieces_os_client sdks models)
 
@@ -83,9 +77,10 @@ class BasicAsset(Basic):
 			content: The new content to be set.
 		"""
 		format_api = AssetSnapshot.pieces_client.format_api
+		original = None
 		if self.is_image:
 			original = self._get_ocr_format(self.asset)
-		else:
+		if not original:
 			original = format_api.format_snapshot(self.asset.original.id, transferable=True)
 
 		if original.fragment and original.fragment.string and original.fragment.string.raw:
@@ -185,24 +180,25 @@ class BasicAsset(Basic):
 		annotations = self.annotations
 		if not annotations:
 			return
-		annotations = sorted(annotations, key=lambda x: x.updated.value, reverse=True)
 		d = None
 		for annotation in annotations:
 			if annotation.type == "DESCRIPTION":
 				d = annotation
 		
-		return d.text if d else None
+		return d.raw_content if d else None
 
 
 	@property
-	def annotations(self) -> Optional[Annotations]:
+	def annotations(self) -> Optional[List["BasicAnnotation"]]:
 		"""
 		Get all annotations of the asset.
 
 		Returns:
 			Optional[Annotations]: The annotations if available, otherwise None.
 		"""
-		return getattr(self.asset.annotations,"iterable",None)
+		from . import BasicAnnotation
+		if self.asset.annotations:
+			return [BasicAnnotation(AssetSnapshot.pieces_client,a) for a in self.asset.annotations.iterable]
 
 
 	def delete(self) -> None:
@@ -252,6 +248,35 @@ class BasicAsset(Basic):
 		"""
 		return cls._share(seed = cls._get_seed(raw_content))
 
+	@property
+	def tags(self) -> Optional[List["BasicTag"]]:
+		"""
+		Get all the tags associate with the asset
+
+		returns a list of BasicTag if there is a tag associated else None
+		"""
+		from . import BasicTag
+		if self.asset.tags and self.asset.tags.iterable:
+			return [BasicTag(AssetSnapshot.pieces_client,tag) for tag in self.asset.tags.iterable]
+
+	@property
+	def markdown(self) -> Optional[str]:
+		"""
+			returns the asset as a markdown containing the content
+			all tags wesites and other metadata
+		"""
+		res = AssetSnapshot.pieces_client.asset_api.asset_specific_asset_export(self.asset.id,"MD")
+		if res.raw.string:
+			return res.raw.string.raw
+
+	@property
+	def websites(self) -> Optional[List["BasicWebsite"]]:
+		from . import BasicWebsite
+		if self.asset.websites:
+			return [
+				BasicWebsite(AssetSnapshot.pieces_client,webstie) 
+				for webstie in self.asset.websites.iterable
+			]
 
 	@staticmethod
 	def search(query:str,search_type:Literal["fts","ncs","fuzzy"] = "fts") -> Optional[List["BasicAsset"]]:
