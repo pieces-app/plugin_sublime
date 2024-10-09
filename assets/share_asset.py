@@ -35,10 +35,13 @@ class PiecesShareAssetCommand(sublime_plugin.WindowCommand):
 			if sublime.ok_cancel_dialog("You need to connect to the cloud to generate a shareable link",ok_title="Connect",title="Pieces"):
 				self.window.run_command("pieces_allocation_connect")
 			return
-		if asset_id:
-			share = BasicAsset(asset_id).share()
-		if raw_content:
-			share = BasicAsset.share_raw_content(raw_content)
+		try:
+			if asset_id:
+				share = BasicAsset(asset_id).share()
+			if raw_content:
+				share = BasicAsset.share_raw_content(raw_content)
+		except:
+			return sublime.error_message("Unable to create a shareable link")
 
 		if self.sheet and self.update_sheet:
 			if self.sheet.id() in PiecesListAssetsCommand.sheets_md:
