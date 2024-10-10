@@ -26,17 +26,20 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 	def run_async(self):
 		self.sheet = self.window.new_html_sheet("Loading","")
 		self.sheet_id = self.sheet.id()
-		self.update_sheet(self.sheet,self.pieces_asset_id)
+		self.update_sheet(self.sheet,self.pieces_asset_id, {})
 
 
 	@classmethod
 	def update_sheet(cls,sheet,asset_id,buttons_kwargs={}):
+		asset = BasicAsset(asset_id)
 		try:
-			api_response = PiecesSettings.api_client.asset_api.asset_specific_asset_export(asset_id, "MD")
+			markdown_text = asset.markdown
 		except:
 			return sublime.error_message("Asset Not Found")
-		
-		markdown_text = api_response.raw.string.raw
+		if (not buttons_kwargs.get("share")) and (asset.shares):
+			buttons_kwargs["share"] = {
+				"title":"Copy Generated Link",
+				"url":f'subl:pieces_copy_link  {{"content":"{asset.shares[0].link}", "asset_id":"{asset_id}"}}'}
 
 		markdown_text_table = tabulate_from_markdown(markdown_text,buttons = cls.create_html_buttons(sheet.id(),**buttons_kwargs))
 		
@@ -44,7 +47,7 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 
 		
 		try:
-			sheet.set_name(api_response.name)
+			sheet.set_name(asset.name)
 		except:
 			pass
 		cls.sheets_md[sheet.id()] = asset_id
