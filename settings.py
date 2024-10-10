@@ -6,7 +6,7 @@ from ._pieces_lib import notify as notification
 from multiprocessing.pool import ThreadPool
 import sublime
 import os
-from typing import Optional
+from .assets.ext_map import file_map
 
 from . import __version__
 
@@ -38,6 +38,8 @@ class PiecesSettings:
 	# Create the pieces directory to store the data if it does not exists
 	if not os.path.exists(PIECES_USER_DIRECTORY):
 		os.makedirs(PIECES_USER_DIRECTORY)
+
+	_update_dict = {}
 
 
 	@classmethod
@@ -85,6 +87,13 @@ class PiecesSettings:
 
 		elif cls.api_client.model_name != model:
 			cls.models_init(model = model)
+
+		syntax = settings.get("syntax")
+
+		if cls._update_dict != syntax:
+			file_map.update(syntax) # Update the file map
+			cls._update_dict = syntax
+
 
 	@staticmethod
 	def get_settings():
