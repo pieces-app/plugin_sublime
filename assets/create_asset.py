@@ -4,7 +4,7 @@ from ..startup_utils import check_pieces_os
 from .._pieces_lib.pieces_os_client import ClassificationSpecificEnum,FragmentMetadata
 import sublime_plugin
 import sublime
-
+from . ext_map import file_map
 
 class PiecesCreateAssetCommand(sublime_plugin.TextCommand):
 	@check_pieces_os()
@@ -14,8 +14,10 @@ class PiecesCreateAssetCommand(sublime_plugin.TextCommand):
 			data = "\n".join([self.view.substr(selection) for selection in self.view.sel()])
 			if not data:
 				return sublime.error_message("Please select a text")
-			ext = self.view.name().split(".")[-1]
-			if add_metadata:
+			
+			syntax = self.view.syntax()
+			if syntax and add_metadata:
+				ext = file_map.reverse.get(syntax.path)
 				metadata = FragmentMetadata(ext = ClassificationSpecificEnum(ext)) if ext in ClassificationSpecificEnum else None
 		
 

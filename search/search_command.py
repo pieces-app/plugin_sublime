@@ -2,7 +2,6 @@ import sublime_plugin
 import sublime
 from typing import List, Optional
 
-from ..settings import PiecesSettings
 from ..startup_utils import check_pieces_os
 from ..assets.list_assets import PiecesAssetIdInputHandler
 
@@ -37,10 +36,7 @@ class QueryInputHandler(sublime_plugin.TextInputHandler):
 		result = PiecesSearchCommand.search(**args)
 
 		if not result: # No results just set the status
-			view = sublime.active_window().active_view()
-			if view:
-				view.set_status('Pieces Search', 'No matches found.')
-				return
+			sublime.status_message('No matches found.')
 
 		return PiecesAssetIdExtendInputHandler(result) # get a choose menu of the assets found
 

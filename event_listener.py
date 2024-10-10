@@ -10,8 +10,6 @@ from .misc import PiecesOnboardingCommand
 from .copilot.ask_command import copilot
 
 
-file_map_reverse = {v:k for k,v in file_map.items()}
-
 
 class PiecesEventListener(sublime_plugin.EventListener):
 	secondary_view = None # Used in the ask to know the secondary view at insert
@@ -108,7 +106,7 @@ class PiecesEventListener(sublime_plugin.EventListener):
 		syntax = view.syntax()
 		if not syntax:
 			return
-		classification_enum = file_map_reverse.get(syntax.path)
+		classification_enum = file_map.reverse.get(syntax.path)
 		out = []
 		for asset in PiecesSettings.api_client.assets():
 			if asset.classification == classification_enum:
