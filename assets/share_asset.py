@@ -127,5 +127,5 @@ class PiecesCopyLinkCommand(sublime_plugin.WindowCommand):
 	def run(self,content,asset_id):
 		sublime.set_clipboard(content)
 		sheet = self.window.active_sheet()
-		PiecesListAssetsCommand.update_sheet(sheet,asset_id,buttons_kwargs={"share":{"title":"Copied"}})
+		PiecesListAssetsCommand.update_sheet(sheet,asset_id,buttons_kwargs={"share":{"title":"Copied","url":"noop"}})
 
