@@ -34,6 +34,7 @@ class ProgressBar:
             self.current = progress
             if self.current >= self.total:
                 self.stop()
+        self._update()
 
     def _update(self, status=0):
         """Update the progress bar status."""
@@ -47,6 +48,9 @@ class ProgressBar:
             before = int((self.current / self.total) * self.width)
             after = self.width - before
             progress_bar = f"[{'█' * before}{'░' * after}] {percentage}%"
+            sublime.status_message(f"{self.label} {progress_bar}")
+            return
+            
         else:
             # Unmeasured progress bar
             status = status % (2 * self.width)
@@ -54,8 +58,8 @@ class ProgressBar:
             after = self.width - before
             progress_bar = f"[{'█' * before}{'░' * after}]"
 
-        # Update the status message
-        sublime.status_message(f"{self.label} {progress_bar}")
+            # Update the status message
+            sublime.status_message(f"{self.label} {progress_bar}")
         
         # Schedule the next update
         if not self._done:
