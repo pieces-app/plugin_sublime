@@ -24,7 +24,7 @@ template_snippet = """<snippet>
 {content}
 ]]></content>
 <tabTrigger>{trigger}</tabTrigger>
-<description>{description}</description>
+<description>{asset_description}</description>
 <scope>{scope}</scope>
 </snippet>"""
 
@@ -148,7 +148,7 @@ class PiecesEditSnippetSheetCommand(sublime_plugin.WindowCommand):
 		"""
 		self.field = field
 		self.instance = PiecesExportAssetToSublimeCommand.get_instance(sheet_id)
-		self.window.show_input_panel(f"{field.title()}:", getattr(self.instance,field), self.on_done, None, None)
+		self.window.show_input_panel(f"{field.replace("_"," ").title()}:", getattr(self.instance,field), self.on_done, None, None)
 
 	def on_done(self, user_response):
 		setattr(self.instance,self.field,user_response)
