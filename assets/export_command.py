@@ -74,11 +74,13 @@ class PiecesExportAssetToSublimeCommand(sublime_plugin.WindowCommand):
 
 		if syntax:
 			self.dummy_view.assign_syntax(syntax = syntax)
+			self.scope = self.dummy_view.syntax().scope # obtain the scope using the syntax 
+		else:
+			self.dummy_view.run_command("append",{"characters":self.content})
 
-		self.dummy_view.run_command("append",{"characters":self.content})
-		self.scope = self.dummy_view.scope_name(
-			10 # ignoring the content at the begining
-		).strip().replace(' ', ', ')
+			self.scope = self.dummy_view.scope_name(
+				10 # ignoring the content at the begining
+			).strip().replace(' ', ', ') 
 
 		self.sheet = mdpopups.new_html_sheet(self.window,asset_wrapper.name,contents="")
 		self.update_sheet()
