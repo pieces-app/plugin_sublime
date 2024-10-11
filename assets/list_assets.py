@@ -35,6 +35,7 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 		try:
 			markdown_text = asset.markdown
 		except:
+			sheet.close()
 			return sublime.error_message("Asset Not Found")
 		if (not buttons_kwargs.get("share")) and (asset.shares):
 			buttons_kwargs["share"] = {

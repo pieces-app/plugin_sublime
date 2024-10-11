@@ -24,7 +24,7 @@ template_snippet = """<snippet>
 {content}
 ]]></content>
 <tabTrigger>{trigger}</tabTrigger>
-<description>{description}</description>
+<description>{asset_description}</description>
 <scope>{scope}</scope>
 </snippet>"""
 
@@ -74,11 +74,13 @@ class PiecesExportAssetToSublimeCommand(sublime_plugin.WindowCommand):
 
 		if syntax:
 			self.dummy_view.assign_syntax(syntax = syntax)
+			self.scope = self.dummy_view.syntax().scope # obtain the scope using the syntax 
+		else:
+			self.dummy_view.run_command("append",{"characters":self.content})
 
-		self.dummy_view.run_command("append",{"characters":self.content})
-		self.scope = self.dummy_view.scope_name(
-			10 # ignoring the content at the begining
-		).strip().replace(' ', ', ')
+			self.scope = self.dummy_view.scope_name(
+				10 # ignoring the content at the begining
+			).strip().replace(' ', ', ') 
 
 		self.sheet = mdpopups.new_html_sheet(self.window,asset_wrapper.name,contents="")
 		self.update_sheet()
@@ -146,7 +148,7 @@ class PiecesEditSnippetSheetCommand(sublime_plugin.WindowCommand):
 		"""
 		self.field = field
 		self.instance = PiecesExportAssetToSublimeCommand.get_instance(sheet_id)
-		self.window.show_input_panel(f"{field.title()}:", getattr(self.instance,field), self.on_done, None, None)
+		self.window.show_input_panel(f"{field.replace('_',' ').title()}:", getattr(self.instance,field), self.on_done, None, None)
 
 	def on_done(self, user_response):
 		setattr(self.instance,self.field,user_response)
