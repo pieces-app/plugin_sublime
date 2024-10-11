@@ -1,0 +1,78 @@
+name: 🐛 Bug Report
+description: Create a bug report
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to fill out this bug report!
+        Please fill out the form below...
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: Please provide a clear and concise description of what the bug is, and what you would expect to happen.
+      placeholder: The bug is...
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: Please provide the steps to reproduce this bug. You can include your code here if it is relevant.
+      placeholder: |
+        1.
+        2.
+        3.
+    validations:
+      required: false
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Your operating system
+      options:
+        - Windows
+        - MacOS
+        - Linux
+    validations:
+      required: true
+
+  - type: textarea
+    id: command-name
+    attributes:
+      label: What is the command name?
+      description: Please write the command name which the bug occurs in. leave it black if it is a general bug
+    
+
+  - type: textarea
+    id: pieces-os-version
+    attributes:
+      label: Your Pieces OS Version `Pieces: About`
+      description: Add the version of Pieces OS installed in your system
+    validations:
+      required: true
+  
+  - type: textarea
+    id: plugin-version
+    attributes:
+      label: Your Pieces for Sublime plugin version `Pieces: About`
+      description: Add the version of your Pieces for Sublime plugin
+    validations:
+      required: true
+
+  - type: textarea
+    id: sublime-version
+    attributes:
+      label: Your Sublime version
+      description: Add the version of Sublime
+    validations:
+      required: false
+  
+  - type: textarea
+    id: additional-info
+    attributes:
+      label: Additional Info
+      description: Any additional info that you think might be useful or relevant to this bug
