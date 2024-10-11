@@ -66,7 +66,7 @@ class SublimeSnippetsInputHandler(sublime_plugin.ListInputHandler):
 	def list_items(self):
 		snippets = sublime.find_resources("*.sublime-snippet")
 		return [
-			(f"Import All ({len(snippets)} Snippet)", "all"),
+			(f"Import All ({len(snippets)} Snippets)", "all"),
 			*[(snippet,snippet) for snippet in snippets]
 		]
 	
