@@ -269,7 +269,7 @@ class BasicAsset(Basic):
 			returns the asset as a markdown containing the content
 			all tags wesites and other metadata
 		"""
-		res = AssetSnapshot.pieces_client.asset_api.asset_specific_asset_export(self.asset.id,"MD")
+		res = AssetSnapshot.pieces_client.asset_api.asset_specific_asset_export(self._id,"MD")
 		if res.raw.string:
 			return res.raw.string.raw
 
