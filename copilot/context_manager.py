@@ -37,7 +37,8 @@ class PiecesContextInputHandler(sublime_plugin.ListInputHandler):
 	def name(self):
 		return "context"
 	def list_items(self):
-		relevance_exists = PiecesSettings.api_client.copilot.context._check_relevant_existance()
+		relevance_exists = PiecesSettings.api_client.copilot.context._check_relevant_existence()
+
 		return [
 			("Add Folder","folder"),
 			("Add File","file"),
