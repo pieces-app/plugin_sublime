@@ -189,7 +189,7 @@ class CopilotViewManager:
 
 	def ask(self,pipeline=None):
 		query = self.gpt_view.substr(Region(self.end_response,self.gpt_view.size()))
-		if not query:
+		if not query.strip():
 			return
 		self.can_type = False
 		self.select_end # got to the end of the text to enter the new lines
