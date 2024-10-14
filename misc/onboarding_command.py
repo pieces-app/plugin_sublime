@@ -130,8 +130,7 @@ class PiecesOnboardingCommand(sublime_plugin.WindowCommand):
 	calls = {}
 	sheet_id = None
 	ONBOARDING_SETTINGS_PATH = os.path.join(PiecesSettings.PIECES_USER_DIRECTORY, "onboarding_settings.json")
-	
-	@check_pieces_os()
+
 	def run(self):
 		sheet = sublime.HtmlSheet(self.sheet_id) if self.sheet_id in self.get_html_sheet_ids() else self.window.new_html_sheet(self.SHEET_NAME,"") 
 		self.sheet_id = sheet.id()

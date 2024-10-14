@@ -17,6 +17,9 @@ class PiecesLogoutCommand(sublime_plugin.WindowCommand):
 	def run(self):
 		sublime.set_timeout_async(lambda:PiecesSettings.api_client.user.logout())
 
+	def is_enabled(self):
+		return bool(AuthUser.user_profile) # Show only if the user is logged in
+
 class PiecesAllocationConnectCommand(sublime_plugin.WindowCommand):
 	@check_pieces_os()
 	def run(self):
