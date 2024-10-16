@@ -1,5 +1,4 @@
 [
-    // all Key Chords should begin with ctr+p (for Pieces)
     {
         "command": "pieces_ask_question", // Ask copilot in the context menu to fix a bug
         "args": {"task": "fix"},
@@ -16,30 +15,30 @@
         "keys": ["ctrl+shift+alt+c"]
     },
     {
-        "keys": ["ctrl+p","ctrl+l"], // Pieces: Open Saved Material
+        "keys": ["ctrl+shift+p"], // Pieces: Open Saved Material
         "command": "pieces_list_assets"
     },
     {
-        "keys": ["ctrl+p","ctrl+s"], // Pieces: Search
+        "keys": ["ctrl+shift+alt+s"], // Pieces: Search
         "command": "pieces_search"
     },
     {
-        "keys": ["ctrl+p","ctrl+o"], // Pieces: Open Pieces OS
+        "keys": ["ctrl+shift+o"], // Pieces: Open Pieces OS
         "command": "pieces_open_pieces"
     },
     {
-        "keys": ["ctrl+p","ctrl+c"], // Pieces: Manage Conversation Context
+        "keys": ["shift+alt+c"], // Pieces: Manage Conversation Context
         "command": "pieces_context_manager"
     },
     {
-        "keys": ["ctrl+p","ctrl+f"], // Pieces: Ask about the current file
+        "keys": ["ctrl+alt+f"], // Pieces: Ask about the current file
         "command": "pieces_ask_stream_about",
         "args": {
             "type": "file"
         }
     },
     {
-        "keys": ["ctrl+p","ctrl+i"], // Pieces: Ask about the current project
+        "keys": ["ctrl+shift+i"], // Pieces: Ask about the current project
         "command": "pieces_ask_stream_about",
         "args": {
             "type": "folder"
