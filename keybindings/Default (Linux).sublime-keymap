@@ -15,10 +15,6 @@
         "keys": ["ctrl+shift+alt+c"]
     },
     {
-        "keys": ["ctrl+shift+p"], // Pieces: Open Saved Material
-        "command": "pieces_list_assets"
-    },
-    {
         "keys": ["ctrl+shift+alt+s"], // Pieces: Search
         "command": "pieces_search"
     },
