@@ -27,13 +27,6 @@
         "command": "pieces_context_manager"
     },
     {
-        "keys": ["ctrl+alt+f"], // Pieces: Ask about the current file
-        "command": "pieces_ask_stream_about",
-        "args": {
-            "type": "file"
-        }
-    },
-    {
         "keys": ["ctrl+shift+i"], // Pieces: Ask about the current project
         "command": "pieces_ask_stream_about",
         "args": {
