@@ -242,7 +242,8 @@ class PiecesClient:
                     if response.status == 200:
                         return True
             except:
-                time.sleep(1)
+                if maxium_retries != 1:
+                    time.sleep(1)
         return False
 
     def _check_startup(self):
