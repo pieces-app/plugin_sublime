@@ -2,18 +2,18 @@
 
 ![Pieces Sublime Plugin](icons/hero-image.png)
 
-##### <p align="center"> [Website](https://pieces.app/) • [Pieces OS Documentation](https://docs.pieces.app/) • [Pieces for Sublime Docs](https://docs.pieces.app/extensions-plugins/sublime)
+##### <p align="center"> [Website](https://pieces.app/) • [PiecesOS Documentation](https://docs.pieces.app/) • [Pieces for Sublime Docs](https://docs.pieces.app/extensions-plugins/sublime)
 </p>
 
 # Important
 
-Please make sure you have [**Pieces OS**](https://docs.pieces.app/installation-getting-started/what-am-i-installing) installed to run [**the Package.**](https://packagecontrol.io/packages/Pieces) 
+Please make sure you have [**PiecesOS**](https://docs.pieces.app/installation-getting-started/what-am-i-installing) installed to run [**the Package.**](https://packagecontrol.io/packages/Pieces) 
 
 ## Getting Started with the Pieces Sublime Plugin
 
 Welcome to the **Pieces Sublime Plugin**!
 
-The Pieces Sublime plugin is your gateway to managing your saved code snippets in Pieces directly inside Sublime Text. Seamlessly interact with Pieces OS and enhance your productivity with code snippet management, in-window generative AI conversations, intelligent snippet searching, and AI debugging and code commenting.
+The Pieces Sublime plugin is your gateway to managing your saved code snippets in Pieces directly inside Sublime Text. Seamlessly interact with PiecesOS and enhance your productivity with code snippet management, in-window generative AI conversations, intelligent snippet searching, and AI debugging and code commenting.
 
 ## Configuration
 
@@ -50,7 +50,7 @@ Currently, the Pieces for Sublime Plugin supports 16 AI models, so you can choos
 
 Using the command `Pieces: Connect Personal Cloud` or `Pieces: Disconnect Personal Cloud` from your command palette logs you in and out of your Pieces account. An output panel is available to check your cloud status and login status.
 
-Logging into your Pieces account lets you sync your snippets and settings between Pieces OS and other Pieces plugins. 
+Logging into your Pieces account lets you sync your snippets and settings between PiecesOS and other Pieces plugins. 
 
 ### Right Click to Save to Pieces
 
@@ -148,7 +148,7 @@ You can enable or disable this feature in your settings by entering `Pieces: Ope
 
 If you're experiencing an issue or something isn't working properly, try reloading the plugin using the command `Pieces: Reload Plugin` in your command palette. 
 
-Don't forget to make sure Pieces OS is running.
+Don't forget to make sure PiecesOS is running.
 
 ### Get Support or Share Feedback
 

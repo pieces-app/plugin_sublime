@@ -24,12 +24,12 @@ from .copilot import *
 def startup():
 	version_check = check_compatiblity()
 	if not version_check.compatible:
-		plugin_name = "Pieces OS" if version_check.update == UpdateEnum.PiecesOS else "Pieces for Sublime"
+		plugin_name = "PiecesOS" if version_check.update == UpdateEnum.PiecesOS else "Pieces for Sublime"
 		print(f"'{plugin_name}' is out of date. Please update to the latest version to ensure full functionality.")
 		BaseWebsocket.close_all()
 		return
 	
-	print(f"Pieces OS version: {PiecesSettings.api_client.version}\nPlugin version: {__version__}")
+	print(f"PiecesOS version: {PiecesSettings.api_client.version}\nPlugin version: {__version__}")
 	PiecesSettings.models_init(PiecesSettings.get_settings().get('model')) # Intilize the models
 	ConversationWS(PiecesSettings.api_client)
 	AssetsIdentifiersWS(PiecesSettings.api_client)
@@ -61,7 +61,7 @@ def plugin_loaded():
 	if health:
 		health_ws.start()
 	else:
-		print("Please make sure Pieces OS is running")
+		print("Please make sure PiecesOS is running")
 		BaseWebsocket.close_all()
 
 
