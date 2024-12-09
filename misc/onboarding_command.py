@@ -160,12 +160,12 @@ class PiecesOnboardingCommand(sublime_plugin.WindowCommand):
 
 
 	def pieces_os_status(self):
-		if PiecesSettings.api_client.is_pieces_running:
+		if PiecesSettings.api_client.is_pieces_running():
 			return green('Installed PiecesOS is installed successfully')
 		return red("Oops! PiecesOS is not running.") + """
 			<br>
-			Don't worry, you can easily <a href="subl:pieces_open_pieces">open PiecesOS</a> and get started right away!<br>
-			Or install <a href="subl:pieces_install_pieces">PiecesOS</a>`
+			Don't worry, you can easily <a href="subl:pieces_open_pieces">open</a> PiecesOS and get started right away!<br>
+			Or <a href="subl:pieces_install_pieces_os">install</a> PiecesOS
 		"""
 
 	def create_command_status(self):
