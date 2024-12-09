@@ -50,7 +50,7 @@ html_template = """
 		<h1>Welcome to Pieces for Developers!</h1>
 		<p>Follow these steps to get started:</p>
 		<div class="step">
-			<div class="step-title">Step 1: Pieces OS Installation</div>
+			<div class="step-title">Step 1: PiecesOS Installation</div>
 			<div class="step-description">
 				{os_status}
 			</div>
@@ -161,11 +161,11 @@ class PiecesOnboardingCommand(sublime_plugin.WindowCommand):
 
 	def pieces_os_status(self):
 		if PiecesSettings.api_client.is_pieces_running:
-			return green('Installed Pieces OS is installed successfully')
-		return red("Oops! Pieces OS is not running.") + """
+			return green('Installed PiecesOS is installed successfully')
+		return red("Oops! PiecesOS is not running.") + """
 			<br>
-			Don't worry, you can easily <a href="subl:pieces_open_pieces">open Pieces OS</a> and get started right away!<br>
-			Curious to learn more? <a href="https://docs.pieces.app/installation-getting-started/pieces-os">Click here</a> to explore the full documentation and discover all the amazing features of Pieces OS.
+			Don't worry, you can easily <a href="subl:pieces_open_pieces">open PiecesOS</a> and get started right away!<br>
+			Or install <a href="subl:pieces_install_pieces">PiecesOS</a>`
 		"""
 
 	def create_command_status(self):
