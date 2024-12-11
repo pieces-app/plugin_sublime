@@ -4,3 +4,4 @@ from .open_pieces_command import PiecesOpenPiecesCommand
 from .about_command import PiecesOpenNotesCommand,PiecesAboutCommand
 from .onboarding_command import PiecesOnboardingCommand,PiecesOnboardingCommandsCommand,PiecesResetOnboardingCommand
 from .close_command import PiecesCloseOsCommand
+from .install_pieces_os import PiecesInstallPiecesOsCommand

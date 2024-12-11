@@ -20,7 +20,7 @@ def check_compatiblity():
 
 def check_pieces_os(is_input_handler=False):
 	"""
-		Should be annotated before each input handler and run function in each command that needs Pieces OS
+		Should be annotated before each input handler and run function in each command that needs PiecesOS
 	"""
 	def decorator(func):
 		@wraps(func)
@@ -33,7 +33,7 @@ def check_pieces_os(is_input_handler=False):
 			if compatiablity_result and not compatiablity_result.compatible:
 				if not is_input_handler:
 					plugin = compatiablity_result.update
-					plugin_name = "Pieces OS" if plugin == UpdateEnum.PiecesOS else "Pieces for Sublime"
+					plugin_name = "PiecesOS" if plugin == UpdateEnum.PiecesOS else "Pieces for Sublime"
 					r = sublime.ok_cancel_dialog(
 						title="Pieces for Sublime",
 						msg = (
@@ -61,8 +61,8 @@ def check_pieces_os(is_input_handler=False):
 				r = sublime.yes_no_cancel_dialog(
 					title="Pieces for Sublime",
 					msg=(
-				        "Pieces OS is not currently running.\n"
-				        "To use this feature, please start Pieces OS.\n"
+				        "PiecesOS is not currently running.\n"
+				        "To use this feature, please start PiecesOS.\n"
 				        "Would you like to launch it now?"
 				    ),
 					yes_title="Yes",
@@ -72,7 +72,7 @@ def check_pieces_os(is_input_handler=False):
 					return sublime.run_command("pieces_support",args={"support":"https://docs.pieces.app/support"})
 				elif r == sublime.DIALOG_YES:
 					return sublime.run_command("pieces_open_pieces")
-				print("Make sure Pieces OS is running")
+				print("Make sure PiecesOS is running")
 
 		return wrapper
 	return decorator

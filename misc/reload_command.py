@@ -18,5 +18,5 @@ class PiecesReloadCommand(sublime_plugin.ApplicationCommand):
 			except Exception as e:
 				sublime.error_message(f"Error during reload: {e}")
 		else:
-			sublime.status_message(f"Pieces OS is offline")
+			sublime.status_message(f"PiecesOS is offline")
 

@@ -17,7 +17,7 @@
 			//  "NeuralHermes-2.5-Mistral-7B GPU Chat Model", 
 			//  "(PaLM2) Chat Model", 
 			//  "Llama2 CPU Chat Model"
-	"auto_start_pieces_os":false, // Open Pieces OS automatically on startup
+	"auto_start_pieces_os":false, // Open PiecesOS automatically on startup
 	"snippet.autocomplete":true, // auto complete via Pieces saved snippets or not
 	"syntax" : {} // Langauge extension : syntax path
 }
