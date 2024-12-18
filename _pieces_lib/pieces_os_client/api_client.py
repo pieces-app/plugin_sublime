@@ -384,7 +384,7 @@ class ApiClient:
                 #     'XMLHttpRequest' -> 'xml_http_request'
 
                 # Import the class
-                module = importlib.import_module(f"pieces_os_client.models.{snake_case}")
+                module = importlib.import_module(f"Pieces._pieces_lib.pieces_os_client.models.{snake_case}")
                 klass = getattr(module, klass)
 
         if klass in self.PRIMITIVE_TYPES:
