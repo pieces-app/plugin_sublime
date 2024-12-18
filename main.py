@@ -47,10 +47,7 @@ def startup():
 def plugin_loaded():
 	# Use the auth callback instead of the default one in the client
 	PiecesSettings.api_client.user.on_user_callback = AuthUser.on_user_callback 
-	settings = PiecesSettings.get_settings()
-	host = settings.get("host")
-	
-	PiecesSettings.host_init(host) # Intilize the hosts url
+
 	# callbacks needed onchange settings
 	PiecesSettings.on_model_change_callbacks.append(copilot.update_status_bar)
 	health_ws = HealthWS(PiecesSettings.api_client, lambda x:startup())
