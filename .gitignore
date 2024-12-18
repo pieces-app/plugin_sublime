@@ -161,3 +161,5 @@ cython_debug/
 Pieces/
 Pieces.sublime-package
 _debug.py
+
+.DS_Store

@@ -15,7 +15,7 @@
 """  # noqa: E501
 
 
-__version__ = "3.1.0"
+__version__ = "4.1.0"
 
 # import apis into sdk package
 from Pieces._pieces_lib.pieces_os_client.api.activities_api import ActivitiesApi
