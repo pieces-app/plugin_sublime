@@ -81,3 +81,11 @@ class PiecesInsertTextCommand(sublime_plugin.TextCommand):
 		if not point:
 			point = self.view.sel()[0].begin()
 		self.view.insert(edit,point,text)
+
+
+class PiecesClearLineCommand(sublime_plugin.TextCommand):
+	def run(self, edit: sublime.Edit, line_point: int):
+		self.view.replace(edit,self.view.line(line_point), "")
+
+
+
