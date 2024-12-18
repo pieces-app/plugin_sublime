@@ -19,6 +19,16 @@ PHANTOM_CONTENT = f"""
 </div>
 """
 
+FAILED_PHANTOM_CONTENT = f"""
+Something went wrong <br><br>
+<div style="padding-right:2px;padding-left:2px;padding-buttom:2px">
+	<a style="{PHANTOM_A_TAG_STYLE}" href = "retry">Retry</a>
+	<a style="{PHANTOM_A_TAG_STYLE}" href = "create">Create a New Conversation</a>
+	<a style="{PHANTOM_A_TAG_STYLE}" href = "github">Create a GitHub Issue</a>
+	<a style="{PHANTOM_A_TAG_STYLE}" href = "llm">Change current LLM</a>
+</div>
+"""
+
 class CopilotViewManager:
 	def __init__(self):
 		self._gpt_view = None
@@ -134,6 +144,7 @@ class CopilotViewManager:
 		elif message.status == "FAILED":
 			self.failed_regions.append(self.copilot_regions.pop())
 			self.show_failed()
+			self.gpt_view.run_command("pieces_clear_line",{"line_point": self.gpt_view.size()})
 			self.reset_view()
 
 		if message.status != "IN-PROGRESS":
@@ -148,8 +159,24 @@ class CopilotViewManager:
 			flags=sublime.HIDDEN
 		)
 		self.failed_phantom.update(
-			[sublime.Phantom(region,"Something went wrong",sublime.LAYOUT_BLOCK) for region in self.failed_regions] # TODO: Add retry
+			[sublime.Phantom(region,FAILED_PHANTOM_CONTENT,sublime.LAYOUT_BLOCK,self.on_nav_failed) for region in self.failed_regions] # TODO: Add retry
 		)
+
+	def on_nav_failed(self, href):
+		if href == "retry":
+			self.add_query(self.prev_query)
+			self.gpt_view.run_command("pieces_enter_response")
+		elif href == "create":
+			self.render_conversation("") # Render a new empty conversation
+		elif href == "github":
+			sublime.run_command("pieces_support",args={"support": "https://github.com/pieces-app/plugin_sublime/issues"})
+		elif href == "llm":
+			sublime.active_window().run_command("edit_settings",
+            {
+                "base_file": f"{sublime.packages_path()}/Pieces/Pieces.sublime-settings",
+                "default": "\n{\n\t$0\n}\n"
+            }
+        )
 
 	def add_context_phantom(self,region):
 		self.context_phantom_region = region
@@ -188,8 +215,8 @@ class CopilotViewManager:
 
 
 	def ask(self,pipeline=None):
-		query = self.gpt_view.substr(Region(self.end_response,self.gpt_view.size()))
-		if not query.strip():
+		self.prev_query = self.gpt_view.substr(Region(self.end_response,self.gpt_view.size()))
+		if not self.prev_query.strip():
 			return
 		self.can_type = False
 		self.select_end # got to the end of the text to enter the new lines
@@ -197,7 +224,7 @@ class CopilotViewManager:
 		self.remove_context_phantom()
 		self.add_role("Copilot")
 		self.progress_bar.start()
-		sublime.set_timeout_async(lambda: PiecesSettings.api_client.copilot.stream_question(query,pipeline))
+		sublime.set_timeout_async(lambda: PiecesSettings.api_client.copilot.stream_question(self.prev_query,pipeline))
 
 	def add_role(self,role):
 		text = f'>>> **{role}**: '
