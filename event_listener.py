@@ -101,7 +101,7 @@ class PiecesEventListener(sublime_plugin.EventListener):
 		copilot.secondary_view = view
 
 	def on_query_completions(self, view:sublime.View, prefix, locations):
-		if not PiecesSettings.autocomplete_snippet or not HealthWS.instance.is_loaded:
+		if not PiecesSettings.autocomplete_snippet or not PiecesSettings.api_client.is_pos_stream_running:
 			return
 		syntax = view.syntax()
 		if not syntax:

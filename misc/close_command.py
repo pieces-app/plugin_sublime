@@ -1,7 +1,6 @@
 import sublime
 import sublime_plugin
 from ..settings import PiecesSettings
-from .._pieces_lib.pieces_os_client.wrapper.websockets.health_ws import HealthWS
 
 
 class PiecesCloseOsCommand(sublime_plugin.ApplicationCommand):
@@ -10,4 +9,4 @@ class PiecesCloseOsCommand(sublime_plugin.ApplicationCommand):
 		sublime.status_message(f"PiecesOS closed successfully")
 	
 	def is_enabled(self):
-		return HealthWS.instance.is_loaded
+		return PiecesSettings.api_client.is_pos_stream_running

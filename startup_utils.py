@@ -4,8 +4,8 @@ from .settings import PiecesSettings
 import sublime
 from functools import wraps
 
-PIECES_OS_MIN_VERSION = "10.1.8"  # Minimum version (10.1.8)
-PIECES_OS_MAX_VERSION = "11.0.0" # Maximum version (11.0.0)
+PIECES_OS_MIN_VERSION = "11.0.0"  # Minium version (11.0.0)
+PIECES_OS_MAX_VERSION = "12.0.0" # Maxium version (12.0.0)
 
 compatiablity_result = None
 
@@ -46,7 +46,7 @@ def check_pieces_os(is_input_handler=False):
 						sublime.run_command("pieces_support",args={"support":"https://docs.pieces.app/support"})
 				return
 
-			if HealthWS.instance.is_loaded:
+			if PiecesSettings.api_client.is_pos_stream_running:
 				return func(*args, **kwargs)
 
 			if PiecesSettings.api_client.is_pieces_running():

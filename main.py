@@ -51,9 +51,6 @@ def plugin_loaded():
 	
 
 def run_async():
-	settings = PiecesSettings.get_settings()
-	host = settings.get("host")
-	PiecesSettings.host_init(host) # Intilize the hosts url
 	# callbacks needed onchange settings
 	PiecesSettings.on_model_change_callbacks.append(copilot.update_status_bar)
 	health = PiecesSettings.api_client.is_pieces_running()
