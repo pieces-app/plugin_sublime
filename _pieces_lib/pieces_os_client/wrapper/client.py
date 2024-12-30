@@ -1,3 +1,4 @@
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import TYPE_CHECKING, Optional,Dict, Union
 import platform
 import atexit
@@ -5,6 +6,7 @@ import subprocess
 import urllib.request
 import urllib.error
 import time
+import socket
 
 from Pieces._pieces_lib.pieces_os_client import __version__
 
@@ -115,16 +117,36 @@ class PiecesClient:
         return "http://127.0.0.1:" + self.port
 
     @staticmethod
-    def _port_scanning() -> Union[str,None]:
-        for port in range(39300, 39334):
+    def _port_scanning() -> str:
+        def check_port(port: int) -> Optional[str]:
             try:
-                with urllib.request.urlopen(f"http://127.0.0.1:{port}/.well-known/health", timeout=1):
-                    return str(port)
-            except urllib.error.URLError:
+                # 1) Quick socket check
+                with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+                    sock.settimeout(0.05)  # Short timeout for local checks
+                    if sock.connect_ex(('127.0.0.1', port)) != 0:
+                        return None  # If non-zero, the socket isn't open
+
+                # 2) If socket is open, send a single HEAD request
+                url = f"http://127.0.0.1:{port}/.well-known/health"
+                request = urllib.request.Request(url, method='HEAD')
+                with urllib.request.urlopen(request, timeout=0.1) as response:
+                    if response.status == 200:
+                        return str(port)
+            except Exception:
                 pass
-        
+            return None
+
+        # Scan ports 39300 to 39334 in parallel
+        with ThreadPoolExecutor(max_workers=20) as executor:
+            futures = [executor.submit(check_port, p) for p in range(39300, 39334)]
+            for future in as_completed(futures):
+                result = future.result()
+                if result is not None:
+                    return result
+
+        # If no port was found, raise an error
         raise ValueError("PiecesOS is not running")
-        
+
 
     @property
     def tracked_application(self):
@@ -305,4 +327,3 @@ class PiecesClient:
 
 # Register the function to be called on exit
 atexit.register(PiecesClient.close)
-
