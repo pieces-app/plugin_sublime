@@ -91,4 +91,11 @@
 		"caption": "Pieces: Install PiecesOS",
 		"command":"pieces_install_pieces_os"
 	},
+	{
+		"caption" : "Pieces: Feedback",
+		"command" : "pieces_support",
+		"args" : {
+			"support" : "https://getpieces.typeform.com/to/mCjBSIjF#page=sublime-plugin"
+		}
+	}
 ]
