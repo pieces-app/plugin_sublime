@@ -18,6 +18,7 @@ class ModelsEnum(Enum):
 	CLAUDE_3_SONNET = ("Claude 3 Sonnet", "A creative AI designed for eloquent writing, offering a 40k-token context window for in-depth compositions.", "Claude 3 Sonnet Chat Model")
 	CLAUDE_3_OPUS = ("Claude 3 Opus", "A high-capacity model designed for detailed analysis and creation, supporting a 40k-token context window.", "Claude 3 Opus Chat Model")
 	CLAUDE_3_HAIKU = ("Claude 3 Haiku", "A concise, creative LLM with a 40k-token context window for shorter tasks requiring precision.", "Claude 3 Haiku Chat Model")
+	Mistral_7B = ("Mistral 7B","A compact model with 7 billion parameters and 4k-token context window optimized for efficient processing", "NeuralHermes-2.5-Mistral-7B Chat Model")
 	PHI_3_MINI_4K = ("Phi-3 Mini 4K", "A miniaturized version of Phi-3 with a 4k-token context window, designed for efficient small-scale tasks.", "Phi-3-mini-4k-instruct")
 	PHI_3_MINI_128K = ("Phi-3 Mini 128K", "A scaled-up version of Phi-3 Mini, supporting a 128k-token context window for extended context needs.", "Phi-3-mini-128k-instruct")
 	PHI_2 = ("Phi-2", "A compact and efficient model with a 4k-token context window, suitable for lightweight applications.", "Phi-2 Chat Model")
@@ -82,5 +83,6 @@ class ModelsInputHandler(sublime_plugin.ListInputHandler):
 		return [sublime.ListInputItem(
 				text=model.name,
 				value=model.unique_id,
-				details=model.description) for model in ModelsEnum]
+				details=model.description) for model in ModelsEnum 
+				if model.unique_id in PiecesSettings.api_client.available_models_names]
 
