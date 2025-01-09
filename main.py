@@ -56,7 +56,7 @@ def run_async():
 	health = PiecesSettings.api_client.is_pieces_running()
 	if PiecesSettings.get_settings().get("auto_start_pieces_os"):
 		health = PiecesSettings.api_client.open_pieces_os()
-	health_ws = HealthWS(PiecesSettings.api_client, lambda x:startup())
+	health_ws = HealthWS(PiecesSettings.api_client,on_message_callback=lambda x:None, on_open_callback = lambda x:startup())
 	if health:
 		health_ws.start()
 	else:
