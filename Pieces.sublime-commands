@@ -94,5 +94,9 @@
 	{
 		"caption" : "Pieces: Stop Copilot From Generating Message",
 		"command" : "pieces_stop_copilot"
+	},
+	{
+		"caption": "Pieces: Delete Copilot Conversation",
+		"command" : "pieces_delete_conversation"
 	}
 ]

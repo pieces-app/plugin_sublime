@@ -4,6 +4,8 @@ from .ask_view import CopilotViewManager
 from ..settings import PiecesSettings
 from ..startup_utils import check_pieces_os
 from .._pieces_lib.pieces_os_client.models.qgpt_stream_input import QGPTStreamInput
+from .._pieces_lib.pieces_os_client.wrapper.basic_identifier.chat import BasicChat
+
 
 copilot = CopilotViewManager()
 
@@ -52,6 +54,18 @@ class PiecesEnterResponseCommand(sublime_plugin.TextCommand):
 	def run(self,edit):
 		copilot.ask()
 
+class PiecesDeleteConversationCommand(sublime_plugin.WindowCommand):
+	def run(self, pieces_conversation_id):
+		conv = BasicChat(pieces_conversation_id)
+		name = conv.name
+		conv.delete()
+		sublime.status_message(f'The conversation "{name}" has been successfully deleted.')
+		sublime.set_timeout(
+		# if a user want to delete another conversation
+		lambda:self.window.run_command("pieces_delete_conversation"),100) # Wait for some ms
+
+	def input(self, args: dict):
+		return PiecesConversationIdInputHandler()
 
 class PiecesConversationIdInputHandler(sublime_plugin.ListInputHandler):
 	def list_items(self):

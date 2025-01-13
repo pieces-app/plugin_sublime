@@ -4,7 +4,8 @@ from .ask_command import (
 	PiecesInsertTextCommand,
 	PiecesClearLineCommand,
 	PiecesStopCopilotCommand,
-	PiecesRemoveRegionCommand)
+	PiecesRemoveRegionCommand,
+	PiecesDeleteConversationCommand)
 from .explain import PiecesExplainCommand
 from .context_manager import PiecesContextManagerCommand
 from .ask_about_command import PiecesAskStreamAboutCommand
