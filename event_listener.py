@@ -30,9 +30,13 @@ class PiecesEventListener(sublime_plugin.EventListener):
 		
 	def on_text_command(self,view,command_name,args):
 		if command_name == "paste": # To avoid pasting in the middle of the view of the copilot
-			self.on_query_context(view,"pieces_copilot_add",True,sublime.OP_EQUAL,True)
+			should_not_type = self.on_query_context(view,"pieces_copilot_add",True,sublime.OP_EQUAL,True)
+			if should_not_type:
+				return "noop"
 		elif command_name == "cut":
-			self.on_query_context(view,"pieces_copilot_remove",True,sublime.OP_EQUAL,True)
+			should_not_type = self.on_query_context(view,"pieces_copilot_remove",True,sublime.OP_EQUAL,True)
+			if should_not_type:
+				return "noop"
 
 	
 	def check_onboarding(self,command_name):
@@ -64,7 +68,6 @@ class PiecesEventListener(sublime_plugin.EventListener):
 	
 		elif key == "PIECES_GPT_VIEW":
 			return view.settings().get("PIECES_GPT_VIEW")
-
 		elif key == "pieces_copilot_add" or key == "pieces_copilot_remove":
 			## TRUE -> Means no operation will be done
 			## False -> Means operation can be done
