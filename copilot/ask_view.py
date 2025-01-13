@@ -191,7 +191,7 @@ class CopilotViewManager:
 			ui = "light"
 		image = getattr(ContextImage,ui)
 		self.context_phantom.update(
-			[sublime.Phantom(region,f"<a href='subl:pieces_context_manager'>{image.format(style='width:20px;height:20px')}</a>",sublime.LAYOUT_INLINE)]
+			[sublime.Phantom(region,f"<a title='Set Copilot Context' href='subl:pieces_context_manager'>{image.format(style='width:20px;height:20px')}</a>",sublime.LAYOUT_INLINE)]
 		)
 	def remove_context_phantom(self):
 		self.context_phantom.update([])
