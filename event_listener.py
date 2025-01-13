@@ -130,6 +130,10 @@ class PiecesEventListener(sublime_plugin.EventListener):
 
 class PiecesViewEventListener(sublime_plugin.ViewEventListener):
 	def on_close(self):
-		if self.view.settings().get("PIECES_GPT_VIEW"):
-			copilot.gpt_view = None
+		print("COPILOT")
+		copilot.gpt_view = None
+
+	@classmethod
+	def is_applicable(cls, settings: sublime.Settings) -> bool:
+		return settings.get("PIECES_GPT_VIEW",False)
 
