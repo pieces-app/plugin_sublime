@@ -3,7 +3,7 @@ import sublime
 from .ask_view import CopilotViewManager
 from ..settings import PiecesSettings
 from ..startup_utils import check_pieces_os
-from typing import Optional
+from .._pieces_lib.pieces_os_client.models.qgpt_stream_input import QGPTStreamInput
 
 copilot = CopilotViewManager()
 
@@ -87,5 +87,17 @@ class PiecesClearLineCommand(sublime_plugin.TextCommand):
 	def run(self, edit: sublime.Edit, line_point: int):
 		self.view.replace(edit,self.view.line(line_point), "")
 
+class PiecesRemoveRegionCommand(sublime_plugin.TextCommand):
+	def run(self, edit: sublime.Edit, a: int,b:int):
+		self.view.replace(edit,sublime.Region(a,b), "")
 
-
+class PiecesStopCopilotCommand(sublime_plugin.TextCommand):
+	def run(self,edit: sublime.Edit):
+		PiecesSettings.api_client.copilot.ask_stream_ws.send_message(
+			QGPTStreamInput(
+			  conversation = PiecesSettings.api_client.copilot._chat_id,
+			  stop = True
+			 )
+		)
+	def is_enabled(self) -> bool:
+		return bool(self.view.settings().get("PIECES_GPT_VIEW", False))

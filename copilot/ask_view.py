@@ -1,11 +1,12 @@
 import sublime
 from sublime import ADD_TO_SELECTION, Region, View
 from .images.context_image import ContextImage
-from .._pieces_lib.pieces_os_client import QGPTStreamOutput
+from .._pieces_lib.pieces_os_client import (QGPTStreamOutput,QGPTStreamEnum)
 from .._pieces_lib.pieces_os_client.wrapper.basic_identifier.chat import BasicChat
 from ..settings import PiecesSettings
 from ..progress_bar import ProgressBar
 import re
+from typing import List
 
 
 PHANTOM_A_TAG_STYLE = "padding: 4px;background-color: var(--accent); border-radius: 6px;color: var(--foreground);text-decoration: None;text-align: center"
@@ -64,7 +65,7 @@ class CopilotViewManager:
 
 			# Others
 			self._relevant = {}
-			self.copilot_regions = []
+			self.copilot_regions:List[Region] = []
 			self.update_status_bar()
 			# self.render_copilot_image_phantom(self._gpt_view)
 
@@ -136,13 +137,18 @@ class CopilotViewManager:
 			for answer in answers:
 				self.gpt_view.run_command("append",{"characters":answer.text})
 		
-		if message.status == "COMPLETED":
+		if message.status == QGPTStreamEnum.COMPLETED:
 			self.new_line()
 			self.reset_view()
 			self.conversation_id = message.conversation
-			self.add_code_phantoms() # Generate the code phantoms	
-		elif message.status == "FAILED":
-			self.failed_regions.append(self.copilot_regions.pop())
+			self.add_code_phantoms() # Generate the code phantoms
+		elif message.status in [QGPTStreamEnum.STOPPED, QGPTStreamEnum.FAILED]:
+			self.gpt_view.run_command("pieces_remove_region",
+				{"a":self.end_response,"b":self.gpt_view.size()})
+			region = self.copilot_regions.pop()
+			region.a += 1
+			region.b += 1
+			self.failed_regions.append(region)
 			self.show_failed()
 			self.gpt_view.run_command("pieces_clear_line",{"line_point": self.gpt_view.size()})
 			self.reset_view()
