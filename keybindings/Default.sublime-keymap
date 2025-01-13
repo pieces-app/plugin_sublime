@@ -16,8 +16,20 @@
         "context": [
             {"key": "PIECES_GPT_VIEW"}]
     },
-    
-    
+    {
+        "keys": ["keypad_enter"], 
+        "command": "pieces_enter_response",
+        "context": [
+            {"key": "PIECES_GPT_VIEW"}
+        ]
+    },
+    {
+        "keys": ["primary+c"],
+        "command": "pieces_stop_copilot",
+        "context": [
+            {"key": "PIECES_GPT_VIEW"}
+        ]
+    },
     // KEYS
     { "keys": ["space"], "command": "noop", "context": [{"key": "pieces_copilot_add"}]},
     { "keys": ["shift+insert"], "command": "noop","context": [{"key": "pieces_copilot_add"}]},
@@ -29,6 +41,7 @@
     { "keys": ["backspace"], "command": "noop", "context": [{"key": "pieces_copilot_remove"}]},
     { "keys": ["primary+backspace"], "command": "noop", "context": [{"key": "pieces_copilot_remove"}]},
     { "keys": ["ctrl+backspace"], "command": "noop", "context": [{"key": "pieces_copilot_remove"}]},
+    { "keys": ["ctrl+delete"], "command": "noop", "context": [{"key": "pieces_copilot_remove"}]},
     { "keys": ["shift+backspace"], "command": "noop", "context": [{"key": "pieces_copilot_remove"}]},
     { "keys": ["alt+backspace"], "command": "noop", "context": [{"key": "pieces_copilot_remove"}]},
    
@@ -140,4 +153,20 @@
     { "keys": ["}"], "command": "noop", "context": [{"key": "pieces_copilot_add"}]},
     { "keys": ["~"], "command": "noop", "context": [{"key": "pieces_copilot_add"}]},
     { "keys": ["\\"], "command": "noop", "context": [{"key": "pieces_copilot_add"}]},
+    { "keys": ["keypad0"], "command": "noop", "context": [{"key": "pieces_copilot_add"}]},
+    { "keys": ["keypad1"], "command": "noop", "context": [{"key": "pieces_copilot_add"}]},
+    { "keys": ["keypad2"], "command": "noop", "context": [{"key": "pieces_copilot_add"}]},
+    { "keys": ["keypad3"], "command": "noop", "context": [{"key": "pieces_copilot_add"}]},
+    { "keys": ["keypad4"], "command": "noop", "context": [{"key": "pieces_copilot_add"}]},
+    { "keys": ["keypad5"], "command": "noop", "context": [{"key": "pieces_copilot_add"}]},
+    { "keys": ["keypad6"], "command": "noop", "context": [{"key": "pieces_copilot_add"}]},
+    { "keys": ["keypad7"], "command": "noop", "context": [{"key": "pieces_copilot_add"}]},
+    { "keys": ["keypad8"], "command": "noop", "context": [{"key": "pieces_copilot_add"}]},
+    { "keys": ["keypad9"], "command": "noop", "context": [{"key": "pieces_copilot_add"}]},
+    { "keys": ["keypad_period"], "command": "noop", "context": [{"key": "pieces_copilot_add"}]},
+    { "keys": ["keypad_divide"], "command": "noop", "context": [{"key": "pieces_copilot_add"}]},
+    { "keys": ["keypad_multiply"], "command": "noop", "context": [{"key": "pieces_copilot_add"}]},
+    { "keys": ["keypad_minus"], "command": "noop", "context": [{"key": "pieces_copilot_add"}]},
+    { "keys": ["keypad_plus"], "command": "noop", "context": [{"key": "pieces_copilot_add"}]},
+    { "keys": ["clear"], "command": "noop", "context": [{"key": "pieces_copilot_add"}]},
 ]
