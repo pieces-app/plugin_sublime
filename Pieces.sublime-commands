@@ -91,4 +91,8 @@
 		"caption": "Pieces: Install PiecesOS",
 		"command":"pieces_install_pieces_os"
 	},
+	{
+		"caption" : "Pieces: Stop Copilot From Generating Message",
+		"command" : "pieces_stop_copilot"
+	}
 ]
