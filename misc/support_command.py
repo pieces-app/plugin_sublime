@@ -10,6 +10,11 @@ support_resources = [
 		"details":"Create an issue on our GitHub | https://github.com/pieces-app/plugin_sublime/issues"
 	},
 	{
+		"text": "Feedback Form",
+		"value": "https://getpieces.typeform.com/to/mCjBSIjF#page=sublime-plugin",
+		"details": "We would love to hear your thoughts and suggestions about our Sublime Text plugin. | https://getpieces.typeform.com/to/mCjBSIjF#page=obsidian-plugin"
+	},
+	{
 		"text":"Get Support",
 		"value":"https://docs.pieces.app/support",
 		"details":"Visit our website | https://docs.pieces.app/support"
@@ -27,7 +32,8 @@ class PiecesSupportCommand(sublime_plugin.ApplicationCommand):
 	def run(self,support):
 		webbrowser.open_new_tab(support)
 	def input(self,args):
-		return SupportInputHandler()
+		if not args.get("support",False):
+			return SupportInputHandler()
 
 
 class SupportInputHandler(sublime_plugin.ListInputHandler):
