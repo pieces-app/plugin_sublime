@@ -17,7 +17,7 @@ The Pieces Sublime plugin is your gateway to managing your saved code snippets i
 
 ## Configuration
 
-Before diving in, let's ensure everything is set up to your liking. You can customize the LLM model or the some other settings by navigating to:
+Before diving in, let's ensure everything is set up to your liking. You can customize the LLM model or some other settings by navigating to:
 `Preferences > Package Settings > Pieces > Settings`.
 
 You can also open the settings from the command palette `Pieces: Open Settings`.
