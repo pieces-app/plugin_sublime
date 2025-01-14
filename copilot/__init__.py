@@ -1,5 +1,5 @@
 from .ask_command import PiecesAskStreamCommand,PiecesEnterResponseCommand,PiecesInsertTextCommand,PiecesClearLineCommand
 from .explain import PiecesExplainCommand
-from .context_manager import PiecesContextManagerCommand
+from .context_manager import PiecesContextManagerCommand, PiecesAddContextCommand
 from .ask_about_command import PiecesAskStreamAboutCommand
 
