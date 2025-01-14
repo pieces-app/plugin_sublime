@@ -1,6 +1,7 @@
 from ._pieces_lib.pieces_os_client.wrapper.version_compatibility import UpdateEnum, VersionChecker
 from ._pieces_lib.pieces_os_client.wrapper.websockets.health_ws import HealthWS
 from .settings import PiecesSettings
+from .misc import PiecesOpenPiecesCommand
 import sublime
 from functools import wraps
 
@@ -71,9 +72,14 @@ def check_pieces_os(is_input_handler=False):
 				if r == sublime.DIALOG_NO:
 					return sublime.run_command("pieces_support",args={"support":"https://docs.pieces.app/support"})
 				elif r == sublime.DIALOG_YES:
-					return sublime.run_command("pieces_open_pieces")
+					return sublime.set_timeout_async(lambda:open_pieces_async(func=func,*args,**kwargs))
 				print("Make sure PiecesOS is running")
 
 		return wrapper
 	return decorator
+
+def open_pieces_async(func, *args, **kwargs):
+    running = PiecesOpenPiecesCommand.run_async()
+    if running:
+        func(*args, **kwargs)
 
