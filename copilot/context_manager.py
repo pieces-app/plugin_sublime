@@ -1,10 +1,10 @@
 import sublime_plugin
 import sublime
+from .ask_command import copilot
 from .._pieces_lib.pieces_os_client.wrapper.basic_identifier.asset import BasicAsset
 from ..settings import PiecesSettings
 from ..startup_utils import check_pieces_os
 from ..assets.list_assets import PiecesAssetIdInputHandler
-
 
 class PiecesContextManagerCommand(sublime_plugin.WindowCommand):
 	@check_pieces_os()
@@ -68,10 +68,21 @@ class PiecesContextInputHandler(sublime_plugin.ListInputHandler):
 	@staticmethod
 	def append_path(paths):
 		if isinstance(paths,list):
-			for path in paths:
-				PiecesSettings.api_client.copilot.context.paths.append(path)
+			PiecesSettings.api_client.copilot.context.paths.extend(paths)
 		elif isinstance(paths,str):
 			PiecesSettings.api_client.copilot.context.paths.append(paths)
+
+class PiecesAddContextCommand(sublime_plugin.ApplicationCommand):
+	@check_pieces_os()
+	def run(self,paths = None):
+		if paths == None:
+			paths = [sublime.active_window().active_view().file_name()]
+			if paths[0] == None: return # check the file already exists
+
+		if not copilot._gpt_view: # check if the Copilot is running
+			copilot.render_conversation(None) # Create a new conversation
+		PiecesSettings.api_client.copilot.context.paths.extend(paths)
+
 
 class PiecesShowInputHandler(sublime_plugin.ListInputHandler):
 	def name(self):
