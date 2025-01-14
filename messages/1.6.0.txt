@@ -1,0 +1,16 @@
+Version 1.6.0
+-------------
+
+
+New Features
+------------
+
+- New command "Pieces: Change LLM model" to change the Copilot LLM instead of configuring it from the settings
+
+
+Changed Commands name
+---------------------
+
+- Change "Pieces: Open Saved Material" -> "Pieces: Open Pieces Drive"
+- Change "Pieces: Import Sublime Snippet" -> "Pieces: Import Sublime Snippet to Pieces Drive"
+- Change "Pieces: Export Export Pieces Material" -> "Pieces: Export Saved Material from Pieces Drive" 
