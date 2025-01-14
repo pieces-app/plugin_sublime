@@ -30,6 +30,7 @@ You can manage dependencies two ways:
 
 ### Trigger a Release
 
+- Update the `_version.py` with the appropriate version 
 - `git tag <new version> main`
 - `git push origin tag <new version>`
 
