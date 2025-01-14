@@ -130,7 +130,6 @@ class PiecesEventListener(sublime_plugin.EventListener):
 
 class PiecesViewEventListener(sublime_plugin.ViewEventListener):
 	def on_close(self):
-		print("COPILOT")
 		copilot.gpt_view = None
 
 	@classmethod
