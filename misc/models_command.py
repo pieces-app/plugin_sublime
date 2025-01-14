@@ -38,7 +38,7 @@ class ModelsEnum(Enum):
 		self._unique_id = unique_id
 
 	@property
-	def name(self):
+	def readable_name(self):
 		return self._readable_name
 
 	@property
@@ -84,7 +84,7 @@ class ModelsInputHandler(sublime_plugin.ListInputHandler):
 
 	def list_items(self):
 		return [sublime.ListInputItem(
-				text=model.name,
+				text=model.readable_name,
 				value=model.unique_id,
 				details=model.description) for model in ModelsEnum 
 				if model.unique_id in PiecesSettings.api_client.available_models_names]

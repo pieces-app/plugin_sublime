@@ -98,7 +98,7 @@ class CopilotViewManager:
 	def update_status_bar(self):
 		if self._gpt_view:
 			model = ModelsEnum.get(PiecesSettings.api_client.model_name)
-			model = model.name if model else "UNKNOWN"
+			model = model.readable_name if model else "UNKNOWN"
 			self._gpt_view.set_status("MODEL",f"LLM Model: {model}")
 
 	@property
