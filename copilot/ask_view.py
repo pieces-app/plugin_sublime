@@ -177,12 +177,7 @@ class CopilotViewManager:
 		elif href == "github":
 			sublime.run_command("pieces_support",args={"support": "https://github.com/pieces-app/plugin_sublime/issues"})
 		elif href == "llm":
-			sublime.active_window().run_command("edit_settings",
-            {
-                "base_file": f"{sublime.packages_path()}/Pieces/Pieces.sublime-settings",
-                "default": "\n{\n\t$0\n}\n"
-            }
-        )
+			sublime.active_window().run_command("pieces_change_model")
 
 	def add_context_phantom(self,region):
 		self.context_phantom_region = region
