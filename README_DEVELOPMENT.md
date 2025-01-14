@@ -30,6 +30,8 @@ You can manage dependencies two ways:
 
 ### Trigger a Release
 
+- OPTIONAL: Create a message for the users (release notes) in the `messages/<new version>`
+  and then configure it in the `messages.json` file
 - Update the `_version.py` with the appropriate version 
 - `git tag <new version> main`
 - `git push origin tag <new version>`
