@@ -55,6 +55,7 @@ class PiecesEnterResponseCommand(sublime_plugin.TextCommand):
 		copilot.ask()
 
 class PiecesDeleteConversationCommand(sublime_plugin.WindowCommand):
+	@check_pieces_os()
 	def run(self, pieces_conversation_id):
 		conv = BasicChat(pieces_conversation_id)
 		name = conv.name
@@ -64,6 +65,7 @@ class PiecesDeleteConversationCommand(sublime_plugin.WindowCommand):
 		# if a user want to delete another conversation
 		lambda:self.window.run_command("pieces_delete_conversation"),100) # Wait for some ms
 
+	@check_pieces_os(True)
 	def input(self, args: dict):
 		return PiecesConversationIdInputHandler()
 
@@ -106,6 +108,7 @@ class PiecesRemoveRegionCommand(sublime_plugin.TextCommand):
 		self.view.replace(edit,sublime.Region(a,b), "")
 
 class PiecesStopCopilotCommand(sublime_plugin.TextCommand):
+	@check_pieces_os()
 	def run(self,edit: sublime.Edit):
 		PiecesSettings.api_client.copilot.ask_stream_ws.send_message(
 			QGPTStreamInput(
