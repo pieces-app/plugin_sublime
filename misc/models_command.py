@@ -1,7 +1,8 @@
 import sublime_plugin
 import sublime
-from ..settings import PiecesSettings
 from enum import Enum
+from ..settings import PiecesSettings
+from ..startup_utils import check_pieces_os
 
 class ModelsEnum(Enum):
 	GPT_4o_MINI = ("GPT-4o Mini", "A more compact version of GPT-4o with a 128k-token context window, balancing capacity and efficiency.", "GPT-4o Mini Chat Model")
@@ -58,12 +59,14 @@ class ModelsEnum(Enum):
 
 
 class PiecesChangeModelCommand(sublime_plugin.ApplicationCommand):
+	@check_pieces_os()
 	def run(self, model_id):
 		settings = PiecesSettings.get_settings()
 		settings["model"] = model_id
 		sublime.save_settings("Pieces.sublime-settings")
 		PiecesSettings.on_settings_change()
 
+	@check_pieces_os(True)
 	def input(self,args):
 		return ModelsInputHandler()
 
