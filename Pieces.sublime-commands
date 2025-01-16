@@ -93,7 +93,7 @@
 	},
 	{
 
-		"caption":"Pieces: Change LLM model",
+		"caption":"Pieces: Change LLM",
 		"command":"pieces_change_model"
 	},
 	{
