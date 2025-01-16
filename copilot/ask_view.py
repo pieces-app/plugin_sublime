@@ -5,6 +5,7 @@ from .._pieces_lib.pieces_os_client import (QGPTStreamOutput,QGPTStreamEnum)
 from .._pieces_lib.pieces_os_client.wrapper.basic_identifier.chat import BasicChat
 from ..settings import PiecesSettings
 from ..progress_bar import ProgressBar
+from ..ask.diff import _load_popup_css
 import re
 from typing import List
 
@@ -27,6 +28,16 @@ Something went wrong <br><br>
 	<a style="{PHANTOM_A_TAG_STYLE}" href = "create">Create a New Conversation</a>
 	<a style="{PHANTOM_A_TAG_STYLE}" href = "github">Create a GitHub Issue</a>
 	<a style="{PHANTOM_A_TAG_STYLE}" href = "llm">Change current LLM</a>
+</div>
+"""
+
+ENABLE_LTM = f"""
+In order to get the most out of Long-Term Memory (LTM) Context, you need to enable the Long-Term Memory Engine, which provides time-based contextua awareness for your Copilot.
+<br>
+<div style="padding-right:2px;padding-left:2px;padding-buttom:2px">
+	<a style="{PHANTOM_A_TAG_STYLE}" href = "enable">Activiate Long-Term Engine</a>
+	<a style="{PHANTOM_A_TAG_STYLE}" href = "learn">Learn about LTM context</a>
+	<a style="{PHANTOM_A_TAG_STYLE}" href = "turn_off">Turn LTM Context Off</a>
 </div>
 """
 
@@ -168,6 +179,22 @@ class CopilotViewManager:
 		if message.status != "IN-PROGRESS":
 			self.progress_bar.stop()
 
+	def show_notification(self, content,on_nav_callback):
+		"""
+		    All notifications will be in the first line
+		"""
+		def on_nav(href):
+			if href == "close":
+				self.gpt_view.run_command("pieces_clear_line", {"line_point":0})
+				self.gpt_view.erase_phantoms("notification_phantom")
+			else:
+				on_nav_callback(href)
+		content = f"<body><style>{_load_popup_css()}</style><div class='toolbar'><a href=dismiss style='color:red'>❌</a><br>{content}</body>"
+		self.gpt_view.erase_phantoms("notification_phantom") # remove any notification
+		self.gpt_view.run_command("pieces_insert_text",{"text":"\n","point":0})
+		self.gpt_view.add_phantom("notification_phantom",Region(0,0),content,sublime.LAYOUT_BLOCK,on_navigate=on_nav)
+		sublime.set_timeout(lambda: on_nav(href="close"), 3000) # wait 3 sec to dismiss the notification
+
 	def show_failed(self):
 		self.gpt_view.add_regions(
 			"pieces", 
@@ -227,7 +254,19 @@ class CopilotViewManager:
 			self.gpt_view.run_command("append",{"characters":"\n"})
 
 
+	def on_enable_ltm(self,href):
+		if href == "enable":
+			sublime.run_command("pieces_enable_ltm")
+		elif href == "turn_off":
+			sublime.active_window().run_command("pieces_disable_ltm")
+		elif href == "learn":
+			sublime.run_command("support",args={"support": "https://docs.pieces.app/resources/live-context"})
+
 	def ask(self,pipeline=None):
+		if PiecesSettings.api_client.copilot.context.ltm.is_chat_ltm_enabled and \
+		not PiecesSettings.api_client.copilot.context.ltm.is_enabled:
+			self.show_notification(ENABLE_LTM,self.on_enable_ltm)
+
 		self.prev_query = self.gpt_view.substr(Region(self.end_response,self.gpt_view.size()))
 		if not self.prev_query.strip():
 			return
