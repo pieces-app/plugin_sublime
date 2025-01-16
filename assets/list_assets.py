@@ -95,7 +95,7 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 		for sheet in sheets:
 			if sheet.id() in cls.sheets_md and \
 				sublime.ok_cancel_dialog(
-					"This Snippet is deleted, Do you want to close the sheet?",
+					"This snippet no longer exists. Would you like to close this sheet?",
 					title=f"Snippet {asset.name}"):
 				sheet.close()
 
