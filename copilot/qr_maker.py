@@ -27,7 +27,7 @@ class PiecesShowQrCodesCommand(sublime_plugin.TextCommand):
 
 	def show_qr(self):
 		copilot.can_type = False  # Prevent typing
-		copilot.cache_response = True
+		copilot.cache_response = True # cache the response don't add anything to the view
 		self.view.settings().set("word_wrap", False) # Wrap text to avoid miss calculate
 		lines = self.view.lines(sublime.Region(0, self.view.size()))
 		lines_count = len(lines)
@@ -114,6 +114,7 @@ class PiecesRemoveQrCodes(sublime_plugin.TextCommand):
 		lock = False
 		removes = json.loads(removes)
 		copilot.can_type = True
+		copilot.cache_response = False
 		self.view.erase_phantoms("qr_top")
 		self.view.erase_phantoms("qr_bottom")
 

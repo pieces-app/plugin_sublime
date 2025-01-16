@@ -96,12 +96,12 @@ class PiecesInsertTextCommand(sublime_plugin.TextCommand):
 		self.view.window().focus_view(self.view)
 		if not point:
 			point = self.view.sel()[0].begin()
-		self.view.insert(edit,point,text)
+		self.view.insert(edit,int(point),text)
 
 
 class PiecesClearLineCommand(sublime_plugin.TextCommand):
-	def run(self, edit: sublime.Edit, line_point: int):
-		self.view.replace(edit,self.view.line(line_point), "")
+	def run(self, edit: sublime.Edit, line_point:int):
+		self.view.replace(edit,self.view.line(int(line_point)), "")
 
 class PiecesRemoveRegionCommand(sublime_plugin.TextCommand):
 	def run(self, edit: sublime.Edit, a: int,b:int):

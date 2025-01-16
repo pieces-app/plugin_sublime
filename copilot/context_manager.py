@@ -49,7 +49,7 @@ class PiecesContextInputHandler(sublime_plugin.ListInputHandler):
 			("Add Folder","folder"),
 			("Add File","file"),
 			("Add a Snippet","asset"),
-			("Turn on Long Term Memory", "ltm_on") if ltm else ("Turn off Long Term Memory","ltm_off"),
+			("Turn off Long Term Memory", "ltm_off") if ltm else ("Turn on Long Term Memory","ltm_on"),
 			*([("Show context", "show")] if relevance_exists else []), # Show context if there is
 			*([("Reset Context","reset")] if relevance_exists else [])
 		]

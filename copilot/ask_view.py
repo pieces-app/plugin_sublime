@@ -10,7 +10,7 @@ import re
 from typing import List
 
 
-PHANTOM_A_TAG_STYLE = "padding: 4px;background-color: var(--accent); border-radius: 6px;color: var(--foreground);text-decoration: None;text-align: center"
+PHANTOM_A_TAG_STYLE = "margin-bottom:4px; padding: 4px;background-color: var(--accent); border-radius: 6px;color: var(--foreground);text-decoration: None;text-align: center"
 
 PHANTOM_CONTENT = f"""
 <div style="padding-right:2px">
@@ -145,6 +145,10 @@ class CopilotViewManager:
 	def end_response(self,e):
 		self.gpt_view.settings().set("end_response",e)
 
+	def append_cache(self):
+		self.gpt_view.run_command("append",{"characters":self._cached_response})
+		self._cached_response = ""
+
 	def on_message_callback(self,message: QGPTStreamOutput):
 		if message.question:
 			answers = message.question.answers.iterable
@@ -155,8 +159,7 @@ class CopilotViewManager:
 					continue
 
 				if self._cached_response:
-					self.gpt_view.run_command("append",{"characters":self._cached_response})
-					self._cached_response = ""
+					self.append_cache()
 
 				self.gpt_view.run_command("append",{"characters":answer.text})
 		
@@ -184,16 +187,13 @@ class CopilotViewManager:
 		    All notifications will be in the first line
 		"""
 		def on_nav(href):
-			if href == "close":
-				self.gpt_view.run_command("pieces_clear_line", {"line_point":0})
-				self.gpt_view.erase_phantoms("notification_phantom")
-			else:
-				on_nav_callback(href)
-		content = f"<body><style>{_load_popup_css()}</style><div class='toolbar'><a href=dismiss style='color:red'>❌</a><br>{content}</body>"
+			self.gpt_view.erase_phantoms("notification_phantom")
+			self.gpt_view.run_command("pieces_remove_region",{"a":0,"b":1})
+			on_nav_callback(href)
+		content = f"<body><style>{_load_popup_css()}</style><div style='background-color:var(--popup-background);padding:2px'><div class='toolbar' style='right:0px'><a href=close>❌</a></div><br>{content}</div></body>"
 		self.gpt_view.erase_phantoms("notification_phantom") # remove any notification
-		self.gpt_view.run_command("pieces_insert_text",{"text":"\n","point":0})
+		self.gpt_view.run_command("pieces_insert_text",{"text":"\n","point":"0"})
 		self.gpt_view.add_phantom("notification_phantom",Region(0,0),content,sublime.LAYOUT_BLOCK,on_navigate=on_nav)
-		sublime.set_timeout(lambda: on_nav(href="close"), 3000) # wait 3 sec to dismiss the notification
 
 	def show_failed(self):
 		self.gpt_view.add_regions(
@@ -204,7 +204,7 @@ class CopilotViewManager:
 			flags=sublime.HIDDEN
 		)
 		self.failed_phantom.update(
-			[sublime.Phantom(region,FAILED_PHANTOM_CONTENT,sublime.LAYOUT_BLOCK,self.on_nav_failed) for region in self.failed_regions] # TODO: Add retry
+			[sublime.Phantom(region,FAILED_PHANTOM_CONTENT,sublime.LAYOUT_BLOCK,self.on_nav_failed) for region in self.failed_regions]
 		)
 
 	def on_nav_failed(self, href):
@@ -266,6 +266,7 @@ class CopilotViewManager:
 		if PiecesSettings.api_client.copilot.context.ltm.is_chat_ltm_enabled and \
 		not PiecesSettings.api_client.copilot.context.ltm.is_enabled:
 			self.show_notification(ENABLE_LTM,self.on_enable_ltm)
+			return
 
 		self.prev_query = self.gpt_view.substr(Region(self.end_response,self.gpt_view.size()))
 		if not self.prev_query.strip():
