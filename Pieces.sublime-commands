@@ -96,7 +96,15 @@
 		"command" : "pieces_stop_copilot"
 	},
 	{
-		"caption": "Pieces: Delete Copilot Conversation",
+		"caption" : "Pieces: Delete Copilot Conversation",
 		"command" : "pieces_delete_conversation"
-	}
+	},
+	{
+		"caption" : "Pieces: Enable Long-Term Memory",
+		"command" : "pieces_enable_ltm"
+	},
+	{
+		"caption" : "Pieces: Pause Long-Term Memory",
+		"command" : "pieces_disable_ltm"
+	},
 ]

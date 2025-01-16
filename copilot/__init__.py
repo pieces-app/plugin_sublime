@@ -10,4 +10,5 @@ from .explain import PiecesExplainCommand
 from .context_manager import PiecesContextManagerCommand
 from .ask_about_command import PiecesAskStreamAboutCommand
 from .qr_maker import PiecesShowQrCodesCommand, PiecesRemoveQrCodes
+from .ltm import PiecesEnableLTMCommand, PiecesDisableLTMCommand
 
