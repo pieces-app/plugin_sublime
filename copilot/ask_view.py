@@ -32,6 +32,9 @@ Something went wrong <br><br>
 
 class CopilotViewManager:
 	def __init__(self):
+		self.cache_response = False
+		self._cached_response = ""
+
 		self._gpt_view = None
 		self._view_name = None
 		self._secondary_view = None
@@ -39,41 +42,42 @@ class CopilotViewManager:
 
 	@property
 	def gpt_view(self) -> View:
-		if not self._gpt_view:
-			# File config and creation
-			self._gpt_view = sublime.active_window().new_file(ADD_TO_SELECTION,syntax="Packages/Markdown/Markdown.sublime-syntax")	
-			self.can_type = True
-			self._gpt_view.settings().set("PIECES_GPT_VIEW",True) # Label the view as gpt view
-			self._gpt_view.settings().set("line_numbers", False) # Remove lines
-			self._gpt_view.settings().set("word_wrap",True)
-			self._gpt_view.set_scratch(True)
+		if self._gpt_view:
+			return self._gpt_view
+		# File config and creation
+		self._gpt_view = sublime.active_window().new_file(ADD_TO_SELECTION,syntax="Packages/Markdown/Markdown.sublime-syntax")	
+		self.can_type = True
+		self._gpt_view.settings().set("PIECES_GPT_VIEW",True) # Label the view as gpt view
+		self._gpt_view.settings().set("line_numbers", False) # Remove lines
+		self._gpt_view.settings().set("word_wrap",True)
+		self._gpt_view.set_scratch(True)
 
-			# Phantom intilization 
-			self.last_edit_phantom = 0
-			self.phantom_set = sublime.PhantomSet(self._gpt_view, "Pieces_Phantoms")
-			self.phantom_details_dict = {} # id: {"code":code,"region":region}
-
-
-
-			# Failed regions
-			self.failed_regions = []
-			self.failed_phantom = sublime.PhantomSet(self._gpt_view, "Pieces_Failed_Phantoms")
+		# Phantom intilization 
+		self.last_edit_phantom = 0
+		self.phantom_set = sublime.PhantomSet(self._gpt_view, "Pieces_Phantoms")
+		self.phantom_details_dict = {} # id: {"code":code,"region":region}
 
 
-			# Context Phantom
-			self.context_phantom = sublime.PhantomSet(self._gpt_view, "Pieces_context")
 
-			# Others
-			self._relevant = {}
-			self.copilot_regions:List[Region] = []
-			self.update_status_bar()
-			# self.render_copilot_image_phantom(self._gpt_view)
+		# Failed regions
+		self.failed_regions = []
+		self.failed_phantom = sublime.PhantomSet(self._gpt_view, "Pieces_Failed_Phantoms")
 
-			self.show_cursor
 
-			# Update the Copilot message callback
-			PiecesSettings.api_client.copilot.ask_stream_ws.on_message_callback = self.on_message_callback
-			PiecesSettings.api_client.copilot._return_on_message = lambda:None # Modify the copilot becaue we will use the on_message_callback
+		# Context Phantom
+		self.context_phantom = sublime.PhantomSet(self._gpt_view, "Pieces_context")
+
+		# Others
+		self._relevant = {}
+		self.copilot_regions:List[Region] = []
+		self.update_status_bar()
+		# self.render_copilot_image_phantom(self._gpt_view)
+
+		self.show_cursor
+
+		# Update the Copilot message callback
+		PiecesSettings.api_client.copilot.ask_stream_ws.on_message_callback = self.on_message_callback
+		PiecesSettings.api_client.copilot._return_on_message = lambda:None # Modify the copilot becaue we will use the on_message_callback
 		return self._gpt_view
 		
 	@property
@@ -135,6 +139,14 @@ class CopilotViewManager:
 			answers = message.question.answers.iterable
 
 			for answer in answers:
+				if self.cache_response:
+					self._cached_response += answer.text
+					continue
+
+				if self._cached_response:
+					self.gpt_view.run_command("append",{"characters":self._cached_response})
+					self._cached_response = ""
+
 				self.gpt_view.run_command("append",{"characters":answer.text})
 		
 		if message.status == QGPTStreamEnum.COMPLETED:

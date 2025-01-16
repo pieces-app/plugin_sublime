@@ -132,6 +132,10 @@ class PiecesViewEventListener(sublime_plugin.ViewEventListener):
 	def on_close(self):
 		copilot.gpt_view = None
 
+
+	def on_activated_async(self):
+		pass
+
 	@classmethod
 	def is_applicable(cls, settings: sublime.Settings) -> bool:
 		return settings.get("PIECES_GPT_VIEW",False)
