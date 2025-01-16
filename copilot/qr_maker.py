@@ -8,14 +8,16 @@ from ..settings import PiecesSettings
 
 lock = False
 
-class PiecesShowQrCodesCommand(sublime_plugin.TextCommand):
-	def run(self, edit: sublime.Edit):
+class PiecesShowQRCodesCommand(sublime_plugin.TextCommand):
+	def name(self):
+		return "pieces_show_qr_codes"
+	def run(self, edit: sublime.Edit, force = False):
 		self.api_copilot = PiecesSettings.api_client.copilot
 		self.ltm = self.api_copilot.context.ltm
 
 		global lock
-		if lock or not self.ltm.is_chat_ltm_enabled:
-			return
+		if (lock or not self.ltm.is_chat_ltm_enabled):
+			if not force: return
 
 		lock = True # lock no more operations until the QRCode is removed
 		self.removes:List[List[int]] = []  # Regions to remove after the QR is captured
@@ -26,6 +28,9 @@ class PiecesShowQrCodesCommand(sublime_plugin.TextCommand):
 		return f"<img src='{self.ltm.get_qrcode()}' />"
 
 	def show_qr(self):
+		window = self.view.window()
+		if window: window.run_command("hide_panel")
+
 		copilot.can_type = False  # Prevent typing
 		copilot.cache_response = True # cache the response don't add anything to the view
 		self.view.settings().set("word_wrap", False) # Wrap text to avoid miss calculate
@@ -61,6 +66,7 @@ class PiecesShowQrCodesCommand(sublime_plugin.TextCommand):
 		sublime.set_timeout_async(self.loop_viewport)
 		sublime.set_timeout(self.remove_qr, 4000)  # Wait max 4 sec to remove the QR Code
 		sublime.set_timeout_async(self.capture, 4000) # Capture the codes wait for 4 sec 
+
 
 	def capture(self):
 		# @mack-at-pieces do I need to do any checks here to make sure it selected to correct window?

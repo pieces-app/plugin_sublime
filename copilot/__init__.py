@@ -9,6 +9,6 @@ from .ask_command import (
 from .explain import PiecesExplainCommand
 from .context_manager import PiecesContextManagerCommand
 from .ask_about_command import PiecesAskStreamAboutCommand
-from .qr_maker import PiecesShowQrCodesCommand, PiecesRemoveQrCodes
+from .qr_maker import PiecesShowQRCodesCommand, PiecesRemoveQrCodes
 from .ltm import PiecesEnableLTMCommand, PiecesDisableLTMCommand
 

@@ -1,5 +1,5 @@
 import sublime
-from sublime import ADD_TO_SELECTION, Region, View
+from sublime import Region, View
 from .images.context_image import ContextImage
 from .._pieces_lib.pieces_os_client import (QGPTStreamOutput,QGPTStreamEnum)
 from .._pieces_lib.pieces_os_client.wrapper.basic_identifier.chat import BasicChat
@@ -10,7 +10,7 @@ import re
 from typing import List
 
 
-PHANTOM_A_TAG_STYLE = "margin-bottom:4px; padding: 4px;background-color: var(--accent); border-radius: 6px;color: var(--foreground);text-decoration: None;text-align: center"
+PHANTOM_A_TAG_STYLE = "margin-bottom:40px; padding: 4px;background-color: var(--accent); border-radius: 6px;color: var(--foreground);text-decoration: None;text-align: center"
 
 PHANTOM_CONTENT = f"""
 <div style="padding-right:2px">
@@ -56,7 +56,7 @@ class CopilotViewManager:
 		if self._gpt_view:
 			return self._gpt_view
 		# File config and creation
-		self._gpt_view = sublime.active_window().new_file(ADD_TO_SELECTION,syntax="Packages/Markdown/Markdown.sublime-syntax")	
+		self._gpt_view = sublime.active_window().new_file(syntax="Packages/Markdown/Markdown.sublime-syntax")	
 		self.can_type = True
 		self._gpt_view.settings().set("PIECES_GPT_VIEW",True) # Label the view as gpt view
 		self._gpt_view.settings().set("line_numbers", False) # Remove lines
@@ -260,7 +260,7 @@ class CopilotViewManager:
 		elif href == "turn_off":
 			sublime.active_window().run_command("pieces_disable_ltm")
 		elif href == "learn":
-			sublime.run_command("support",args={"support": "https://docs.pieces.app/resources/live-context"})
+			sublime.run_command("pieces_support",args={"support": "https://docs.pieces.app/resources/live-context"})
 
 	def ask(self,pipeline=None):
 		if PiecesSettings.api_client.copilot.context.ltm.is_chat_ltm_enabled and \

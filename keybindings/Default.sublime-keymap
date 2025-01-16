@@ -27,7 +27,7 @@
         "keys": ["primary+c"],
         "command": "pieces_stop_copilot",
         "context": [
-            {"key": "PIECES_GPT_VIEW"}
+            {"key": "pieces_stop_copilot"}
         ]
     },
     // KEYS

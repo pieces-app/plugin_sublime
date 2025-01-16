@@ -1,5 +1,6 @@
 import sublime_plugin
 import sublime
+from .ask_command import copilot
 from .._pieces_lib.pieces_os_client.wrapper.basic_identifier.asset import BasicAsset
 from ..settings import PiecesSettings
 from ..startup_utils import check_pieces_os
@@ -11,6 +12,7 @@ class PiecesContextManagerCommand(sublime_plugin.WindowCommand):
 	def run(self,context:str,pieces_asset_id=None,context_remove=None):
 		if context == "ltm_on":
 			PiecesSettings.api_client.copilot.context.ltm.chat_enable_ltm()
+			copilot.gpt_view.run_command('pieces_show_qr_codes',args={"force":True})
 		elif context == "ltm_off":
 			PiecesSettings.api_client.copilot.context.ltm.chat_disable_ltm()
 

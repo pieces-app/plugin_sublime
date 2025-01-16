@@ -65,7 +65,8 @@ class PiecesEventListener(sublime_plugin.EventListener):
 	def on_query_context(self,view,key, operator, operand, match_all):
 		if key == "save_pieces_asset":
 			return view.settings().get("pieces_sheet_id")
-	
+		elif key == "pieces_stop_copilot":
+			return view.settings().get("PIECES_GPT_VIEW") and not copilot.can_type
 		elif key == "PIECES_GPT_VIEW":
 			return view.settings().get("PIECES_GPT_VIEW")
 		elif key == "pieces_copilot_add" or key == "pieces_copilot_remove":
@@ -133,7 +134,10 @@ class PiecesViewEventListener(sublime_plugin.ViewEventListener):
 		copilot.gpt_view = None
 
 
-	def on_activated_async(self):
+	def on_load_async(self):
+		self.view.run_command("pieces_show_qr_codes")
+
+	def on_reload_async(self):
 		self.view.run_command("pieces_show_qr_codes")
 
 	@classmethod
