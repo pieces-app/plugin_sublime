@@ -4,20 +4,26 @@ import sublime_plugin
 from .ask_command import copilot
 import json
 import time
-
-QR_CODE_BASE_64 = """data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyBAMAAADsEZWCAAAAKlBMVEUAAAD///+pqan7+/v+/v4QEBDu7u5WVlazs7NOTk5xcXEtLS3g4OCOjo5qPpGPAAAA0klEQVQ4y2NgGIZghZKSxgIgHaQEAV1wmUZBQcEGIB0iCAEScBlFY2NDBSAdJmwMBkIIGUNBiIwIWIswhTJI9pigyADdJgJyGzNIhyOyDMg/N8vLy4uAftERQZYBgYlA5QZAmkkYXaYQaFcqdhlDQUcqypi44JIBug27zJS0tLTToaGhHBgyrEDRPUDZZEF0GRAIE0QPUbiMiIuLIw4Z3HrIkxFBSSHIMo4oqQpJRkR2enl5NTYZYUmsqRgkI04PGWBKxC4DyiXYZZiAKbGbYZgCALuBN/D7PkRzAAAAAElFTkSuQmCC"""
+from ..settings import PiecesSettings
 
 lock = False
+
 class PiecesShowQrCodesCommand(sublime_plugin.TextCommand):
 	def run(self, edit: sublime.Edit):
+		self.api_copilot = PiecesSettings.api_client.copilot
+		self.ltm = self.api_copilot.context.ltm
+
 		global lock
+		if lock or not self.ltm.is_chat_ltm_enabled:
+			return
+
 		lock = True # lock no more operations until the QRCode is removed
 		self.removes:List[List[int]] = []  # Regions to remove after the QR is captured
 		self.edit = edit
 		self.show_qr()
 
 	def get_qr(self) -> str:
-		return f"<img src='{QR_CODE_BASE_64}' />"
+		return f"<img src='{self.ltm.get_qrcode()}' />"
 
 	def show_qr(self):
 		copilot.can_type = False  # Prevent typing
@@ -52,8 +58,14 @@ class PiecesShowQrCodesCommand(sublime_plugin.TextCommand):
 		self.view.add_phantom("qr_top", sublime.Region(0, 0), self.get_qr(), layout=sublime.PhantomLayout.INLINE)
 		self.view.add_phantom("qr_bottom", sublime.Region(bottom_right_position, bottom_right_position), self.get_qr(), layout=sublime.PhantomLayout.INLINE)
 
-		sublime.set_timeout_async(self.loop_viewport, 4)
+		sublime.set_timeout_async(self.loop_viewport)
 		sublime.set_timeout(self.remove_qr, 4000)  # Wait max 4 sec to remove the QR Code
+		sublime.set_timeout_async(self.capture, 4000) # Capture the codes wait for 4 sec 
+
+	def capture(self):
+		# @mack-at-pieces do I need to do any checks here to make sure it selected to correct window?
+		self.ltm.capture()
+		self.remove_qr()
 
 	def loop_viewport(self):
 		# Avoid user from scrolling until we capture the QRCodes
@@ -96,6 +108,8 @@ class PiecesShowQrCodesCommand(sublime_plugin.TextCommand):
 class PiecesRemoveQrCodes(sublime_plugin.TextCommand):
 	def run(self, edit: sublime.Edit, removes):
 		global lock
+		if not lock:
+			return
 		self.view.settings().set("word_wrap", True) # Return it to false again NOT AUTO because the copilot is False by default
 		lock = False
 		removes = json.loads(removes)

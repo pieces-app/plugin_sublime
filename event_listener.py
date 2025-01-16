@@ -134,7 +134,7 @@ class PiecesViewEventListener(sublime_plugin.ViewEventListener):
 
 
 	def on_activated_async(self):
-		pass
+		self.view.run_command("pieces_show_qr_codes")
 
 	@classmethod
 	def is_applicable(cls, settings: sublime.Settings) -> bool:
