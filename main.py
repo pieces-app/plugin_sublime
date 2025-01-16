@@ -7,7 +7,10 @@ from ._pieces_lib.pieces_os_client.wrapper.websockets import (
 	BaseWebsocket,
 	AuthWS,HealthWS,
 	ConversationWS,
-	AssetsIdentifiersWS)
+	AssetsIdentifiersWS,
+	AnchorsIdentifiersWS,
+	LTMVisionWS,
+	RangesIdentifiersWS)
 
 
 from .startup_utils import check_compatiblity
@@ -34,6 +37,9 @@ def startup():
 	ConversationWS(PiecesSettings.api_client)
 	AssetsIdentifiersWS(PiecesSettings.api_client)
 	AuthWS(PiecesSettings.api_client,PiecesSettings.api_client.user.on_user_callback)
+	AnchorsIdentifiersWS(PiecesSettings.api_client)
+	LTMVisionWS(PiecesSettings.api_client,lambda x : None)
+	RangesIdentifiersWS(PiecesSettings.api_client)
 	BaseWebsocket.start_all()
 
 
