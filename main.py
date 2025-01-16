@@ -32,7 +32,9 @@ def startup():
 	print(f"PiecesOS version: {PiecesSettings.api_client.version}\nPlugin version: {__version__}")
 	PiecesSettings.models_init(PiecesSettings.get_settings().get('model')) # Intilize the models
 	ConversationWS(PiecesSettings.api_client)
-	AssetsIdentifiersWS(PiecesSettings.api_client)
+	AssetsIdentifiersWS(PiecesSettings.api_client,
+		on_asset_update=PiecesListAssetsCommand.on_asset_update,
+		on_asset_remove=PiecesListAssetsCommand.on_asset_delete)
 	AuthWS(PiecesSettings.api_client,PiecesSettings.api_client.user.on_user_callback)
 	BaseWebsocket.start_all()
 

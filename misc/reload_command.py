@@ -13,6 +13,7 @@ class PiecesReloadCommand(sublime_plugin.ApplicationCommand):
 	def reload_async(self):
 		if PiecesSettings.api_client.is_pieces_running():
 			try:
+				PiecesSettings.api_client._startup() # Running the startup command
 				PiecesSettings.on_settings_change()
 				BaseWebsocket.reconnect_all()
 				sublime.status_message(f"Reloading [completed]")

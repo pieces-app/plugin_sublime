@@ -123,7 +123,9 @@ class PiecesAskQuestionCommand(sublime_plugin.TextCommand):
 		match = re.search(pattern, response_code, re.DOTALL)
 		if match:
 			self.code = match.group(1)
-			show_diff_popup(self.view, self.selected_text.splitlines(), self.code.splitlines(),on_nav=self.on_nav)
+			self.selected_text = self.selected_text.replace("\t","    ")
+			show_diff_popup(self.view, self.selected_text.splitlines(), self.code.splitlines(),
+				on_nav=self.on_nav,region=sublime.Region(self.selection.a,self.selection.b))
 			
 			self.is_done = True
 		else:
@@ -136,9 +138,9 @@ class PiecesAskQuestionCommand(sublime_plugin.TextCommand):
 			# Replace the selected text with the code
 			self.view.run_command("pieces_replace_code_selection", {"code": self.code, "selection": [self.selection.a, self.selection.b]})
 			# Remove the popup
-			self.view.hide_popup()
+			self.view.erase_phantoms("pieces_ask")
 		elif href == "dismiss":
-			self.view.hide_popup()
+			self.view.erase_phantoms("pieces_ask")
 
 
 

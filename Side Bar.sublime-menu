@@ -1,0 +1,9 @@
+[
+    {
+        "caption": "Pieces: Add to Copilot Context",
+        "mnemonic": "A",
+        "id": "Pieces",
+        "command":"pieces_add_context",
+        "args": { "paths": [] }
+    }
+]

@@ -30,7 +30,7 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 
 
 	@classmethod
-	def update_sheet(cls,sheet,asset_id,buttons_kwargs={}):
+	def update_sheet(cls,sheet: sublime.Sheet,asset_id: str,buttons_kwargs={}):
 		asset = BasicAsset(asset_id)
 		try:
 			markdown_text = asset.markdown
@@ -75,6 +75,29 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 	@check_pieces_os(True)
 	def input(self,args):
 		return PiecesAssetIdInputHandler()
+
+
+	@staticmethod
+	def get_all_sheets() -> List[sublime.HtmlSheet]:
+		return [view for window in sublime.windows() 
+				for view in window.sheets() if isinstance(view,sublime.HtmlSheet)]
+
+	@classmethod
+	def on_asset_update(cls,asset: Asset):
+		sheets = cls.get_all_sheets()
+		for sheet in sheets:
+			if sheet.id() in cls.sheets_md:
+				cls.update_sheet(sublime.Sheet(sheet.id()),asset.id)
+
+	@classmethod
+	def on_asset_delete(cls,asset: Asset):
+		sheets = cls.get_all_sheets()
+		for sheet in sheets:
+			if sheet.id() in cls.sheets_md and \
+				sublime.ok_cancel_dialog(
+					"This snippet no longer exists. Would you like to close this sheet?",
+					title=f"Snippet {asset.name}"):
+				sheet.close()
 
 
 class PiecesAssetIdInputHandler(sublime_plugin.ListInputHandler):

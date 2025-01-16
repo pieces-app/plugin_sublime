@@ -133,7 +133,7 @@ class HtmlDiffer:
 		return diff_map
 
 
-def show_diff_popup(view, old_lines, new_lines, on_nav,**kwargs):
+def show_diff_popup(view, old_lines, new_lines, on_nav,region):
 	"""Show the diff popup.
 
 	Arguments:
@@ -145,12 +145,10 @@ def show_diff_popup(view, old_lines, new_lines, on_nav,**kwargs):
 			The list of lines representing the new version.
 		on_nav (callback):
 			the callback that will be runned when the buttons is clicked
-		kwargs (dict):
-			Additional arguments for customization.
+		region (sublime.Region):
+			Region: where the pop up will appear
 	"""
-	point = kwargs.get('point', view.sel()[0].end() if view.sel() else None)
-	if point is None:
-		return
+	point = view.sel()[0].end()
 
 	line = view.rowcol(point)[0] + 1
 
@@ -158,7 +156,6 @@ def show_diff_popup(view, old_lines, new_lines, on_nav,**kwargs):
 	location = _visible_text_point(view, line - 1, 0)
 	code_wrap = view.settings().get('word_wrap', 'auto') == 'auto' and view.match_selector(location, 'source')
 
-	
 	differ = HtmlDiffer(view,old_lines, new_lines).generate_diff(code_wrap=code_wrap)
 	
 	content = (
@@ -172,20 +169,19 @@ def show_diff_popup(view, old_lines, new_lines, on_nav,**kwargs):
 		if line_length > 0:
 			popup_width = (line_length + 5) * view.em_width()
 
-	popup_kwargs = {
-		'view': view,
-		'content': content,
-		'md': False,
-		'css': _load_popup_css(),
-		"location": location,
-		"max_width": popup_width,
-		"flags":kwargs.get('flags', 0),
-		"on_navigate":on_nav
-	}
-	
-	if view.is_popup_visible():
-		return mdpopups.update_popup(**popup_kwargs)
-	mdpopups.show_popup(**popup_kwargs)
+	mdpopups.add_phantom(
+		view=view,
+		region=region,
+		layout=sublime.LAYOUT_BELOW,
+		content=content,
+		md=False,
+		css=_load_popup_css(),
+		location=location,
+		max_width=popup_width,
+		on_navigate=on_nav,
+		key="pieces_ask"
+	)
+
 
 
 
