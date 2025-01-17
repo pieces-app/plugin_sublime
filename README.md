@@ -17,7 +17,7 @@ The Pieces Sublime plugin is your gateway to managing your saved code snippets i
 
 ## Configuration
 
-Before diving in, let's ensure everything is set up to your liking. You can customize the LLM model or the host by navigating to:
+Before diving in, let's ensure everything is set up to your liking. You can customize the LLM model or some other settings by navigating to:
 `Preferences > Package Settings > Pieces > Settings`.
 
 You can also open the settings from the command palette `Pieces: Open Settings`.
@@ -26,24 +26,35 @@ You can also open the settings from the command palette `Pieces: Open Settings`.
 
 #### LLMs Supported by the Pieces for Sublime Plugin 
 
-Currently, the Pieces for Sublime Plugin supports 16 AI models, so you can choose the one that best fits your needs.
+Currently, the Pieces for Sublime Plugin supports 20+ AI models, so you can choose the one that best fits your needs.
 
+![Pieces Change LLM](icons/pieces%20change%20llm.png)
+
+- GPT-4o Mini
 - GPT-4o
+- GPT-4 Turbo
 - GPT-4
-- CodeLlama GPU
-- GPT-3.5-turbo
-- Phi-2 CPU
-- GPT-4 Preview
-- Codey (PaLM2)
-- Llama2 GPU
-- (Gemini)
-- GPT-3.5-turbo-16k
-- Phi-2 GPU
-- Mixtral GPU
-- NeuralHermes-2.5-Mistral-7B CPU
-- NeuralHermes-2.5-Mistral-7B GPU
-- (PaLM2)
-- Llama2
+- GPT-3.5 Turbo
+- PaLM 2 Code Chat Bison
+- Gemini Pro Chat
+- PaLM 2 Chat Bison
+- Gemini 1.5 Pro
+- Gemini 1.5 Flash
+- Claude 3.5 Sonnet
+- Claude 3 Sonnet
+- Claude 3 Opus
+- Claude 3 Haiku
+- Mistral 7B
+- Phi-3 Mini 4K
+- Phi-3 Mini 128K
+- Phi-2
+- LLaMA 3 8B
+- LLaMA 2 7B
+- Gemma 1.1 7B
+- Gemma 1.1 2B
+- Code Gemma 1.1 7B
+- Granite 8B
+- Granite 3B
 
 ## Features
 ### Logging Into or Out Of Pieces Account

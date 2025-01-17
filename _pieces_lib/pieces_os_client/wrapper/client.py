@@ -245,7 +245,7 @@ class PiecesClient:
             Waits for all the assets/conversations and all the started websockets to open
         """
         self._check_startup()
-        BaseWebsocket.wait_all()
+        # BaseWebsocket.wait_all()
 
     @classmethod
     def close(cls):
