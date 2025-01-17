@@ -92,6 +92,11 @@
 		"command":"pieces_install_pieces_os"
 	},
 	{
+
+		"caption":"Pieces: Change LLM",
+		"command":"pieces_change_model"
+	},
+	{
 		"caption" : "Pieces: Feedback",
 		"command" : "pieces_support",
 		"args" : {

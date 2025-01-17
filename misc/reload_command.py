@@ -14,7 +14,8 @@ class PiecesReloadCommand(sublime_plugin.ApplicationCommand):
 		if PiecesSettings.api_client.is_pieces_running():
 			try:
 				PiecesSettings.api_client._startup() # Running the startup command
-				PiecesSettings.on_settings_change(all = True)
+				PiecesSettings.on_settings_change()
+				BaseWebsocket.reconnect_all()
 				sublime.status_message(f"Reloading [completed]")
 			except Exception as e:
 				sublime.error_message(f"Error during reload: {e}")

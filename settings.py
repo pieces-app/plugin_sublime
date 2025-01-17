@@ -53,23 +53,23 @@ class PiecesSettings:
 		"""
 		try:
 			cls.api_client.model_name = model
-		except ValueError:
+		except:
 			sublime.error_message(f"Invalid model\n Choose one from {' ,'.join(cls.api_client.available_models_names)}")
+			sublime.run_command("pieces_change_model")
+		
 		for func in cls.on_model_change_callbacks:
 			func()
 
 	@classmethod
-	def on_settings_change(cls,all = False):
+	def on_settings_change(cls):
 		"""
 			all parameter means to update everything not the changes
 		"""
 		settings = cls.get_settings()
-		cls.autocomplete_snippet = bool(settings.get("snippet.autocomplete",True))
+		cls.autocomplete_snippet = bool(settings.get("snippet.autocomplete",False))
 		model = settings.get("model")
-		if all:
-			cls.models_init(model = model)
 
-		elif cls.api_client.model_name != model:
+		if cls.api_client.model_name != model:
 			cls.models_init(model = model)
 
 		syntax = settings.get("syntax")
@@ -104,10 +104,6 @@ class PiecesSettings:
 		return cls._pool
 
 
-	# Load the settings from 'Pieces.sublime-settings' file using Sublime Text API
-	pieces_settings = sublime.load_settings('Pieces.sublime-settings')
-	pieces_settings.add_on_change("PIECES_SETTINGS",on_settings_change)
-
 	@staticmethod
 	def notify(title,message,level="info"):
 		try:
@@ -132,4 +128,8 @@ class PiecesSettings:
 	path = os.path.join(package_path,"icons", os_icon) if os_icon else None
 	os_icon = path
 	notification.setup_notifications("Pieces for Sublime Text",os_icon,sender=None)
+
+	# Load the settings from 'Pieces.sublime-settings' file using Sublime Text API
+	pieces_settings = sublime.load_settings('Pieces.sublime-settings')
+	pieces_settings.add_on_change("PIECES_SETTINGS",on_settings_change)
 

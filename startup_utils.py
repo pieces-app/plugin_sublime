@@ -53,7 +53,7 @@ def check_pieces_os(is_input_handler=False):
 			if PiecesSettings.api_client.is_pieces_running():
 				def run_async():
 					HealthWS.instance.close()
-					PiecesSettings.on_settings_change(True)
+					PiecesSettings.on_settings_change()
 				sublime.set_timeout_async(lambda: run_async)
 				return func(*args, **kwargs)
 			else:
