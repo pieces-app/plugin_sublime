@@ -1,7 +1,8 @@
 import sublime
 import sublime_plugin
 
-from ._pieces_lib.pieces_os_client.wrapper.websockets.health_ws import HealthWS
+from ._pieces_lib.pieces_os_client.wrapper.websockets import BaseWebsocket
+from ._pieces_lib.pieces_os_client.wrapper.streamed_identifiers import ConversationsSnapshot
 from ._pieces_lib.pieces_os_client.wrapper.basic_identifier.asset import BasicAsset
 from .assets.list_assets import PiecesListAssetsCommand
 from .assets.ext_map import file_map
@@ -92,13 +93,18 @@ class PiecesEventListener(sublime_plugin.EventListener):
 			else: 
 				return False
 
-	def on_init(self,views):
+	def on_init(self, views):
+		sublime.set_timeout_async(lambda: self._render_conversation(views))				
+
+	def _render_conversation(self, views):
+		BaseWebsocket.wait_all() # Wait for the conversations to load
 		for view in views:
 			if view.settings().get("PIECES_GPT_VIEW"):
-				# Update the conversation to be real-time
-				# Close the old view and rerender the conversation
-				view.close()
-
+				conv = view.settings().get("conversation_id")
+				if conv in ConversationsSnapshot.identifiers_snapshot:
+					copilot.render_conversation(conv)
+				else:
+					view.close()
 
 	@staticmethod
 	def on_deactivated(view):
@@ -132,7 +138,6 @@ class PiecesEventListener(sublime_plugin.EventListener):
 class PiecesViewEventListener(sublime_plugin.ViewEventListener):
 	def on_close(self):
 		copilot.gpt_view = None
-
 
 	def on_load_async(self):
 		self.view.run_command("pieces_show_qr_codes")
