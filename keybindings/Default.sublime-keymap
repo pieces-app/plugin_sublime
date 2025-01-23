@@ -24,7 +24,7 @@
         ]
     },
     {
-        "keys": ["primary+c"],
+        "keys": ["escape"],
         "command": "pieces_stop_copilot",
         "context": [
             {"key": "pieces_stop_copilot"}

@@ -237,6 +237,7 @@ class CopilotViewManager:
 		self.end_response = self.gpt_view.size()
 		self.show_cursor
 		self.can_type = True
+		self.gpt_view.erase_status("pieces_stop_generating")
 
 	@property
 	def conversation_id(self):
@@ -279,6 +280,7 @@ class CopilotViewManager:
 		self.new_line()
 		self.remove_context_phantom()
 		self.add_role("Copilot")
+		self.gpt_view.set_status("pieces_stop_generating","Press <esc> to stop generating")
 		self.progress_bar.start()
 		sublime.set_timeout_async(lambda: PiecesSettings.api_client.copilot.stream_question(self.prev_query,pipeline))
 
