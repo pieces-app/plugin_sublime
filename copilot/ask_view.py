@@ -1,4 +1,4 @@
-from ..misc.models_command import ModelsEnum
+from ..misc.models.models_command import ModelsEnum
 import sublime
 from sublime import ADD_TO_SELECTION, Region, View
 from .images.context_image import ContextImage
@@ -97,7 +97,7 @@ class CopilotViewManager:
 
 	def update_status_bar(self):
 		if self._gpt_view:
-			model = ModelsEnum.get(PiecesSettings.api_client.model_name)
+			model = ModelsEnum.get(PiecesSettings.get_settings().get("model"))
 			model = model.readable_name if model else "UNKNOWN"
 			self._gpt_view.set_status("MODEL",f"LLM Model: {model}")
 
