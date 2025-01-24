@@ -40,7 +40,11 @@ class PiecesSettings:
 		os.makedirs(PIECES_USER_DIRECTORY)
 
 	_update_dict = {}
+	_models_map = {}
 
+	@classmethod
+	def update_model_map(cls):
+		cls._models_map = {model.unique : model for model in PiecesSettings.api_client.models_api.models_snapshot().iterable if model.unique}
 
 
 	@classmethod
@@ -49,14 +53,14 @@ class PiecesSettings:
 		Initialize the model ID for the class using the specified settings.
 
 		This method retrieves the available models, sets the model ID based on the settings provided,
-		and defaults to a specific model ("GPT-3.5-turbo Chat Model") if the specified model is not found.
+		and defaults to a specific model ("GPT 4o") if the specified model is not found.
 		"""
-		try:
-			cls.api_client.model_name = model
-		except:
-			sublime.error_message(f"Invalid model\n Choose one from {' ,'.join(cls.api_client.available_models_names)}")
-			sublime.run_command("pieces_change_model")
-		
+		if not cls._models_map:
+			cls._models_map = {model.unique : model for model in PiecesSettings.api_client.models_object if model.unique}
+		model_id = cls._models_map.get(model)
+		if not model_id:
+			cls._models_map["gpt-4o"]
+		cls.api_client.model_id = model_id.id
 		for func in cls.on_model_change_callbacks:
 			func()
 
