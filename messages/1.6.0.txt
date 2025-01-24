@@ -1,16 +1,39 @@
 Version 1.6.0
 -------------
 
-
 New Features
 ------------
 
-- New command "Pieces: Change LLM model" to change the Copilot LLM instead of configuring it from the settings
+- LLM Model Management
+  - New command: "Pieces: Change LLM" to change the current LLM model of your copilot.
+    - Install/Stop Local LLMs.
+    - Deprecated the old method of changing LLMs.
 
+- Command Renaming
+  - "Pieces: Open Saved Material" -> "Pieces: Open Pieces Drive"
+  - "Pieces: Export Pieces Material" -> "Pieces: Export Saved Material from Pieces Drive"
 
-Changed Commands name
----------------------
+- Copilot Enhancements
+  - Add copilot context tooltip.
+  - Add stop copilot command (shortcut: escape).
+  - New command: "Pieces: Delete Copilot Conversation".
+  - Right-click on a folder/file to add it to the Copilot context.
+  - Conversations persist when reopening Sublime.
+  - Add LTM
 
-- Change "Pieces: Open Saved Material" -> "Pieces: Open Pieces Drive"
-- Change "Pieces: Import Sublime Snippet" -> "Pieces: Import Sublime Snippet to Pieces Drive"
-- Change "Pieces: Export Export Pieces Material" -> "Pieces: Export Saved Material from Pieces Drive" 
+- Long-Term Memory (LTM)
+  - New command: "Pieces: Enable Long-Term Memory".
+  - New command: "Pieces: Pause Long-Term Memory".
+  - Ability to toggle LTM context in the current chat.
+
+- Miscellaneous
+  - Add a command runner if PiecesOS is offline when opened.
+  - Snippets in the markdown view update if changed from another plugin.
+  - "Pieces: Feedback" -> Add feedback command to share your feedback.
+
+Bug Fixes
+---------
+
+- Fixed the "Ask Copilot" command in the right-click context menu where the menu sometimes did not appear.
+- Fixed keybinding issues in the Copilot.
+- Fixed the failed phantom location issue.
