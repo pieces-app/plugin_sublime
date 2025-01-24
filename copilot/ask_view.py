@@ -1,15 +1,17 @@
 from ..misc.models_command import ModelsEnum
 import sublime
-from sublime import ADD_TO_SELECTION, Region, View
+from sublime import Region, View
 from .images.context_image import ContextImage
-from .._pieces_lib.pieces_os_client import QGPTStreamOutput
+from .._pieces_lib.pieces_os_client import (QGPTStreamOutput,QGPTStreamEnum)
 from .._pieces_lib.pieces_os_client.wrapper.basic_identifier.chat import BasicChat
 from ..settings import PiecesSettings
 from ..progress_bar import ProgressBar
+from ..ask.diff import _load_popup_css
 import re
+from typing import List
 
 
-PHANTOM_A_TAG_STYLE = "padding: 4px;background-color: var(--accent); border-radius: 6px;color: var(--foreground);text-decoration: None;text-align: center"
+PHANTOM_A_TAG_STYLE = "margin-bottom:40px; padding: 4px;background-color: var(--accent); border-radius: 6px;color: var(--foreground);text-decoration: None;text-align: center"
 
 PHANTOM_CONTENT = f"""
 <div style="padding-right:2px">
@@ -30,8 +32,21 @@ Something went wrong <br><br>
 </div>
 """
 
+ENABLE_LTM = f"""
+In order to get the most out of Long-Term Memory (LTM) Context, you need to enable the Long-Term Memory Engine, which provides time-based contextua awareness for your Copilot.
+<br>
+<div style="padding-right:2px;padding-left:2px;padding-buttom:2px">
+	<a style="{PHANTOM_A_TAG_STYLE}" href = "enable">Activiate Long-Term Engine</a>
+	<a style="{PHANTOM_A_TAG_STYLE}" href = "learn">Learn about LTM context</a>
+	<a style="{PHANTOM_A_TAG_STYLE}" href = "turn_off">Turn LTM Context Off</a>
+</div>
+"""
+
 class CopilotViewManager:
 	def __init__(self):
+		self.cache_response = False
+		self._cached_response = ""
+
 		self._gpt_view = None
 		self._view_name = None
 		self._secondary_view = None
@@ -39,41 +54,42 @@ class CopilotViewManager:
 
 	@property
 	def gpt_view(self) -> View:
-		if not self._gpt_view:
-			# File config and creation
-			self._gpt_view = sublime.active_window().new_file(ADD_TO_SELECTION,syntax="Packages/Markdown/Markdown.sublime-syntax")	
-			self.can_type = True
-			self._gpt_view.settings().set("PIECES_GPT_VIEW",True) # Label the view as gpt view
-			self._gpt_view.settings().set("line_numbers", False) # Remove lines
-			self._gpt_view.settings().set("word_wrap",True)
-			self._gpt_view.set_scratch(True)
+		if self._gpt_view:
+			return self._gpt_view
+		# File config and creation
+		self._gpt_view = sublime.active_window().new_file(syntax="Packages/Markdown/Markdown.sublime-syntax")	
+		self.can_type = True
+		self._gpt_view.settings().set("PIECES_GPT_VIEW",True) # Label the view as gpt view
+		self._gpt_view.settings().set("line_numbers", False) # Remove lines
+		self._gpt_view.settings().set("word_wrap",True)
+		self._gpt_view.set_scratch(True)
 
-			# Phantom intilization 
-			self.last_edit_phantom = 0
-			self.phantom_set = sublime.PhantomSet(self._gpt_view, "Pieces_Phantoms")
-			self.phantom_details_dict = {} # id: {"code":code,"region":region}
-
-
-
-			# Failed regions
-			self.failed_regions = []
-			self.failed_phantom = sublime.PhantomSet(self._gpt_view, "Pieces_Failed_Phantoms")
+		# Phantom intilization 
+		self.last_edit_phantom = 0
+		self.phantom_set = sublime.PhantomSet(self._gpt_view, "Pieces_Phantoms")
+		self.phantom_details_dict = {} # id: {"code":code,"region":region}
 
 
-			# Context Phantom
-			self.context_phantom = sublime.PhantomSet(self._gpt_view, "Pieces_context")
 
-			# Others
-			self._relevant = {}
-			self.copilot_regions = []
-			self.update_status_bar()
-			# self.render_copilot_image_phantom(self._gpt_view)
+		# Failed regions
+		self.failed_regions = []
+		self.failed_phantom = sublime.PhantomSet(self._gpt_view, "Pieces_Failed_Phantoms")
 
-			self.show_cursor
 
-			# Update the Copilot message callback
-			PiecesSettings.api_client.copilot.ask_stream_ws.on_message_callback = self.on_message_callback
-			PiecesSettings.api_client.copilot._return_on_message = lambda:None # Modify the copilot becaue we will use the on_message_callback
+		# Context Phantom
+		self.context_phantom = sublime.PhantomSet(self._gpt_view, "Pieces_context")
+
+		# Others
+		self._relevant = {}
+		self.copilot_regions:List[Region] = []
+		self.update_status_bar()
+		# self.render_copilot_image_phantom(self._gpt_view)
+
+		self.show_cursor
+
+		# Update the Copilot message callback
+		PiecesSettings.api_client.copilot.ask_stream_ws.on_message_callback = self.on_message_callback
+		PiecesSettings.api_client.copilot._return_on_message = lambda:None # Modify the copilot becaue we will use the on_message_callback
 		return self._gpt_view
 		
 	@property
@@ -132,26 +148,55 @@ class CopilotViewManager:
 	def end_response(self,e):
 		self.gpt_view.settings().set("end_response",e)
 
+	def append_cache(self):
+		self.gpt_view.run_command("append",{"characters":self._cached_response})
+		self._cached_response = ""
+
 	def on_message_callback(self,message: QGPTStreamOutput):
 		if message.question:
 			answers = message.question.answers.iterable
 
 			for answer in answers:
+				if self.cache_response:
+					self._cached_response += answer.text
+					continue
+
+				if self._cached_response:
+					self.append_cache()
+
 				self.gpt_view.run_command("append",{"characters":answer.text})
 		
-		if message.status == "COMPLETED":
+		if message.status == QGPTStreamEnum.COMPLETED:
 			self.new_line()
 			self.reset_view()
 			self.conversation_id = message.conversation
-			self.add_code_phantoms() # Generate the code phantoms	
-		elif message.status == "FAILED":
-			self.failed_regions.append(self.copilot_regions.pop())
+			self.add_code_phantoms() # Generate the code phantoms
+		elif message.status in [QGPTStreamEnum.STOPPED, QGPTStreamEnum.FAILED]:
+			self.gpt_view.run_command("pieces_remove_region",
+				{"a":self.end_response,"b":self.gpt_view.size()})
+			region = self.copilot_regions.pop()
+			region.a += 1
+			region.b += 1
+			self.failed_regions.append(region)
 			self.show_failed()
 			self.gpt_view.run_command("pieces_clear_line",{"line_point": self.gpt_view.size()})
 			self.reset_view()
 
 		if message.status != "IN-PROGRESS":
 			self.progress_bar.stop()
+
+	def show_notification(self, content,on_nav_callback):
+		"""
+		    All notifications will be in the first line
+		"""
+		def on_nav(href):
+			self.gpt_view.erase_phantoms("notification_phantom")
+			self.gpt_view.run_command("pieces_remove_region",{"a":0,"b":1})
+			on_nav_callback(href)
+		content = f"<body><style>{_load_popup_css()}</style><div style='background-color:var(--popup-background);padding:2px'><div class='toolbar' style='right:0px'><a href=close>❌</a></div><br>{content}</div></body>"
+		self.gpt_view.erase_phantoms("notification_phantom") # remove any notification
+		self.gpt_view.run_command("pieces_insert_text",{"text":"\n","point":"0"})
+		self.gpt_view.add_phantom("notification_phantom",Region(0,0),content,sublime.LAYOUT_BLOCK,on_navigate=on_nav)
 
 	def show_failed(self):
 		self.gpt_view.add_regions(
@@ -162,7 +207,7 @@ class CopilotViewManager:
 			flags=sublime.HIDDEN
 		)
 		self.failed_phantom.update(
-			[sublime.Phantom(region,FAILED_PHANTOM_CONTENT,sublime.LAYOUT_BLOCK,self.on_nav_failed) for region in self.failed_regions] # TODO: Add retry
+			[sublime.Phantom(region,FAILED_PHANTOM_CONTENT,sublime.LAYOUT_BLOCK,self.on_nav_failed) for region in self.failed_regions]
 		)
 
 	def on_nav_failed(self, href):
@@ -174,12 +219,7 @@ class CopilotViewManager:
 		elif href == "github":
 			sublime.run_command("pieces_support",args={"support": "https://github.com/pieces-app/plugin_sublime/issues"})
 		elif href == "llm":
-			sublime.active_window().run_command("edit_settings",
-            {
-                "base_file": f"{sublime.packages_path()}/Pieces/Pieces.sublime-settings",
-                "default": "\n{\n\t$0\n}\n"
-            }
-        )
+			sublime.active_window().run_command("pieces_change_model")
 
 	def add_context_phantom(self,region):
 		self.context_phantom_region = region
@@ -188,7 +228,7 @@ class CopilotViewManager:
 			ui = "light"
 		image = getattr(ContextImage,ui)
 		self.context_phantom.update(
-			[sublime.Phantom(region,f"<a href='subl:pieces_context_manager'>{image.format(style='width:20px;height:20px')}</a>",sublime.LAYOUT_INLINE)]
+			[sublime.Phantom(region,f"<a title='Set Copilot Context' href='subl:pieces_context_manager'>{image.format(style='width:20px;height:20px')}</a>",sublime.LAYOUT_INLINE)]
 		)
 	def remove_context_phantom(self):
 		self.context_phantom.update([])
@@ -197,6 +237,7 @@ class CopilotViewManager:
 		self.end_response = self.gpt_view.size()
 		self.show_cursor
 		self.can_type = True
+		self.gpt_view.erase_status("pieces_stop_generating")
 
 	@property
 	def conversation_id(self):
@@ -217,7 +258,20 @@ class CopilotViewManager:
 			self.gpt_view.run_command("append",{"characters":"\n"})
 
 
+	def on_enable_ltm(self,href):
+		if href == "enable":
+			sublime.run_command("pieces_enable_ltm")
+		elif href == "turn_off":
+			sublime.active_window().run_command("pieces_disable_ltm")
+		elif href == "learn":
+			sublime.run_command("pieces_support",args={"support": "https://docs.pieces.app/resources/live-context"})
+
 	def ask(self,pipeline=None):
+		if PiecesSettings.api_client.copilot.context.ltm.is_chat_ltm_enabled and \
+		not PiecesSettings.api_client.copilot.context.ltm.is_enabled:
+			self.show_notification(ENABLE_LTM,self.on_enable_ltm)
+			return
+
 		self.prev_query = self.gpt_view.substr(Region(self.end_response,self.gpt_view.size()))
 		if not self.prev_query.strip():
 			return
@@ -226,6 +280,7 @@ class CopilotViewManager:
 		self.new_line()
 		self.remove_context_phantom()
 		self.add_role("Copilot")
+		self.gpt_view.set_status("pieces_stop_generating","Press <esc> to stop")
 		self.progress_bar.start()
 		sublime.set_timeout_async(lambda: PiecesSettings.api_client.copilot.stream_question(self.prev_query,pipeline))
 
