@@ -1,7 +1,6 @@
 from ._pieces_lib.pieces_os_client.wrapper.version_compatibility import UpdateEnum, VersionChecker
 from ._pieces_lib.pieces_os_client.wrapper.websockets.health_ws import HealthWS
 from .settings import PiecesSettings
-from .misc import PiecesOpenPiecesCommand
 import sublime
 from functools import wraps
 
@@ -62,10 +61,10 @@ def check_pieces_os(is_input_handler=False):
 				r = sublime.yes_no_cancel_dialog(
 					title="Pieces for Sublime",
 					msg=(
-				        "PiecesOS is not currently running.\n"
-				        "To use this feature, please start PiecesOS.\n"
-				        "Would you like to launch it now?"
-				    ),
+						"PiecesOS is not currently running.\n"
+						"To use this feature, please start PiecesOS.\n"
+						"Would you like to launch it now?"
+					),
 					yes_title="Yes",
 					no_title="Contact Support",
 				)
@@ -79,7 +78,8 @@ def check_pieces_os(is_input_handler=False):
 	return decorator
 
 def open_pieces_async(func, *args, **kwargs):
-    running = PiecesOpenPiecesCommand.run_async()
-    if running:
-        func(*args, **kwargs)
+	from .misc.open_pieces_command import PiecesOpenPiecesCommand
+	running = PiecesOpenPiecesCommand.run_async()
+	if running:
+		func(*args, **kwargs)
 

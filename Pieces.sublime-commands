@@ -92,6 +92,22 @@
 		"command":"pieces_install_pieces_os"
 	},
 	{
+		"caption" : "Pieces: Stop Copilot From Generating Message",
+		"command" : "pieces_stop_copilot"
+	},
+	{
+		"caption" : "Pieces: Delete Copilot Conversation",
+		"command" : "pieces_delete_conversation"
+	},
+	{
+		"caption" : "Pieces: Enable Long-Term Memory",
+		"command" : "pieces_enable_ltm"
+	},
+	{
+		"caption" : "Pieces: Pause Long-Term Memory",
+		"command" : "pieces_disable_ltm"
+	},
+	{
 
 		"caption":"Pieces: Change LLM",
 		"command":"pieces_change_model"

@@ -8,7 +8,13 @@ from ..assets.list_assets import PiecesAssetIdInputHandler
 
 class PiecesContextManagerCommand(sublime_plugin.WindowCommand):
 	@check_pieces_os()
-	def run(self,context,pieces_asset_id=None,context_remove=None):
+	def run(self,context:str,pieces_asset_id=None,context_remove=None):
+		if context == "ltm_on":
+			PiecesSettings.api_client.copilot.context.ltm.chat_enable_ltm()
+			copilot.gpt_view.run_command('pieces_show_qr_codes',args={"force":True})
+		elif context == "ltm_off":
+			PiecesSettings.api_client.copilot.context.ltm.chat_disable_ltm()
+
 		if context_remove:
 			key,idx = context_remove.split("_")
 			idx = int(idx)
@@ -36,16 +42,19 @@ class PiecesContextManagerCommand(sublime_plugin.WindowCommand):
 class PiecesContextInputHandler(sublime_plugin.ListInputHandler):
 	def name(self):
 		return "context"
+
 	def list_items(self):
 		relevance_exists = PiecesSettings.api_client.copilot.context._check_relevant_existence()
-
+		ltm = PiecesSettings.api_client.copilot.context.ltm.is_chat_ltm_enabled
 		return [
 			("Add Folder","folder"),
 			("Add File","file"),
 			("Add a Snippet","asset"),
+			("Turn off Long Term Memory", "ltm_off") if ltm else ("Turn on Long Term Memory","ltm_on"),
 			*([("Show context", "show")] if relevance_exists else []), # Show context if there is
 			*([("Reset Context","reset")] if relevance_exists else [])
 		]
+
 	def next_input(self,args):
 		context = args["context"]
 		if context == "file":
