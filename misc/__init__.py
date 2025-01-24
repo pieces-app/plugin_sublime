@@ -5,4 +5,4 @@ from .about_command import PiecesOpenNotesCommand,PiecesAboutCommand
 from .onboarding_command import PiecesOnboardingCommand,PiecesOnboardingCommandsCommand,PiecesResetOnboardingCommand
 from .close_command import PiecesCloseOsCommand
 from .install_pieces_os import PiecesInstallPiecesOsCommand
-from .models_command import PiecesChangeModelCommand
+from .models.models_command import PiecesChangeModelCommand
