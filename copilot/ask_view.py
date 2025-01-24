@@ -280,7 +280,7 @@ class CopilotViewManager:
 		self.new_line()
 		self.remove_context_phantom()
 		self.add_role("Copilot")
-		self.gpt_view.set_status("pieces_stop_generating","Press <esc> to stop generating")
+		self.gpt_view.set_status("pieces_stop_generating","Press <esc> to stop")
 		self.progress_bar.start()
 		sublime.set_timeout_async(lambda: PiecesSettings.api_client.copilot.stream_question(self.prev_query,pipeline))
 
