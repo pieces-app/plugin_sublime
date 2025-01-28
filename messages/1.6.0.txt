@@ -15,6 +15,7 @@ New Features
   - "Pieces: Export Pieces Material" -> "Pieces: Export Saved Material from Pieces Drive"
   - "Pieces: Manage Conversation Context" -> "Pieces: Manage Chat Context"
   - Change Command "Start Conversation About The Current Selection" -> "Start Chat About The Current Selection"
+  - Rename "Ask Copilot" submenu to "Quick Actions"
 
 - Copilot Enhancements
   - Add copilot context tooltip.

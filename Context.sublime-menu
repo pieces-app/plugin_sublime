@@ -17,7 +17,7 @@
 			},
 			{
 				"id": "pieces-ask",
-				"caption": "Ask Copilot",
+				"caption": "Quick Actions",
 				"children":[
 					{
 						"caption": "Fix a bug",
