@@ -1,7 +1,7 @@
 from typing import Callable, Optional, TYPE_CHECKING
 from ..streamed_identifiers.range_snapshot import RangeSnapshot
 from .base_websocket import BaseWebsocket
-from websocket import WebSocketApp
+from Pieces._pieces_lib.websocket import WebSocketApp
 
 from Pieces._pieces_lib.pieces_os_client.models.streamed_identifiers import StreamedIdentifiers
 from Pieces._pieces_lib.pieces_os_client.models.range import Range

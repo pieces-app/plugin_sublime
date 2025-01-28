@@ -6,7 +6,7 @@ from typing import Callable, Optional,TYPE_CHECKING
 
 if TYPE_CHECKING:
 	from ..client import PiecesClient
-	import websocket
+	from Pieces._pieces_lib import websocket
 
 
 class LTMVisionWS(BaseWebsocket):
