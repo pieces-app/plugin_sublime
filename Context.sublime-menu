@@ -37,7 +37,7 @@
 				]
 			},
 			{
-				"caption":"Start Conversation About The Current Selection",
+				"caption":"Start Chat About The Current Selection",
 				"command":"pieces_ask_stream_about",
 				"args":{
 					"type":"section"

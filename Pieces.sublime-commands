@@ -58,7 +58,7 @@
             }
 	},
 	{
-		"caption":"Pieces: Manage Conversation Context",
+		"caption":"Pieces: Manage Chat Context",
 		"command":"pieces_context_manager"
 	},
 	{
@@ -76,7 +76,7 @@
 		}
 	},
 	{
-		"caption": "Pieces: Import Sublime Snippet to Pieces Drive",
+		"caption": "Pieces: Import Sublime Material to Pieces Drive",
 		"command":"pieces_import_asset"
 	},
 	{
@@ -96,7 +96,7 @@
 		"command" : "pieces_stop_copilot"
 	},
 	{
-		"caption" : "Pieces: Delete Copilot Conversation",
+		"caption" : "Pieces: Delete Copilot Chat",
 		"command" : "pieces_delete_conversation"
 	},
 	{

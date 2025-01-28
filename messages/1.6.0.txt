@@ -11,12 +11,15 @@ New Features
 
 - Command Renaming
   - "Pieces: Open Saved Material" -> "Pieces: Open Pieces Drive"
+  - "Pieces: Import Sublime Snippet" -> "Pieces: Import Sublime Material to Pieces Drive"
   - "Pieces: Export Pieces Material" -> "Pieces: Export Saved Material from Pieces Drive"
+  - "Pieces: Manage Conversation Context" -> "Pieces: Manage Chat Context"
+  - Change Command "Start Conversation About The Current Selection" -> "Start Chat About The Current Selection"
 
 - Copilot Enhancements
   - Add copilot context tooltip.
   - Add stop copilot command (shortcut: escape).
-  - New command: "Pieces: Delete Copilot Conversation".
+  - New command: "Pieces: Delete Copilot Chat".
   - Right-click on a folder/file to add it to the Copilot context.
   - Conversations persist when reopening Sublime.
   - Add LTM
