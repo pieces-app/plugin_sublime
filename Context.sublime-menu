@@ -41,7 +41,7 @@
 						"command": "pieces_explain",
 					},
 					{
-						"caption":"About The Current Selection",
+						"caption":"About Current Selection",
 						"command":"pieces_ask_stream_about",
 						"args":{
 							"type":"section"
