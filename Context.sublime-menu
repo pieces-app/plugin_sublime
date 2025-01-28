@@ -12,10 +12,6 @@
 				"command": "pieces_generate_shareable_link",
 			},
 			{
-				"caption": "Explain",
-				"command": "pieces_explain",
-			},
-			{
 				"id": "pieces-ask",
 				"caption": "Quick Actions",
 				"children":[
@@ -37,12 +33,22 @@
 				]
 			},
 			{
-				"caption":"Start Chat About The Current Selection",
-				"command":"pieces_ask_stream_about",
-				"args":{
-					"type":"section"
-				}
-			}
+				"id": "pieces-copilot",
+				"caption" : "Ask Copilot",
+				"children" : [
+					{
+						"caption": "Explain",
+						"command": "pieces_explain",
+					},
+					{
+						"caption":"Start Chat About The Current Selection",
+						"command":"pieces_ask_stream_about",
+						"args":{
+							"type":"section"
+						}
+					}
+				]
+			},
 		]
 	}
 ]
