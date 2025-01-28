@@ -14,7 +14,7 @@ New Features
   - "Pieces: Import Sublime Snippet" -> "Pieces: Import Sublime Material to Pieces Drive"
   - "Pieces: Export Pieces Material" -> "Pieces: Export Saved Material from Pieces Drive"
   - "Pieces: Manage Conversation Context" -> "Pieces: Manage Chat Context"
-  - Change Command "Start Conversation About The Current Selection" -> "Start Chat About The Current Selection"
+  - Change Command "Start Conversation About The Current Selection" -> "About The Current Selection"
   - Rename "Ask Copilot" submenu to "Quick Actions"
   - Categorize "Explain" and "Start Chat About The Current Selection" in to "Ask Copilot" submenu
 
