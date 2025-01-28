@@ -30,7 +30,7 @@
 						"args":{"task":"modify"}
 					},
 					{
-						"caption":"Add code comments",
+						"caption":"Add Code Comments",
 						"command": "pieces_ask_question",
 						"args":{"task":"comment"}
 					}
