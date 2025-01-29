@@ -101,6 +101,7 @@ class PiecesEventListener(sublime_plugin.EventListener):
 		for view in views:
 			if view.settings().get("PIECES_GPT_VIEW"):
 				conv = view.settings().get("conversation_id")
+				copilot.gpt_view = view
 				if conv in ConversationsSnapshot.identifiers_snapshot:
 					copilot.render_conversation(conv)
 				else:

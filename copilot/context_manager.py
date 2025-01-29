@@ -8,12 +8,8 @@ from ..assets.list_assets import PiecesAssetIdInputHandler
 
 class PiecesContextManagerCommand(sublime_plugin.WindowCommand):
 	@check_pieces_os()
-	def run(self,context:str,pieces_asset_id=None,context_remove=None):
-		if context == "ltm_on":
-			PiecesSettings.api_client.copilot.context.ltm.chat_enable_ltm()
-			copilot.gpt_view.run_command('pieces_show_qr_codes',args={"force":True})
-		elif context == "ltm_off":
-			PiecesSettings.api_client.copilot.context.ltm.chat_disable_ltm()
+	def run(self,context:str, pieces_asset_id=None, context_remove=None):
+		self.handle_ltm(context)
 
 		if context_remove:
 			key,idx = context_remove.split("_")
@@ -27,6 +23,13 @@ class PiecesContextManagerCommand(sublime_plugin.WindowCommand):
 
 		if pieces_asset_id:
 			PiecesSettings.api_client.copilot.context.assets.append(BasicAsset(pieces_asset_id))
+	
+	def handle_ltm(self, context):
+		if context == "ltm_on":
+			PiecesSettings.api_client.copilot.context.ltm.chat_enable_ltm()
+			copilot.gpt_view.run_command('pieces_show_qr_codes',args={"force":True})
+		elif context == "ltm_off":
+			PiecesSettings.api_client.copilot.context.ltm.chat_disable_ltm()
 
 	def is_enabled(self):
 		v = sublime.active_window().active_view()
@@ -85,9 +88,9 @@ class PiecesAddContextCommand(sublime_plugin.ApplicationCommand):
 	@check_pieces_os()
 	def run(self,paths = None):
 		if paths == None:
-			paths = [sublime.active_window().active_view().file_name()]
-			if paths[0] == None: return # check the file already exists
-
+			paths = sublime.active_window().active_view().file_name()
+			if paths == None: return # check the file already exists
+			paths = [paths]
 		if not copilot._gpt_view: # check if the Copilot is running
 			copilot.render_conversation(None) # Create a new conversation
 		PiecesSettings.api_client.copilot.context.paths.extend(paths)
