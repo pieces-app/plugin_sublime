@@ -12,12 +12,8 @@
 				"command": "pieces_generate_shareable_link",
 			},
 			{
-				"caption": "Explain",
-				"command": "pieces_explain",
-			},
-			{
 				"id": "pieces-ask",
-				"caption": "Ask Copilot",
+				"caption": "Quick Actions",
 				"children":[
 					{
 						"caption": "Fix a bug",
@@ -30,19 +26,29 @@
 						"args":{"task":"modify"}
 					},
 					{
-						"caption":"Add code comments",
+						"caption":"Add Code Comments",
 						"command": "pieces_ask_question",
 						"args":{"task":"comment"}
 					}
 				]
 			},
 			{
-				"caption":"Start Conversation About The Current Selection",
-				"command":"pieces_ask_stream_about",
-				"args":{
-					"type":"section"
-				}
-			}
+				"id": "pieces-copilot",
+				"caption" : "Ask Copilot",
+				"children" : [
+					{
+						"caption": "Explain",
+						"command": "pieces_explain",
+					},
+					{
+						"caption":"About Current Selection",
+						"command":"pieces_ask_stream_about",
+						"args":{
+							"type":"section"
+						}
+					}
+				]
+			},
 		]
 	}
 ]
