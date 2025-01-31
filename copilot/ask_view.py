@@ -34,7 +34,7 @@ Something went wrong <br><br>
 
 ENABLE_LTM = f"""
 In order to get the most out of Long-Term Memory (LTM) Context, you need to enable the Long-Term Memory Engine, which provides time-based contextua awareness for your Copilot.
-<br>
+<br><br>
 <div style="padding-right:2px;padding-left:2px;padding-buttom:2px">
 	<a style="{PHANTOM_A_TAG_STYLE}" href = "enable">Activiate Long-Term Engine</a>
 	<a style="{PHANTOM_A_TAG_STYLE}" href = "learn">Learn about LTM context</a>
