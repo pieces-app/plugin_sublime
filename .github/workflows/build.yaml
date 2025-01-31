@@ -68,13 +68,13 @@ jobs:
         if: ${{ inputs.deploy == false && inputs.beta == false }}
 
       ### Uploading our staging version text file to be pulled down later
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: staging_version
           path: "*.txt"
         if: inputs.deploy == false
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: output
           path: Pieces.sublime-package
@@ -88,12 +88,12 @@ jobs:
     steps:
 
       ### Pulling down the previously built plugins
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: output
 
       ### Pulling down the staging version number to pass to gcp and GitHub releases
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: staging_version
         if: inputs.deploy == false
