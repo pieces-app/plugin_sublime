@@ -93,6 +93,7 @@ class PiecesClient:
             return False
 
         self._is_started_runned = True
+        self.host # Make sure no issues in porting scanning and caching the port
         self._tracked_application = self.connector_api.connect(seeded_connector_connection=self._seeded_connector).application
         self.api_client.set_default_header("application",self._tracked_application.id)
 
@@ -166,7 +167,7 @@ class PiecesClient:
         return self._tracked_application
 
 
-    def connect_apis(self,host:str):
+    def connect_apis(self, host:str):
         if not host.startswith("http"):
             raise TypeError("Invalid host url\n Host should start with http or https")
         
@@ -265,7 +266,9 @@ class PiecesClient:
             Waits for all the assets/conversations and all the started websockets to open
         """
         self._check_startup()
-        # BaseWebsocket.wait_all()
+
+    def wait_for_cache(self):
+        BaseWebsocket.wait_all()
 
     @classmethod
     def close(cls):
@@ -281,6 +284,7 @@ class PiecesClient:
         """
             Returns Pieces OS Version
         """
+        self.ensure_initialization()
         return self.well_known_api.get_well_known_version()
  
     @property
@@ -289,6 +293,7 @@ class PiecesClient:
             Calls the well known health api
             /.well-known/health [GET]
         """
+        self.ensure_initialization()
         return self.well_known_api.get_well_known_health()
 
 
