@@ -26,7 +26,8 @@ class PiecesSettings:
 				name = "SUBLIME",
 				platform = sublime.platform().upper() if sublime.platform() != 'osx' else "MACOS",
 				version = __version__)),
-	connect_websockets=False)
+	connect_websockets = False,
+	reconnect_on_host_change = False)
 	_pool = None
 	debug=debug
 	ONBOARDING_SYNTAX = "Packages/Pieces/syntax/Onboarding.sublime-syntax"
