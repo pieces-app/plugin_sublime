@@ -147,7 +147,8 @@ class PiecesViewEventListener(sublime_plugin.ViewEventListener):
 		if copilot._gpt_view and self.view.id() == copilot._gpt_view.id():
 			copilot.gpt_view = None
 			for clone in copilot.gpt_clones:
-				clone.close()
+				if clone.is_valid:
+					clone.close()
 
 	def on_load_async(self):
 		self.view.run_command("pieces_show_qr_codes")

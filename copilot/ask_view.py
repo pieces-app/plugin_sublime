@@ -402,7 +402,8 @@ class CopilotViewManager:
 			self._gpt_view.close()
 			self._gpt_view = None
 			for clone in self.gpt_clones:
-				clone.close()
+				if clone.is_valid:
+					clone.close()
 
 	def add_query(self,query):
 		self.gpt_view.run_command("append",{"characters":query})
