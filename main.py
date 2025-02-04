@@ -74,5 +74,7 @@ def run_async():
 
 def plugin_unloaded():
 	BaseWebsocket.close_all()
-
+	for view in copilot.gpt_clones:
+		if view.is_valid:
+			view.close()
 

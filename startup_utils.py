@@ -71,15 +71,16 @@ def check_pieces_os(is_input_handler=False):
 				if r == sublime.DIALOG_NO:
 					return sublime.run_command("pieces_support",args={"support":"https://docs.pieces.app/support"})
 				elif r == sublime.DIALOG_YES:
-					return sublime.set_timeout_async(lambda:open_pieces_async(func=func,*args,**kwargs))
+					return sublime.set_timeout_async(lambda:open_pieces_async(func=func, *args,**kwargs))
 				print("Make sure PiecesOS is running")
 
 		return wrapper
 	return decorator
 
-def open_pieces_async(func, *args, **kwargs):
+def open_pieces_async(*args, **kwargs):
 	from .misc.open_pieces_command import PiecesOpenPiecesCommand
 	running = PiecesOpenPiecesCommand.run_async()
 	if running:
+		func = kwargs.pop("func")
 		func(*args, **kwargs)
 

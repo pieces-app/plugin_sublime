@@ -24,6 +24,12 @@ class PiecesEventListener(sublime_plugin.EventListener):
 		"pieces_share_asset":"share",
 		"pieces_explain":"explain"
 	}
+
+	def on_clone(self,view: sublime.View):
+		if copilot._gpt_view and view.buffer_id() == copilot._gpt_view.buffer_id():
+			copilot.gpt_clones.append(view)
+			view.settings()["PIECES_GPT_VIEW"] = True
+
 	def on_post_text_command(self,window,command_name,args):
 		self.check_onboarding(command_name)
 	def on_post_window_command(self,window,command_name,args):
@@ -138,7 +144,11 @@ class PiecesEventListener(sublime_plugin.EventListener):
 
 class PiecesViewEventListener(sublime_plugin.ViewEventListener):
 	def on_close(self):
-		copilot.gpt_view = None
+		if copilot._gpt_view and self.view.id() == copilot._gpt_view.id():
+			copilot.gpt_view = None
+			for clone in copilot.gpt_clones:
+				if clone.is_valid:
+					clone.close()
 
 	def on_load_async(self):
 		self.view.run_command("pieces_show_qr_codes")

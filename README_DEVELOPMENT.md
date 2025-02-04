@@ -4,7 +4,7 @@
 
 In order to install a staging build:
 
-1. Download the Staging build "Pieces.sublime-package" from "https://github.com/pieces-app/plugin_sublime/releases"
+1. Download the staging build "Pieces.sublime-package" from https://github.com/pieces-app/plugin_sublime/releases/tag/1.6.0
 2. Place it in the installed package directory 
   - **Windows**: `%APPDATA%\Sublime Text\Installed Packages`
   - **MacOS**: `~/Library/Application Support/Sublime Text 3/Installed Packages`

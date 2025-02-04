@@ -56,6 +56,9 @@ class CopilotViewManager:
 	def gpt_view(self) -> View:
 		if self._gpt_view:
 			return self._gpt_view
+
+		self.gpt_clones: List[sublime.View] = []
+
 		# File config and creation
 		self._gpt_view = sublime.active_window().new_file(syntax="Packages/Markdown/Markdown.sublime-syntax")	
 		self.can_type = True
@@ -398,6 +401,9 @@ class CopilotViewManager:
 		if self._gpt_view:
 			self._gpt_view.close()
 			self._gpt_view = None
+			for clone in self.gpt_clones:
+				if clone.is_valid:
+					clone.close()
 
 	def add_query(self,query):
 		self.gpt_view.run_command("append",{"characters":query})
