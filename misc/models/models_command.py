@@ -89,6 +89,10 @@ class ModelsEnum(Enum):
 		return self._unique_id
 
 	@property
+	def model_found(self) -> bool:
+		return bool(PiecesSettings._models_map.get(self.unique_id, False))
+
+	@property
 	def snapshot(self):
 		return PiecesSettings._models_map[self.unique_id]
 
@@ -204,5 +208,5 @@ class ModelsInputHandler(sublime_plugin.ListInputHandler):
 				text=model.readable_name,
 				value=model.unique_id,
 				details=model.description,
-				annotation=model.model_status_readable) for model in ModelsEnum]
+				annotation=model.model_status_readable) for model in ModelsEnum if model.model_found]
 
