@@ -93,7 +93,7 @@ html_template = """
 		<div class="step">
 			<div class="step-title">Step 8: Explore the Features</div>
 			<div class="step-description">
-				Check out the <a href="https://example.com/docs">documentation</a> to learn about all the features and how to use them effectively.
+				Check out the <a href="https://docs.pieces.app/extensions-plugins/sublime">documentation</a> to learn about all the features and how to use them effectively.
 			</div>
 		</div>
 		<div class="step">
