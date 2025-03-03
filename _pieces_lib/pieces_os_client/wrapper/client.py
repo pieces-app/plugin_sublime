@@ -1,5 +1,5 @@
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from typing import TYPE_CHECKING, Optional,Dict, Union
+from typing import TYPE_CHECKING, Optional,Dict, Union, Callable
 import platform
 import atexit
 import subprocess
@@ -59,6 +59,7 @@ from .websockets import (
     RangesIdentifiersWS,
     AnchorsIdentifiersWS
 )
+from .installation import DownloadModel, PosInstaller
 
 if TYPE_CHECKING:
     from Pieces._pieces_lib.pieces_os_client.models.fragment_metadata import FragmentMetadata
@@ -350,5 +351,16 @@ class PiecesClient:
         """
         return self.api_client.pool.apply_async(api_call, args)
 
+    def pieces_os_installer(self, callback: Callable[[DownloadModel], None]) -> PosInstaller:
+        """
+        Installs Pieces OS using the provided callback for download progress updates.
+
+        Args:
+            callback (Callable[[DownloadModel], None]): A callback function to receive download progress updates.
+
+        Returns:
+            PosInstaller: An instance of PosInstaller handling the installation process.
+        """
+        return PosInstaller(callback, self._seeded_connector.application.name)
 # Register the function to be called on exit
 atexit.register(PiecesClient.close)
