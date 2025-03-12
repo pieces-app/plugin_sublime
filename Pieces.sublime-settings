@@ -3,5 +3,7 @@
 	"model":"gpt-4o",
 	"auto_start_pieces_os":true, // Open PiecesOS automatically on startup
 	"snippet.autocomplete":false, // auto complete via Pieces saved snippets or not
-	"syntax" : {} // Langauge extension : syntax path
+	"syntax" : {}, // Langauge extension : syntax path
+	"copilot" : "IDE" // IDE, BROWSER 
+					  // Opens the copilot either in browser or in the sublime IDE it self
 }
