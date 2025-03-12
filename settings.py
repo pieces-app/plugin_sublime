@@ -9,7 +9,7 @@ import os
 from .assets.ext_map import file_map
 
 from . import __version__
-
+from enum import Enum
 
 try:
 	from . import _debug
@@ -17,6 +17,21 @@ try:
 	print("RUNNING DEBUG MODE")
 except:
 	debug = False
+
+class CopilotMode(Enum):
+	IDE = "IDE"
+	BROWSER = "BROWSER"
+
+	@staticmethod
+	def parse(string: str):
+		if string.upper() == "IDE":
+			return CopilotMode.IDE
+		elif string.upper() == "BROWSER":
+			return CopilotMode.BROWSER
+		else:
+			sublime.error_message("Invalid settings for Copilot it should be IDE or BROWSER")
+			return CopilotMode.IDE
+
 
 
 class PiecesSettings:
@@ -30,6 +45,7 @@ class PiecesSettings:
 	reconnect_on_host_change = False)
 	_pool = None
 	debug=debug
+	copilot_mode: CopilotMode = CopilotMode.IDE
 	ONBOARDING_SYNTAX = "Packages/Pieces/syntax/Onboarding.sublime-syntax"
 	on_model_change_callbacks = [] # If the model change a function should be runned
 
@@ -64,13 +80,13 @@ class PiecesSettings:
 		cls.api_client.model_id = model_id.id
 		for func in cls.on_model_change_callbacks:
 			func()
-
 	@classmethod
 	def on_settings_change(cls):
 		"""
 			all parameter means to update everything not the changes
 		"""
 		settings = cls.get_settings()
+		cls.copilot_mode = CopilotMode.parse(settings.get("copilot"))
 		cls.autocomplete_snippet = bool(settings.get("snippet.autocomplete",False))
 		model = settings.get("model")
 

@@ -1,27 +1,42 @@
 import sublime_plugin
 import sublime
 from .ask_view import CopilotViewManager
-from ..settings import PiecesSettings
+from ..settings import CopilotMode, PiecesSettings
 from ..startup_utils import check_pieces_os
 from .._pieces_lib.pieces_os_client.models.qgpt_stream_input import QGPTStreamInput
 from .._pieces_lib.pieces_os_client.wrapper.basic_identifier.chat import BasicChat
-
+import webbrowser
+from .._pieces_lib.pieces_os_client.models.inactive_os_server_applet import InactiveOSServerApplet, OSAppletEnum
 
 copilot = CopilotViewManager()
 
 
 class PiecesAskStreamCommand(sublime_plugin.WindowCommand):
 	@check_pieces_os()
-	def run(self,pieces_choose_type,pieces_query=None,pieces_conversation_id=None):
-		copilot.render_conversation(pieces_conversation_id)
-		if pieces_query:
-			copilot.add_query(pieces_query)
-			self.window.active_view().run_command("pieces_enter_response")
-		return
+	def run(self,pieces_choose_type = None,pieces_query=None,pieces_conversation_id=None, mode = None):
+		if mode:
+			mode = CopilotMode.parse(mode)
+		else:
+			mode = PiecesSettings.copilot_mode
+
+		if mode.name == CopilotMode.BROWSER.name:
+			return webbrowser.open(
+				"localhost:" + str(PiecesSettings.api_client.os_api.os_applet_launch(
+								InactiveOSServerApplet(
+									type=OSAppletEnum.COPILOT
+								)
+							).port)
+			)
+		else:
+			copilot.render_conversation(pieces_conversation_id)
+			if pieces_query:
+				copilot.add_query(pieces_query)
+				self.window.active_view().run_command("pieces_enter_response")
 
 	@check_pieces_os(True)
 	def input(self,args):
-		return PiecesChooseTypeInputHandler()
+		if args.get("mode", PiecesSettings.copilot_mode) == CopilotMode.IDE:
+			return PiecesChooseTypeInputHandler()
 
 
 class PiecesChooseTypeInputHandler(sublime_plugin.ListInputHandler):

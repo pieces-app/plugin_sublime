@@ -43,6 +43,7 @@ def startup():
 	LTMVisionWS(PiecesSettings.api_client,lambda x : None)
 	RangesIdentifiersWS(PiecesSettings.api_client)
 	BaseWebsocket.start_all()
+	PiecesSettings.on_settings_change()
 
 
 	# Lunch Onboarding if it is the first time
