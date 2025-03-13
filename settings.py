@@ -1,3 +1,6 @@
+import webbrowser
+
+from ._pieces_lib.pieces_os_client.models.application_name_enum import ApplicationNameEnum
 from ._pieces_lib.pieces_os_client import SeededConnectorConnection,SeededTrackedApplication
 from ._pieces_lib.pieces_os_client.wrapper.websockets.base_websocket import BaseWebsocket
 from ._pieces_lib.pieces_os_client.wrapper import PiecesClient
@@ -10,6 +13,8 @@ from .assets.ext_map import file_map
 
 from . import __version__
 from enum import Enum
+import webbrowser
+from urllib.parse import urlparse, parse_qsl, urlencode, urlunparse
 
 try:
 	from . import _debug
@@ -44,6 +49,7 @@ class PiecesSettings:
 	connect_websockets = False,
 	reconnect_on_host_change = False)
 	_pool = None
+	_os_id = None
 	debug=debug
 	copilot_mode: CopilotMode = CopilotMode.IDE
 	ONBOARDING_SYNTAX = "Packages/Pieces/syntax/Onboarding.sublime-syntax"
@@ -123,6 +129,37 @@ class PiecesSettings:
 		if cls._pool is None:
 			cls._pool = ThreadPool(1)
 		return cls._pool
+
+	@classmethod
+	def get_os_id(cls):
+		if cls._os_id:
+			return cls._os_id
+		for app in cls.api_client.applications_api.applications_snapshot().iterable:
+			if app.name == ApplicationNameEnum.OS_SERVER:
+				cls._os_id = app.id
+				return app.id
+
+	@classmethod
+	def open_website(cls, url:str):
+		from .auth.auth_user import AuthUser
+		if (not cls.api_client.is_pos_stream_running) and ("pieces.app" not in url):
+			return webbrowser.open(url)
+		para = {}
+		if AuthUser.user_profile:
+			para["user"] = AuthUser.user_profile.id
+		_id = cls.get_os_id()
+		if _id:
+			para["os"] = _id
+
+		url_parts = list(urlparse(url))
+		query = dict(parse_qsl(url_parts[4]))
+		query.update(para)
+
+		url_parts[4] = urlencode(query)
+		new_url = urlunparse(url_parts)
+		print(new_url)
+		webbrowser.open(new_url)
+
 
 
 	@staticmethod

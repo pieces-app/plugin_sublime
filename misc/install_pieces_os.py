@@ -1,6 +1,5 @@
 import sublime_plugin
 from ..settings import PiecesSettings
-import webbrowser
 import os
 from .._pieces_lib.pieces_os_client.wrapper.installation import DownloadModel, DownloadState
 from ..progress_bar import ProgressBar
@@ -31,10 +30,10 @@ class PiecesInstallPiecesOsCommand(sublime_plugin.WindowCommand):
 
 	def download_docs(self):
 		if PiecesSettings.api_client.local_os == "WINDOWS":
-			webbrowser.open(f"https://builds.pieces.app/stages/production/appinstaller/os_server.appinstaller?product=SUBLIME&download=true")
+			PiecesSettings.open_website(f"https://builds.pieces.app/stages/production/appinstaller/os_server.appinstaller?product=SUBLIME&download=true")
 
 		elif PiecesSettings.api_client.local_os == "LINUX":
-			webbrowser.open("https://snapcraft.io/pieces-os")
+			PiecesSettings.open_website("https://snapcraft.io/pieces-os")
 			return
 		
 		elif PiecesSettings.api_client.local_os == "MACOS":
@@ -43,7 +42,7 @@ class PiecesInstallPiecesOsCommand(sublime_plugin.WindowCommand):
 				"https://builds.pieces.app/stages/production/macos_packaging/pkg-pos-launch-only"
 				f"{'-arm64' if arch == 'arm64' else ''}/download?product=SUBLIME&download=true"
 			)
-			webbrowser.open(pkg_url)
+			PiecesSettings.open_website(pkg_url)
 
 		else:
 			raise ValueError("Invalid platform")

@@ -5,7 +5,6 @@ from ..settings import CopilotMode, PiecesSettings
 from ..startup_utils import check_pieces_os
 from .._pieces_lib.pieces_os_client.models.qgpt_stream_input import QGPTStreamInput
 from .._pieces_lib.pieces_os_client.wrapper.basic_identifier.chat import BasicChat
-import webbrowser
 from .._pieces_lib.pieces_os_client.models.inactive_os_server_applet import InactiveOSServerApplet, OSAppletEnum
 
 copilot = CopilotViewManager()
@@ -20,7 +19,7 @@ class PiecesAskStreamCommand(sublime_plugin.WindowCommand):
 			mode = PiecesSettings.copilot_mode
 
 		if mode.name == CopilotMode.BROWSER.name:
-			return webbrowser.open(
+			return PiecesSettings.open_website(
 				"localhost:" + str(PiecesSettings.api_client.os_api.os_applet_launch(
 								InactiveOSServerApplet(
 									type=OSAppletEnum.COPILOT

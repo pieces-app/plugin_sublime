@@ -1,6 +1,6 @@
 import sublime
 import sublime_plugin
-import webbrowser
+from Pieces.settings import PiecesSettings
 
 
 support_resources = [
@@ -30,7 +30,7 @@ support_resources = [
 
 class PiecesSupportCommand(sublime_plugin.ApplicationCommand):
 	def run(self,support):
-		webbrowser.open_new_tab(support)
+		PiecesSettings.open_website(support)
 	def input(self,args):
 		if not args.get("support",False):
 			return SupportInputHandler()
