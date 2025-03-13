@@ -202,7 +202,7 @@ class PiecesClient:
         self.range_api = RangeApi(self.api_client)
         self.ranges_api = RangesApi(self.api_client)
         self.model_api = ModelApi(self.api_client)
-        self.application_api = ApplicationsApi(self.api_client)
+        self.applications_api = ApplicationsApi(self.api_client)
 
         # Websocket urls
         ws_base_url:str = host.replace('http','ws')

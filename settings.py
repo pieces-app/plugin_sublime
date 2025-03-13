@@ -134,7 +134,7 @@ class PiecesSettings:
 	def get_os_id(cls):
 		if cls._os_id:
 			return cls._os_id
-		for app in cls.api_client.application_api.applications_snapshot().iterable:
+		for app in cls.api_client.applications_api.applications_snapshot().iterable:
 			if app.name == ApplicationNameEnum.OS_SERVER:
 				cls._os_id = app.id
 				return app.id
