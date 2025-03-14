@@ -53,6 +53,8 @@ jobs:
                 if [[ "$CURRENT_VERSION" == "$RELEASE_VERSION" ]]; then
                     echo "The version in _version.py is already set to the release version."
                 else
+                    curl -X DELETE -H "Authorization: token ${{ secrets.PERSONAL_ACCESS_TOKEN }}" \
+                      https://api.github.com/repos/pieces-app/plugin_sublime/git/refs/tags/$RELEASE_VERSION
                     echo "Update the _version.py version to $RELEASE_VERSION"
                     exit 1
                 fi
