@@ -32,7 +32,7 @@ You can manage dependencies two ways:
 
 - OPTIONAL: Create a message for the users (release notes) in the `messages/<new version>`
   and then configure it in the `messages.json` file
-- Update the `_version.py` with the appropriate version 
+- Update the `_version.py` with the appropriate version as the tag name
 - `git tag <new version> main`
 - `git push origin tag <new version>`
 
