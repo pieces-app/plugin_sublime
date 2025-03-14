@@ -45,7 +45,17 @@ jobs:
                 echo "This is a tagged build"
                 export RELEASE_VERSION='${{ steps.get_version.outputs.VERSION }}'
                 echo $RELEASE_VERSION
-                sed -i "s/__version__ = .*/__version__ = \"${RELEASE_VERSION}\"/" _version.py
+
+                # Read the current version from _version.py
+                CURRENT_VERSION=$(grep -oP '(?<=__version__ = ")[^"]+' _version.py)
+
+                # Compare the versions
+                if [[ "$CURRENT_VERSION" == "$RELEASE_VERSION" ]]; then
+                    echo "The version in _version.py is already set to the release version."
+                else
+                    echo "Update the _version.py version to $RELEASE_VERSION"
+                    exit 1
+                fi
           else
                 echo "This is not a tagged build"
                 export STAGING_VERSION='${{ steps.staging_version.outputs.STAGING_VERSION }}'
