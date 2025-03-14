@@ -29,7 +29,7 @@ class PiecesCheckSelfUpdatesCommand(sublime_plugin.ApplicationCommand):
          sublime.ok_cancel_dialog(
             msg="There is a new Pieces for Sublime version, Do you want to install it?",
                 ok_title="Install", title="Pieces for Sublime update"):
-            self.progress_bar = ProgressBar("Installation Pieces for Sublime Plugin", total=100)
+            self.progress_bar = ProgressBar("Installating Pieces for Sublime Plugin", total=100)
             self.progress_bar.start()
             PosInstaller(self.on_update, "").install_using_web(
                 PiecesSettings.add_params(SUBLIME_PACKAGE_URL), 
