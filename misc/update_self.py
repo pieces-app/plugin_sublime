@@ -22,6 +22,7 @@ class PiecesCheckSelfUpdatesCommand(sublime_plugin.ApplicationCommand):
             if not isinstance(latest_version, str):
                 raise ValueError
         except: # Internet issues
+            print("Unable to Check the latest release")
             return
 
         if VersionChecker.compare(latest_version,__version__) == 1 and \
