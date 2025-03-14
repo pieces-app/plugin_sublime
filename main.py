@@ -1,4 +1,4 @@
-from . import __version__
+from ._version import __version__
 from .settings import PiecesSettings
 from .copilot.ask_command import copilot
 import sublime
@@ -56,6 +56,8 @@ def startup():
 def plugin_loaded():
 	# Use the auth callback instead of the default one in the client
 	PiecesSettings.api_client.user.on_user_callback = AuthUser.on_user_callback 
+	if PiecesSettings.get_settings().get("auto_check_updates", True):
+		sublime.run_command("pieces_check_self_updates")
 	sublime.set_timeout_async(run_async)
 	
 

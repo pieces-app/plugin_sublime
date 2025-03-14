@@ -2,7 +2,7 @@ from ..settings import PiecesSettings
 import sublime
 import sublime_plugin
 import mdpopups
-from .. import __version__
+from .._version import __version__
 
 
 md_text = f"""

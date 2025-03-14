@@ -6,3 +6,4 @@ from .onboarding_command import PiecesOnboardingCommand,PiecesOnboardingCommands
 from .close_command import PiecesCloseOsCommand
 from .install_pieces_os import PiecesInstallPiecesOsCommand
 from .models.models_command import PiecesChangeModelCommand
+from .update_self import PiecesCheckSelfUpdatesCommand

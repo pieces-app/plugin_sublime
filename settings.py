@@ -11,7 +11,7 @@ import sublime
 import os
 from .assets.ext_map import file_map
 
-from . import __version__
+from ._version import __version__
 from enum import Enum
 import webbrowser
 from urllib.parse import urlparse, parse_qsl, urlencode, urlunparse
@@ -141,9 +141,13 @@ class PiecesSettings:
 
 	@classmethod
 	def open_website(cls, url:str):
+		webbrowser.open(cls.add_params(url))
+
+	@classmethod
+	def add_params(cls, url:str):
 		from .auth.auth_user import AuthUser
 		if (not cls.api_client.is_pos_stream_running) and ("pieces.app" not in url):
-			return webbrowser.open(url)
+			return url
 		para = {}
 		if AuthUser.user_profile:
 			para["user"] = AuthUser.user_profile.id
@@ -157,9 +161,7 @@ class PiecesSettings:
 
 		url_parts[4] = urlencode(query)
 		new_url = urlunparse(url_parts)
-		print(new_url)
-		webbrowser.open(new_url)
-
+		return new_url
 
 
 	@staticmethod
