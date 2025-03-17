@@ -54,6 +54,11 @@ def startup():
 
 
 def plugin_loaded():
+
+	# Load the settings from 'Pieces.sublime-settings' file using Sublime Text API
+	pieces_settings = sublime.load_settings('Pieces.sublime-settings')
+	pieces_settings.add_on_change("PIECES_SETTINGS",PiecesSettings.on_settings_change)
+
 	# Use the auth callback instead of the default one in the client
 	PiecesSettings.api_client.user.on_user_callback = AuthUser.on_user_callback 
 	if PiecesSettings.get_settings().get("auto_check_updates", True):

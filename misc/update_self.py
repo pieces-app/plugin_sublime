@@ -48,10 +48,9 @@ class PiecesCheckSelfUpdatesCommand(sublime_plugin.ApplicationCommand):
 
     @staticmethod
     def get_latest_tag():
-        with urllib.request.urlopen("https://api.github.com/repos/pieces-app/plugin_sublime/tags") as response:
+        with urllib.request.urlopen("https://builds.pieces.app/stages/production/plugin_sublime/version") as response:
             if response.status == 200:
                 data = response.read()
-                tags = json.loads(data)
-
-                if tags:
-                    return tags[0]['name']
+                json_res = json.loads(data)
+                if json_res:
+                    return json_res["version"]

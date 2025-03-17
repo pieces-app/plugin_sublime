@@ -12,7 +12,7 @@ copilot = CopilotViewManager()
 
 class PiecesAskStreamCommand(sublime_plugin.WindowCommand):
 	@check_pieces_os()
-	def run(self,pieces_choose_type = None,pieces_query=None,pieces_conversation_id=None, mode = None):
+	def run(self,pieces_choose_type = None,pieces_query=None,pieces_conversation_id = None, mode = None):
 		if mode:
 			mode = CopilotMode.parse(mode)
 		else:
@@ -34,7 +34,10 @@ class PiecesAskStreamCommand(sublime_plugin.WindowCommand):
 
 	@check_pieces_os(True)
 	def input(self,args):
-		if args.get("mode", PiecesSettings.copilot_mode) == CopilotMode.IDE:
+		mode = args.get("mode", PiecesSettings.copilot_mode)
+		if isinstance(mode, str):
+			mode = CopilotMode.parse(mode)
+		if mode.name == CopilotMode.IDE.name:
 			return PiecesChooseTypeInputHandler()
 
 
