@@ -3,11 +3,12 @@
 ![Pieces Sublime Plugin](icons/hero-image.png)
 
 ##### <p align="center"> [Website](https://pieces.app/) • [PiecesOS Documentation](https://docs.pieces.app/) • [Pieces for Sublime Docs](https://docs.pieces.app/extensions-plugins/sublime)
+
 </p>
 
 # Important
 
-Please make sure you have [**PiecesOS**](https://docs.pieces.app/installation-getting-started/what-am-i-installing) installed to run [**the Package.**](https://packagecontrol.io/packages/Pieces) 
+Please make sure you have [**PiecesOS**](https://docs.pieces.app/installation-getting-started/what-am-i-installing) installed to run [**the Package.**](https://packagecontrol.io/packages/Pieces)
 
 ## Getting Started with the Pieces Sublime Plugin
 
@@ -24,7 +25,7 @@ You can also open the settings from the command palette `Pieces: Open Settings`.
 
 ![Pieces Open Settings](icons/pieces%20open%20settings.png)
 
-#### LLMs Supported by the Pieces for Sublime Plugin 
+#### LLMs Supported by the Pieces for Sublime Plugin
 
 Currently, the Pieces for Sublime Plugin supports 20+ AI models, so you can choose the one that best fits your needs.
 
@@ -57,11 +58,12 @@ Currently, the Pieces for Sublime Plugin supports 20+ AI models, so you can choo
 - Granite 3B
 
 ## Features
+
 ### Logging Into or Out Of Pieces Account
 
 Using the command `Pieces: Connect Personal Cloud` or `Pieces: Disconnect Personal Cloud` from your command palette logs you in and out of your Pieces account. An output panel is available to check your cloud status and login status.
 
-Logging into your Pieces account lets you sync your snippets and settings between PiecesOS and other Pieces plugins. 
+Logging into your Pieces account lets you sync your snippets and settings between PiecesOS and other Pieces plugins.
 
 ### Right Click to Save to Pieces
 
@@ -77,7 +79,7 @@ You can ask the Pieces Copilot questions about your code, view your conversation
 
 ### Copilot Ask
 
-Need some help from the Pieces Copilot? Just select the code and right-click to open the context menu and choose `Pieces > Ask Copilot`. 
+Need some help from the Pieces Copilot? Just select the code and right-click to open the context menu and choose `Pieces > Ask Copilot`.
 
 ![copilot ask](icons/pieces%20ask%20copilot.png)
 
@@ -89,7 +91,7 @@ You can utilize the LLM capabilities of Pieces Copilot with an intelligent debug
 
 #### Code Comments
 
-The mark of well-written, high-quality code (aside from functionality!) is code comments. This can get tedious, though, so the Pieces for Sublime Plugin comes with a built-in intelligent commenting feature. Selecting the `Add code comments` option from the context menu will add comments to your selected portion of code. 
+The mark of well-written, high-quality code (aside from functionality!) is code comments. This can get tedious, though, so the Pieces for Sublime Plugin comes with a built-in intelligent commenting feature. Selecting the `Add code comments` option from the context menu will add comments to your selected portion of code.
 
 Let Copilot do the heavy lifting for you!
 
@@ -99,14 +101,14 @@ Let Copilot do the heavy lifting for you!
 
 The Pieces for Sublime Plugin lets you ask context-focused questions based on the file you're working in, or the entire project itself. This is an extremely useful feature for new developers getting to know an unfamiliar codebase just as well as experienced developers looking to cut down on production time.
 
-- **Ask About the Current Project**: Use the command `Pieces: Ask about the current project` to ask the Pieces Copilot a question about your entire project. 
+- **Ask About the Current Project**: Use the command `Pieces: Ask about the current project` to ask the Pieces Copilot a question about your entire project.
 - **Ask About the Current File**: Use the command `Pieces: Ask about the current file` to get assistance with the current opened file.
 
 ![ask about current file and project](icons/pieces%20ask%20about%20current%20file.png)
 
 ### Sublime Snippet Management
 
-You can import and export code snippets you've saved using other Pieces software for use in or from Sublime. 
+You can import and export code snippets you've saved using other Pieces software for use in or from Sublime.
 
 - **Import Sublime Snippet**: Use the command `Pieces: Import Sublime Snippet` to import a Sublime snippet into Pieces.
 - **Export Pieces Material**: Use the command `Pieces: Export Pieces Material` to export a Pieces snippet back to Sublime.
@@ -121,7 +123,7 @@ Ready to access your saved materials? It's super easy! Just follow these steps:
 
 ![open saved materials](icons/pieces%20open%20saved%20material.png)
 
-Your material is now open and ready for you to use. 
+Your material is now open and ready for you to use.
 
 ### Find your Saved Code Snippets
 
@@ -137,17 +139,17 @@ There are [three types of searching:](https://docs.pieces.app/features/search-mo
 
 ### Edit Saved Materials
 
-Want to make [changes to your saved materials?](https://docs.pieces.app/features/managing-saved-materials) 
+Want to make [changes to your saved materials?](https://docs.pieces.app/features/managing-saved-materials)
 
-Switch to editor mode by clicking the **Edit** button on your saved snippet. Modify the content as needed and save your changes with a simple `command/ctrl + s`. 
+Switch to editor mode by clicking the **Edit** button on your saved snippet. Modify the content as needed and save your changes with a simple `command/ctrl + s`.
 
 ### Shareable Link
 
-If you want to [share a saved snippet](https://docs.pieces.app/features/one-click-snippet-sharing) with another developer (even if they don't have a Pieces account), you can. 
+If you want to [share a saved snippet](https://docs.pieces.app/features/one-click-snippet-sharing) with another developer (even if they don't have a Pieces account), you can.
 
-Just select the code, right-click to open the context menu, and choose `Pieces > Generate shareable link`. 
+Just select the code, right-click to open the context menu, and choose `Pieces > Generate shareable link`.
 
-You can also share a saved snippet by opening it with `Pieces: Open saved Material` and clicking the **Share** button. 
+You can also share a saved snippet by opening it with `Pieces: Open saved Material` and clicking the **Share** button.
 
 ### [Auto Complete](https://docs.pieces.app/features/code-completion)
 
@@ -157,19 +159,19 @@ You can enable or disable this feature in your settings by entering `Pieces: Ope
 
 ### Reload the Plugin
 
-If you're experiencing an issue or something isn't working properly, try reloading the plugin using the command `Pieces: Reload Plugin` in your command palette. 
+If you're experiencing an issue or something isn't working properly, try reloading the plugin using the command `Pieces: Reload Plugin` in your command palette.
 
 Don't forget to make sure PiecesOS is running.
 
 ### Get Support or Share Feedback
 
-Experiencing an issue or have feedback for the Pieces team? 
+Experiencing an issue or have feedback for the Pieces team?
 
-No worries, we've got you covered. 
+No worries, we've got you covered.
 
 Simply open the command palette and run `Pieces: Get Support`. From here, you will find resources where you can connect with the Pieces team.
 
-## Connect with the Pieces Community
+## Connect with Pieces
 
 #### Join our [Discord Community](https://discord.gg/getpieces)
 
