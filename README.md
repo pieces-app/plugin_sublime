@@ -1,3 +1,5 @@
+![Pieces Sublime Plugin](icons/hero-image.png)
+
 # Pieces for Sublime
 
 See the [full docs](https://docs.pieces.app/products/extensions-plugins/sublime)
