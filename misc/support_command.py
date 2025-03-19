@@ -16,8 +16,8 @@ support_resources = [
 	},
 	{
 		"text":"Get Support",
-		"value":"https://docs.pieces.app/support",
-		"details":"Visit our website | https://docs.pieces.app/support"
+		"value":"https://docs.pieces.app/products/support",
+		"details":"Visit our website | https://docs.pieces.app/products/support"
 	},
 	{
 		"text":"Join our Discord Server",
