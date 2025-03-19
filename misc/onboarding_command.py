@@ -93,7 +93,7 @@ html_template = """
 		<div class="step">
 			<div class="step-title">Step 8: Explore the Features</div>
 			<div class="step-description">
-				Check out the <a href="https://docs.pieces.app/extensions-plugins/sublime">documentation</a> to learn about all the features and how to use them effectively.
+				Check out the <a href="https://docs.pieces.app/products/extensions-plugins/sublime">documentation</a> to learn about all the features and how to use them effectively.
 			</div>
 		</div>
 		<div class="step">
@@ -105,8 +105,7 @@ html_template = """
 		<div class="step">
 			<div class="step-title">Step 10: Join the Community</div>
 			<div class="step-description">
-				Don't forget to join our <a href="https://docs.pieces.app/community/">community</a><br>
-				Don't forget also to check the <a href="subl:pieces_about">Pieces: About</a> command for your command palette.
+				Don't forget to join our community use the <a href="subl:pieces_about">Pieces: About</a> command for your command palette to know more about our community.
 			</div>
 		</div>
 		<p>Enjoy using the Package! :)</p>

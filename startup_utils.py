@@ -43,7 +43,7 @@ def check_pieces_os(is_input_handler=False):
 						ok_title="Contact Support"
 					)
 					if r:
-						sublime.run_command("pieces_support",args={"support":"https://docs.pieces.app/support"})
+						sublime.run_command("pieces_support",args={"support":"https://docs.pieces.app/products/support"})
 				return
 
 			if PiecesSettings.api_client.is_pos_stream_running:
@@ -69,7 +69,7 @@ def check_pieces_os(is_input_handler=False):
 					no_title="Contact Support",
 				)
 				if r == sublime.DIALOG_NO:
-					return sublime.run_command("pieces_support",args={"support":"https://docs.pieces.app/support"})
+					return sublime.run_command("pieces_support",args={"support":"https://docs.pieces.app/products/support"})
 				elif r == sublime.DIALOG_YES:
 					return sublime.set_timeout_async(lambda:open_pieces_async(func=func, *args,**kwargs))
 				print("Make sure PiecesOS is running")

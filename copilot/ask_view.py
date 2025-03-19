@@ -267,7 +267,7 @@ class CopilotViewManager:
 		elif href == "turn_off":
 			sublime.active_window().run_command("pieces_disable_ltm")
 		elif href == "learn":
-			sublime.run_command("pieces_support",args={"support": "https://docs.pieces.app/resources/live-context"})
+			sublime.run_command("pieces_support",args={"support": "https://docs.pieces.app/products/quick-guides/ltm-context"})
 
 	def ask(self,pipeline=None):
 		if PiecesSettings.api_client.copilot.context.ltm.is_chat_ltm_enabled and \
