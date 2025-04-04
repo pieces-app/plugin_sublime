@@ -55,19 +55,19 @@ html_template = """
 			</div>
 		</div>
 		<div class="step">
-			<div class="step-title">Step 2: Create your first Snippet</div>
+			<div class="step-title">Step 2: Create your first Material</div>
 			<div class="step-description">
 				{create_status}
 			</div>
 		</div>
 		<div class="step">
-			<div class="step-title">Step 3: View your saved snippets</div>
+			<div class="step-title">Step 3: View your saved materials</div>
 			<div class="step-description">
 				{open_status}
 			</div>
 		</div>
 		<div class="step">
-			<div class="step-title">Step 4: Search for your saved snippet</div>
+			<div class="step-title">Step 4: Search for your saved material</div>
 			<div class="step-description">
 				{search_status}
 			</div>
@@ -169,14 +169,14 @@ class PiecesOnboardingCommand(sublime_plugin.WindowCommand):
 	def create_command_status(self):
 		settings = self.get_onboarding_settings()
 		if settings.get("create"):
-			return green('Congratulations on creating your first snippet! Keep exploring and creating more to enhance your coding experience')
-		return f"""Snippets {subl_onboarding_commands("creation","create")} are like little treasures of code! Save them, and you'll have a goldmine of solutions. Plus, with a quick search, you can uncover exactly what you need in no time!"""
+			return green('Congratulations on creating your first material! Keep exploring and creating more to enhance your coding experience')
+		return f"""Materials {subl_onboarding_commands("creation","create")} are like little treasures of code! Save them, and you'll have a goldmine of solutions. Plus, with a quick search, you can uncover exactly what you need in no time!"""
 
 	def open_asset_command_status(self):
 		settings = self.get_onboarding_settings()
 		if settings.get("open"):
-			return green('Great job! You viewed your saved snippet.')
-		return '<a href="subl:pieces_list_assets">Click here</a> to explore all your snippets and keep the creativity flowing!'
+			return green('Great job! You viewed your saved material.')
+		return '<a href="subl:pieces_list_assets">Click here</a> to explore all your materials and keep the creativity flowing!'
 
 	def ask_question_command_status(self):
 		settings = self.get_onboarding_settings()
@@ -187,8 +187,8 @@ class PiecesOnboardingCommand(sublime_plugin.WindowCommand):
 	def search_command_status(self):
 		settings = self.get_onboarding_settings()
 		if settings.get("search"):
-			return green('Seached for snippet successfully!')
-		return """Ever lost your code snippet and spent hours searching for it? Discover our cutting-edge <a href="subl:pieces_search">searching</a> technology that makes finding your snippets a breeze!"""
+			return green('Seached for material successfully!')
+		return """Ever lost your code material and spent hours searching for it? Discover our cutting-edge <a href="subl:pieces_search">searching</a> technology that makes finding your materials a breeze!"""
 
 
 	def copilot_status(self):
@@ -200,7 +200,7 @@ class PiecesOnboardingCommand(sublime_plugin.WindowCommand):
 	def share_status(self):
 		settings = self.get_onboarding_settings()
 		if settings.get("share"):
-			return green("Shared your Snippet successfully")
+			return green("Shared your material successfully")
 		return f"{subl_onboarding_commands('Generate a shareable link','share')} to share it with others"
 	
 	def explain_status(self):
@@ -263,7 +263,7 @@ class PiecesOnboardingCommandsCommand(sublime_plugin.WindowCommand):
 				)
 		elif cmd == "share":
 			self.create_onboarding_view(snippet_create,
-				"Share a Snippet ✉",
+				"Share a material ✉",
 				"Right click to open your context menu Then go to 'Pieces > Generate Shareable Link'"
 				)
 		elif cmd == "explain":
