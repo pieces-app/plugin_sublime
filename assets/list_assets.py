@@ -16,7 +16,6 @@ HTML_CODE_BUTTON_CONTENT = '<div style="margin-top:2px">{content}</div>'
 
 class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 	sheets_md = {} # {Sheetid : asset_id}
-	shareable_link = [] # asset_ids
 
 	@check_pieces_os()
 	def run(self,pieces_asset_id):
@@ -36,7 +35,7 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 			markdown_text = asset.markdown
 		except:
 			sheet.close()
-			return sublime.error_message("Asset Not Found")
+			return sublime.error_message("Material Not Found")
 		if (not buttons_kwargs.get("share")) and (asset.shares):
 			buttons_kwargs["share"] = {
 				"title":"Copy Generated Link",
@@ -95,7 +94,7 @@ class PiecesListAssetsCommand(sublime_plugin.WindowCommand):
 		for sheet in sheets:
 			if sheet.id() in cls.sheets_md and \
 				sublime.ok_cancel_dialog(
-					"This snippet no longer exists. Would you like to close this sheet?",
+					"This material no longer exists. Would you like to close this sheet?",
 					title=f"Snippet {asset.name}"):
 				sheet.close()
 
@@ -116,7 +115,7 @@ class PiecesAssetIdInputHandler(sublime_plugin.ListInputHandler):
 		return assets_list
 
 	def placeholder(self):
-		return "Choose an asset"
+		return "Choose a material"
 
 
 def tabulate_from_markdown(md_text,buttons):
