@@ -187,7 +187,7 @@ class PiecesOnboardingCommand(sublime_plugin.WindowCommand):
 	def search_command_status(self):
 		settings = self.get_onboarding_settings()
 		if settings.get("search"):
-			return green('Seached for material successfully!')
+			return green('Searched for material successfully!')
 		return """Ever lost your code material and spent hours searching for it? Discover our cutting-edge <a href="subl:pieces_search">searching</a> technology that makes finding your materials a breeze!"""
 
 
