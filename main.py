@@ -1,6 +1,6 @@
 from ._version import __version__
 from .settings import PiecesSettings
-from .copilot.ask_command import copilot
+from .copilot.ask_command import PiecesConversationIdInputHandler, copilot
 import sublime
 from ._pieces_lib.pieces_os_client.wrapper.version_compatibility import UpdateEnum
 from ._pieces_lib.pieces_os_client.wrapper.websockets import (
@@ -34,14 +34,14 @@ def startup():
 	
 	print(f"PiecesOS version: {PiecesSettings.api_client.version}\nPlugin version: {__version__}")
 	PiecesSettings.models_init(PiecesSettings.get_settings().get('model')) # Intilize the models
-	ConversationWS(PiecesSettings.api_client)
+	ConversationWS(PiecesSettings.api_client, 
+		on_conversation_update=PiecesConversationIdInputHandler.cache_annotation)
 	AssetsIdentifiersWS(PiecesSettings.api_client,
 		on_asset_update=PiecesListAssetsCommand.on_asset_update,
 		on_asset_remove=PiecesListAssetsCommand.on_asset_delete)
 	AuthWS(PiecesSettings.api_client,PiecesSettings.api_client.user.on_user_callback)
 	AnchorsIdentifiersWS(PiecesSettings.api_client)
 	LTMVisionWS(PiecesSettings.api_client,lambda x : None)
-	RangesIdentifiersWS(PiecesSettings.api_client)
 	BaseWebsocket.start_all()
 	PiecesSettings.on_settings_change()
 

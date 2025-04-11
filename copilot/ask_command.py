@@ -1,11 +1,15 @@
+from typing import Dict
 import sublime_plugin
 import sublime
 from .ask_view import CopilotViewManager
 from ..settings import CopilotMode, PiecesSettings
 from ..startup_utils import check_pieces_os
+from ..progress_bar import ProgressBar
 from .._pieces_lib.pieces_os_client.models.qgpt_stream_input import QGPTStreamInput
 from .._pieces_lib.pieces_os_client.wrapper.basic_identifier.chat import BasicChat
 from .._pieces_lib.pieces_os_client.models.inactive_os_server_applet import InactiveOSServerApplet, OSAppletEnum
+from .._pieces_lib.pieces_os_client.models.annotation_type_enum import AnnotationTypeEnum
+from .._pieces_lib.pieces_os_client.models.conversation import Conversation
 
 copilot = CopilotViewManager()
 
@@ -74,10 +78,15 @@ class PiecesEnterResponseCommand(sublime_plugin.TextCommand):
 class PiecesDeleteConversationCommand(sublime_plugin.WindowCommand):
 	@check_pieces_os()
 	def run(self, pieces_conversation_id):
-		conv = BasicChat(pieces_conversation_id)
+		sublime.set_timeout_async(lambda: self.run_async(pieces_conversation_id))
+
+	def run_async(self, id):
+		pb = ProgressBar("Deleting chat")
+		pb.start()
+		conv = BasicChat(id)
 		name = conv.name
 		conv.delete()
-		sublime.status_message(f'The conversation "{name}" has been successfully deleted.')
+		pb.stop(f'The conversation "{name}" has been successfully deleted.')
 		sublime.set_timeout(
 		# if a user want to delete another conversation
 		lambda:self.window.run_command("pieces_delete_conversation"),100) # Wait for some ms
@@ -87,6 +96,7 @@ class PiecesDeleteConversationCommand(sublime_plugin.WindowCommand):
 		return PiecesConversationIdInputHandler()
 
 class PiecesConversationIdInputHandler(sublime_plugin.ListInputHandler):
+	annotation_cache: Dict[str, str] = {} # Asset ID: annotation description
 	def list_items(self):
 		return [
 			sublime.ListInputItem(
@@ -96,17 +106,21 @@ class PiecesConversationIdInputHandler(sublime_plugin.ListInputHandler):
 			for chat in PiecesSettings.api_client.copilot.chats()]
 
 	def get_annotation(self,chat):
-		try:
-			annotation = " "
-			annotations = chat.conversation.annotations
-			if annotations and annotations.indices:
-				annotation = PiecesSettings.api_client.annotation_api.annotation_specific_annotation_snapshot(list(annotations.indices.keys())[0]).text.replace("\n"," ")
-			return annotation
-		except:
-			return ""
+		return self.annotation_cache.get(chat.id, "")
 
 	def placeholder(self):
-		return "Choose a conversation or start new one"
+		return "Choose a chat or start new one"
+
+	@classmethod
+	def cache_annotation(cls, conversation: Conversation):
+		annotation_list = BasicChat(conversation.id).annotations
+		a = annotation_list[0].raw_content if annotation_list else ""
+		for annotation in annotation_list:
+			if annotation.type == AnnotationTypeEnum.DESCRIPTION:
+				a = annotation.raw_content.replace("\n", " ")
+
+		cls.annotation_cache[conversation.id] = a
+
 
 class PiecesInsertTextCommand(sublime_plugin.TextCommand):
 	def run(self,edit,text,point=None):
