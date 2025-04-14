@@ -146,7 +146,7 @@ class PiecesSettings:
 	@classmethod
 	def add_params(cls, url:str):
 		from .auth.auth_user import AuthUser
-		if (not cls.api_client.is_pos_stream_running) and ("pieces.app" not in url):
+		if (not cls.api_client.is_pos_stream_running) or ("pieces.app" not in url):
 			return url
 		para = {}
 		if AuthUser.user_profile:
