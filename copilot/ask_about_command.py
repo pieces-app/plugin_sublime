@@ -41,7 +41,7 @@ class PiecesAskStreamAboutCommand(sublime_plugin.TextCommand):
 
 	def on_done(self,query):
 		query = self.before_query + query
-		copilot.render_conversation(None)
+		copilot.render_conversation(PiecesSettings.api_client.copilot.chat.id)
 		copilot.add_query(query) # Add the query
 		copilot.gpt_view.run_command("pieces_enter_response")
 
