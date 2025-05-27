@@ -3,6 +3,7 @@ from .settings import PiecesSettings
 from .copilot.ask_command import PiecesConversationIdInputHandler, copilot
 import sublime
 from ._pieces_lib.pieces_os_client.wrapper.version_compatibility import UpdateEnum
+from ._pieces_lib.pieces_os_client.wrapper.streamed_identifiers._streamed_identifiers import StreamedIdentifiersCache
 from ._pieces_lib.pieces_os_client.wrapper.websockets import (
 	BaseWebsocket,
 	AuthWS,HealthWS,
@@ -10,7 +11,7 @@ from ._pieces_lib.pieces_os_client.wrapper.websockets import (
 	AssetsIdentifiersWS,
 	AnchorsIdentifiersWS,
 	LTMVisionWS,
-	RangesIdentifiersWS)
+)
 
 
 from .startup_utils import check_compatiblity
@@ -42,6 +43,7 @@ def startup():
 	AuthWS(PiecesSettings.api_client,PiecesSettings.api_client.user.on_user_callback)
 	AnchorsIdentifiersWS(PiecesSettings.api_client)
 	LTMVisionWS(PiecesSettings.api_client,lambda x : None)
+	StreamedIdentifiersCache.pieces_client = PiecesSettings.api_client
 	BaseWebsocket.start_all()
 	PiecesSettings.on_settings_change()
 
