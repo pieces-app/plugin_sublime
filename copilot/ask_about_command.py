@@ -8,6 +8,7 @@ from ..startup_utils import check_pieces_os
 class PiecesAskStreamAboutCommand(sublime_plugin.TextCommand):
 	@check_pieces_os()
 	def run(self,edit,type,pieces_query=None):
+		self.chat = PiecesSettings.api_client.copilot.create_chat()
 		self.before_query = ""
 		if type == "file":
 			path = self.view.file_name()
@@ -41,7 +42,7 @@ class PiecesAskStreamAboutCommand(sublime_plugin.TextCommand):
 
 	def on_done(self,query):
 		query = self.before_query + query
-		copilot.render_conversation(PiecesSettings.api_client.copilot.chat.id)
+		copilot.render_conversation(self.chat.id)
 		copilot.add_query(query) # Add the query
 		copilot.gpt_view.run_command("pieces_enter_response")
 
