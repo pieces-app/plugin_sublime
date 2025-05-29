@@ -43,6 +43,7 @@ In order to get the most out of Long-Term Memory (LTM) Context, you need to enab
 """
 
 class CopilotViewManager:
+	gpt_clones: List[sublime.View] = []
 	def __init__(self):
 		self.cache_response = False
 		self._cached_response = ""

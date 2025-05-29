@@ -42,7 +42,7 @@ def startup():
 		on_asset_remove=PiecesListAssetsCommand.on_asset_delete)
 	AuthWS(PiecesSettings.api_client,PiecesSettings.api_client.user.on_user_callback)
 	AnchorsIdentifiersWS(PiecesSettings.api_client)
-	LTMVisionWS(PiecesSettings.api_client,lambda x : None)
+	# LTMVisionWS(PiecesSettings.api_client,lambda x : None) # not super useful websocket,avoid blocking the async thread
 	StreamedIdentifiersCache.pieces_client = PiecesSettings.api_client
 	BaseWebsocket.start_all()
 	PiecesSettings.on_settings_change()
