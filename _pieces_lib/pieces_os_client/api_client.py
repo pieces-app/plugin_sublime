@@ -24,11 +24,10 @@ import re
 import tempfile
 
 from urllib.parse import quote
-from Pieces._pieces_lib.pydantic import SecretStr
 
 from Pieces._pieces_lib.pieces_os_client.configuration import Configuration
 from Pieces._pieces_lib.pieces_os_client.api_response import ApiResponse
-import importlib
+import Pieces._pieces_lib.pieces_os_client.models
 from Pieces._pieces_lib.pieces_os_client import rest
 from Pieces._pieces_lib.pieces_os_client.exceptions import ApiValueError, ApiException
 
@@ -78,7 +77,7 @@ class ApiClient:
             self.default_headers[header_name] = header_value
         self.cookie = cookie
         # Set default User-Agent.
-        self.user_agent = 'OpenAPI-Generator/4.1.0/python'
+        self.user_agent = 'OpenAPI-Generator/2.7.0/python'
         self.client_side_validation = configuration.client_side_validation
 
     def __enter__(self):
@@ -262,7 +261,6 @@ class ApiClient:
         """Builds a JSON POST object.
 
         If obj is None, return None.
-        If obj is SecretStr, return obj.get_secret_value()
         If obj is str, int, long, float, bool, return directly.
         If obj is datetime.datetime, datetime.date
             convert to string in iso8601 format.
@@ -275,8 +273,6 @@ class ApiClient:
         """
         if obj is None:
             return None
-        elif isinstance(obj, SecretStr):
-            return obj.get_secret_value()
         elif isinstance(obj, self.PRIMITIVE_TYPES):
             return obj
         elif isinstance(obj, list):
@@ -296,10 +292,7 @@ class ApiClient:
             # and attributes which value is not None.
             # Convert attribute name to json key in
             # model definition for request.
-            if hasattr(obj, 'to_dict') and callable(getattr(obj, 'to_dict')):
-                obj_dict = obj.to_dict()
-            else:
-                obj_dict = obj.__dict__
+            obj_dict = obj.to_dict()
 
         return {key: self.sanitize_for_serialization(val)
                 for key, val in obj_dict.items()}
@@ -352,44 +345,11 @@ class ApiClient:
             if klass in self.NATIVE_TYPES_MAPPING:
                 klass = self.NATIVE_TYPES_MAPPING[klass]
             else:
-                # Convert the class to snake case
-                # NOTE:
-                # The following regex substitution doesn't work properly:
-                #
-                #     snake_case = re.sub(r'(?<!^)(?=[A-Z])', '_', klass).lower()
-                #
-                # An issue arises because this regex inserts underscores between all adjacent
-                # uppercase letters (except at the start), which is not desirable for sequences like
-                # 'QGPT'. It turns 'QGPT' into 'q_g_p_t'.
-                # The following regex substitution should fix that:
-                snake_case = re.sub(
-                    r'(?<=[a-z0-9])(?=[A-Z])'      # Between lowercase/digit and uppercase
-                    r'|(?<=[A-Z])(?=[A-Z][a-z])',  # Between uppercase and uppercase-lowercase sequence
-                    '_',
-                    klass
-                ).lower()
-                # EXPLANATION:
-                # (?<=[a-z0-9])(?=[A-Z]): Inserts an underscore between a lowercase letter or digit
-                #                         and an uppercase letter. This handles transitions like
-                #                         'myClass' to 'my_Class'.
-                # (?<=[A-Z])(?=[A-Z][a-z]): Inserts an underscore in cases where a sequence of
-                #                           uppercase letters is followed by an uppercase letter and
-                #                           then a lowercase letter. This handles cases like
-                #                           'XMLHttpRequest' to 'XML_Http_Request'.
-                #
-                # EXAMPLE OUTPUTS:
-                #     'QGPT'           -> 'qgpt'
-                #     'MyClassName'    -> 'my_class_name'
-                #     'HTTPRequest'    -> 'http_request'
-                #     'XMLHttpRequest' -> 'xml_http_request'
-
-                # Import the class
-                module = importlib.import_module(f"Pieces._pieces_lib.pieces_os_client.models.{snake_case}")
-                klass = getattr(module, klass)
+                klass = getattr(Pieces._pieces_lib.pieces_os_client.models, klass)
 
         if klass in self.PRIMITIVE_TYPES:
             return self.__deserialize_primitive(data, klass)
-        elif klass == object:  # noqa: E721
+        elif klass == object:
             return self.__deserialize_object(data)
         elif klass == datetime.date:
             return self.__deserialize_date(data)
