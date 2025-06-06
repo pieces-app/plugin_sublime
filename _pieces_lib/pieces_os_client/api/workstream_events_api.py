@@ -19,7 +19,7 @@ import warnings
 
 from Pieces._pieces_lib.pydantic import validate_arguments, ValidationError
 
-from Pieces._pieces_lib.typing_extensions import Annotated
+from typing_extensions import Annotated
 from Pieces._pieces_lib.pydantic import Field, StrictBool, StrictStr
 
 from typing import Optional
@@ -180,7 +180,7 @@ class WorkstreamEventsApi:
                 _header_params['Content-Type'] = _content_types_list
 
         # authentication setting
-        _auth_settings = ['application']  # noqa: E501
+        _auth_settings = []  # noqa: E501
 
         _response_types_map = {
             '200': "WorkstreamEvent",
@@ -321,7 +321,7 @@ class WorkstreamEventsApi:
             ['text/plain'])  # noqa: E501
 
         # authentication setting
-        _auth_settings = ['application']  # noqa: E501
+        _auth_settings = []  # noqa: E501
 
         _response_types_map = {}
 
@@ -459,7 +459,7 @@ class WorkstreamEventsApi:
             ['application/json', 'text/plain'])  # noqa: E501
 
         # authentication setting
-        _auth_settings = ['application']  # noqa: E501
+        _auth_settings = []  # noqa: E501
 
         _response_types_map = {
             '200': "WorkstreamEvents",

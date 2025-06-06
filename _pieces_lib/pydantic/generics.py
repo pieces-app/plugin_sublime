@@ -20,7 +20,7 @@ from typing import (
 )
 from weakref import WeakKeyDictionary, WeakValueDictionary
 
-from Pieces._pieces_lib.typing_extensions import Annotated, Literal as ExtLiteral
+from typing_extensions import Annotated, Literal as ExtLiteral
 
 from .class_validators import gather_all_validators
 from .fields import DeferredType

@@ -49,8 +49,7 @@ class FlattenedPerson(BaseModel):
     score: Optional[Score] = None
     summaries: Optional[FlattenedWorkstreamSummaries] = None
     anchors: Optional[FlattenedAnchors] = None
-    messages: Optional[FlattenedConversationMessages] = None
-    __properties = ["schema", "id", "created", "updated", "deleted", "type", "assets", "mechanisms", "interactions", "access", "tags", "websites", "models", "annotations", "score", "summaries", "anchors", "messages"]
+    __properties = ["schema", "id", "created", "updated", "deleted", "type", "assets", "mechanisms", "interactions", "access", "tags", "websites", "models", "annotations", "score", "summaries", "anchors"]
 
     class Config:
         """Pydantic configuration"""
@@ -126,9 +125,6 @@ class FlattenedPerson(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of anchors
         if self.anchors:
             _dict['anchors'] = self.anchors.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of messages
-        if self.messages:
-            _dict['messages'] = self.messages.to_dict()
         return _dict
 
     @classmethod
@@ -167,15 +163,13 @@ class FlattenedPerson(BaseModel):
             "annotations": FlattenedAnnotations.from_dict(obj.get("annotations")) if obj.get("annotations") is not None else None,
             "score": Score.from_dict(obj.get("score")) if obj.get("score") is not None else None,
             "summaries": FlattenedWorkstreamSummaries.from_dict(obj.get("summaries")) if obj.get("summaries") is not None else None,
-            "anchors": FlattenedAnchors.from_dict(obj.get("anchors")) if obj.get("anchors") is not None else None,
-            "messages": FlattenedConversationMessages.from_dict(obj.get("messages")) if obj.get("messages") is not None else None
+            "anchors": FlattenedAnchors.from_dict(obj.get("anchors")) if obj.get("anchors") is not None else None
         })
         return _obj
 
 from Pieces._pieces_lib.pieces_os_client.models.flattened_anchors import FlattenedAnchors
 from Pieces._pieces_lib.pieces_os_client.models.flattened_annotations import FlattenedAnnotations
 from Pieces._pieces_lib.pieces_os_client.models.flattened_assets import FlattenedAssets
-from Pieces._pieces_lib.pieces_os_client.models.flattened_conversation_messages import FlattenedConversationMessages
 from Pieces._pieces_lib.pieces_os_client.models.flattened_tags import FlattenedTags
 from Pieces._pieces_lib.pieces_os_client.models.flattened_websites import FlattenedWebsites
 from Pieces._pieces_lib.pieces_os_client.models.flattened_workstream_summaries import FlattenedWorkstreamSummaries

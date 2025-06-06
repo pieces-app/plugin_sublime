@@ -19,7 +19,7 @@ import warnings
 
 from Pieces._pieces_lib.pydantic import validate_arguments, ValidationError
 
-from Pieces._pieces_lib.typing_extensions import Annotated
+from typing_extensions import Annotated
 from Pieces._pieces_lib.pydantic import Field, StrictStr
 
 from typing import Optional
@@ -312,7 +312,7 @@ class UsersApi:
             ['application/json'])  # noqa: E501
 
         # authentication setting
-        _auth_settings = ['application']  # noqa: E501
+        _auth_settings = []  # noqa: E501
 
         _response_types_map = {
             '200': "Users",
@@ -444,7 +444,7 @@ class UsersApi:
             ['application/json'])  # noqa: E501
 
         # authentication setting
-        _auth_settings = ['application']  # noqa: E501
+        _auth_settings = []  # noqa: E501
 
         _response_types_map = {
             '200': "Users",
@@ -584,7 +584,7 @@ class UsersApi:
             ['application/json'])  # noqa: E501
 
         # authentication setting
-        _auth_settings = ['application']  # noqa: E501
+        _auth_settings = []  # noqa: E501
 
         _response_types_map = {
             '200': "UserProfile",

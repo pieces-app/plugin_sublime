@@ -26,7 +26,7 @@ from typing import (
     Union,
 )
 
-from Pieces._pieces_lib.typing_extensions import Annotated
+from typing_extensions import Annotated
 
 from .errors import ConfigError
 from .typing import (

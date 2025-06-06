@@ -19,7 +19,7 @@ import warnings
 
 from Pieces._pieces_lib.pydantic import validate_arguments, ValidationError
 
-from Pieces._pieces_lib.typing_extensions import Annotated
+from typing_extensions import Annotated
 from Pieces._pieces_lib.pydantic import Field, StrictStr, conlist, validator
 
 from typing import Optional
@@ -174,7 +174,7 @@ class Auth0Api:
             ['text/html'])  # noqa: E501
 
         # authentication setting
-        _auth_settings = ['application']  # noqa: E501
+        _auth_settings = []  # noqa: E501
 
         _response_types_map = {
             '200': "str",
@@ -395,7 +395,7 @@ class Auth0Api:
             ['application/x-www-form-urlencoded'])  # noqa: E501
 
         # authentication setting
-        _auth_settings = ['application']  # noqa: E501
+        _auth_settings = []  # noqa: E501
 
         _response_types_map = {
             '200': "ResultedPKCE",
@@ -590,7 +590,7 @@ class Auth0Api:
                 _header_params['Content-Type'] = _content_types_list
 
         # authentication setting
-        _auth_settings = ['application']  # noqa: E501
+        _auth_settings = []  # noqa: E501
 
         _response_types_map = {
             '200': "OAuthToken",

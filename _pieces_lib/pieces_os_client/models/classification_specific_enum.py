@@ -248,7 +248,6 @@ class ClassificationSpecificEnum(str, Enum):
     HRL = 'hrl'
     ESCRIPT = 'escript'
     LUA = 'lua'
-    LUAU = 'luau'
     MD = 'md'
     MDOWN = 'mdown'
     MDWN = 'mdwn'
@@ -533,7 +532,6 @@ class ClassificationSpecificEnum(str, Enum):
     FTL = 'ftl'
     HCL = 'hcl'
     ABAP = 'abap'
-    NIM = 'nim'
 
     @classmethod
     def from_json(cls, json_str: str) -> ClassificationSpecificEnum:

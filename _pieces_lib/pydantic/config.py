@@ -2,7 +2,7 @@ import json
 from enum import Enum
 from typing import TYPE_CHECKING, Any, Callable, Dict, ForwardRef, Optional, Tuple, Type, Union
 
-from Pieces._pieces_lib.typing_extensions import Literal, Protocol
+from typing_extensions import Literal, Protocol
 
 from .typing import AnyArgTCallable, AnyCallable
 from .utils import GetterDict
@@ -41,7 +41,7 @@ class Extra(str, Enum):
 # Fixed in Cython 3 and Pydantic v1 won't support Cython 3.
 # Pydantic v2 doesn't depend on Cython at all.
 if not compiled:
-    from Pieces._pieces_lib.typing_extensions import TypedDict
+    from typing_extensions import TypedDict
 
     class ConfigDict(TypedDict, total=False):
         title: Optional[str]
