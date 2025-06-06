@@ -39,18 +39,29 @@ jobs:
           # Copy the newly generated _pieces_lib to our repository
           cp -r _pieces_lib ../
 
-      - name: Remove directories containing semver # We no longer use semver in _pieces_lib
+      - name: Remove directories containing semver or dist # We no longer use semver or dist in _pieces_lib
         run: |
           if [ -d "_pieces_lib" ]; then
-            # Find and remove all directories containing 'semver' in their name (only direct children of _pieces_lib)
-            found_dirs=$(find _pieces_lib -maxdepth 1 -type d -name '*semver*' 2>/dev/null)
-            if [ -n "$found_dirs" ]; then
+            # Find and remove all directories containing 'semver' or 'dist' in their name (only direct children of _pieces_lib)
+            found_semver=$(find _pieces_lib -maxdepth 1 -type d -name '*semver*' 2>/dev/null)
+            found_dist=$(find _pieces_lib -maxdepth 1 -type d -name '*dist*' 2>/dev/null)
+            
+            if [ -n "$found_semver" ]; then
               echo "Found directories containing 'semver':"
-              echo "$found_dirs"
+              echo "$found_semver"
               find _pieces_lib -maxdepth 1 -type d -name '*semver*' -exec rm -rf {} +
               echo "Removed all directories containing 'semver' from _pieces_lib"
             else
               echo "No directories containing 'semver' found in _pieces_lib"
+            fi
+            
+            if [ -n "$found_dist" ]; then
+              echo "Found directories containing 'dist':"
+              echo "$found_dist"
+              find _pieces_lib -maxdepth 1 -type d -name '*dist*' -exec rm -rf {} +
+              echo "Removed all directories containing 'dist' from _pieces_lib"
+            else
+              echo "No directories containing 'dist' found in _pieces_lib"
             fi
           else
             echo "_pieces_lib directory does not exist yet"
