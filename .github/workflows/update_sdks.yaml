@@ -39,6 +39,12 @@ jobs:
           # Copy the newly generated _pieces_lib to our repository
           cp -r _pieces_lib ../
 
+      - name: Fix the api_client.py
+          # Fix the specific importlib import in api_client.py
+          if [ -f "_pieces_lib/pieces_os_client/api_client.py" ]; then
+            sed -i 's/importlib\.import_module(f"pieces_os_client\./importlib.import_module(f"Pieces._pieces_lib.pieces_os_client./g' _pieces_lib/pieces_os_client/api_client.py
+          fi
+
       - name: Remove directories containing semver or dist # We no longer use semver or dist in _pieces_lib
         run: |
           if [ -d "_pieces_lib" ]; then
