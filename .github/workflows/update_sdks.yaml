@@ -40,6 +40,7 @@ jobs:
           cp -r _pieces_lib ../
 
       - name: Fix the api_client.py
+        run: |
           # Fix the specific importlib import in api_client.py
           if [ -f "_pieces_lib/pieces_os_client/api_client.py" ]; then
             sed -i 's/importlib\.import_module(f"pieces_os_client\./importlib.import_module(f"Pieces._pieces_lib.pieces_os_client./g' _pieces_lib/pieces_os_client/api_client.py
