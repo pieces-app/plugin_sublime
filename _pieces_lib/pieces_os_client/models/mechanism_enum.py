@@ -35,7 +35,6 @@ class MechanismEnum(str, Enum):
     AUTOMATIC = 'AUTOMATIC'
     INTERNAL = 'INTERNAL'
     DELETED = 'DELETED'
-    UNKNOWN = 'UNKNOWN'
 
     @classmethod
     def from_json(cls, json_str: str) -> MechanismEnum:

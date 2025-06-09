@@ -32,7 +32,6 @@ class HintTypeEnum(str, Enum):
     """
     SUGGESTED_QUERY = 'SUGGESTED_QUERY'
     QGPT_HINT = 'QGPT_HINT'
-    UNKNOWN = 'UNKNOWN'
 
     @classmethod
     def from_json(cls, json_str: str) -> HintTypeEnum:
