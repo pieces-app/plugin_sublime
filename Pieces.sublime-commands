@@ -4,11 +4,11 @@
 		"command": "pieces_list_assets"
 	},
 	{
-		"caption": "Pieces: Login",
+		"caption": "Pieces: Sign in",
 		"command": "pieces_login"
 	},
 	{
-		"caption": "Pieces: Logout",
+		"caption": "Pieces: Sign out",
 		"command": "pieces_logout"
 	},
 	{
