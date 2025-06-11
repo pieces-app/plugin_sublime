@@ -100,18 +100,19 @@ class PiecesEventListener(sublime_plugin.EventListener):
 				return False
 
 	def on_init(self, views):
-		sublime.set_timeout_async(lambda: self._render_conversation(views))				
+		views_render = [view for view in views if view.settings().get("PIECES_GPT_VIEW")]
+		if views_render:
+			sublime.set_timeout_async(lambda: self._render_conversation(views_render))
 
 	def _render_conversation(self, views):
 		BaseWebsocket.wait_all() # Wait for the conversations to load
 		for view in views:
-			if view.settings().get("PIECES_GPT_VIEW"):
-				conv = view.settings().get("conversation_id")
-				if conv in ConversationsSnapshot.identifiers_snapshot:
-					copilot.gpt_view = view
-					copilot.render_conversation(conv)
-				else:
-					view.close()
+			conv = view.settings().get("conversation_id")
+			if conv in ConversationsSnapshot.identifiers_snapshot:
+				copilot.gpt_view = view
+				copilot.render_conversation(conv)
+			else:
+				view.close()
 
 	@staticmethod
 	def on_deactivated(view):
