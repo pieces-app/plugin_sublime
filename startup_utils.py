@@ -86,7 +86,7 @@ def check_login() -> bool:
 	if AuthUser.user_profile:
 		return True
 
-	if sublime.ok_cancel_dialog("In order to use this feature, you must be signed in. Do you want to open the Sign in page?"):
+	if sublime.ok_cancel_dialog("Please sign into Pieces to use this feature. Do you want to sign in now?"):
 		sublime.active_window().run_command("pieces_login")
 
 	return False
