@@ -50,7 +50,6 @@ class PiecesShareAssetCommand(sublime_plugin.WindowCommand):
 						{"title":"Copy Generated Link",
 						"url":f'subl:pieces_copy_link  {{"content":"{share.iterable[0].link}", "asset_id":"{asset_id}"}}'}
 					})
-		PiecesSettings.notify("Shareable Link Generated",share.iterable[0].link)
 		return share
 
 		

@@ -1,11 +1,10 @@
 import webbrowser
 
 from ._pieces_lib.pieces_os_client.models.application_name_enum import ApplicationNameEnum
-from ._pieces_lib.pieces_os_client import SeededConnectorConnection,SeededTrackedApplication
+from ._pieces_lib.pieces_os_client import SeededConnectorConnection,SeededTrackedApplication, ApplicationsApi
 from ._pieces_lib.pieces_os_client.wrapper.websockets.base_websocket import BaseWebsocket
 from ._pieces_lib.pieces_os_client.wrapper import PiecesClient
 from ._pieces_lib.pieces_os_client.wrapper.version_compatibility import VersionCheckResult
-from ._pieces_lib import notify as notification
 from multiprocessing.pool import ThreadPool
 import sublime
 import os
@@ -134,6 +133,9 @@ class PiecesSettings:
 	def get_os_id(cls):
 		if cls._os_id:
 			return cls._os_id
+		if not hasattr(cls.api_client, "applications_api"):
+			setattr(cls.api_client, "applications_api",
+					ApplicationsApi(cls.api_client.api_client))
 		for app in cls.api_client.applications_api.applications_snapshot().iterable:
 			if app.name == ApplicationNameEnum.OS_SERVER:
 				cls._os_id = app.id
@@ -162,30 +164,3 @@ class PiecesSettings:
 		url_parts[4] = urlencode(query)
 		new_url = urlunparse(url_parts)
 		return new_url
-
-
-	@staticmethod
-	def notify(title,message,level="info"):
-		try:
-			if level == "error":
-				notification.error(title, message, False)
-			elif level == "warning":
-				notification.warning(title, message, False)
-			else:
-				notification.info(title, message, False)
-			notification.destroy()
-		except:
-			pass
-
-	if api_client.local_os == "MACOS":
-		os_icon = "pieces_server.icns"
-	elif api_client.local_os ==  "WINDOWS":
-		os_icon = "pieces_server.ico"
-	else:
-		os_icon = "pieces_server.png"
-
-	package_path = os.path.join(sublime.packages_path(),"Pieces") if debug else os.path.join(sublime.installed_packages_path(),"Pieces.sublime-package")
-	path = os.path.join(package_path,"icons", os_icon) if os_icon else None
-	os_icon = path
-	notification.setup_notifications("Pieces for Sublime Text",os_icon,sender=None)
-
