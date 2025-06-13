@@ -28,7 +28,7 @@ class PiecesShareAssetCommand(sublime_plugin.WindowCommand):
 		"""
 		user = AuthUser.user_profile
 		if not user:
-			if sublime.ok_cancel_dialog("You need to be logged in to generate a shareable link",ok_title="Login",title="Pieces"):
+			if sublime.ok_cancel_dialog("You need to be signed into generate a shareable link.",ok_title="Login",title="Pieces"):
 				self.window.run_command("pieces_login")
 			return 
 		if not user.allocation:

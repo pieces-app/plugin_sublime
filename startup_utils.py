@@ -4,8 +4,8 @@ from .settings import PiecesSettings
 import sublime
 from functools import wraps
 
-PIECES_OS_MIN_VERSION = "11.0.0"  # Minium version (11.0.0)
-PIECES_OS_MAX_VERSION = "12.0.0" # Maxium version (12.0.0)
+PIECES_OS_MIN_VERSION = "12.0.0"  # Minimum version (12.0.0)
+PIECES_OS_MAX_VERSION = "13.0.0" # Maximum version (13.0.0)
 
 compatiablity_result = None
 
@@ -18,7 +18,7 @@ def check_compatiblity():
 	return compatiablity_result
 
 
-def check_pieces_os(is_input_handler=False):
+def check_pieces_os(is_input_handler=False, bypass_login=False):
 	"""
 		Should be annotated before each input handler and run function in each command that needs PiecesOS
 	"""
@@ -29,6 +29,7 @@ def check_pieces_os(is_input_handler=False):
 				compatiablity_result = check_compatiblity()
 			except:
 				compatiablity_result = None
+			login_state = is_input_handler  or bypass_login or check_login()
 
 			if compatiablity_result and not compatiablity_result.compatible:
 				if not is_input_handler:
@@ -46,15 +47,18 @@ def check_pieces_os(is_input_handler=False):
 						sublime.run_command("pieces_support",args={"support":"https://docs.pieces.app/products/support"})
 				return
 
-			if PiecesSettings.api_client.is_pos_stream_running:
+			if PiecesSettings.api_client.is_pos_stream_running and login_state:
 				return func(*args, **kwargs)
+			elif PiecesSettings.api_client.is_pos_stream_running:
+				return
 
 			if PiecesSettings.api_client.is_pieces_running():
 				def run_async():
 					HealthWS.instance.close()
 					PiecesSettings.on_settings_change()
 				sublime.set_timeout_async(lambda: run_async)
-				return func(*args, **kwargs)
+				if login_state:
+					return func(*args, **kwargs)
 			else:
 				if is_input_handler:
 					return
@@ -71,16 +75,28 @@ def check_pieces_os(is_input_handler=False):
 				if r == sublime.DIALOG_NO:
 					return sublime.run_command("pieces_support",args={"support":"https://docs.pieces.app/products/support"})
 				elif r == sublime.DIALOG_YES:
-					return sublime.set_timeout_async(lambda:open_pieces_async(func=func, *args,**kwargs))
+					return sublime.set_timeout_async(lambda:open_pieces_async(bypass_login ,func=func ,*args ,**kwargs))
 				print("Make sure PiecesOS is running")
 
 		return wrapper
 	return decorator
 
-def open_pieces_async(*args, **kwargs):
+def check_login() -> bool:
+	from .auth.auth_user import AuthUser
+	if AuthUser.user_profile:
+		return True
+
+	if sublime.ok_cancel_dialog("Please sign into Pieces to use this feature. Do you want to sign in now?"):
+		sublime.active_window().run_command("pieces_login")
+
+	return False
+
+
+def open_pieces_async(bypass_login:bool, *args, **kwargs):
 	from .misc.open_pieces_command import PiecesOpenPiecesCommand
 	running = PiecesOpenPiecesCommand.run_async()
-	if running:
+	login_state = check_login() or bypass_login
+	if running and login_state:
 		func = kwargs.pop("func")
 		func(*args, **kwargs)
 

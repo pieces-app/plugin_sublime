@@ -10,10 +10,9 @@ from ._pieces_lib.pieces_os_client.wrapper.websockets import (
 	ConversationWS,
 	AssetsIdentifiersWS,
 	AnchorsIdentifiersWS,
-	LTMVisionWS,
 )
 
-
+from .auth.auth_user import AuthUser
 from .startup_utils import check_compatiblity
 
 # load the commands

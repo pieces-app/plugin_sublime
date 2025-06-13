@@ -88,6 +88,12 @@ jobs:
             echo "changes=true" >> $GITHUB_OUTPUT
           fi
 
+      - name: Discard some changes
+        run: |
+          git restore _pieces_lib/__init__.py
+          git restore _pieces_lib/api/__init__.py
+          git restore _pieces_lib/models/__init__.py
+
       - name: Create Pull Request
         if: steps.check_changes.outputs.changes == 'true'
         uses: peter-evans/create-pull-request@v5
