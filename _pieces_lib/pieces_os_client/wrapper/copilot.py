@@ -1,3 +1,4 @@
+from operator import is_
 from typing import TYPE_CHECKING, List, Optional, Generator
 import queue
 
@@ -156,7 +157,7 @@ class Copilot:
         if chat:
             self.context._init(chat)
         else:
-            self.context.clear(_notifiy = False)
+            self.context.clear()
         self._chat_id = chat._id if chat else None
 
 

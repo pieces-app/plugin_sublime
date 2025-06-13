@@ -19,11 +19,12 @@ import re  # noqa: F401
 import json
 
 
-from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictBool, StrictStr
+from typing import List, Optional, Union
+from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictBool, StrictFloat, StrictInt, StrictStr, conlist
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.grouped_timestamp import GroupedTimestamp
 from Pieces._pieces_lib.pieces_os_client.models.workstream_pattern_engine_source import WorkstreamPatternEngineSource
+from Pieces._pieces_lib.pieces_os_client.models.workstream_pattern_engine_source_supported_accessibility import WorkstreamPatternEngineSourceSupportedAccessibility
 
 class FlattenedIdentifiedWorkstreamPatternEngineSource(BaseModel):
     """
@@ -36,7 +37,16 @@ class FlattenedIdentifiedWorkstreamPatternEngineSource(BaseModel):
     updated: GroupedTimestamp = Field(...)
     filter: Optional[StrictBool] = Field(default=None, description="This will determine if we want to filter this specific source")
     name: StrictStr = Field(default=..., description="This is the name of the source(defualt original data) this is NOT used for matching just for readability")
-    __properties = ["schema", "id", "raw", "created", "updated", "filter", "name"]
+    summaries: Optional[FlattenedWorkstreamSummaries] = None
+    workstream_events: Optional[FlattenedWorkstreamEvents] = None
+    conversations: Optional[FlattenedConversations] = None
+    accessibility: Optional[WorkstreamPatternEngineSourceSupportedAccessibility] = None
+    messages: Optional[FlattenedConversationMessages] = None
+    websites: Optional[FlattenedWebsites] = None
+    anchors: Optional[FlattenedAnchors] = None
+    persons: Optional[FlattenedPersons] = None
+    workstream_pattern_engine_sources_vector: Optional[conlist(Union[StrictFloat, StrictInt])] = Field(default=None, alias="workstreamPatternEngineSourcesVector", description="This is the embedding for the wpeSource.(NEEDs to collectionection.vector) and specific here because we can only index on a single name NOTE: this the the vector index that corresponds the the couchbase lite index.")
+    __properties = ["schema", "id", "raw", "created", "updated", "filter", "name", "summaries", "workstream_events", "conversations", "accessibility", "messages", "websites", "anchors", "persons", "workstreamPatternEngineSourcesVector"]
 
     class Config:
         """Pydantic configuration"""
@@ -74,6 +84,30 @@ class FlattenedIdentifiedWorkstreamPatternEngineSource(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of updated
         if self.updated:
             _dict['updated'] = self.updated.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of summaries
+        if self.summaries:
+            _dict['summaries'] = self.summaries.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of workstream_events
+        if self.workstream_events:
+            _dict['workstream_events'] = self.workstream_events.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of conversations
+        if self.conversations:
+            _dict['conversations'] = self.conversations.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of accessibility
+        if self.accessibility:
+            _dict['accessibility'] = self.accessibility.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of messages
+        if self.messages:
+            _dict['messages'] = self.messages.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of websites
+        if self.websites:
+            _dict['websites'] = self.websites.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of anchors
+        if self.anchors:
+            _dict['anchors'] = self.anchors.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of persons
+        if self.persons:
+            _dict['persons'] = self.persons.to_dict()
         return _dict
 
     @classmethod
@@ -92,8 +126,25 @@ class FlattenedIdentifiedWorkstreamPatternEngineSource(BaseModel):
             "created": GroupedTimestamp.from_dict(obj.get("created")) if obj.get("created") is not None else None,
             "updated": GroupedTimestamp.from_dict(obj.get("updated")) if obj.get("updated") is not None else None,
             "filter": obj.get("filter"),
-            "name": obj.get("name")
+            "name": obj.get("name"),
+            "summaries": FlattenedWorkstreamSummaries.from_dict(obj.get("summaries")) if obj.get("summaries") is not None else None,
+            "workstream_events": FlattenedWorkstreamEvents.from_dict(obj.get("workstream_events")) if obj.get("workstream_events") is not None else None,
+            "conversations": FlattenedConversations.from_dict(obj.get("conversations")) if obj.get("conversations") is not None else None,
+            "accessibility": WorkstreamPatternEngineSourceSupportedAccessibility.from_dict(obj.get("accessibility")) if obj.get("accessibility") is not None else None,
+            "messages": FlattenedConversationMessages.from_dict(obj.get("messages")) if obj.get("messages") is not None else None,
+            "websites": FlattenedWebsites.from_dict(obj.get("websites")) if obj.get("websites") is not None else None,
+            "anchors": FlattenedAnchors.from_dict(obj.get("anchors")) if obj.get("anchors") is not None else None,
+            "persons": FlattenedPersons.from_dict(obj.get("persons")) if obj.get("persons") is not None else None,
+            "workstream_pattern_engine_sources_vector": obj.get("workstreamPatternEngineSourcesVector")
         })
         return _obj
 
+from Pieces._pieces_lib.pieces_os_client.models.flattened_anchors import FlattenedAnchors
+from Pieces._pieces_lib.pieces_os_client.models.flattened_conversation_messages import FlattenedConversationMessages
+from Pieces._pieces_lib.pieces_os_client.models.flattened_conversations import FlattenedConversations
+from Pieces._pieces_lib.pieces_os_client.models.flattened_persons import FlattenedPersons
+from Pieces._pieces_lib.pieces_os_client.models.flattened_websites import FlattenedWebsites
+from Pieces._pieces_lib.pieces_os_client.models.flattened_workstream_events import FlattenedWorkstreamEvents
+from Pieces._pieces_lib.pieces_os_client.models.flattened_workstream_summaries import FlattenedWorkstreamSummaries
+FlattenedIdentifiedWorkstreamPatternEngineSource.update_forward_refs()
 

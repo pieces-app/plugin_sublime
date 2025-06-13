@@ -1,5 +1,5 @@
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from typing import TYPE_CHECKING, Optional,Dict, Union, Callable
+from typing import TYPE_CHECKING, Callable, Optional,Dict, Union
 import platform
 import atexit
 import subprocess
@@ -39,12 +39,12 @@ from Pieces._pieces_lib.pieces_os_client.api.anchors_api import AnchorsApi
 from Pieces._pieces_lib.pieces_os_client.api.anchor_api import AnchorApi
 from Pieces._pieces_lib.pieces_os_client.api.range_api import RangeApi
 from Pieces._pieces_lib.pieces_os_client.api.ranges_api import RangesApi
-from Pieces._pieces_lib.pieces_os_client.api.workstream_pattern_engine_api import WorkstreamPatternEngineApi
 from Pieces._pieces_lib.pieces_os_client.api.model_api import ModelApi
-from Pieces._pieces_lib.pieces_os_client.api.applications_api import ApplicationsApi
+from Pieces._pieces_lib.pieces_os_client.api.workstream_pattern_engine_api import WorkstreamPatternEngineApi
 
 from Pieces._pieces_lib.pieces_os_client.models.seeded_connector_connection import SeededConnectorConnection
 from Pieces._pieces_lib.pieces_os_client.models.seeded_tracked_application import SeededTrackedApplication
+from Pieces._pieces_lib.pieces_os_client.wrapper.installation import DownloadModel, PosInstaller
 
 
 from .copilot import Copilot
@@ -60,7 +60,6 @@ from .websockets import (
     RangesIdentifiersWS,
     AnchorsIdentifiersWS
 )
-from .installation import DownloadModel, PosInstaller
 
 if TYPE_CHECKING:
     from Pieces._pieces_lib.pieces_os_client.models.fragment_metadata import FragmentMetadata
@@ -169,7 +168,7 @@ class PiecesClient:
         return self._tracked_application
 
 
-    def connect_apis(self, host:str):
+    def connect_apis(self,host:str):
         if not host.startswith("http"):
             raise TypeError("Invalid host url\n Host should start with http or https")
         
@@ -184,6 +183,7 @@ class PiecesClient:
         self.asset_api = AssetApi(self.api_client)
         self.format_api = FormatApi(self.api_client)
         self.connector_api = ConnectorApi(self.api_client)
+        self.model_api = ModelApi(self.api_client)
         self.models_api = ModelsApi(self.api_client)
         self.annotation_api = AnnotationApi(self.api_client)
         self.annotations_api = AnnotationsApi(self.api_client)
@@ -201,8 +201,6 @@ class PiecesClient:
         self.work_stream_pattern_engine_api = WorkstreamPatternEngineApi(self.api_client)
         self.range_api = RangeApi(self.api_client)
         self.ranges_api = RangesApi(self.api_client)
-        self.model_api = ModelApi(self.api_client)
-        self.applications_api = ApplicationsApi(self.api_client)
 
         # Websocket urls
         ws_base_url:str = host.replace('http','ws')
@@ -269,8 +267,9 @@ class PiecesClient:
             Waits for all the assets/conversations and all the started websockets to open
         """
         self._check_startup()
-
-    def wait_for_cache(self):
+    
+    @staticmethod
+    def wait_for_cache():
         BaseWebsocket.wait_all()
 
     @classmethod
@@ -324,7 +323,8 @@ class PiecesClient:
         """
         for _ in range(maxium_retries):
             try:
-                with urllib.request.urlopen(f"{self.host}/.well-known/health", timeout=1) as response:
+                request = urllib.request.Request(self.host + "/.well-known/health")
+                with urllib.request.urlopen(request, timeout=0.1) as response:
                     return response.status == 200
             except:
                 if maxium_retries != 1:
@@ -364,5 +364,7 @@ class PiecesClient:
             PosInstaller: An instance of PosInstaller handling the installation process.
         """
         return PosInstaller(callback, self._seeded_connector.application.name)
+
 # Register the function to be called on exit
 atexit.register(PiecesClient.close)
+

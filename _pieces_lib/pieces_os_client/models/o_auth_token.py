@@ -31,7 +31,7 @@ class OAuthToken(BaseModel):
     access_token: StrictStr = Field(default=..., description="The Access Token")
     token_type: StrictStr = Field(...)
     expires_in: StrictInt = Field(...)
-    scope: StrictStr = Field(...)
+    scope: Optional[StrictStr] = None
     refresh_token: Optional[StrictStr] = None
     id_token: Optional[StrictStr] = None
     __properties = ["schema", "access_token", "token_type", "expires_in", "scope", "refresh_token", "id_token"]
@@ -39,8 +39,8 @@ class OAuthToken(BaseModel):
     @validator('token_type')
     def token_type_validate_enum(cls, value):
         """Validates the enum"""
-        if value not in ('Bearer',):
-            raise ValueError("must be one of enum values ('Bearer')")
+        if value not in ('UNKNOWN', 'Bearer',):
+            raise ValueError("must be one of enum values ('UNKNOWN', 'Bearer')")
         return value
 
     class Config:
@@ -84,7 +84,7 @@ class OAuthToken(BaseModel):
         _obj = OAuthToken.parse_obj({
             "var_schema": EmbeddedModelSchema.from_dict(obj.get("schema")) if obj.get("schema") is not None else None,
             "access_token": obj.get("access_token"),
-            "token_type": obj.get("token_type"),
+            "token_type": obj.get("token_type") if obj.get("token_type") is not None else 'UNKNOWN',
             "expires_in": obj.get("expires_in"),
             "scope": obj.get("scope"),
             "refresh_token": obj.get("refresh_token"),

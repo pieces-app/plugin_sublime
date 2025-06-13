@@ -154,7 +154,7 @@ class BasicTag(Basic):
 		Args:
 		- asset (BasicAsset): The asset to be associated.
 		"""
-		self.pieces_client.tag_api.tag_associate_asset(asset._id,self.tag.id)
+		self.pieces_client.tag_api.tag_associate_asset(asset.id,self.tag.id)
 
 	def disassociate_asset(self, asset: "BasicAsset"):
 		"""
