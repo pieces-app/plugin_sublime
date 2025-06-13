@@ -15,7 +15,6 @@ from Pieces._pieces_lib.pieces_os_client.models.fragment_metadata import Fragmen
 from Pieces._pieces_lib.pieces_os_client.models.asset_reclassification import AssetReclassification
 from Pieces._pieces_lib.pieces_os_client.models.linkify import Linkify
 from Pieces._pieces_lib.pieces_os_client.models.shares import Shares
-from Pieces._pieces_lib.pieces_os_client.models.share import Share
 
 if TYPE_CHECKING:
 	from . import BasicAnnotation, BasicTag, BasicWebsite
@@ -149,9 +148,6 @@ class BasicAsset(Basic):
 			transferables=False
 		)
 
-	@property
-	def shares(self) -> List[Share]:
-		return self.asset.shares.iterable if self.asset.shares else []
 
 
 	@property
@@ -269,7 +265,7 @@ class BasicAsset(Basic):
 			returns the asset as a markdown containing the content
 			all tags wesites and other metadata
 		"""
-		res = AssetSnapshot.pieces_client.asset_api.asset_specific_asset_export(self._id,"MD")
+		res = AssetSnapshot.pieces_client.asset_api.asset_specific_asset_export(self.asset.id,"MD")
 		if res.raw.string:
 			return res.raw.string.raw
 

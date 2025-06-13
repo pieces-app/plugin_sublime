@@ -19,9 +19,10 @@ import re  # noqa: F401
 import json
 
 
-from typing import Optional
-from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictStr
+from typing import List, Optional, Union
+from Pieces._pieces_lib.pydantic import BaseModel, Field, StrictFloat, StrictInt, StrictStr, conlist
 from Pieces._pieces_lib.pieces_os_client.models.application import Application
+from Pieces._pieces_lib.pieces_os_client.models.capabilities_enum import CapabilitiesEnum
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.grouped_timestamp import GroupedTimestamp
 from Pieces._pieces_lib.pieces_os_client.models.score import Score
@@ -40,7 +41,19 @@ class FlattenedWorkstreamEvent(BaseModel):
     trigger: WorkstreamEventTrigger = Field(...)
     context: Optional[WorkstreamEventContext] = None
     summaries: Optional[FlattenedWorkstreamSummaries] = None
-    __properties = ["schema", "id", "score", "application", "created", "updated", "trigger", "context", "summaries"]
+    tags: Optional[FlattenedTags] = None
+    workstream_events_vector: Optional[conlist(Union[StrictFloat, StrictInt])] = Field(default=None, alias="workstreamEventsVector", description="This is the embedding for the format.(NEEDs to connection.vector) and specific here because we can only index on a single name NOTE: this the the vector index that corresponds the the couchbase lite index.")
+    sources: Optional[FlattenedIdentifiedWorkstreamPatternEngineSources] = None
+    window_title: Optional[StrictStr] = Field(default=None, alias="windowTitle", description="This is the title of a tab, or a title of a file in the ide (this is a temporary property used for the WPE flow)")
+    browser_url: Optional[StrictStr] = Field(default=None, alias="browserUrl")
+    processing: Optional[CapabilitiesEnum] = None
+    messages: Optional[FlattenedConversationMessages] = None
+    annotations: Optional[FlattenedAnnotations] = None
+    anchors: Optional[FlattenedAnchors] = None
+    websites: Optional[FlattenedWebsites] = None
+    source_windows: Optional[FlattenedWorkstreamPatternEngineSourceWindows] = None
+    persons: Optional[FlattenedPersons] = None
+    __properties = ["schema", "id", "score", "application", "created", "updated", "trigger", "context", "summaries", "tags", "workstreamEventsVector", "sources", "windowTitle", "browserUrl", "processing", "messages", "annotations", "anchors", "websites", "source_windows", "persons"]
 
     class Config:
         """Pydantic configuration"""
@@ -90,6 +103,30 @@ class FlattenedWorkstreamEvent(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of summaries
         if self.summaries:
             _dict['summaries'] = self.summaries.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of tags
+        if self.tags:
+            _dict['tags'] = self.tags.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of sources
+        if self.sources:
+            _dict['sources'] = self.sources.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of messages
+        if self.messages:
+            _dict['messages'] = self.messages.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of annotations
+        if self.annotations:
+            _dict['annotations'] = self.annotations.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of anchors
+        if self.anchors:
+            _dict['anchors'] = self.anchors.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of websites
+        if self.websites:
+            _dict['websites'] = self.websites.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of source_windows
+        if self.source_windows:
+            _dict['source_windows'] = self.source_windows.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of persons
+        if self.persons:
+            _dict['persons'] = self.persons.to_dict()
         return _dict
 
     @classmethod
@@ -110,10 +147,30 @@ class FlattenedWorkstreamEvent(BaseModel):
             "updated": GroupedTimestamp.from_dict(obj.get("updated")) if obj.get("updated") is not None else None,
             "trigger": WorkstreamEventTrigger.from_dict(obj.get("trigger")) if obj.get("trigger") is not None else None,
             "context": WorkstreamEventContext.from_dict(obj.get("context")) if obj.get("context") is not None else None,
-            "summaries": FlattenedWorkstreamSummaries.from_dict(obj.get("summaries")) if obj.get("summaries") is not None else None
+            "summaries": FlattenedWorkstreamSummaries.from_dict(obj.get("summaries")) if obj.get("summaries") is not None else None,
+            "tags": FlattenedTags.from_dict(obj.get("tags")) if obj.get("tags") is not None else None,
+            "workstream_events_vector": obj.get("workstreamEventsVector"),
+            "sources": FlattenedIdentifiedWorkstreamPatternEngineSources.from_dict(obj.get("sources")) if obj.get("sources") is not None else None,
+            "window_title": obj.get("windowTitle"),
+            "browser_url": obj.get("browserUrl"),
+            "processing": obj.get("processing"),
+            "messages": FlattenedConversationMessages.from_dict(obj.get("messages")) if obj.get("messages") is not None else None,
+            "annotations": FlattenedAnnotations.from_dict(obj.get("annotations")) if obj.get("annotations") is not None else None,
+            "anchors": FlattenedAnchors.from_dict(obj.get("anchors")) if obj.get("anchors") is not None else None,
+            "websites": FlattenedWebsites.from_dict(obj.get("websites")) if obj.get("websites") is not None else None,
+            "source_windows": FlattenedWorkstreamPatternEngineSourceWindows.from_dict(obj.get("source_windows")) if obj.get("source_windows") is not None else None,
+            "persons": FlattenedPersons.from_dict(obj.get("persons")) if obj.get("persons") is not None else None
         })
         return _obj
 
+from Pieces._pieces_lib.pieces_os_client.models.flattened_anchors import FlattenedAnchors
+from Pieces._pieces_lib.pieces_os_client.models.flattened_annotations import FlattenedAnnotations
+from Pieces._pieces_lib.pieces_os_client.models.flattened_conversation_messages import FlattenedConversationMessages
+from Pieces._pieces_lib.pieces_os_client.models.flattened_identified_workstream_pattern_engine_sources import FlattenedIdentifiedWorkstreamPatternEngineSources
+from Pieces._pieces_lib.pieces_os_client.models.flattened_persons import FlattenedPersons
+from Pieces._pieces_lib.pieces_os_client.models.flattened_tags import FlattenedTags
+from Pieces._pieces_lib.pieces_os_client.models.flattened_websites import FlattenedWebsites
+from Pieces._pieces_lib.pieces_os_client.models.flattened_workstream_pattern_engine_source_windows import FlattenedWorkstreamPatternEngineSourceWindows
 from Pieces._pieces_lib.pieces_os_client.models.flattened_workstream_summaries import FlattenedWorkstreamSummaries
 from Pieces._pieces_lib.pieces_os_client.models.workstream_event_context import WorkstreamEventContext
 FlattenedWorkstreamEvent.update_forward_refs()

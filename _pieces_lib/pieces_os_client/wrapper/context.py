@@ -133,10 +133,10 @@ class Context:
 		return bool(self.paths or self.assets or self.raw_assets)
 
 	def _add_message(self, message):
-		if not self.copilot.chat:
-			self.copilot.create_chat()
 		if not isinstance(message, BasicMessage):
 			raise ValueError("Message should be BasicMessage type")
+		if not self.copilot.chat:
+			self.copilot.create_chat()
 		self._messages.iterable.append(message.message)
 		self.copilot.chat.associate_message(message)
 
@@ -145,10 +145,10 @@ class Context:
 		self.copilot.chat.disassociate_message(BasicMessage(self.pieces_client, message.id))
 
 	def _add_asset(self, asset):
-		if not self.copilot.chat:
-			self.copilot.create_chat()
 		if not isinstance(asset, BasicAsset):
 			raise ValueError("Snippet content should be BasicAsset type")
+		if not self.copilot.chat:
+			self.copilot.create_chat()
 		self._assets.iterable.append(asset.asset)
 		self.copilot.chat.associate_asset(asset)
 
@@ -157,10 +157,10 @@ class Context:
 		self.copilot.chat.disassociate_asset(BasicAsset(asset.id))
 
 	def _add_path(self,path):
-		if not self.copilot.chat:
-			self.copilot.create_chat()
 		if not os.path.exists(path):
 			raise ValueError("Invalid path in the context")
+		if not self.copilot.chat:
+			self.copilot.create_chat()
 		anchor = BasicAnchor.from_raw_content(path)
 		self._paths.iterable.append(anchor.anchor)
 		self.copilot.chat.associate_anchor(anchor)
