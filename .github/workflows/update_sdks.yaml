@@ -93,6 +93,7 @@ jobs:
           git restore _pieces_lib/pieces_os_client/__init__.py
           git restore _pieces_lib/pieces_os_client/api/__init__.py
           git restore _pieces_lib/pieces_os_client/models/__init__.py
+          git restore _pieces_lib/typing_extensions.py
 
       - name: Create Pull Request
         if: steps.check_changes.outputs.changes == 'true'

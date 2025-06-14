@@ -15,6 +15,7 @@ from Pieces._pieces_lib.pieces_os_client.models.fragment_metadata import Fragmen
 from Pieces._pieces_lib.pieces_os_client.models.asset_reclassification import AssetReclassification
 from Pieces._pieces_lib.pieces_os_client.models.linkify import Linkify
 from Pieces._pieces_lib.pieces_os_client.models.shares import Shares
+from Pieces._pieces_lib.pieces_os_client.models.share import Share
 
 if TYPE_CHECKING:
 	from . import BasicAnnotation, BasicTag, BasicWebsite
@@ -105,6 +106,9 @@ class BasicAsset(Basic):
 			ClassificationGenericEnum.IMAGE
 		)
 
+	@property
+	def shares(self) -> List[Share]:
+		return self.asset.shares.iterable if self.asset.shares else []
 
 	@property
 	def classification(self) -> Optional[ClassificationSpecificEnum]:
