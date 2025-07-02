@@ -106,9 +106,6 @@ class BasicAsset(Basic):
 			ClassificationGenericEnum.IMAGE
 		)
 
-	@property
-	def shares(self) -> List[Share]:
-		return self.asset.shares.iterable if self.asset.shares else []
 
 	@property
 	def classification(self) -> Optional[ClassificationSpecificEnum]:
@@ -204,6 +201,9 @@ class BasicAsset(Basic):
 		if self.asset.annotations:
 			return [BasicAnnotation(AssetSnapshot.pieces_client,a) for a in self.asset.annotations.iterable]
 
+	@property
+	def shares(self) -> List[Share]:
+		return self.asset.shares.iterable if self.asset.shares else []
 
 	def delete(self) -> None:
 		"""
