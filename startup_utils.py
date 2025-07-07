@@ -25,11 +25,11 @@ def check_pieces_os(is_input_handler=False, bypass_login=False):
 	def decorator(func):
 		@wraps(func)
 		def wrapper(*args, **kwargs):
+			# Step 1: Check compatibility first
 			try:
 				compatiablity_result = check_compatiblity()
 			except:
 				compatiablity_result = None
-			login_state = is_input_handler  or bypass_login or check_login()
 
 			if compatiablity_result and not compatiablity_result.compatible:
 				if not is_input_handler:
@@ -47,21 +47,11 @@ def check_pieces_os(is_input_handler=False, bypass_login=False):
 						sublime.run_command("pieces_support",args={"support":"https://docs.pieces.app/products/support"})
 				return
 
-			if PiecesSettings.api_client.is_pos_stream_running and login_state:
-				return func(*args, **kwargs)
-			elif PiecesSettings.api_client.is_pos_stream_running:
-				return
-
-			if PiecesSettings.api_client.is_pieces_running():
-				def run_async():
-					HealthWS.instance.close()
-					PiecesSettings.on_settings_change()
-				sublime.set_timeout_async(lambda: run_async)
-				if login_state:
-					return func(*args, **kwargs)
-			else:
+			# Step 2: Check if PiecesOS is running
+			if not PiecesSettings.api_client.is_pieces_running():
 				if is_input_handler:
 					return
+				
 				r = sublime.yes_no_cancel_dialog(
 					title="Pieces for Sublime",
 					msg=(
@@ -75,8 +65,26 @@ def check_pieces_os(is_input_handler=False, bypass_login=False):
 				if r == sublime.DIALOG_NO:
 					return sublime.run_command("pieces_support",args={"support":"https://docs.pieces.app/products/support"})
 				elif r == sublime.DIALOG_YES:
-					return sublime.set_timeout_async(lambda:open_pieces_async(bypass_login ,func=func ,*args ,**kwargs))
-				print("Make sure PiecesOS is running")
+					return sublime.set_timeout_async(lambda: open_pieces_async(bypass_login, func, *args, **kwargs))
+				return
+
+			# Step 3: Handle PiecesOS stream status
+			if not PiecesSettings.api_client.is_pos_stream_running:
+				# PiecesOS is running but stream needs restart
+				def restart_stream():
+					HealthWS.instance.close()
+					PiecesSettings.on_settings_change()
+				sublime.set_timeout_async(restart_stream)
+
+			# Step 4: Check login state (only if not bypassed)
+			if not bypass_login and not is_input_handler:
+				login_state = check_login()
+				if not login_state:
+					return
+
+			# Step 5: Execute the function if all checks pass
+			if PiecesSettings.api_client.is_pos_stream_running or PiecesSettings.api_client.is_pieces_running():
+				return func(*args, **kwargs)
 
 		return wrapper
 	return decorator
@@ -88,15 +96,28 @@ def check_login() -> bool:
 
 	if sublime.ok_cancel_dialog("Please sign into Pieces to use this feature. Do you want to sign in now?"):
 		sublime.active_window().run_command("pieces_login")
+		return False  # Return False since login is async
 
 	return False
 
 
-def open_pieces_async(bypass_login:bool, *args, **kwargs):
+def open_pieces_async(bypass_login: bool, func, *args, **kwargs):
 	from .misc.open_pieces_command import PiecesOpenPiecesCommand
-	running = PiecesOpenPiecesCommand.run_async()
-	login_state = check_login() or bypass_login
-	if running and login_state:
-		func = kwargs.pop("func")
+	
+	# Try to launch PiecesOS (without showing duplicate dialog)
+	running = PiecesOpenPiecesCommand.run_async(show_dialog=False)
+	
+	if running:
+		# Check login state if not bypassed
+		if not bypass_login:
+			login_state = check_login()
+			if not login_state:
+				return
+		
+		# Execute the original function
 		func(*args, **kwargs)
+	else:
+		# Show install dialog only once, from here
+		if sublime.ok_cancel_dialog("PiecesOS could not be launched. Would you like to install it?"):
+			sublime.active_window().run_command("pieces_install_pieces_os")
 
