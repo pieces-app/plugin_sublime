@@ -7,7 +7,7 @@ class PiecesOpenPiecesCommand(sublime_plugin.ApplicationCommand):
 		sublime.set_timeout_async(self.run_async)
 
 	@staticmethod
-	def run_async() -> bool:
+	def run_async(show_dialog: bool = True) -> bool:
 		if PiecesSettings.api_client.is_pieces_running():
 			sublime.status_message("PiecesOS is already running")
 			return False
@@ -21,6 +21,6 @@ class PiecesOpenPiecesCommand(sublime_plugin.ApplicationCommand):
 		else:
 			view.erase_status("OPEN_STATUS") if view else None
 			sublime.status_message("Unable to launch PiecesOS")
-			if sublime.ok_cancel_dialog("PiecesOS could not be launched. Would you like to install it?"):
+			if show_dialog and sublime.ok_cancel_dialog("PiecesOS could not be launched. Would you like to install it?"):
 				sublime.active_window().run_command("pieces_install_pieces_os")
 			return False
