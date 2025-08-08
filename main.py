@@ -55,7 +55,6 @@ def startup():
 
 
 def plugin_loaded():
-
 	# Load the settings from 'Pieces.sublime-settings' file using Sublime Text API
 	pieces_settings = sublime.load_settings('Pieces.sublime-settings')
 	pieces_settings.add_on_change("PIECES_SETTINGS",PiecesSettings.on_settings_change)

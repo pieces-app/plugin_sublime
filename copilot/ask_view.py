@@ -8,7 +8,7 @@ from ..settings import PiecesSettings
 from ..progress_bar import ProgressBar
 from ..ask.diff import _load_popup_css
 import re
-from typing import List
+from typing import List, Tuple
 
 
 PHANTOM_A_TAG_STYLE = "margin-bottom:40px; padding: 4px;background-color: var(--accent); border-radius: 6px;color: var(--foreground);text-decoration: None;text-align: center"
@@ -23,7 +23,7 @@ PHANTOM_CONTENT = f"""
 """
 
 FAILED_PHANTOM_CONTENT = f"""
-Something went wrong <br><br>
+{{FAILED_MESSAGE}} went wrong <br><br>
 <div style="padding-right:2px;padding-left:2px;padding-buttom:2px">
 	<a style="{PHANTOM_A_TAG_STYLE}" href = "retry">Retry</a>
 	<a style="{PHANTOM_A_TAG_STYLE}" href = "create">Create a New Conversation</a>
@@ -76,7 +76,7 @@ class CopilotViewManager:
 
 
 		# Failed regions
-		self.failed_regions = []
+		self.failed_regions: List[Tuple[Region,str]] = []
 		self.failed_phantom = sublime.PhantomSet(self._gpt_view, "Pieces_Failed_Phantoms")
 
 
@@ -181,7 +181,11 @@ class CopilotViewManager:
 			region = self.copilot_regions.pop()
 			region.a += 1
 			region.b += 1
-			self.failed_regions.append(region)
+			if message.error_message == "UserSubscriptionRequired":
+				reason = "Please upgrade to Pieces Pro or change that model using 'Pieces: Change LLM' command"
+			else:
+				reason = "Something went wrong"
+			self.failed_regions.append((region,reason))
 			self.show_failed()
 			self.gpt_view.run_command("pieces_clear_line",{"line_point": self.gpt_view.size()})
 			self.reset_view()
@@ -203,15 +207,22 @@ class CopilotViewManager:
 		self.gpt_view.add_phantom("notification_phantom",Region(0,0),content,sublime.LAYOUT_BLOCK,on_navigate=on_nav)
 
 	def show_failed(self):
+		failed_regions = [r[0] for r in self.failed_regions]
 		self.gpt_view.add_regions(
 			"pieces", 
-			self.failed_regions, 
+			failed_regions,
 			scope="region.yellowish", 
 			icon=f"Packages/Pieces/copilot/images/warning.png", 
 			flags=sublime.HIDDEN
 		)
 		self.failed_phantom.update(
-			[sublime.Phantom(region,FAILED_PHANTOM_CONTENT,sublime.LAYOUT_BLOCK,self.on_nav_failed) for region in self.failed_regions]
+			[
+				sublime.Phantom(
+					region[0],FAILED_PHANTOM_CONTENT.format(FAILED_MESSAGE=region[1]),
+					sublime.LAYOUT_BLOCK,
+					self.on_nav_failed
+				) for region in self.failed_regions
+			]
 		)
 
 	def on_nav_failed(self, href):

@@ -1,5 +1,5 @@
 {
-	"model":"gpt-4o", // Deprecated use "Pieces: Change LLM" instead
+	"model":"o4-mini-2025-04-16", // Deprecated use "Pieces: Change LLM" instead
 	"auto_start_pieces_os":true, // Open PiecesOS automatically on startup
 	"snippet.autocomplete":false, // auto complete via Pieces saved snippets or not
 	"syntax" : {}, // Langauge extension : syntax path
