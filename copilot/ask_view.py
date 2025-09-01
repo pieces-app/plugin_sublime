@@ -23,7 +23,7 @@ PHANTOM_CONTENT = f"""
 """
 
 FAILED_PHANTOM_CONTENT = f"""
-{{FAILED_MESSAGE}} went wrong <br><br>
+{{FAILED_MESSAGE}} <br><br>
 <div style="padding-right:2px;padding-left:2px;padding-buttom:2px">
 	<a style="{PHANTOM_A_TAG_STYLE}" href = "retry">Retry</a>
 	<a style="{PHANTOM_A_TAG_STYLE}" href = "create">Create a New Conversation</a>
