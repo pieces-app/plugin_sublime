@@ -8,6 +8,11 @@ from ..startup_utils import check_pieces_os
 class PiecesAskStreamAboutCommand(sublime_plugin.TextCommand):
 	@check_pieces_os()
 	def run(self,edit,type,pieces_query=None):
+		if type == "detect":
+			if not self.view.sel()[0].empty():
+				return self.run(edit,type="section", pieces_query=pieces_query)
+			else:
+				return self.run(edit, type="file", pieces_query=pieces_query)
 		self.chat = PiecesSettings.api_client.copilot.create_chat()
 		self.before_query = ""
 		if type == "file":
