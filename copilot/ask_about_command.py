@@ -9,6 +9,7 @@ class PiecesAskStreamAboutCommand(sublime_plugin.TextCommand):
 	@check_pieces_os()
 	def run(self,edit,type,pieces_query=None):
 		self.context_paths = []
+
 		if type == "detect":
 			if not self.view.sel()[0].empty():
 				return self.run(edit,type="section", pieces_query=pieces_query)

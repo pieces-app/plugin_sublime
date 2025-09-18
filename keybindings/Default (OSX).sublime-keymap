@@ -30,7 +30,7 @@
         "keys": ["command+shift+i"], // Pieces: Ask about the current project
         "command": "pieces_ask_stream_about",
         "args": {
-            "type": "folder"
+            "type": "detect"
         }
     },
     {
