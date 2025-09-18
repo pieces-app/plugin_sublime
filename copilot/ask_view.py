@@ -366,7 +366,7 @@ class CopilotViewManager:
 
 
 
-	def render_conversation(self,conversation_id):
+	def render_conversation(self,conversation_id, context_paths = None):
 		# Clear everything!
 		self.clear()
 
@@ -399,6 +399,7 @@ class CopilotViewManager:
 		self.show_cursor
 		self.end_response = self.gpt_view.size()
 		self.add_code_phantoms()
+		PiecesSettings.api_client.copilot.context.paths.extend(context_paths or [])
     
 	@property
 	def secondary_view(self):
