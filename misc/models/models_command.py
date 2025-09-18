@@ -53,11 +53,6 @@ class ModelsEnum(Enum):
         "Gemini 2.5 Pro is Google’s state-of-the-art AI model designed for advanced reasoning, coding, mathematics, and scientific tasks.",
         True,
     )
-    CLAUDE_3_SONNET = (
-        "claude-3-sonnet-20240229",
-        "Claude 3 Sonnet",
-        "A creative AI designed for eloquent writing, offering a 40k-token context window for in-depth compositions.",
-    )
     CLAUDE_3_HAIKU = (
         "claude-3-haiku-20240307",
         "Claude 3 Haiku",
