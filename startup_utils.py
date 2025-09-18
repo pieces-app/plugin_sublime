@@ -103,9 +103,11 @@ def check_login() -> bool:
 
 def open_pieces_async(bypass_login: bool, func, *args, **kwargs):
 	from .misc.open_pieces_command import PiecesOpenPiecesCommand
+	from .auth.auth_user import AuthUser
 	
 	# Try to launch PiecesOS (without showing duplicate dialog)
 	running = PiecesOpenPiecesCommand.run_async(show_dialog=False)
+	AuthUser.user_profile = PiecesSettings.api_client.user_api.user_snapshot().user
 	
 	if running:
 		# Check login state if not bypassed

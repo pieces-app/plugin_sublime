@@ -8,19 +8,25 @@ from ..startup_utils import check_pieces_os
 class PiecesAskStreamAboutCommand(sublime_plugin.TextCommand):
 	@check_pieces_os()
 	def run(self,edit,type,pieces_query=None):
+		self.context_paths = []
+		if type == "detect":
+			if not self.view.sel()[0].empty():
+				return self.run(edit,type="section", pieces_query=pieces_query)
+			else:
+				return self.run(edit, type="file", pieces_query=pieces_query)
+
 		self.chat = PiecesSettings.api_client.copilot.create_chat()
 		self.before_query = ""
 		if type == "file":
 			path = self.view.file_name()
 			if not path: return 
-			PiecesSettings.api_client.copilot.context.paths.append(path)
+			self.context_paths = [path]
 
 		elif type == "folder":
 			window = self.view.window()
 			if not window: return
-			paths = window.folders()
-			if not paths: return
-			[PiecesSettings.api_client.copilot.context.paths.append(path) for path in paths]
+			self.context_paths = window.folders()
+			if not self.context_paths: return
 
 		elif type == "section":
 			# Get the all the selected text
@@ -42,7 +48,7 @@ class PiecesAskStreamAboutCommand(sublime_plugin.TextCommand):
 
 	def on_done(self,query):
 		query = self.before_query + query
-		copilot.render_conversation(self.chat.id)
+		copilot.render_conversation(self.chat.id, self.context_paths)
 		copilot.add_query(query) # Add the query
 		copilot.gpt_view.run_command("pieces_enter_response")
 
