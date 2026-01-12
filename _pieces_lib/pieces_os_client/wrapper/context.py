@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING, List, Callable, Optional, SupportsIndex
 import os
 
-from Pieces._pieces_lib.pieces_os_client.models.flattened_anchors import FlattenedAnchors
+from Pieces._pieces_lib.pieces_os_client.models.anchors import Anchors
 from Pieces._pieces_lib.pieces_os_client.models.assets import Assets
 from Pieces._pieces_lib.pieces_os_client.models.flattened_ranges import FlattenedRanges
 from Pieces._pieces_lib.pieces_os_client.models.referenced_range import ReferencedRange
@@ -91,8 +91,10 @@ class Context:
 		self.ltm = LongTermMemory(self)
 
 		## Internal stuff
+		self._assets: Assets = Assets(iterable=[])
 		self._raw_assets: Seeds = Seeds(iterable=[])
 		self._messages: FlattenedConversationMessages = FlattenedConversationMessages(iterable=[])
+		self._paths: Anchors = Anchors(iterable=[])
 
 	def clear(self, **kwargs):
 		"""Clears the Copilot context"""
@@ -100,14 +102,16 @@ class Context:
 		self.paths.clear(_notifiy = kwargs.get("_notifiy", True))
 		self.assets.clear(_notifiy = kwargs.get("_notifiy", True))
 		self.messages.clear(_notifiy = kwargs.get("_notifiy", True))
+		self._paths = Anchors(iterable=[])
+		self._assets = Assets(iterable=[])
 		self._raw_assets = Seeds(iterable=[])
 		self._messages = FlattenedConversationMessages(iterable=[])
 
 	def _get_relevant_dict(self):
 		return {
-			"anchors": self.copilot.chat.conversation.anchors if self.paths else None,
+			"anchors": self._paths if self.paths else None,
 			"seed": self._raw_assets if self.raw_assets else None,
-			"assets": self.copilot.chat.conversation.assets if self.assets else None,
+			"assets": self._assets if self.assets else None,
 			"messages": self._messages if self.messages else None,
 			"temporal": self._temporal() if self.ltm.is_chat_ltm_enabled else None
 		}
@@ -145,10 +149,11 @@ class Context:
 			raise ValueError("Snippet content should be BasicAsset type")
 		if not self.copilot.chat:
 			self.copilot.create_chat()
+		self._assets.iterable.append(asset.asset)
 		self.copilot.chat.associate_asset(asset)
 
 	def _remove_asset(self, index: int):
-		asset = self.assets.pop(index)
+		asset = self._assets.iterable.pop(index)
 		self.copilot.chat.disassociate_asset(BasicAsset(asset.id))
 
 	def _add_path(self,path):
@@ -157,10 +162,11 @@ class Context:
 		if not self.copilot.chat:
 			self.copilot.create_chat()
 		anchor = BasicAnchor.from_raw_content(path)
+		self._paths.iterable.append(anchor.anchor)
 		self.copilot.chat.associate_anchor(anchor)
 
 	def _remove_path(self, index: int):
-		anchor = self.paths.pop(index)
+		anchor = self._paths.iterable.pop(index)
 		self.copilot.chat.disassociate_anchor(BasicAnchor(anchor.id))
 
 	def _add_raw_asset(self, asset: str):

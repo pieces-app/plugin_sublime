@@ -1,8 +1,7 @@
-#!/opt/hostedtoolcache/Python/3.10.18/x64/bin/python
-# -*- coding: utf-8 -*-
-import re
+#!/opt/hostedtoolcache/Python/3.10.19/x64/bin/python
 import sys
 from websocket._wsdump import main
 if __name__ == '__main__':
-    sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
+    if sys.argv[0].endswith('.exe'):
+        sys.argv[0] = sys.argv[0][:-4]
     sys.exit(main())

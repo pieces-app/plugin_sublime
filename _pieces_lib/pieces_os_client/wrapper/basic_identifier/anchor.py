@@ -80,8 +80,7 @@ class BasicAnchor(Basic):
 		"""
 		anchor = AnchorSnapshot.pieces_client.anchors_api.anchors_create_new_anchor(False,seeded_anchor=SeededAnchor(
 			type = type,
-			fullpath = path,
-			platform=AnchorSnapshot.pieces_client.local_os
+			fullpath = path
 		))
 		AnchorSnapshot.identifiers_snapshot[anchor.id] = anchor # Update the local cache
 		return BasicAnchor(anchor.id)

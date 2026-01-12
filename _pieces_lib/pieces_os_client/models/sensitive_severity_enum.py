@@ -13,13 +13,10 @@
 """  # noqa: E501
 
 
+from __future__ import annotations
 import json
-import pprint
-import re  # noqa: F401
-from Pieces._pieces_lib.aenum import Enum, no_arg
-
-
-
+from enum import Enum
+from Pieces._pieces_lib.typing_extensions import Self
 
 
 class SensitiveSeverityEnum(str, Enum):
@@ -36,8 +33,15 @@ class SensitiveSeverityEnum(str, Enum):
     HIGH = 'HIGH'
 
     @classmethod
-    def from_json(cls, json_str: str) -> SensitiveSeverityEnum:
+    def from_json(cls, json_str: str) -> Self:
         """Create an instance of SensitiveSeverityEnum from a JSON string"""
-        return SensitiveSeverityEnum(json.loads(json_str))
+        return cls(json.loads(json_str))
 
+
+
+
+    @classmethod
+    def _missing_(cls, value):
+        # Called when `value` doesn't match any member
+        return cls.UNKNOWN
 
