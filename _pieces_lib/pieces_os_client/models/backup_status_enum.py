@@ -16,7 +16,7 @@
 from __future__ import annotations
 import json
 from enum import Enum
-from Pieces._pieces_lib.typing_extensions import Self
+from typing_extensions import Self
 
 
 class BackupStatusEnum(str, Enum):

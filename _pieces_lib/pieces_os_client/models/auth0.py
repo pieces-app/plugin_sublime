@@ -18,7 +18,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from Pieces._pieces_lib.pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from Pieces._pieces_lib.pieces_os_client.models.auth0_identity import Auth0Identity
 from Pieces._pieces_lib.pieces_os_client.models.auth0_redirects import Auth0Redirects
@@ -26,7 +26,7 @@ from Pieces._pieces_lib.pieces_os_client.models.auth0_user import Auth0User
 from Pieces._pieces_lib.pieces_os_client.models.auth0_user_metadata import Auth0UserMetadata
 from Pieces._pieces_lib.pieces_os_client.models.o_auth_group import OAuthGroup
 from typing import Optional, Set
-from Pieces._pieces_lib.typing_extensions import Self
+from typing_extensions import Self
 
 class Auth0(BaseModel):
     """

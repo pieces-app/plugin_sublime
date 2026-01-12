@@ -20,7 +20,7 @@ from logging import FileHandler
 import multiprocessing
 import sys
 from typing import Any, ClassVar, Dict, List, Literal, Optional, TypedDict, Union
-from Pieces._pieces_lib.typing_extensions import NotRequired, Self
+from typing_extensions import NotRequired, Self
 
 from Pieces._pieces_lib import urllib3
 

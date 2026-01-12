@@ -18,11 +18,11 @@ import pprint
 import re  # noqa: F401
 import json
 
-from Pieces._pieces_lib.pydantic import BaseModel, ConfigDict, Field, StrictInt
+from pydantic import BaseModel, ConfigDict, Field, StrictInt
 from typing import Any, ClassVar, Dict, List
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema_semantic_version_enum import EmbeddedModelSchemaSemanticVersionEnum
 from typing import Optional, Set
-from Pieces._pieces_lib.typing_extensions import Self
+from typing_extensions import Self
 
 class EmbeddedModelSchema(BaseModel):
     """

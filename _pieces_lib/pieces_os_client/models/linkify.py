@@ -18,7 +18,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from Pieces._pieces_lib.pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List, Optional
 from Pieces._pieces_lib.pieces_os_client.models.access_enum import AccessEnum
 from Pieces._pieces_lib.pieces_os_client.models.asset import Asset
@@ -27,7 +27,7 @@ from Pieces._pieces_lib.pieces_os_client.models.seed import Seed
 from Pieces._pieces_lib.pieces_os_client.models.seeded_distributions import SeededDistributions
 from Pieces._pieces_lib.pieces_os_client.models.seeded_user import SeededUser
 from typing import Optional, Set
-from Pieces._pieces_lib.typing_extensions import Self
+from typing_extensions import Self
 
 class Linkify(BaseModel):
     """

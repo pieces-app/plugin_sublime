@@ -18,14 +18,14 @@ import pprint
 import re  # noqa: F401
 import json
 
-from Pieces._pieces_lib.pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List, Optional
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.seeded_classification import SeededClassification
 from Pieces._pieces_lib.pieces_os_client.models.seeded_file import SeededFile
 from Pieces._pieces_lib.pieces_os_client.models.seeded_fragment import SeededFragment
 from typing import Optional, Set
-from Pieces._pieces_lib.typing_extensions import Self
+from typing_extensions import Self
 
 class SeededFormat(BaseModel):
     """

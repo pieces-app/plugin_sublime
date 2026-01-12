@@ -18,7 +18,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from Pieces._pieces_lib.pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.language_server_protocol_code import LanguageServerProtocolCode
@@ -26,7 +26,7 @@ from Pieces._pieces_lib.pieces_os_client.models.language_server_protocol_code_de
 from Pieces._pieces_lib.pieces_os_client.models.language_server_protocol_location_range import LanguageServerProtocolLocationRange
 from Pieces._pieces_lib.pieces_os_client.models.language_server_protocol_severity_enum import LanguageServerProtocolSeverityEnum
 from typing import Optional, Set
-from Pieces._pieces_lib.typing_extensions import Self
+from typing_extensions import Self
 
 class LanguageServerProtocolDiagnostic(BaseModel):
     """

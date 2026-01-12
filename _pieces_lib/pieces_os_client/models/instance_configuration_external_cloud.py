@@ -18,7 +18,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from Pieces._pieces_lib.pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List, Optional
 from Pieces._pieces_lib.pieces_os_client.models.cloud_backup_creation_instance_configuration import CloudBackupCreationInstanceConfiguration
 from Pieces._pieces_lib.pieces_os_client.models.connect_to_cloud_instance_configuration import ConnectToCloudInstanceConfiguration
@@ -31,7 +31,7 @@ from Pieces._pieces_lib.pieces_os_client.models.restore_cloud_backup_instance_co
 from Pieces._pieces_lib.pieces_os_client.models.share_snippet_instance_configuration import ShareSnippetInstanceConfiguration
 from Pieces._pieces_lib.pieces_os_client.models.update_allocation_cloud_instance_configuration import UpdateAllocationCloudInstanceConfiguration
 from typing import Optional, Set
-from Pieces._pieces_lib.typing_extensions import Self
+from typing_extensions import Self
 
 class InstanceConfigurationExternalCloud(BaseModel):
     """

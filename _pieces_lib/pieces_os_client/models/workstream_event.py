@@ -18,7 +18,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from Pieces._pieces_lib.pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from Pieces._pieces_lib.pieces_os_client.models.application import Application
 from Pieces._pieces_lib.pieces_os_client.models.capabilities_enum import CapabilitiesEnum
@@ -37,7 +37,7 @@ from Pieces._pieces_lib.pieces_os_client.models.score import Score
 from Pieces._pieces_lib.pieces_os_client.models.workstream_event_context import WorkstreamEventContext
 from Pieces._pieces_lib.pieces_os_client.models.workstream_event_trigger import WorkstreamEventTrigger
 from typing import Optional, Set
-from Pieces._pieces_lib.typing_extensions import Self
+from typing_extensions import Self
 
 class WorkstreamEvent(BaseModel):
     """

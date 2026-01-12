@@ -19,12 +19,12 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from Pieces._pieces_lib.pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from Pieces._pieces_lib.pieces_os_client.models.auth0_identity import Auth0Identity
 from Pieces._pieces_lib.pieces_os_client.models.auth0_user_metadata import Auth0UserMetadata
 from typing import Optional, Set
-from Pieces._pieces_lib.typing_extensions import Self
+from typing_extensions import Self
 
 class Auth0User(BaseModel):
     """

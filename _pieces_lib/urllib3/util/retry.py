@@ -21,7 +21,7 @@ from ..exceptions import (
 from .util import reraise
 
 if typing.TYPE_CHECKING:
-    from Pieces._pieces_lib.typing_extensions import Self
+    from typing_extensions import Self
 
     from ..connectionpool import ConnectionPool
     from ..response import BaseHTTPResponse

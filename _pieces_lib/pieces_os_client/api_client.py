@@ -25,7 +25,7 @@ import tempfile
 
 from urllib.parse import quote
 from typing import Tuple, Optional, List, Dict, Union
-from Pieces._pieces_lib.pydantic import SecretStr
+from pydantic import SecretStr
 
 from Pieces._pieces_lib.pieces_os_client.configuration import Configuration
 from Pieces._pieces_lib.pieces_os_client.api_response import ApiResponse, T as ApiResponseT
@@ -482,7 +482,7 @@ class ApiClient:
                 #     'XMLHttpRequest' -> 'xml_http_request'
 
                 # Import the class
-                module = importlib.import_module(f"Pieces._pieces_lib.pieces_os_client.models.{snake_case}")
+                module = importlib.import_module(f"pieces_os_client.models.{snake_case}")
                 klass = getattr(module, klass)
 
         if klass in self.PRIMITIVE_TYPES:

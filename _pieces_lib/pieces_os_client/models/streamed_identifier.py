@@ -18,7 +18,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from Pieces._pieces_lib.pydantic import BaseModel, ConfigDict, Field, StrictBool
+from pydantic import BaseModel, ConfigDict, Field, StrictBool
 from typing import Any, ClassVar, Dict, List, Optional
 from Pieces._pieces_lib.pieces_os_client.models.grouped_timestamp import GroupedTimestamp
 from Pieces._pieces_lib.pieces_os_client.models.referenced_activity import ReferencedActivity
@@ -46,7 +46,7 @@ from Pieces._pieces_lib.pieces_os_client.models.referenced_workstream_pattern_en
 from Pieces._pieces_lib.pieces_os_client.models.referenced_workstream_summary import ReferencedWorkstreamSummary
 from Pieces._pieces_lib.pieces_os_client.models.referenced_workstream_summary_to_workstream_summary_association import ReferencedWorkstreamSummaryToWorkstreamSummaryAssociation
 from typing import Optional, Set
-from Pieces._pieces_lib.typing_extensions import Self
+from typing_extensions import Self
 
 class StreamedIdentifier(BaseModel):
     """

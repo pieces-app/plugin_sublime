@@ -13,13 +13,13 @@
 """  # noqa: E501
 
 import warnings
-from Pieces._pieces_lib.pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
+from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
-from Pieces._pieces_lib.typing_extensions import Annotated
+from typing_extensions import Annotated
 
-from Pieces._pieces_lib.pydantic import Field, StrictStr
+from pydantic import Field, StrictStr
 from typing import Optional
-from Pieces._pieces_lib.typing_extensions import Annotated
+from typing_extensions import Annotated
 from Pieces._pieces_lib.pieces_os_client.models.auth0_user import Auth0User
 from Pieces._pieces_lib.pieces_os_client.models.entity_associate_to_user_input import EntityAssociateToUserInput
 from Pieces._pieces_lib.pieces_os_client.models.has_feature_access_input import HasFeatureAccessInput
