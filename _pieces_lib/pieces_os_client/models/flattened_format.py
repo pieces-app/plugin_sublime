@@ -18,9 +18,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from Pieces._pieces_lib.pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
-from Pieces._pieces_lib.typing_extensions import Annotated
+from typing_extensions import Annotated
 from Pieces._pieces_lib.pieces_os_client.models.application import Application
 from Pieces._pieces_lib.pieces_os_client.models.byte_descriptor import ByteDescriptor
 from Pieces._pieces_lib.pieces_os_client.models.classification import Classification
@@ -31,7 +31,7 @@ from Pieces._pieces_lib.pieces_os_client.models.grouped_timestamp import Grouped
 from Pieces._pieces_lib.pieces_os_client.models.relationship import Relationship
 from Pieces._pieces_lib.pieces_os_client.models.role import Role
 from typing import Optional, Set
-from Pieces._pieces_lib.typing_extensions import Self
+from typing_extensions import Self
 
 class FlattenedFormat(BaseModel):
     """

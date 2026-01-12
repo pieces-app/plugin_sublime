@@ -1,4 +1,4 @@
-#!/opt/hostedtoolcache/Python/3.10.19/x64/bin/python
+#!/Users/bishoy/Documents/pieces/plugin_sublime_dependencies/venv/bin/python3.14
 import sys
 from websocket._wsdump import main
 if __name__ == '__main__':

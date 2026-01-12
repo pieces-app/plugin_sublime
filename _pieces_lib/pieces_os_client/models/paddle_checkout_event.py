@@ -16,7 +16,7 @@
 from __future__ import annotations
 import json
 import pprint
-from Pieces._pieces_lib.pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
 from typing import Any, List, Optional
 from Pieces._pieces_lib.pieces_os_client.models.paddle_checkout_closed_event import PaddleCheckoutClosedEvent
 from Pieces._pieces_lib.pieces_os_client.models.paddle_checkout_completed_event import PaddleCheckoutCompletedEvent
@@ -24,9 +24,9 @@ from Pieces._pieces_lib.pieces_os_client.models.paddle_checkout_error_event impo
 from Pieces._pieces_lib.pieces_os_client.models.paddle_checkout_loaded_event import PaddleCheckoutLoadedEvent
 from Pieces._pieces_lib.pieces_os_client.models.paddle_checkout_updated_event import PaddleCheckoutUpdatedEvent
 from Pieces._pieces_lib.pieces_os_client.models.paddle_checkout_warning_event import PaddleCheckoutWarningEvent
-from Pieces._pieces_lib.pydantic import StrictStr, Field
+from pydantic import StrictStr, Field
 from typing import Union, List, Set, Optional, Dict
-from Pieces._pieces_lib.typing_extensions import Literal, Self
+from typing_extensions import Literal, Self
 
 PADDLECHECKOUTEVENT_ONE_OF_SCHEMAS = ["PaddleCheckoutClosedEvent", "PaddleCheckoutCompletedEvent", "PaddleCheckoutErrorEvent", "PaddleCheckoutLoadedEvent", "PaddleCheckoutUpdatedEvent", "PaddleCheckoutWarningEvent"]
 

@@ -18,7 +18,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from Pieces._pieces_lib.pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List, Optional
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.qgpt_task_pipeline_for_code_commentation import QGPTTaskPipelineForCodeCommentation
@@ -27,7 +27,7 @@ from Pieces._pieces_lib.pieces_os_client.models.qgpt_task_pipeline_for_code_expl
 from Pieces._pieces_lib.pieces_os_client.models.qgpt_task_pipeline_for_code_fix import QGPTTaskPipelineForCodeFix
 from Pieces._pieces_lib.pieces_os_client.models.qgpt_task_pipeline_for_code_modification import QGPTTaskPipelineForCodeModification
 from typing import Optional, Set
-from Pieces._pieces_lib.typing_extensions import Self
+from typing_extensions import Self
 
 class QGPTTaskPipeline(BaseModel):
     """

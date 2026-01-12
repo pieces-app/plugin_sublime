@@ -18,7 +18,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from Pieces._pieces_lib.pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List, Optional
 from Pieces._pieces_lib.pieces_os_client.models.auth0 import Auth0
 from Pieces._pieces_lib.pieces_os_client.models.challenged_pkce import ChallengedPKCE
@@ -29,7 +29,7 @@ from Pieces._pieces_lib.pieces_os_client.models.revoked_pkce import RevokedPKCE
 from Pieces._pieces_lib.pieces_os_client.models.seeded_pkce import SeededPKCE
 from Pieces._pieces_lib.pieces_os_client.models.tokenized_pkce import TokenizedPKCE
 from typing import Optional, Set
-from Pieces._pieces_lib.typing_extensions import Self
+from typing_extensions import Self
 
 class PKCE(BaseModel):
     """

@@ -18,7 +18,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from Pieces._pieces_lib.pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.flattened_conversation_messages import FlattenedConversationMessages
@@ -27,7 +27,7 @@ from Pieces._pieces_lib.pieces_os_client.models.flattened_workstream_summaries i
 from Pieces._pieces_lib.pieces_os_client.models.grouped_timestamp import GroupedTimestamp
 from Pieces._pieces_lib.pieces_os_client.models.score import Score
 from typing import Optional, Set
-from Pieces._pieces_lib.typing_extensions import Self
+from typing_extensions import Self
 
 class Range(BaseModel):
     """

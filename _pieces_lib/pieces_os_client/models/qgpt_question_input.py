@@ -18,7 +18,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from Pieces._pieces_lib.pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from Pieces._pieces_lib.pieces_os_client.models.embedded_model_schema import EmbeddedModelSchema
 from Pieces._pieces_lib.pieces_os_client.models.flattened_conversation_messages import FlattenedConversationMessages
@@ -29,7 +29,7 @@ from Pieces._pieces_lib.pieces_os_client.models.relevant_qgpt_seeds import Relev
 from Pieces._pieces_lib.pieces_os_client.models.temporal_range_grounding import TemporalRangeGrounding
 from Pieces._pieces_lib.pieces_os_client.models.workstream_summary_behavior_enum import WorkstreamSummaryBehaviorEnum
 from typing import Optional, Set
-from Pieces._pieces_lib.typing_extensions import Self
+from typing_extensions import Self
 
 class QGPTQuestionInput(BaseModel):
     """

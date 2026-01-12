@@ -18,14 +18,14 @@ import pprint
 import re  # noqa: F401
 import json
 
-from Pieces._pieces_lib.pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from Pieces._pieces_lib.pieces_os_client.models.anonymous_temporal_range import AnonymousTemporalRange
 from Pieces._pieces_lib.pieces_os_client.models.auth0_open_ai_user_metadata import Auth0OpenAIUserMetadata
 from Pieces._pieces_lib.pieces_os_client.models.auth0_user_allocation_metadata import Auth0UserAllocationMetadata
 from Pieces._pieces_lib.pieces_os_client.models.user_team_service_organization_subscriptions import UserTeamServiceOrganizationSubscriptions
 from typing import Optional, Set
-from Pieces._pieces_lib.typing_extensions import Self
+from typing_extensions import Self
 
 class DescopeUser(BaseModel):
     """

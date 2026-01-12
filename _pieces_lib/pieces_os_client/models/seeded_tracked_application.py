@@ -18,7 +18,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from Pieces._pieces_lib.pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from Pieces._pieces_lib.pieces_os_client.models.application_name_enum import ApplicationNameEnum
 from Pieces._pieces_lib.pieces_os_client.models.capabilities_enum import CapabilitiesEnum
@@ -27,7 +27,7 @@ from Pieces._pieces_lib.pieces_os_client.models.platform_enum import PlatformEnu
 from Pieces._pieces_lib.pieces_os_client.models.privacy_enum import PrivacyEnum
 from Pieces._pieces_lib.pieces_os_client.models.seeded_asset_enrichment import SeededAssetEnrichment
 from typing import Optional, Set
-from Pieces._pieces_lib.typing_extensions import Self
+from typing_extensions import Self
 
 class SeededTrackedApplication(BaseModel):
     """

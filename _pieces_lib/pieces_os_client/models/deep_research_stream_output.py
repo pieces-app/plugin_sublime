@@ -18,14 +18,14 @@ import pprint
 import re  # noqa: F401
 import json
 
-from Pieces._pieces_lib.pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from Pieces._pieces_lib.pieces_os_client.models.deep_research_stream_enum import DeepResearchStreamEnum
 from Pieces._pieces_lib.pieces_os_client.models.migration_progress import MigrationProgress
 from Pieces._pieces_lib.pieces_os_client.models.qgpt_question_output import QGPTQuestionOutput
 from Pieces._pieces_lib.pieces_os_client.models.qgpt_relevance_output import QGPTRelevanceOutput
 from typing import Optional, Set
-from Pieces._pieces_lib.typing_extensions import Self
+from typing_extensions import Self
 
 class DeepResearchStreamOutput(BaseModel):
     """

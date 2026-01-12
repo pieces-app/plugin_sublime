@@ -3,7 +3,11 @@
 
     "*": {
         "*": [
-            "mdpopups"
+            "mdpopups",
+            "pydantic",
+            "annotated_types",
+            "pydantic_core",
+            "typing-extensions"
         ]
 
     }

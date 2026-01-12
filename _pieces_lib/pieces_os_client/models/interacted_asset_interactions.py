@@ -18,11 +18,11 @@ import pprint
 import re  # noqa: F401
 import json
 
-from Pieces._pieces_lib.pydantic import BaseModel, ConfigDict, Field, StrictBool, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
-from Pieces._pieces_lib.typing_extensions import Annotated
+from typing_extensions import Annotated
 from typing import Optional, Set
-from Pieces._pieces_lib.typing_extensions import Self
+from typing_extensions import Self
 
 class InteractedAssetInteractions(BaseModel):
     """

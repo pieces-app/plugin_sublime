@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 from typing import Optional, Generic, Mapping, TypeVar
-from Pieces._pieces_lib.pydantic import Field, StrictInt, StrictBytes, BaseModel
+from pydantic import Field, StrictInt, StrictBytes, BaseModel
 
 T = TypeVar("T")
 

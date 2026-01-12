@@ -13,7 +13,7 @@
 """  # noqa: E501
 
 from typing import Any, Optional
-from Pieces._pieces_lib.typing_extensions import Self
+from typing_extensions import Self
 
 class OpenApiException(Exception):
     """The base exception class for all OpenAPIExceptions"""

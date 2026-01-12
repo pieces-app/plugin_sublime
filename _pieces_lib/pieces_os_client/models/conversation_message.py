@@ -18,7 +18,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from Pieces._pieces_lib.pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from Pieces._pieces_lib.pieces_os_client.models.conversation_message_agent import ConversationMessageAgent
 from Pieces._pieces_lib.pieces_os_client.models.conversation_message_sentiment_enum import ConversationMessageSentimentEnum
@@ -42,7 +42,7 @@ from Pieces._pieces_lib.pieces_os_client.models.referenced_conversation import R
 from Pieces._pieces_lib.pieces_os_client.models.referenced_workstream_summary import ReferencedWorkstreamSummary
 from Pieces._pieces_lib.pieces_os_client.models.score import Score
 from typing import Optional, Set
-from Pieces._pieces_lib.typing_extensions import Self
+from typing_extensions import Self
 
 class ConversationMessage(BaseModel):
     """
