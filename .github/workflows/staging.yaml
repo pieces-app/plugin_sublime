@@ -7,8 +7,9 @@ on:
 
 jobs:
   build:
+    permissions:
+      id-token: write   # required so the reusable workflow can mint a GCP OIDC token
+      contents: write   # required for GitHub release creation in the reusable workflow
     uses: ./.github/workflows/build.yaml
     with:
       deploy: false
-    secrets:
-      credentials_json: ${{ secrets.GCP_CREDENTIALS }}

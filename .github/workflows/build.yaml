@@ -7,9 +7,10 @@ on:
         type: boolean
         required: true
         default: false
-    secrets:
-      credentials_json:
+      beta:
+        type: boolean
         required: false
+        default: false
 
 jobs:
   build:
@@ -97,6 +98,9 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - build
+    permissions:
+      id-token: write   # required for keyless WIF (OIDC) auth to GCP
+      contents: write   # required for softprops/action-gh-release
     steps:
 
       ### Pulling down the previously built plugins
@@ -114,17 +118,19 @@ jobs:
       - name: List
         run: ls -la
 
-      ### Authenticating with gcloud
-      - name: Authenticate with Google cloud
-        uses: google-github-actions/auth@v2
+      ### Authenticating with gcloud via keyless Workload Identity Federation (OIDC)
+      - name: Authenticate with Google Cloud
+        uses: google-github-actions/auth@v3
         with:
-          credentials_json: ${{ secrets.credentials_json }}
-          project_id: ${{ inputs.project_id }}
+          workload_identity_provider: projects/497784144587/locations/global/workloadIdentityPools/github-pool/providers/github-provider
+          service_account: github-actions@integration-server-326115.iam.gserviceaccount.com
           create_credentials_file: true
 
       ### Setting up gcloud cli
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v2'
+        with:
+          project_id: integration-server-326115
 
       ### Verifying that we are good to go with gcloud
       - name: 'Use gcloud CLI'
